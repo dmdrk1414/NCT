@@ -1,17 +1,27 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '3.0.2' // 스프링 부트 플러그인
+    id 'io.spring.dependency-management' version '1.1.0'  // 의존성 관리, 스프링의 의존성 관리 플러그임
 }
 
-group = 'org.example'
+group = 'back.springbootdeveloper'
 version = '1.0-SNAPSHOT'
+sourceCompatibility = '17' //  자바 소스를 컴파일할 때 사용할 자바 버전을 입력
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    // Spring MVC를 사용해서 RESTful 웹 서비스를 개발할때 필요한 의존성 모음
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // 스프링 애플리케이션을 테스트하기 위해 필요한 의존성 모음
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' // 테스트 기능
+
+    // 반복 메서드 작성 작업을 줄여준다.
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
 
 test {
