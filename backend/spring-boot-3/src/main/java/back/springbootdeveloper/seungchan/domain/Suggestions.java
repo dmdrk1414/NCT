@@ -24,10 +24,26 @@ public class Suggestions {
     @Column(name = "isCheck", nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private boolean isCheck;
 
+    @Column(name = "holidayPeriod", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    private String holidayPeriod;
+
+    // 휴가 기간 포함 건의 사항
     @Builder
-    public Suggestions(String classification, String title, boolean check) {
+    public Suggestions(String classification, String title, String holidayPeriod) {
         this.classification = classification;
         this.title = title;
-        this.isCheck = check;
+        this.isCheck = false;
+        this.holidayPeriod = holidayPeriod;
     }
+
+    // 전체적인 건의 사항
+    @Builder
+    public Suggestions(String classification, String title, boolean isCheck, String holidayPeriod) {
+        this.classification = classification;
+        this.title = title;
+        this.isCheck = isCheck;
+        this.holidayPeriod = holidayPeriod;
+    }
+
+
 }

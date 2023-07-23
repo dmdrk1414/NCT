@@ -1,14 +1,14 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.domain.Suggestions;
+import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteRequest;
+import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.ResponseSuggestion;
 import back.springbootdeveloper.seungchan.service.SuggestionService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +18,12 @@ import java.util.List;
 @ResponseBody
 public class SuggestionsController {
     private final SuggestionService suggestionService;
+
+    @PostMapping("/suggestions/write")
+    public ResponseEntity<BaseResponseBody> writeSuggestion(@RequestBody SuggestionWriteRequest suggestionWriteRequest) {
+        Suggestions suggestions = suggestionService.save(suggestionWriteRequest);
+        return new ResponseEntity<>(new BaseResponseBody("SUCCESS", 200), HttpStatus.OK);
+    }
 
     @GetMapping("/suggestions")
     public ResponseEntity<List<ResponseSuggestion>> fetchSuggestions() {
