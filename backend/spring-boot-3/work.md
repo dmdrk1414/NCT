@@ -5,7 +5,13 @@
   - [x] requestdto
   - [x] service
 
-- [ ]  건의 게시판 조회
+- [x]  건의 게시판 조회
   - [x] controller
   - [x] responsedto
   - [x] service
+- [x]  Suggestion artile write
+  - [x] Holliday  컬럼, 변수 추가
+  - [x] controller
+  - [x] responsedto
+  - [x] service
+

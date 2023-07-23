@@ -11,11 +11,13 @@ public class ResponseSuggestion {
     private String classification;
     private String title;
     private boolean isCheck;
+    private String holidayPeriod;
 
     public ResponseSuggestion(Suggestions suggestions) {
         this.id = suggestions.getId();
         this.classification = suggestions.getClassification();
         this.title = suggestions.getTitle();
         this.isCheck = suggestions.isCheck();
+        this.holidayPeriod = suggestions.getHolidayPeriod();
     }
 }

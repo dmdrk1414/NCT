@@ -21,7 +21,7 @@ public class TestController {
         suggestionRepository.save(Suggestions.builder()
                 .classification("test classification")
                 .title("test Tle")
-                .check(true)
+                .holidayPeriod("123 ~ 123")
                 .build());
         return "Hello World";
     }
