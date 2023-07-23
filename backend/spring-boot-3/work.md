@@ -4,4 +4,8 @@
   - [x] controller
   - [x] requestdto
   - [x] service
-- [ ] 
+
+- [ ]  건의 게시판 조회
+  - [x] controller
+  - [x] responsedto
+  - [x] service
