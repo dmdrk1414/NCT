@@ -1,8 +1,10 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
 import back.springbootdeveloper.seungchan.domain.Suggestions;
 import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
+import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import back.springbootdeveloper.seungchan.repository.SuggestionRepository;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
@@ -18,6 +20,8 @@ public class TestController {
     private UserRepository userRepository;
     @Autowired
     private UserUtilRepository userUtilRepository;
+    @Autowired
+    private AttendanceStatusRepository attendanceStatusRepository;
 
 
     @GetMapping("/test")
@@ -60,5 +64,17 @@ public class TestController {
                 .isNuriKing(true)
                 .build());
         return "Hello World";
+    }
+
+    @GetMapping("/attendanceTest")
+    public String attendanceStatus() {
+        attendanceStatusRepository.save(AttendanceStatus
+                .builder()
+                .userId(Long.valueOf(2))
+                .name("박승찬")
+                .vacationDates("11~11")
+                .absenceDates("33~##")
+                .build());
+        return "Hellow";
     }
 }
