@@ -2,6 +2,8 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.domain.Suggestions;
 import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserUtill;
+import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import back.springbootdeveloper.seungchan.repository.SuggestionRepository;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ public class TestController {
     private SuggestionRepository suggestionRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserUtilRepository userUtilRepository;
 
 
     @GetMapping("/test")
@@ -43,6 +47,18 @@ public class TestController {
                 .disadvantage("단점")
                 .selfIntroduction("안녕하세요")
                 .photo("사진").build());
+        return "Hello World";
+    }
+
+    @GetMapping("/userUtilTest")
+    public String userUtilTestController() {
+        userUtilRepository.save(UserUtill
+                .builder()
+                .userId(Long.valueOf(2))
+                .name("박승찬")
+                .cntVacation(5)
+                .isNuriKing(true)
+                .build());
         return "Hello World";
     }
 }

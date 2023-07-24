@@ -16,4 +16,9 @@ public class UserService {
         // blogRepository에 의해 DB로 저장한다.
         return userRepository.save((userForm.toEntity()));
     }
+
+    public User findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("not found: " + id)); // 찾아서 없으면 예외처리.;
+    }
 }
