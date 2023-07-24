@@ -1,0 +1,42 @@
+package back.springbootdeveloper.seungchan.dto.response;
+
+import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserUtill;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserOfDetail2MainResponse {
+    //    "name": "박승찬",
+//    "major": "컴퓨터공학과",
+//    "studentId": "20161822",
+//    "phoneNum": "010-2383-6578",
+//    "hobby": "농구",
+//    "specialtySkill": "잠자기",
+//    "MBTI": "ENTP",
+//    "isNuriKing": true
+    private String name;
+    private String major;
+    private String studentId;
+    private String phoneNum;
+    private String hobby;
+    private String specialtySkill;
+    private String MBTI;
+    private boolean isNuriKing;
+
+    public UserOfDetail2MainResponse(UserUtill userUtill, User user) {
+        this.name = user.getName();
+        this.major = user.getMajor();
+        this.studentId = user.getStudentId();
+        this.phoneNum = user.getPhoneNum();
+        this.hobby = user.getHobby();
+        this.specialtySkill = user.getSpecialtySkill();
+        this.MBTI = user.getMBTI();
+        this.isNuriKing = userUtill.isNuriKing();
+    }
+}
