@@ -22,6 +22,23 @@
   - [x] 유저의 디테일한 response을 위한 dto
   - [x] User Still DB 만듬
   - [x] User의 레파지토리 만들었다.
+- [ ]  attendance_status , 1. 메인-출결 현황 페이지 만들기
+  - [x] 엔티티, db새성
+    - [x] mysql> SELECT * FROM attendance_status;
+      +----+---------------+-----------+---------+----------------+
+      | id | absence_dates | name      | user_id | vacation_dates |
+      +----+---------------+-----------+---------+----------------+
+      |  1 | 33~##         | 박승찬    |       2 | 11~11          |
+      +----+---------------+-----------+---------+----------------+
+  - [x] repository 
+  - [x] 컴트롤러
+  - [x] dto
+  - [x] service
+  - [ ] user와 테이블 좋게 만들기 테스트하기 편하게
+    - [x] User
+    - [x] User_utill
+    - [x] suggestions
+    - [x] Attendance_status
 
 
 
