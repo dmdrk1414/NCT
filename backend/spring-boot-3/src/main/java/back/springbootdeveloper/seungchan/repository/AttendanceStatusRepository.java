@@ -5,4 +5,5 @@ import back.springbootdeveloper.seungchan.domain.Suggestions;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AttendanceStatusRepository extends JpaRepository<AttendanceStatus, Long> {
+    AttendanceStatus findByUserId(Long userId);
 }

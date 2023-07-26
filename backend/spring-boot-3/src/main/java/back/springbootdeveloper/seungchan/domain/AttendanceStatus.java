@@ -27,22 +27,27 @@ public class AttendanceStatus {
     @Column(name = "absence_dates", nullable = false)
     private String absenceDates;
 
+    @Column(name = "weekly_data", nullable = false)
+    private String weeklyData = "[ 0, 0, 0, 0, 0]";
+
     @Builder
-    public AttendanceStatus(Long userId, String name, String vacationDates, String absenceDates) {
+    public AttendanceStatus(Long userId, String name, String vacationDates, String absenceDates, String weeklyData) {
         this.userId = userId;
         this.name = name;
         this.vacationDates = vacationDates;
         this.absenceDates = absenceDates;
+        this.weeklyData = weeklyData;
     }
 
     @Override
     public String toString() {
         return "AttendanceStatus{" +
                 "id=" + id +
-                ", userId='" + userId + '\'' +
+                ", userId=" + userId +
                 ", name='" + name + '\'' +
                 ", vacationDates='" + vacationDates + '\'' +
                 ", absenceDates='" + absenceDates + '\'' +
+                ", weeklyData='" + weeklyData + '\'' +
                 '}';
     }
 }
