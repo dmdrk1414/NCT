@@ -18,8 +18,12 @@ public class NumOfTodayAttendence {
     @Column(name = "check_num", updatable = false)
     private String checkNum;
 
+    @Column(name = "day", updatable = false)
+    private String day;
+
     @Builder
-    public NumOfTodayAttendence(String checkNum) {
+    public NumOfTodayAttendence(String checkNum, String day) {
         this.checkNum = checkNum;
+        this.day = day;
     }
 }

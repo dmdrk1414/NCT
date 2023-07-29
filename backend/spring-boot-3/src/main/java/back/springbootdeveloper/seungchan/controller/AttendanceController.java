@@ -1,0 +1,31 @@
+package back.springbootdeveloper.seungchan.controller;
+
+import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberRequest;
+import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
+import back.springbootdeveloper.seungchan.dto.response.UserOfMainResponse;
+import back.springbootdeveloper.seungchan.service.AttendanceService;
+import back.springbootdeveloper.seungchan.service.NumOfTodayAttendenceService;
+import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@ResponseBody
+public class AttendanceController {
+    private final NumOfTodayAttendenceService numOfTodayAttendenceService;
+
+    @PostMapping("/attendance/number")
+    public ResponseEntity<BaseResponseBody> AttendanceNumberController(@RequestBody AttendanceNumberRequest request) {
+        String numOfAttendance = request.getNumOfAttendance();
+        // userId = 1 :: park seungchan
+        // TODO : take userId From token that front give to me
+        Long id = 1L; // id (1) is park seung chan // 임시
+
+        boolean passAttendance = numOfTodayAttendenceService.checkAttendanceNumber(numOfAttendance, id);
+
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+    }
+}

@@ -136,7 +136,7 @@ public class TestController {
                     .name(user.getName())
                     .vacationDates("07-02, 07-11, 07-13, 07-25")
                     .absenceDates("07-15, 07-16")
-                    .weeklyData("1, 1, -1, 0, 0")
+                    .weeklyData("[ 1, 1, 1, 0, -1 ]")
                     .build());
         }
         return "Hellow";
@@ -146,6 +146,7 @@ public class TestController {
     public String numOfTodayAttendance() {
         numOfTodayAttendenceRepository.save(NumOfTodayAttendence.builder()
                 .checkNum("1234")
+                .day("2023-07-28")
                 .build());
         return "Hellow";
     }
