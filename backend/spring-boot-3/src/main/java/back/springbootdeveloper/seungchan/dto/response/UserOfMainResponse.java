@@ -12,13 +12,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserOfMainResponse {
     private String name;
-    private String attendances;
     private int cntVacation;
+    private String weeklyData;
 
     @Builder
     public UserOfMainResponse(AttendanceStatus attendanceStatus, UserUtill userUtill) {
         this.name = userUtill.getName();
-        this.attendances = attendanceStatus.getAbsenceDates();
         this.cntVacation = userUtill.getCntVacation();
+        this.weeklyData = attendanceStatus.getWeeklyData();
     }
 }

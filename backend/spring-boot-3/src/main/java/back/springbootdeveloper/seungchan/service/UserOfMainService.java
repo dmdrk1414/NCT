@@ -25,15 +25,19 @@ public class UserOfMainService {
     @Autowired
     private UserUtilRepository userUtilRepository;
 
-    public List<UserOfMainResponse> findAll() {
+    public List<UserOfMainResponse> findAllByIsOb(boolean isOb) {
         List<UserOfMainResponse> responseList = new ArrayList<>();
         List<User> users = userRepository.findAll();
         for (int id = 1; id < users.size() + 1; id++) {
-            Long longId = Long.valueOf(id);
-            UserUtill userUtill = userUtilRepository.findByUserId(longId);
-            AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(longId);
-            responseList.add(new UserOfMainResponse(attendanceStatus, userUtill));
+            boolean isObUser = users.get(id - 1).isOb();
+            if (isObUser == isOb) {
+                Long longId = (long) id;
+                UserUtill userUtill = userUtilRepository.findByUserId(longId);
+                AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(longId);
+                responseList.add(new UserOfMainResponse(attendanceStatus, userUtill));
+            }
         }
         return responseList;
     }
+
 }

@@ -27,8 +27,9 @@ public class MainController {
 
     ///main/ybs
     @GetMapping("main/ybs")
-    public ResponseEntity<List<UserOfMainResponse>> findAllUserOfMain() {
-        List<UserOfMainResponse> list = userOfMainService.findAll();
+    public ResponseEntity<List<UserOfMainResponse>> findAllYbUser() {
+        boolean isObUser = false;
+        List<UserOfMainResponse> list = userOfMainService.findAllByIsOb(isObUser);
         return ResponseEntity.ok().body(list);
     }
 
