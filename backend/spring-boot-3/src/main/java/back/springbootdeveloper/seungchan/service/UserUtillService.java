@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,5 +13,10 @@ public class UserUtillService {
 
     public UserUtill findUserByUserId(Long userId) {
         return userUtilRepository.findByUserId(userId);
+    }
+
+    public boolean isNuriKing(Long userTempID) {
+        UserUtill kingUser = userUtilRepository.findByUserId(userTempID);
+        return kingUser.isNuriKing();
     }
 }

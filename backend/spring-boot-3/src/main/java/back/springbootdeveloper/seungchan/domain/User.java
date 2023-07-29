@@ -59,6 +59,9 @@ public class User {
     @Column(name = "is_ob", nullable = false)
     private boolean isOb;
 
+    @Column(name = "year_registration", nullable = false)
+    private String yearOfRegistration;
+
     @Builder
     public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, boolean isOb) {
         this.name = name;

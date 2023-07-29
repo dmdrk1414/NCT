@@ -10,15 +10,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserOfMainResponse {
+public class YbUserOfMainResponse {
     private String name;
-    private String attendances;
     private int cntVacation;
+    private String weeklyData;
 
     @Builder
-    public UserOfMainResponse(AttendanceStatus attendanceStatus, UserUtill userUtill) {
+    public YbUserOfMainResponse(AttendanceStatus attendanceStatus, UserUtill userUtill) {
         this.name = userUtill.getName();
-        this.attendances = attendanceStatus.getAbsenceDates();
         this.cntVacation = userUtill.getCntVacation();
+        this.weeklyData = attendanceStatus.getWeeklyData();
     }
 }
