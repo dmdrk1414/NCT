@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberRequest;
+import back.springbootdeveloper.seungchan.dto.response.AttendanceNumberResponse;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.UserOfMainResponse;
 import back.springbootdeveloper.seungchan.service.AttendanceService;
@@ -18,7 +19,7 @@ public class AttendanceController {
     private final NumOfTodayAttendenceService numOfTodayAttendenceService;
 
     @PostMapping("/attendance/number")
-    public ResponseEntity<BaseResponseBody> AttendanceNumberController(@RequestBody AttendanceNumberRequest request) {
+    public ResponseEntity<AttendanceNumberResponse> AttendanceNumberController(@RequestBody AttendanceNumberRequest request) {
         String numOfAttendance = request.getNumOfAttendance();
         // userId = 1 :: park seungchan
         // TODO : take userId From token that front give to me
@@ -26,6 +27,6 @@ public class AttendanceController {
 
         boolean passAttendance = numOfTodayAttendenceService.checkAttendanceNumber(numOfAttendance, id);
 
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+        return ResponseEntity.ok().body(new AttendanceNumberResponse(passAttendance));
     }
 }
