@@ -2,11 +2,7 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberRequest;
 import back.springbootdeveloper.seungchan.dto.response.AttendanceNumberResponse;
-import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
-import back.springbootdeveloper.seungchan.dto.response.UserOfMainResponse;
-import back.springbootdeveloper.seungchan.service.AttendanceService;
 import back.springbootdeveloper.seungchan.service.NumOfTodayAttendenceService;
-import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

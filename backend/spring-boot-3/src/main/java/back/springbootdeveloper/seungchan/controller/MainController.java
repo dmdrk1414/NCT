@@ -3,7 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
 import back.springbootdeveloper.seungchan.dto.response.UserOfDetail2MainResponse;
-import back.springbootdeveloper.seungchan.dto.response.UserOfMainResponse;
+import back.springbootdeveloper.seungchan.dto.response.YbUserOfMainResponse;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import back.springbootdeveloper.seungchan.service.UserOfMainService;
 import back.springbootdeveloper.seungchan.service.UserService;
@@ -27,9 +27,9 @@ public class MainController {
 
     ///main/ybs
     @GetMapping("main/ybs")
-    public ResponseEntity<List<UserOfMainResponse>> findAllYbUser() {
+    public ResponseEntity<List<YbUserOfMainResponse>> findAllYbUser() {
         boolean isObUser = false;
-        List<UserOfMainResponse> list = userOfMainService.findAllByIsOb(isObUser);
+        List<YbUserOfMainResponse> list = userOfMainService.findAllByIsOb(isObUser);
         return ResponseEntity.ok().body(list);
     }
 
