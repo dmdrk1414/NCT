@@ -26,8 +26,9 @@ public class UserOfDetail2MainResponse {
     private String phoneNum;
     private String hobby;
     private String specialtySkill;
-    private String MBTI;
+    private String mbti;
     private boolean isNuriKing;
+    private boolean isOb;
 
     public UserOfDetail2MainResponse(UserUtill userUtill, User user) {
         this.name = user.getName();
@@ -36,7 +37,8 @@ public class UserOfDetail2MainResponse {
         this.phoneNum = user.getPhoneNum();
         this.hobby = user.getHobby();
         this.specialtySkill = user.getSpecialtySkill();
-        this.MBTI = user.getMBTI();
+        this.mbti = user.getMbti();
         this.isNuriKing = userUtill.isNuriKing();
+        this.isOb = user.isOb();
     }
 }
