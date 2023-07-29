@@ -1,13 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
-import back.springbootdeveloper.seungchan.domain.Suggestions;
-import back.springbootdeveloper.seungchan.domain.User;
-import back.springbootdeveloper.seungchan.domain.UserUtill;
-import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
-import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
-import back.springbootdeveloper.seungchan.repository.SuggestionRepository;
-import back.springbootdeveloper.seungchan.repository.UserRepository;
+import back.springbootdeveloper.seungchan.domain.*;
+import back.springbootdeveloper.seungchan.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +22,8 @@ public class TestController {
     private UserUtilRepository userUtilRepository;
     @Autowired
     private AttendanceStatusRepository attendanceStatusRepository;
+    @Autowired
+    private NumOfTodayAttendenceRepository numOfTodayAttendenceRepository;
 
     // 랜덤한 MBTI 값 생성 메서드 예시
     private static String generateRandomMBTI(Random random) {
@@ -140,9 +136,18 @@ public class TestController {
                     .name(user.getName())
                     .vacationDates("07-02, 07-11, 07-13, 07-25")
                     .absenceDates("07-15, 07-16")
-                    .weeklyData("1, 1, -1, 0, 0")
+                    .weeklyData("[ 1, 1, 1, 0, -1 ]")
                     .build());
         }
+        return "Hellow";
+    }
+
+    @GetMapping("/NumOfToday-test")
+    public String numOfTodayAttendance() {
+        numOfTodayAttendenceRepository.save(NumOfTodayAttendence.builder()
+                .checkNum("1234")
+                .day("2023-07-28")
+                .build());
         return "Hellow";
     }
 }
