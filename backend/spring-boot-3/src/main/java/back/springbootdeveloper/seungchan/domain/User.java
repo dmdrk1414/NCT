@@ -23,7 +23,7 @@ public class User {
     private String major;
 
     @Column(name = "gpa", nullable = false) // 'title'이라는 not null 컴럼과 매핑
-    private String GPA;
+    private String gpa;
 
     @Column(name = "address", nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String address;
@@ -36,7 +36,7 @@ public class User {
     private String hobby;
 
     @Column(name = "mbti", nullable = false) // 'title'이라는 not null 컴럼과 매핑
-    private String MBTI;
+    private String mbti;
 
     @Column(name = "studentId", nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String studentId;
@@ -56,22 +56,26 @@ public class User {
     @Column(name = "photo", nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String photo;
 
+    @Column(name = "is_ob", nullable = false)
+    private boolean isOb;
+
     @Builder
-    public User(String name, String phoneNum, String major, String GPA, String address, String specialtySkill, String hobby, String MBTI, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo) {
+    public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, boolean isOb) {
         this.name = name;
         this.phoneNum = phoneNum;
         this.major = major;
-        this.GPA = GPA;
+        this.gpa = gpa;
         this.address = address;
         this.specialtySkill = specialtySkill;
         this.hobby = hobby;
-        this.MBTI = MBTI;
+        this.mbti = mbti;
         this.studentId = studentId;
         this.birthDate = birthDate;
         this.advantages = advantages;
         this.disadvantage = disadvantage;
         this.selfIntroduction = selfIntroduction;
         this.photo = photo;
+        this.isOb = isOb;
     }
 }
 

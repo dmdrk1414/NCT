@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @ResponseBody
-public class MainOfYBController {
+public class MainController {
     private final UserService userService;
     private final UserUtilRepository userUtilRepository;
     private final UserOfMainService userOfMainService;
@@ -32,14 +32,14 @@ public class MainOfYBController {
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping("/main/ybs/detail")
+    @GetMapping("/main/detail")
     public ResponseEntity<UserOfDetail2MainResponse> fetchUserOfDetail2Main() {
 
 //         TODO Token을 받아서 현재 유저의 정보를 가져와야된다.
         // 1. i will take token from front
         // 2. i have to get a user Information from token of user
         // 3. so... resulte that we get a user_ID from token
-        Long userTempID = Long.valueOf(2); // user_id is ID from user DB
+        Long userTempID = Long.valueOf(1); // user_id is ID from user DB
         User user = userService.findUserById(userTempID);
 
         Long userId = user.getId();
