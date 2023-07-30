@@ -63,7 +63,7 @@ public class User {
     private String yearOfRegistration;
 
     @Builder
-    public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, boolean isOb) {
+    public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, boolean isOb, String yearOfRegistration) {
         this.name = name;
         this.phoneNum = phoneNum;
         this.major = major;
@@ -79,6 +79,7 @@ public class User {
         this.selfIntroduction = selfIntroduction;
         this.photo = photo;
         this.isOb = isOb;
+        this.yearOfRegistration = yearOfRegistration;
     }
 }
 
