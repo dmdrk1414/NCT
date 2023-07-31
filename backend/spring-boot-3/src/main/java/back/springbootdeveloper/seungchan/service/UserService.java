@@ -21,4 +21,8 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + id)); // 찾아서 없으면 예외처리.;
     }
+
+    public void updateUser(User userUpdate, Long userId) {
+        userRepository.updateUser(userId, userUpdate);
+    }
 }
