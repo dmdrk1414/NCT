@@ -95,6 +95,7 @@
 3. Attendance Controller  have to take userId from token
    1. 토큰 생기면 변경 필요
 4. MainControler -> findMypage에서 토큰을 갱신
+5. VacationCountController 실장인지 아닌지 확인
 
 
 
