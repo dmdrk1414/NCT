@@ -1,13 +1,15 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor // final이 붙거나  @NotNull이 붙는 필드의 생성자 추가
+@ToString
 public class UserUtillService {
     private final UserUtilRepository userUtilRepository;
 
@@ -18,5 +20,16 @@ public class UserUtillService {
     public boolean isNuriKing(Long userTempID) {
         UserUtill kingUser = userUtilRepository.findByUserId(userTempID);
         return kingUser.isNuriKing();
+    }
+
+    @Transactional
+    public void addVacationConunt(Long userId, int vacationNumWantAdd) {
+        UserUtill userUtillByUserId = userUtilRepository.findByUserId(userId);
+        int vacationNumAtNow = userUtillByUserId.getCntVacation();
+        int resultVacationNum = vacationNumWantAdd + vacationNumAtNow;
+
+        userUtillByUserId.updateVacationNum(resultVacationNum);
+
+        userUtilRepository.updateCntVacationUserUtilData(userId, resultVacationNum);
     }
 }
