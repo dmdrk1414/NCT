@@ -3,6 +3,8 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.domain.ObUser;
 import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
+import back.springbootdeveloper.seungchan.dto.request.VacationCountRequest;
+import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.ObUserOfMainResponse;
 import back.springbootdeveloper.seungchan.dto.response.UserOfDetail2MainResponse;
 import back.springbootdeveloper.seungchan.dto.response.YbUserOfMainResponse;
@@ -10,12 +12,10 @@ import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import back.springbootdeveloper.seungchan.service.UserOfMainService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
+import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -69,5 +69,16 @@ public class MainController {
         UserOfDetail2MainResponse response = new UserOfDetail2MainResponse(userUtill, user);
 
         return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/vacation/count")
+    public ResponseEntity<BaseResponseBody> vacationCount(@RequestBody VacationCountRequest vacationCountRequest) {
+        // TODO 토큰으로 실장인지 아닌지 확인
+        // TODO vacation Count
+        Long userId = vacationCountRequest.getUserId();
+        int vacationNumWantAdd = vacationCountRequest.getVacationCount();
+        userUtillService.addVacationConunt(userId, vacationNumWantAdd);
+
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 }

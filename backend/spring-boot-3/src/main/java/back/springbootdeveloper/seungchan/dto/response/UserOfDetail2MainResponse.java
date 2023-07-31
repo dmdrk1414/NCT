@@ -29,6 +29,7 @@ public class UserOfDetail2MainResponse {
     private String mbti;
     private boolean isNuriKing;
     private boolean isOb;
+    private Long userId;
 
     public UserOfDetail2MainResponse(UserUtill userUtill, User user) {
         this.name = user.getName();
@@ -40,5 +41,6 @@ public class UserOfDetail2MainResponse {
         this.mbti = user.getMbti();
         this.isNuriKing = userUtill.isNuriKing();
         this.isOb = user.isOb();
+        this.userId = user.getId();
     }
 }

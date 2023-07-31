@@ -45,4 +45,8 @@ public class UserUtill {
                 ", isNuriKing=" + isNuriKing +
                 '}';
     }
+
+    public void updateVacationNum(int resultVacationNum) {
+        this.cntVacation = resultVacationNum;
+    }
 }
