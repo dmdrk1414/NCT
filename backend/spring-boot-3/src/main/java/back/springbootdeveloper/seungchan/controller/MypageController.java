@@ -1,15 +1,14 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.dto.request.RequestUserForm;
+import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.MyPageResponse;
-import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.service.UserService;
+import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,5 +23,13 @@ public class MypageController {
         Long id = 1L; // 박승찬
         User user = userService.findUserById(id);
         return ResponseEntity.ok().body(new MyPageResponse(user));
+    }
+
+    @PutMapping("/mypage/update")
+    public ResponseEntity<BaseResponseBody> updateMypage(@RequestBody RequestUserForm requestUserForm) {
+        Long userId = 1L;
+        userService.updateUser(requestUserForm.toEntity(), userId);
+
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 }

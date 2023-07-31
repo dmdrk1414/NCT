@@ -81,5 +81,23 @@ public class User {
         this.isOb = isOb;
         this.yearOfRegistration = yearOfRegistration;
     }
+
+    public void update(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.phoneNum = user.getPhoneNum();
+        this.major = user.getMajor();
+        this.gpa = user.getGpa();
+        this.address = user.getAddress();
+        this.specialtySkill = user.getSpecialtySkill();
+        this.hobby = user.getHobby();
+        this.mbti = user.getMbti();
+        this.studentId = user.getStudentId();
+        this.birthDate = user.getBirthDate();
+        this.advantages = user.getAdvantages();
+        this.disadvantage = user.getDisadvantage();
+        this.selfIntroduction = user.getSelfIntroduction();
+        this.photo = user.getPhoto();
+    }
 }
 
