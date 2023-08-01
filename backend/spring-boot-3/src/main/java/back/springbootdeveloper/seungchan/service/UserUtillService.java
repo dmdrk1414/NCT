@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.domain.UserUtill;
+import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -27,6 +28,17 @@ public class UserUtillService {
         UserUtill userUtillByUserId = userUtilRepository.findByUserId(userId);
         int vacationNumAtNow = userUtillByUserId.getCntVacation();
         int resultVacationNum = vacationNumWantAdd + vacationNumAtNow;
+
+        userUtillByUserId.updateVacationNum(resultVacationNum);
+
+        userUtilRepository.updateCntVacationUserUtilData(userId, resultVacationNum);
+    }
+
+    public void subVacationCount(Long userId, VacationRequest vacationRequest) {
+        int vacationNumWantSub = vacationRequest.getCntUseOfVacation();
+        UserUtill userUtillByUserId = userUtilRepository.findByUserId(userId);
+        int vacationNumAtNow = userUtillByUserId.getCntVacation();
+        int resultVacationNum = vacationNumAtNow - vacationNumWantSub;
 
         userUtillByUserId.updateVacationNum(resultVacationNum);
 

@@ -2,6 +2,7 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
 import back.springbootdeveloper.seungchan.domain.NumOfTodayAttendence;
+import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
 import back.springbootdeveloper.seungchan.repository.NumOfTodayAttendenceRepository;
 import back.springbootdeveloper.seungchan.util.DayUtill;
@@ -22,6 +23,10 @@ public class AttendanceService {
 
     @Autowired
     private AttendanceStatusRepository attendanceStatusRepository;
+
+    private static boolean isContains(String vacationDates, String dateRequest) {
+        return vacationDates.contains(dateRequest);
+    }
 
     @Transactional
     public void UpdateweeklyData(int indexDay, Long userId) {
@@ -45,7 +50,7 @@ public class AttendanceService {
 
         intArray[indexDay] = attendanceOK;
 
-        // [ 1, 1, 1, 0, -1 ]
+        // [ 1, 1, 1, 0, 1 ]
         JSONArray resultJsonArray = arrayToJSONArray(intArray);
         return resultJsonArray.toString();
     }
@@ -56,5 +61,19 @@ public class AttendanceService {
             jsonArray.put(arr[i]);
         }
         return jsonArray;
+    }
+
+    public void updateVacationDate(Long userId, VacationRequest vacationRequest) {
+        AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(userId);
+        String vacationDates = attendanceStatus.getVacationDates();
+        String[] vacationDateOfRequest = vacationRequest.getPreVacationDate();
+
+        String resultStr = attendanceStatus.getVacationDates();
+        for (String dateRequest : vacationDateOfRequest) {
+            if (!isContains(vacationDates, dateRequest)) {
+                resultStr = resultStr + ", " + dateRequest;
+            }
+        }
+        attendanceStatusRepository.updateVacationDatesByUserId(userId, resultStr);
     }
 }
