@@ -2,6 +2,7 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
+import back.springbootdeveloper.seungchan.dto.response.VacationsResponce;
 import back.springbootdeveloper.seungchan.service.AttendanceService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
@@ -26,5 +27,14 @@ public class VacationPageController {
         attendanceService.updateVacationDate(userId, vacationRequest);
 
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+    }
+
+    @GetMapping("/vacations")
+    public ResponseEntity<VacationsResponce> findVacation() {
+        // TODO Token find userId from token
+        Long userId = 1L;
+
+        VacationsResponce vacationsResponce = attendanceService.findVacations(userId);
+        return ResponseEntity.ok().body(vacationsResponce);
     }
 }
