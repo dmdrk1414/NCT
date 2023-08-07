@@ -25,7 +25,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @ResponseBody
 public class MainController {
-    private final UserService userService;
+    private final UserService userServiceImp;
     private final UserUtilRepository userUtilRepository;
     private final UserOfMainService userOfMainService;
     private final UserUtillService userUtillService;
@@ -61,7 +61,7 @@ public class MainController {
         // 2. i have to get a user Information from token of user
         // 3. so... resulte that we get a user_ID from token
         Long userTempID = Long.valueOf(1); // user_id is ID from user DB
-        User user = userService.findUserById(userTempID);
+        User user = userServiceImp.findUserById(userTempID);
 
         Long userId = user.getId();
         UserUtill userUtill = userUtilRepository.findByUserId(userId);
