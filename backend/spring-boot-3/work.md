@@ -85,8 +85,17 @@
       - [x] oBUser을 찾는 방법
     - [x] 도메인
       - [x] ObUser의 정보 따로 저장
+  
+  - [x] 로그인 
+  
+    - [x] config
+    - [x] controller
+    - [x] domain
+    - [x] dto
+    - [x] repository
 
 2. 휴가 신청 API 할시 휴가가 계속 (휴가 일정이 없어도 휴가가 사라진다.)
+3. 한달마다 휴가 db 리셋
 
 토큰 생성시 
 
