@@ -14,11 +14,13 @@ public class YbUserOfMainResponse {
     private String name;
     private int cntVacation;
     private String weeklyData;
+    private Long userId;
 
     @Builder
     public YbUserOfMainResponse(AttendanceStatus attendanceStatus, UserUtill userUtill) {
         this.name = userUtill.getName();
         this.cntVacation = userUtill.getCntVacation();
         this.weeklyData = attendanceStatus.getWeeklyData();
+        this.userId = userUtill.getUserId();
     }
 }
