@@ -2,6 +2,7 @@ package back.springbootdeveloper.seungchan.util;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Year;
 
 public class DayUtill {
     public static DayOfWeek getDayOfWeekAtNow(String dayStr) {
@@ -32,6 +33,12 @@ public class DayUtill {
         String year = day.split("-")[0];
         return Integer.parseInt(year);
     }
+
+    public static String getYear() {
+        Year currentYear = Year.now();
+        return String.valueOf(currentYear.getValue());
+    }
+
 
     public static int getMonthFromDayStr(String day) {
         String month = day.split("-")[1];
