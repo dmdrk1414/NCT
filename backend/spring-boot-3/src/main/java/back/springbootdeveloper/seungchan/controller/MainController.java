@@ -45,8 +45,7 @@ public class MainController {
     @GetMapping("main/obs")
     public ResponseEntity<List<ObUserOfMainResponse>> findAllObUser(HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
-        boolean isNuriKing = userUtillService.isNuriKing(userId);
-
+        boolean isNuriKing = tokenService.getNuriKingFromToken(request);
         List<ObUser> obUserList = userOfMainService.findAllObUser();
 
         return ResponseEntity.ok().body(Collections.singletonList(new ObUserOfMainResponse(obUserList, isNuriKing)));

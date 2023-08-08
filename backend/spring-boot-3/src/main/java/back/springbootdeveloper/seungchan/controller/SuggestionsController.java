@@ -34,7 +34,7 @@ public class SuggestionsController {
     @GetMapping("/suggestions")
     public ResponseEntity<SuggestionsResultResponse> fetchSuggestions(HttpServletRequest request) {
         Long userIdOfSearch = tokenService.getUserIdFromToken(request);
-        boolean isNuriKing = userUtillService.isNuriKing(userIdOfSearch);
+        boolean isNuriKing = tokenService.getNuriKingFromToken(request);
         List<SuggestionList> suggestionLists = suggestionService.findAll()
                 .stream()
 

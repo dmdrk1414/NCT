@@ -83,6 +83,11 @@ public class TokenService {
         return tokenProvider.getUserId(token);
     }
 
+    public Boolean getNuriKingFromToken(HttpServletRequest request) {
+        String token = getToken(request);
+        return tokenProvider.getIsNuriKing(token);
+    }
+
     private String getToken(HttpServletRequest request) {
         // HTTP Request에서 "Authorization" 헤더 값 얻기
         String header = request.getHeader("Authorization");

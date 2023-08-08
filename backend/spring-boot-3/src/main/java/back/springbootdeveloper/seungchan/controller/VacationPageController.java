@@ -41,8 +41,7 @@ public class VacationPageController {
 
     @PostMapping("/vacation/count")
     public ResponseEntity<BaseResponseBody> vacationCount(@RequestBody VacationCountRequest vacationCountRequest, HttpServletRequest request) {
-        Long userIdOfSearch = tokenService.getUserIdFromToken(request);
-        boolean isNuriKing = userUtillService.isNuriKing(userIdOfSearch);
+        boolean isNuriKing = tokenService.getNuriKingFromToken(request);
         if (isNuriKing) {
             Long userId = vacationCountRequest.getUserId();
             int vacationNumWantAdd = vacationCountRequest.getVacationCount();
