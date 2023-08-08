@@ -43,13 +43,9 @@ public class MainController {
     }
 
     @GetMapping("main/obs")
-    public ResponseEntity<List<ObUserOfMainResponse>> findAllObUser() {
-        //         TODO Token을 받아서 현재 유저의 정보를 가져와야된다.
-        // 1. i will take token from front
-        // 2. i have to get a user Information from token of user
-        // 3. so... resulte that we get a user_ID from token
-        Long userTempID = Long.valueOf(1); // user_id is ID from user DB
-        boolean isNuriKing = userUtillService.isNuriKing(userTempID);
+    public ResponseEntity<List<ObUserOfMainResponse>> findAllObUser(HttpServletRequest request) {
+        Long userId = tokenService.getUserIdFromToken(request);
+        boolean isNuriKing = userUtillService.isNuriKing(userId);
 
         List<ObUser> obUserList = userOfMainService.findAllObUser();
 
@@ -69,14 +65,4 @@ public class MainController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping("/vacation/count")
-    public ResponseEntity<BaseResponseBody> vacationCount(@RequestBody VacationCountRequest vacationCountRequest) {
-        // TODO 토큰으로 실장인지 아닌지 확인
-        // TODO vacation Count
-        Long userId = vacationCountRequest.getUserId();
-        int vacationNumWantAdd = vacationCountRequest.getVacationCount();
-        userUtillService.addVacationConunt(userId, vacationNumWantAdd);
-
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
-    }
 }

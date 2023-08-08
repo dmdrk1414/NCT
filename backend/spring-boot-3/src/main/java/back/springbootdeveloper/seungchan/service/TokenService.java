@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -77,7 +78,23 @@ public class TokenService {
         CookieUtil.addCookie(response, REFRESH_TOKEN_COOKIE_NAME, refreshToken, cookieMaxAge);
     }
 
-    public Long getUserIdFromToken(String token) {
+    public Long getUserIdFromToken(HttpServletRequest request) {
+        String token = getToken(request);
         return tokenProvider.getUserId(token);
+    }
+
+    private String getToken(HttpServletRequest request) {
+        // HTTP Request에서 "Authorization" 헤더 값 얻기
+        String header = request.getHeader("Authorization");
+
+        // 토큰이 없는 경우나 "Bearer " 접두사를 포함하지 않은 경우 처리
+        if (header == null || !header.startsWith("Bearer ")) {
+            throw new BadCredentialsException("Invalid token");
+        }
+
+        // "Bearer " 접두사를 제거하여 실제 토큰 얻기
+        String token = header.replace("Bearer ", "");
+
+        return token;
     }
 }

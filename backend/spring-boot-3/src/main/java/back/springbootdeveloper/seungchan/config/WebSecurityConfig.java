@@ -32,7 +32,7 @@ public class WebSecurityConfig {
                 .and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/*").permitAll()
+                        .requestMatchers("/**").permitAll()
                 );
         return http.build();
     }
