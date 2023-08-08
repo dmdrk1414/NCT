@@ -3,6 +3,8 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberRequest;
 import back.springbootdeveloper.seungchan.dto.response.AttendanceNumberResponse;
 import back.springbootdeveloper.seungchan.service.NumOfTodayAttendenceService;
+import back.springbootdeveloper.seungchan.service.TokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @ResponseBody
 public class AttendanceController {
     private final NumOfTodayAttendenceService numOfTodayAttendenceService;
+    private final TokenService tokenService;
 
     @PostMapping("/attendance/number")
-    public ResponseEntity<AttendanceNumberResponse> AttendanceNumberController(@RequestBody AttendanceNumberRequest request) {
-        String numOfAttendance = request.getNumOfAttendance();
-        // userId = 1 :: park seungchan
-        // TODO : take userId From token that front give to me
-        Long id = 1L; // id (1) is park seung chan // 임시
+    public ResponseEntity<AttendanceNumberResponse> AttendanceNumberController(@RequestBody AttendanceNumberRequest attendanceNumberRequest, HttpServletRequest request) {
+        String numOfAttendance = attendanceNumberRequest.getNumOfAttendance();
+        Long id = tokenService.getUserIdFromToken(request);
 
         boolean passAttendance = numOfTodayAttendenceService.checkAttendanceNumber(numOfAttendance, id);
 

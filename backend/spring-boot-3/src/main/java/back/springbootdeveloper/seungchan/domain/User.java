@@ -1,6 +1,8 @@
 package back.springbootdeveloper.seungchan.domain;
 
 
+import back.springbootdeveloper.seungchan.util.DayUtill;
+import back.springbootdeveloper.seungchan.util.Utill;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -76,7 +78,7 @@ public class User implements UserDetails {
     private String password;
 
     @Builder
-    public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, boolean isOb, String yearOfRegistration) {
+    public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, boolean isOb) {
         this.name = name;
         this.phoneNum = phoneNum;
         this.major = major;
@@ -92,7 +94,9 @@ public class User implements UserDetails {
         this.selfIntroduction = selfIntroduction;
         this.photo = photo;
         this.isOb = isOb;
-        this.yearOfRegistration = yearOfRegistration;
+        this.yearOfRegistration = DayUtill.getYear();
+        this.email = "";
+        this.password = "";
     }
 
     public void update(User user) {
@@ -112,7 +116,7 @@ public class User implements UserDetails {
         this.selfIntroduction = user.getSelfIntroduction();
         this.photo = user.getPhoto();
     }
-     
+
     // 권한 관련 ---------------------------------------a
 
     // 사용자가 가지고 있는 권한의 목록을 반환합니다.
