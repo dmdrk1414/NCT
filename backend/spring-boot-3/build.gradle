@@ -47,6 +47,9 @@ dependencies {
     // jjwt는 JWT를 쉽게 생성하고 구문 분석하고 검증할 수 있는 Java 라이브러리입니다
     implementation 'io.jsonwebtoken:jjwt:0.9.1' // // 자바 JWT 라이브러리
     implementation 'javax.xml.bind:jaxb-api:2.3.1' // XML 문서와 Java 객체 간 매핑을 자동화
+
+    // swagger 설정
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 }
 
 test {
