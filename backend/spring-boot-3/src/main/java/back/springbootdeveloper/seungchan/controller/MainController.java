@@ -15,6 +15,8 @@ import back.springbootdeveloper.seungchan.service.UserOfMainService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +25,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 
+@Tag(name = "main page API", description = "로그인을 한후의 main page이다. yb, ob의 정보을 얻을 수 있다.")
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @ResponseBody
+@RequestMapping("/main")
 public class MainController {
     private final UserService userServiceImp;
     private final UserUtilRepository userUtilRepository;
@@ -34,15 +38,16 @@ public class MainController {
     private final UserUtillService userUtillService;
     private final TokenService tokenService;
 
-    ///main/ybs
-    @GetMapping("main/ybs")
+    @Operation(summary = "main page 현재 인원들의 정보", description = "main page 현재 재학 인원들의 정보들을 나열")
+    @GetMapping("/ybs")
     public ResponseEntity<List<YbUserOfMainResponse>> findAllYbUser() {
         boolean isObUser = false;
         List<YbUserOfMainResponse> list = userOfMainService.findAllByIsOb(isObUser);
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping("main/obs")
+    @Operation(summary = "main page 졸업 인원들의 정보", description = "main page 졸업 인원들의 정보들을 나열, 실장들과 일반인들이 볼수 있는 정보가 나누어져 있다.")
+    @GetMapping("/obs")
     public ResponseEntity<List<ObUserOfMainResponse>> findAllObUser(HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
@@ -51,7 +56,8 @@ public class MainController {
         return ResponseEntity.ok().body(Collections.singletonList(new ObUserOfMainResponse(obUserList, isNuriKing)));
     }
 
-    @GetMapping("/main/detail/{id}")
+    @Operation(summary = "main page의 회원들의 정보를 자세하게 조회", description = "main page의 회원들의 정보를 실장과 일반 회원들의 권한 별로 볼수 있는 정보가 다르다.")
+    @GetMapping("/detail/{id}")
     public ResponseEntity<UserOfDetail2MainResponse> fetchUserOfDetail2Main(HttpServletRequest request, @PathVariable long id) {
         Long userIdOfSearch = tokenService.getUserIdFromToken(request);
         User user = userServiceImp.findUserById(id);
