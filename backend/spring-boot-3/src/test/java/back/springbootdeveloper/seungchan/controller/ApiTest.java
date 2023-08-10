@@ -1,18 +1,30 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
+import back.springbootdeveloper.seungchan.controller.config.TestClass;
+import back.springbootdeveloper.seungchan.controller.config.jwt.JwtFactory;
 import back.springbootdeveloper.seungchan.domain.Suggestions;
+import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserUtill;
 import back.springbootdeveloper.seungchan.repository.SuggestionRepository;
+import back.springbootdeveloper.seungchan.service.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -52,8 +64,12 @@ public class ApiTest {
     private SuggestionRepository suggestionRepository;
     @Autowired
     private WebApplicationContext context;
+    @Autowired
+    private TokenService tokenService;
 
     private String token;
+    private User user;
+    private UserUtill userUtill;
 
     @BeforeEach // 테스트 실행 전 실행하는 메서드
     public void mockMvcSetUp() {
@@ -61,13 +77,33 @@ public class ApiTest {
                 .build();
     }
 
-    @DisplayName("건의 게시판 조회 테스트")
+    //    token 발급
+    @BeforeEach
+    public void tokenSetUp() throws Exception {
+        user = TestClass.makeUser();
+        userUtill = TestClass.makeUserUtill(user);
+
+        String url = "/login";
+        HttpServletRequest request = mockMvc.perform(
+                post(url).param("email", user.getEmail()).param("password", user.getPassword())
+        ).andReturn().getRequest();
+
+        HttpServletResponse response = mockMvc.perform(
+                post(url).param("email", user.getEmail()).param("password", user.getPassword())
+        ).andReturn().getResponse();
+
+        token = tokenService.createAccessAndRefreshToken(request, response, user.getEmail());
+    }
+
+    @DisplayName("건의 게시판 전체  조회 테스트")
     @Test
-    public void fetchSuggestions() throws Exception {
+    public void fetchSuggestionsTest() throws Exception {
         // given
+        this.suggestionRepository.deleteAll();
+
         final String url = "/suggestions";
         final String classification = "건의";
-        final String title = "첫 번째 건의입니다. ";
+        final String title = "Test 건의 제목";
         final String holiday_period = "2023-07-23 ~ 2023-07-30";
 
         Suggestions saveSuggestions = suggestionRepository.save(Suggestions.builder()
@@ -76,17 +112,18 @@ public class ApiTest {
                 .holidayPeriod(holiday_period)
                 .build());
         // when
-        this.suggestionRepository.deleteAll();
-        
-        final ResultActions resultActions = mockMvc.perform(get(url, saveSuggestions.getId()));
+        final ResultActions resultActions = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
 
         // then
         resultActions
-                .andExpect(status().isOk());
-//                .andExpect(jsonPath("$.classification").value(classification))
-//                .andExpect(jsonPath("$.title").value(title))
-//                .andExpect(jsonPath("$.holidayPeriod").value(holiday_period));
-
-
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.suggestionLists[0].id").value(saveSuggestions.getId()))
+                .andExpect(jsonPath("$.suggestionLists[0].classification").value(saveSuggestions.getClassification()))
+                .andExpect(jsonPath("$.suggestionLists[0].title").value(saveSuggestions.getTitle()))
+                .andExpect(jsonPath("$.suggestionLists[0].holidayPeriod").value(saveSuggestions.getHolidayPeriod()))
+                .andExpect(jsonPath("$.suggestionLists[0].check").value(false))
+                .andExpect(jsonPath("$.nuriKing").value(userUtill.isNuriKing()));
     }
 }
