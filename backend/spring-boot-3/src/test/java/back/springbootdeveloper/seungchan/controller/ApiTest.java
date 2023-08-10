@@ -21,6 +21,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -119,12 +122,26 @@ public class ApiTest {
     @Test
     public void writeSuggestionTest() throws Exception {
         // given
+        this.suggestionRepository.deleteAll();
+        final String url = "/suggestions/write";
+        Suggestions suggestionsRequest = TestClassUtill.makeSuggestions();
 
+        // 객체 suggestionsRequest을 Json으로 직렬화
+        final String requestBody = objectMapper.writeValueAsString(suggestionsRequest);
 
         // when
-
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody));
 
         // then
+        result.andExpect(status().isOk());
+
+        List<Suggestions> suggestionsList = suggestionRepository.findAll();
+        assertThat(suggestionsList.size()).isEqualTo(1);
+        assertThat(suggestionsList.get(0).getClassification()).isEqualTo(suggestionsRequest.getClassification());
+        assertThat(suggestionsList.get(0).getTitle()).isEqualTo(suggestionsRequest.getTitle());
+        assertThat(suggestionsList.get(0).getHolidayPeriod()).isEqualTo(suggestionsRequest.getHolidayPeriod());
 
     }
 }
