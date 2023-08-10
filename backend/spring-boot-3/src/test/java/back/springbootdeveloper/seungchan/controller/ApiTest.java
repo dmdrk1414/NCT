@@ -1,8 +1,6 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
-import back.springbootdeveloper.seungchan.controller.config.TestClass;
-import back.springbootdeveloper.seungchan.controller.config.jwt.JwtFactory;
+import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
 import back.springbootdeveloper.seungchan.domain.Suggestions;
 import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
@@ -22,9 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -80,8 +75,8 @@ public class ApiTest {
     //    token 발급
     @BeforeEach
     public void tokenSetUp() throws Exception {
-        user = TestClass.makeUser();
-        userUtill = TestClass.makeUserUtill(user);
+        user = TestClassUtill.makeUser();
+        userUtill = TestClassUtill.makeUserUtill(user);
 
         String url = "/login";
         HttpServletRequest request = mockMvc.perform(
@@ -102,15 +97,8 @@ public class ApiTest {
         this.suggestionRepository.deleteAll();
 
         final String url = "/suggestions";
-        final String classification = "건의";
-        final String title = "Test 건의 제목";
-        final String holiday_period = "2023-07-23 ~ 2023-07-30";
 
-        Suggestions saveSuggestions = suggestionRepository.save(Suggestions.builder()
-                .classification(classification)
-                .title(title)
-                .holidayPeriod(holiday_period)
-                .build());
+        Suggestions saveSuggestions = suggestionRepository.save(TestClassUtill.makeSuggestions());
         // when
         final ResultActions resultActions = mockMvc.perform(get(url)
                 .accept(MediaType.APPLICATION_JSON)
@@ -125,5 +113,18 @@ public class ApiTest {
                 .andExpect(jsonPath("$.suggestionLists[0].holidayPeriod").value(saveSuggestions.getHolidayPeriod()))
                 .andExpect(jsonPath("$.suggestionLists[0].check").value(false))
                 .andExpect(jsonPath("$.nuriKing").value(userUtill.isNuriKing()));
+    }
+
+    @DisplayName("건의 게시판 작성 테스트")
+    @Test
+    public void writeSuggestionTest() throws Exception {
+        // given
+
+
+        // when
+
+
+        // then
+
     }
 }

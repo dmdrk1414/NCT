@@ -1,9 +1,10 @@
 package back.springbootdeveloper.seungchan.controller.config;
 
+import back.springbootdeveloper.seungchan.domain.Suggestions;
 import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
 
-public class TestClass {
+public class TestClassUtill {
     private static final String NAME_TEST = "seungchan141414@gmail.com";
 
     public static User makeUser() {
@@ -35,6 +36,18 @@ public class TestClass {
                 .userId(testUser.getId())
                 .cntVacation(5)
                 .isNuriKing(true)
+                .build();
+    }
+
+    public static Suggestions makeSuggestions() {
+        final String classification = "건의";
+        final String title = "Test 건의 제목";
+        final String holiday_period = "2023-07-23 ~ 2023-07-30";
+
+        return Suggestions.builder()
+                .classification(classification)
+                .title(title)
+                .holidayPeriod(holiday_period)
                 .build();
     }
 }
