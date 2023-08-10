@@ -99,6 +99,28 @@ public class User implements UserDetails {
         this.password = "";
     }
 
+    @Builder
+    public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, boolean isOb, String email, String password) {
+        this.name = name;
+        this.phoneNum = phoneNum;
+        this.major = major;
+        this.gpa = gpa;
+        this.address = address;
+        this.specialtySkill = specialtySkill;
+        this.hobby = hobby;
+        this.mbti = mbti;
+        this.studentId = studentId;
+        this.birthDate = birthDate;
+        this.advantages = advantages;
+        this.disadvantage = disadvantage;
+        this.selfIntroduction = selfIntroduction;
+        this.photo = photo;
+        this.isOb = isOb;
+        this.yearOfRegistration = DayUtill.getYear();
+        this.email = email;
+        this.password = password;
+    }
+
     public void update(User user) {
         this.id = user.getId();
         this.name = user.getName();
