@@ -40,6 +40,9 @@ dependencies {
     // 스프링 시큐리티를 테스트하기 위한 의존성 추가
     testImplementation 'org.springframework.security:spring-security-test'
 
+    // test용 lombok 의존성 추가
+    testImplementation 'org.projectlombok:lombok'
+
 
     //프로젝트에 jwt 라이브러리를 추가하여 JSON Web Token(JWT)을 생성하고
     // 처리하는 기능을 사용할 수 있도록 해줍니다.
