@@ -4,6 +4,7 @@ import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
 import back.springbootdeveloper.seungchan.domain.*;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberRequest;
 import back.springbootdeveloper.seungchan.dto.request.RequestUserForm;
+import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -335,5 +336,33 @@ public class ApiTest {
                 .andExpect(status().isOk()); // 변경된 것이 잘되었는지 확인
         assertThat(updateUser.getName()).isEqualTo(nameUpdate);
         // then
+    }
+
+    @DisplayName("회원들이 휴가을 휴가 신청 API")
+    @Test
+    public void applyVacationTest() throws Exception {
+        // given
+        final String url = "/vacations/request";
+        String preVacationDate[] = new String[]{"2023-07-28", "2023-07-30"};
+        int cntUseOfVacation = 2;
+        VacationRequest vacationRequest = new VacationRequest(preVacationDate, cntUseOfVacation);
+
+        // 객체 suggestionsRequest을 Json으로 직렬화
+        final String requestBody = objectMapper.writeValueAsString(vacationRequest);
+
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(user.getId());
+
+        // then
+        result
+                .andExpect(status().isOk());
+        assertThat(attendanceStatus.getVacationDates()).contains(preVacationDate);
     }
 }
