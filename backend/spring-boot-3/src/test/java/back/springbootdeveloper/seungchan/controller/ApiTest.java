@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
 import back.springbootdeveloper.seungchan.domain.*;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberRequest;
+import back.springbootdeveloper.seungchan.dto.request.RequestUserForm;
 import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -255,5 +256,84 @@ public class ApiTest {
         // then
         result
                 .andExpect(jsonPath("$.passAtNow").value(true));
+    }
+
+    @DisplayName("내 정보를 조회한다.")
+    @Test
+    public void findMypageTest() throws Exception {
+        // given
+        final String url = "/mypage";
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        result
+                .andExpect(jsonPath("$.name").value(user.getName()))
+                .andExpect(jsonPath("$.phoneNum").value(user.getPhoneNum()))
+                .andExpect(jsonPath("$.major").value(user.getMajor()))
+                .andExpect(jsonPath("$.gpa").value(user.getGpa()))
+                .andExpect(jsonPath("$.address").value(user.getAddress()))
+                .andExpect(jsonPath("$.specialtySkill").value(user.getSpecialtySkill()))
+                .andExpect(jsonPath("$.hobby").value(user.getHobby()))
+                .andExpect(jsonPath("$.mbti").value(user.getMbti()))
+                .andExpect(jsonPath("$.studentId").value(user.getStudentId()))
+                .andExpect(jsonPath("$.birthDate").value(user.getBirthDate()))
+                .andExpect(jsonPath("$.advantages").value(user.getAdvantages()))
+                .andExpect(jsonPath("$.disadvantage").value(user.getDisadvantage()))
+                .andExpect(jsonPath("$.selfIntroduction").value(user.getSelfIntroduction()))
+                .andExpect(jsonPath("$.photo").value(user.getPhoto()))
+                .andExpect(jsonPath("$.yearOfRegistration").value(user.getYearOfRegistration()))
+                .andExpect(jsonPath("$.ob").value(user.isOb()));
+    }
+
+    @DisplayName("나의 정보를 업데이트 한다.")
+    @Test
+    public void updateMypageTest() throws Exception {
+        // given
+        final String url = "/mypage/update";
+        final String nameUpdate = "업데이트한_이름";
+        User updateUser = user;
+        updateUser.setName(nameUpdate);
+        RequestUserForm requestUserForm = new RequestUserForm(
+                user.getName(),
+                user.getPhoneNum(),
+                user.getMajor(),
+                user.getGpa(),
+                user.getAddress(),
+                user.getSpecialtySkill(),
+                user.getHobby(),
+                user.getMbti(),
+                user.getStudentId(),
+                user.getBirthDate(),
+                user.getAdvantages(),
+                user.getDisadvantage(),
+                user.getSelfIntroduction(),
+                user.getPhoto()
+        );
+        System.out.println("requestUserForm = " + requestUserForm);
+
+        // 객체 suggestionsRequest을 Json으로 직렬화
+        final String requestBody = objectMapper.writeValueAsString(requestUserForm);
+
+        // when
+        ResultActions result = mockMvc.perform(put(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        updateUser = userRepository.findById(user.getId())
+                .orElseThrow(IllegalArgumentException::new);
+
+        // then
+        result
+                .andExpect(status().isOk()); // 변경된 것이 잘되었는지 확인
+        assertThat(updateUser.getName()).isEqualTo(nameUpdate);
+        // then
     }
 }
