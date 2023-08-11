@@ -216,4 +216,23 @@ public class ApiTest {
                 .andExpect(jsonPath("$.ob").value(user.isOb()))
                 .andExpect(jsonPath("$.nuriKing").value(true));
     }
+
+    @DisplayName("main page 졸업 인원들의 정보")
+    @Test
+    public void findAllObUserTest() throws Exception {
+        // given
+        final String url = "/main/obs";
+
+        // when
+        final ResultActions resultActions = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        resultActions
+                .andExpect(jsonPath("$[0].obUserList[0].name").value(userOb.getName()))
+                .andExpect(jsonPath("$[0].obUserList[0].yearOfRegistration").value(userOb.getYearOfRegistration()))
+                .andExpect(jsonPath("$[0].obUserList[0].phoneNum").value(userOb.getPhoneNum()));
+    }
 }
