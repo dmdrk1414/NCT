@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.controller.config.AttendanceListFromJson;
 import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
 import back.springbootdeveloper.seungchan.domain.*;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberRequest;
@@ -7,9 +8,12 @@ import back.springbootdeveloper.seungchan.dto.request.RequestUserForm;
 import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.TokenService;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
+import lombok.Setter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -364,5 +369,33 @@ public class ApiTest {
         result
                 .andExpect(status().isOk());
         assertThat(attendanceStatus.getVacationDates()).contains(preVacationDate);
+    }
+
+    @DisplayName("회원들의 휴가 날짜 조회 테스트")
+    @Test
+    public void findVacationTest() throws Exception {
+        // given
+        final String url = "/vacations";
+
+        MockHttpServletResponse response = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        ).andReturn().getResponse();
+        String responseStr = response.getContentAsString();
+
+        // when
+        ResultActions resultActions = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        AttendanceListFromJson attendanceListFromJson = objectMapper.readValue(responseStr, AttendanceListFromJson.class);
+        // then
+        resultActions
+                .andExpect(jsonPath("$.absences").value(attendanceListFromJson.getAbsences()))
+                .andExpect(jsonPath("$.beforeVacationDate").value(attendanceListFromJson.getBeforeVacationDate()))
+                .andExpect(jsonPath("$.preVacationDate").value(attendanceListFromJson.getPreVacationDate())
+                );
+
     }
 }
