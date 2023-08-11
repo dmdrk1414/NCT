@@ -8,6 +8,7 @@ import back.springbootdeveloper.seungchan.service.AttendanceService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class VacationPageController {
     private final AttendanceService attendanceService;
     private final TokenService tokenService;
 
+    @Operation(summary = "회원들의 휴가 신청", description = "회원분이 휴가를 신청을하고 기간을 신청을한다.")
     @PostMapping("/request")
     public ResponseEntity<BaseResponseBody> applyVacation(@RequestBody VacationRequest vacationRequest, HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
@@ -34,6 +36,8 @@ public class VacationPageController {
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 
+
+    @Operation(summary = "회원들의 휴가 날짜 조회", description = "회원들의 결석, 변경가능 휴가, 변경불가능 휴가을 나타낸다.")
     @GetMapping("")
     public ResponseEntity<VacationsResponce> findVacation(HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
@@ -42,6 +46,7 @@ public class VacationPageController {
         return ResponseEntity.ok().body(vacationsResponce);
     }
 
+    @Operation(summary = "실장이 회원들에게 휴가 갯수 부여 가능", description = "실장들이 휴가의 갯수를 부여가능하다.")
     @PostMapping("/count")
     public ResponseEntity<BaseResponseBody> vacationCount(@RequestBody VacationCountRequest vacationCountRequest, HttpServletRequest request) {
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
