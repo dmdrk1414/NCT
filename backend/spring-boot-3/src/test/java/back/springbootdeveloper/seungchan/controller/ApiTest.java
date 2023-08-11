@@ -1,14 +1,9 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
-import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
-import back.springbootdeveloper.seungchan.domain.Suggestions;
-import back.springbootdeveloper.seungchan.domain.User;
-import back.springbootdeveloper.seungchan.domain.UserUtill;
-import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
-import back.springbootdeveloper.seungchan.repository.SuggestionRepository;
-import back.springbootdeveloper.seungchan.repository.UserRepository;
-import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
+import back.springbootdeveloper.seungchan.domain.*;
+import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberRequest;
+import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -74,6 +69,8 @@ public class ApiTest {
     private UserUtilRepository userUtilRepository;
     @Autowired
     private AttendanceStatusRepository attendanceStatusRepository;
+    @Autowired
+    private NumOfTodayAttendenceRepository numOfTodayAttendenceRepository;
 
     private String token;
     private User user;
@@ -234,5 +231,29 @@ public class ApiTest {
                 .andExpect(jsonPath("$[0].obUserList[0].name").value(userOb.getName()))
                 .andExpect(jsonPath("$[0].obUserList[0].yearOfRegistration").value(userOb.getYearOfRegistration()))
                 .andExpect(jsonPath("$[0].obUserList[0].phoneNum").value(userOb.getPhoneNum()));
+    }
+
+    @DisplayName("출석 번호 입력 API 테스트")
+    @Test
+    public void attendanceNumberControllerTest() throws Exception {
+        // given
+        final String url = "/attendance/number";
+        NumOfTodayAttendence numOfTodayAttendence = numOfTodayAttendenceRepository.findById(1L)
+                .orElseThrow(() -> new IllegalArgumentException("not found: "));
+        String num = numOfTodayAttendence.getCheckNum();
+
+
+        AttendanceNumberRequest attendanceNumberRequest = new AttendanceNumberRequest();
+        attendanceNumberRequest.setNumOfAttendance(num);
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(attendanceNumberRequest))
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        result
+                .andExpect(jsonPath("$.passAtNow").value(true));
     }
 }
