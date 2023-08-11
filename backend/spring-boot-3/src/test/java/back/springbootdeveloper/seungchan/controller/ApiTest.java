@@ -5,6 +5,7 @@ import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
 import back.springbootdeveloper.seungchan.domain.*;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberRequest;
 import back.springbootdeveloper.seungchan.dto.request.RequestUserForm;
+import back.springbootdeveloper.seungchan.dto.request.VacationCountRequest;
 import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.TokenService;
@@ -397,5 +398,33 @@ public class ApiTest {
                 .andExpect(jsonPath("$.preVacationDate").value(attendanceListFromJson.getPreVacationDate())
                 );
 
+    }
+
+    @DisplayName("실장이 회원들에게 휴가 갯수 부여가능")
+    @Test
+    public void vacationCountTest() throws Exception {
+        // given
+        final String url = "/vacations/count";
+        int cntVacation = userUtill.getCntVacation();
+        int addCntVacation = 1;
+        VacationCountRequest vacationCountRequest = new VacationCountRequest(addCntVacation, user.getId());
+        int cntVacationOfAfterAdd = cntVacation + addCntVacation;
+
+        // when
+        // 객체 suggestionsRequest을 Json으로 직렬화
+        final String requestBody = objectMapper.writeValueAsString(vacationCountRequest);
+
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        userUtill = userUtilRepository.findByUserId(user.getId());
+
+        // then
+        result.andExpect(status().isOk());
+        assertThat(userUtill.getCntVacation()).isEqualTo(cntVacationOfAfterAdd);
     }
 }
