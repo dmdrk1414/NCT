@@ -33,6 +33,7 @@ public class UserOfMainService {
             boolean isObUser = users.get(id - 1).isOb();
             if (isObUser == isOb) {
                 Long longId = (long) id;
+                System.out.println("longId = " + longId);
                 UserUtill userUtill = userUtilRepository.findByUserId(longId);
                 AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(longId);
                 responseList.add(new YbUserOfMainResponse(attendanceStatus, userUtill));

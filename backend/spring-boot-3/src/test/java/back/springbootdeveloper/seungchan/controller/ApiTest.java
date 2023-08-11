@@ -1,10 +1,14 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
+import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
 import back.springbootdeveloper.seungchan.domain.Suggestions;
 import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
+import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
 import back.springbootdeveloper.seungchan.repository.SuggestionRepository;
+import back.springbootdeveloper.seungchan.repository.UserRepository;
+import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,10 +68,18 @@ public class ApiTest {
     private WebApplicationContext context;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private UserUtilRepository userUtilRepository;
+    @Autowired
+    private AttendanceStatusRepository attendanceStatusRepository;
 
     private String token;
     private User user;
+    private User userOb;
     private UserUtill userUtill;
+    private AttendanceStatus attendanceStatus;
 
     @BeforeEach // 테스트 실행 전 실행하는 메서드
     public void mockMvcSetUp() {
@@ -78,8 +90,21 @@ public class ApiTest {
     //    token 발급
     @BeforeEach
     public void tokenSetUp() throws Exception {
-        user = TestClassUtill.makeUser();
-        userUtill = TestClassUtill.makeUserUtill(user);
+        userRepository.deleteAll();
+        userUtilRepository.deleteAll();
+        attendanceStatusRepository.deleteAll();
+
+        user = userRepository.save(TestClassUtill.makeUser());
+        userRepository.updateId(user.getId(), 1L);
+        user.setId(1L);
+
+        userOb = userRepository.save(TestClassUtill.makeUserOb());
+        userRepository.updateId(userOb.getId(), 2L);
+        userOb.setId(2L);
+
+        userUtill = userUtilRepository.save(TestClassUtill.makeUserUtill(user));
+
+        attendanceStatus = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user));
 
         String url = "/login";
         HttpServletRequest request = mockMvc.perform(
@@ -143,5 +168,52 @@ public class ApiTest {
         assertThat(suggestionsList.get(0).getTitle()).isEqualTo(suggestionsRequest.getTitle());
         assertThat(suggestionsList.get(0).getHolidayPeriod()).isEqualTo(suggestionsRequest.getHolidayPeriod());
 
+    }
+
+    @DisplayName("main page의 현재 재학 인원들 조회")
+    @Test
+    public void findAllYbUserTest() throws Exception {
+        // given
+        final String url = "/main/ybs";
+
+        // when
+        final ResultActions resultActions = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].cntVacation").value(userUtill.getCntVacation()))
+                .andExpect(jsonPath("$[0].name").value(userUtill.getName()))
+                .andExpect(jsonPath("$[0].weeklyData").value(attendanceStatus.getWeeklyData()));
+    }
+
+    @DisplayName("메인 회원상세(일반, 졸업자) 조회")
+    @Test
+    public void fetchUserOfDetail2MainTest() throws Exception {
+        // given
+        final String url = "/main/detail/{id}";
+
+        // when
+        final ResultActions resultActions = mockMvc.perform(get(url, user.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+
+        // then
+        resultActions
+                .andExpect(jsonPath("$.name").value(user.getName()))
+                .andExpect(jsonPath("$.major").value(user.getMajor()))
+                .andExpect(jsonPath("$.studentId").value(user.getStudentId()))
+                .andExpect(jsonPath("$.phoneNum").value(user.getPhoneNum()))
+                .andExpect(jsonPath("$.hobby").value(user.getHobby()))
+                .andExpect(jsonPath("$.specialtySkill").value(user.getSpecialtySkill()))
+                .andExpect(jsonPath("$.mbti").value(user.getMbti()))
+                .andExpect(jsonPath("$.userId").value(user.getId()))
+                .andExpect(jsonPath("$.ob").value(user.isOb()))
+                .andExpect(jsonPath("$.nuriKing").value(true));
     }
 }
