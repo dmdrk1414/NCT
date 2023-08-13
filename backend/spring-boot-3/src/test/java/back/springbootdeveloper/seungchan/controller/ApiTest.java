@@ -427,4 +427,32 @@ public class ApiTest {
         result.andExpect(status().isOk());
         assertThat(userUtill.getCntVacation()).isEqualTo(cntVacationOfAfterAdd);
     }
+
+    @DisplayName("휴가 신청 페이지 조회")
+    @Test
+    public void findsVacationRequestTest() throws Exception {
+        // given
+        final String url = "/vacations/request";
+
+        MockHttpServletResponse response = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        ).andReturn().getResponse();
+        String responseStr = response.getContentAsString();
+        int cntVacation = userUtill.getCntVacation();
+
+        // when
+        ResultActions resultActions = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        AttendanceListFromJson attendanceListFromJson = objectMapper.readValue(responseStr, AttendanceListFromJson.class);
+        // then
+        resultActions
+                .andExpect(jsonPath("$.absences").value(attendanceListFromJson.getAbsences()))
+                .andExpect(jsonPath("$.beforeVacationDate").value(attendanceListFromJson.getBeforeVacationDate()))
+                .andExpect(jsonPath("$.preVacationDate").value(attendanceListFromJson.getPreVacationDate()))
+                .andExpect(jsonPath("$.cntVacation").value(cntVacation));
+    }
 }
