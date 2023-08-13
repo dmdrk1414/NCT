@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.dto.request.VacationCountRequest;
 import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
+import back.springbootdeveloper.seungchan.dto.response.FindsVacationResponse;
 import back.springbootdeveloper.seungchan.dto.response.VacationsResponce;
 import back.springbootdeveloper.seungchan.service.AttendanceService;
 import back.springbootdeveloper.seungchan.service.TokenService;
@@ -58,5 +59,17 @@ public class VacationPageController {
             return BaseResponseBodyUtiil.BaseResponseBodySuccess();
         }
         return BaseResponseBodyUtiil.BaseResponseBodyForbidden();
+    }
+
+    @Operation(summary = "휴가 신청 페이지 조회", description = "휴가를 신청할때 보여주는 페이지 구성화면 조회")
+    @GetMapping("/request")
+    public ResponseEntity<FindsVacationResponse> findsVacationRequest(HttpServletRequest request) {
+        Long userId = tokenService.getUserIdFromToken(request);
+
+        int cntVacation = userUtillService.cntVacation(userId);
+        VacationsResponce vacationsResponce = attendanceService.findVacations(userId);
+        FindsVacationResponse findsVacationResponse = new FindsVacationResponse(cntVacation, vacationsResponce);
+
+        return ResponseEntity.ok().body(findsVacationResponse);
     }
 }
