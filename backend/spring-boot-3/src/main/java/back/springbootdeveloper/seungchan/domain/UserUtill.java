@@ -1,15 +1,13 @@
 package back.springbootdeveloper.seungchan.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @Table(name = "user_utill")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class UserUtill {
     @Id // id 필드를 기본키로 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 자동으로 1씩 증가
@@ -46,5 +44,9 @@ public class UserUtill {
                 ", cntVacation=" + cntVacation +
                 ", isNuriKing=" + isNuriKing +
                 '}';
+    }
+
+    public void updateVacationNum(int resultVacationNum) {
+        this.cntVacation = resultVacationNum;
     }
 }

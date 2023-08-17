@@ -2,11 +2,15 @@ package back.springbootdeveloper.seungchan.dto.request;
 
 import back.springbootdeveloper.seungchan.domain.User;
 import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@ToString
 public class RequestUserForm {
     private String name;
     private String phoneNum;
@@ -28,11 +32,11 @@ public class RequestUserForm {
                 .name(name)
                 .phoneNum(phoneNum)
                 .major(major)
-                .GPA(gpa)
+                .gpa(gpa)
                 .address(address)
                 .specialtySkill(specialtySkill)
                 .hobby(hobby)
-                .MBTI(mbti)
+                .mbti(mbti)
                 .studentId(studentId)
                 .birthDate(birthDate)
                 .advantages(advantages)
