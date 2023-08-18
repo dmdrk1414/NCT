@@ -93,6 +93,15 @@
     - [x] domain
     - [x] dto
     - [x] repository
+    
+  - [ ] Account 은행
+  
+    - [ ] 스프링에서 요청방법 찾기
+      - [ ] https://enterkey.tistory.com/270
+      - [ ] RestTemplate 이용
+    - [ ] 금융결제원 오픈 API 사용
+    - [ ] controller
+    - [ ] dto 사용
 
 2. 휴가 신청 API 할시 휴가가 계속 (휴가 일정이 없어도 휴가가 사라진다.)
 3. 한달마다 휴가 db 리셋
