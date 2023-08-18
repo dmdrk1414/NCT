@@ -14,17 +14,20 @@ public class UserUtill {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "user_id", updatable = false)
+    @Column(name = "user_id", nullable = false, updatable = false)
     private Long userId;
 
-    @Column(name = "name", updatable = false)
+    @Column(name = "name", nullable = false, updatable = false)
     private String name;
 
-    @Column(name = "cnt_vacation", updatable = false)
+    @Column(name = "cnt_vacation", nullable = false, updatable = false)
     private int cntVacation;
 
-    @Column(name = "isNuriKing", updatable = false)
+    @Column(name = "is_nuri_king", nullable = false, updatable = false)
     private boolean isNuriKing;
+
+    @Column(name = "is_general_affairs", nullable = false, updatable = false)
+    private boolean isGeneralAffairs;
 
     @Builder
     public UserUtill(Long id, Long userId, String name, int cntVacation, boolean isNuriKing) {
