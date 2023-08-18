@@ -72,7 +72,7 @@
 
     6. [x] 일단 서비스에서 멈춤
 
-  ​
+  
 
 - [x] \3. 메인 - 회원상세(일반, 실장), 8. 졸업자 상세 페이지 (실장)
 
@@ -95,6 +95,13 @@
     - [x] dto
     - [x] repository
 
+1. 총무 DB추가
+2. 회원가입 (회장만 뜨기, 총무)
+3. 은행 변경
+4. 24시간 마다 출석
+5. DB Join
+6. DB 초기화 (3달마다 전체 출석 초기화)
+
 - [ ] Account 은행
 
     - [ ] 스프링에서 요청방법 찾기
@@ -104,25 +111,25 @@
     - [ ] controller
     - [ ] dto 사용
 
-2. 휴가 신청 API 할시 휴가가 계속 (휴가 일정이 없어도 휴가가 사라진다.)
-3. 한달마다 휴가 db 리셋
+2. ~~휴가 신청 API 할시 휴가가 계속 (휴가 일정이 없어도 휴가가 사라진다.)~~
+3. ~~한달마다 휴가 db 리셋~~
 
-토큰 생성시
+~~토큰 생성시~~
 
-1. 3-4 메인 - 회원상세(일반, 실장) 토큰 추가
-2. responstBodu refactory
-3. Attendance Controller have to take userId from token
-    1. 토큰 생기면 변경 필요
-4. MainControler -> findMypage에서 토큰을 갱신
-5. VacationCountController 실장인지 아닌지 확인
+1. ~~3-4 메인 - 회원상세(일반, 실장) 토큰 추가~~
+2. ~~responstBodu refactory~~
+3. ~~Attendance Controller have to take userId from token~~
+    1. ~~토큰 생기면 변경 필요~~
+4. ~~MainControler -> findMypage에서 토큰을 갱신~~
+5. ~~VacationCountController 실장인지 아닌지 확인~~
 
-해야되는거
+~~해야되는거~~
 
-attendanceService 토요일 일요일은 출석이 안되도록 수정
+~~attendanceService 토요일 일요일은 출석이 안되도록 수정~~
 
-매일매일 출석 체크가 자동으로 되도록 수정
+~~매일매일 출석 체크가 자동으로 되도록 수정~~
 
-회원 가입을 할때 db생성이 잘되는지 확인
+~~회원 가입을 할때 db생성이 잘되는지 확인~~
 
-1. Table join 하기
-   sdf
+1. ~~Table join 하기~~
+   ~~sdf~~
