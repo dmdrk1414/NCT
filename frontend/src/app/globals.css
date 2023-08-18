@@ -2,6 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Pretendard-ExtraBold';
+  font-weight: 800;
+  font-display: swap;
+  src: url('../font/pretendard/Pretendard-ExtraBold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard-Bold';
+  font-weight: 700;
+  font-display: swap;
+  src: url('../font/pretendard/Pretendard-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard-SemiBold';
+  font-weight: 500;
+  font-display: swap;
+  src: url('../font/pretendard/Pretendard-SemiBold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard-Regular';
+  font-weight: 400;
+  font-display: swap;
+  src: url('../font/pretendard/Pretendard-Regular.woff') format('woff');
+}
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

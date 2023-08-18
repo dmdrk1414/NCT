@@ -1,10 +1,15 @@
-import Image from 'next/image';
-import MiddleButton from '../atoms/atom/middle-button';
+import MainHeader from '../atoms/molecule/main-header';
+import MainCarousel from '../atoms/template/main-carousel';
 
 export default function Home() {
   return (
-    <div>
-      <MiddleButton text="로그인/지원서 작성" />
-    </div>
+    <main>
+      <header>
+        <MainHeader />
+      </header>
+      <article>
+        <MainCarousel />
+      </article>
+    </main>
   );
 }
