@@ -96,6 +96,7 @@
     - [x] repository
 
 1. 총무 DB추가
+   - [x] userUtill DB general affairs 추가
 2. 회원가입 (회장만 뜨기, 총무)
 3. 은행 변경
 4. 24시간 마다 출석
