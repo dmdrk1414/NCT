@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -544,5 +545,44 @@ public class ApiTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(tempUser_1.getId()))
                 .andExpect(jsonPath("$[0].name").value(tempUser_1.getName()));
+    }
+
+    @DisplayName("신청 유저들의 개별 정보를 볼수 있는 API 테스트")
+    @Test
+    public void findNewUsersTest() throws Exception {
+        // given
+        String email_1 = "new@new.com_1";
+        String password_1 = new BCryptPasswordEncoder().encode("1234");
+        TempUser tempUser_1 = TestClassUtill.makeNewUserOb(email_1, password_1);
+
+        TempUser tempUserDB = tempUserRepository.save(tempUser_1);
+        final String url = "/new-users/" + tempUserDB.getId();
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tempUser.name").value(tempUserDB.getName()))
+                .andExpect(jsonPath("$.tempUser.phoneNum").value(tempUserDB.getPhoneNum()))
+                .andExpect(jsonPath("$.tempUser.major").value(tempUserDB.getMajor()))
+                .andExpect(jsonPath("$.tempUser.gpa").value(tempUserDB.getGpa()))
+                .andExpect(jsonPath("$.tempUser.address").value(tempUserDB.getAddress()))
+                .andExpect(jsonPath("$.tempUser.specialtySkill").value(tempUserDB.getSpecialtySkill()))
+                .andExpect(jsonPath("$.tempUser.mbti").value(tempUserDB.getMbti()))
+                .andExpect(jsonPath("$.tempUser.studentId").value(tempUserDB.getStudentId()))
+                .andExpect(jsonPath("$.tempUser.birthDate").value(tempUserDB.getBirthDate()))
+                .andExpect(jsonPath("$.tempUser.advantages").value(tempUserDB.getAdvantages()))
+                .andExpect(jsonPath("$.tempUser.disadvantage").value(tempUserDB.getDisadvantage()))
+                .andExpect(jsonPath("$.tempUser.selfIntroduction").value(tempUserDB.getSelfIntroduction()))
+                .andExpect(jsonPath("$.tempUser.photo").value(tempUserDB.getPhoto()))
+                .andExpect(jsonPath("$.tempUser.yearOfRegistration").value(tempUserDB.getYearOfRegistration()))
+                .andExpect(jsonPath("$.tempUser.email").value(tempUserDB.getEmail()))
+                .andExpect(jsonPath("$.tempUser.password").value(tempUserDB.getPassword()))
+                .andExpect(jsonPath("$.tempUser.regularMember").value(tempUserDB.isRegularMember()))
+                .andExpect(jsonPath("$.tempUser.ob").value(tempUserDB.isOb()));
     }
 }
