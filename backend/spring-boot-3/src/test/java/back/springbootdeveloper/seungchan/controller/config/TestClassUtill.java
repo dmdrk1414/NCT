@@ -1,11 +1,6 @@
 package back.springbootdeveloper.seungchan.controller.config;
 
-import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
-import back.springbootdeveloper.seungchan.domain.Suggestions;
-import back.springbootdeveloper.seungchan.domain.User;
-import back.springbootdeveloper.seungchan.domain.UserUtill;
-
-import java.util.List;
+import back.springbootdeveloper.seungchan.domain.*;
 
 public class TestClassUtill {
     private static final String NAME_TEST = "현재실원_이름";
@@ -30,6 +25,7 @@ public class TestClassUtill {
                 .build();
         user.setEmail("seungchan141414@gmail.com");
         user.setPassword(BCryptPasswordEncoderObject.getCryptPassword("1234"));
+        user.setRegularMember(true);
         return user;
     }
 
@@ -53,6 +49,31 @@ public class TestClassUtill {
                 .build();
         user.setEmail("Test@gmail.com");
         user.setPassword(BCryptPasswordEncoderObject.getCryptPassword("1234"));
+        user.setRegularMember(true);
+
+        return user;
+    }
+
+    public static TempUser makeNewUserOb(String email, String password) {
+        TempUser user = TempUser.builder()
+                .name("새로 희망 유저")
+                .phoneNum("010-2383-6578")
+                .major("컴퓨터 공학과")
+                .gpa("4.2")
+                .address("수완동")
+                .specialtySkill("특기")
+                .hobby("달리기")
+                .mbti("ENTP")
+                .studentId("20161822")
+                .birthDate("1996-04-15")
+                .advantages("나의 장점은")
+                .disadvantage("나의 단점")
+                .selfIntroduction("자기소개")
+                .photo("사진")
+                .isOb(false)
+                .email(email)
+                .password(password)
+                .build();
 
         return user;
     }

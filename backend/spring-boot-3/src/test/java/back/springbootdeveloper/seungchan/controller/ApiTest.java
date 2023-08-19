@@ -5,6 +5,7 @@ import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
 import back.springbootdeveloper.seungchan.domain.*;
 import back.springbootdeveloper.seungchan.dto.request.*;
 import back.springbootdeveloper.seungchan.repository.*;
+import back.springbootdeveloper.seungchan.service.TempUserService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,6 +72,8 @@ public class ApiTest {
     private TokenService tokenService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TempUserService tempUserService;
 
     // Repository
     @Autowired
@@ -81,6 +84,8 @@ public class ApiTest {
     private AttendanceStatusRepository attendanceStatusRepository;
     @Autowired
     private NumOfTodayAttendenceRepository numOfTodayAttendenceRepository;
+    @Autowired
+    private TempUserRepository tempUserRepository;
 
     private String token;
     private User user;
@@ -100,6 +105,7 @@ public class ApiTest {
         userRepository.deleteAll();
         userUtilRepository.deleteAll();
         attendanceStatusRepository.deleteAll();
+        tempUserRepository.deleteAll();
 
         user = userRepository.save(TestClassUtill.makeUser());
         userRepository.updateId(user.getId(), 1L);
@@ -322,7 +328,8 @@ public class ApiTest {
                 user.getDisadvantage(),
                 user.getSelfIntroduction(),
                 user.getPhoto(),
-                user.getEmail()
+                user.getEmail(),
+                user.getPassword()
         );
         System.out.println("requestUserForm = " + requestUserForm);
 
@@ -457,5 +464,59 @@ public class ApiTest {
                 .andExpect(jsonPath("$.beforeVacationDate").value(attendanceListFromJson.getBeforeVacationDate()))
                 .andExpect(jsonPath("$.preVacationDate").value(attendanceListFromJson.getPreVacationDate()))
                 .andExpect(jsonPath("$.cntVacation").value(cntVacation));
+    }
+
+    @DisplayName("새로운 회원들의 회원가입 절차")
+    @Test
+    public void newUserSignUpTest() throws Exception {
+        // given
+        final String url = "/sign";
+        String email = "new@new.com";
+        String password = new BCryptPasswordEncoder().encode("1234");
+        TempUser newUser = TestClassUtill.makeNewUserOb(email, password);
+
+        TempUserFormRequest requestUserForm = new TempUserFormRequest(
+                newUser.getName(),
+                newUser.getPhoneNum(),
+                newUser.getMajor(),
+                newUser.getGpa(),
+                newUser.getAddress(),
+                newUser.getSpecialtySkill(),
+                newUser.getHobby(),
+                newUser.getMbti(),
+                newUser.getStudentId(),
+                newUser.getBirthDate(),
+                newUser.getAdvantages(),
+                newUser.getDisadvantage(),
+                newUser.getSelfIntroduction(),
+                newUser.getPhoto(),
+                newUser.getEmail(),
+                newUser.getPassword()
+        );
+
+        // 객체 suggestionsRequest을 Json으로 직렬화
+        final String requestBody = objectMapper.writeValueAsString(requestUserForm);
+
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        TempUser newUserOfTempDb = tempUserRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("not found: ")); // 찾아서 없으면 예외처리.;;
+
+        boolean resultPassword = new BCryptPasswordEncoder().matches(password, newUserOfTempDb.getPassword());
+
+        // then
+        assertThat(newUser.getEmail()).isEqualTo(email);
+        assertThat(resultPassword).isTrue();
+        assertThat(newUser.getName()).isEqualTo(newUserOfTempDb.getName());
+
+        // then
+        result
+                .andExpect(status().isOk());
     }
 }
