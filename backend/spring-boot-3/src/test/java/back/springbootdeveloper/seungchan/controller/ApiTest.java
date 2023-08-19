@@ -518,4 +518,31 @@ public class ApiTest {
         result
                 .andExpect(status().isOk());
     }
+
+    @DisplayName("모든 신청 유저들의 정보를 볼수 있는 API 테스트")
+    @Test
+    public void findAllNewUsersTest() throws Exception {
+        // given
+        final String url = "/new-users";
+        String email_1 = "new@new.com_1";
+        String email_2 = "new@new.com_2";
+        String password_1 = new BCryptPasswordEncoder().encode("1234");
+        String password_2 = new BCryptPasswordEncoder().encode("1234");
+        TempUser tempUser_1 = TestClassUtill.makeNewUserOb(email_1, password_1);
+        TempUser tempUser_2 = TestClassUtill.makeNewUserOb(email_2, password_2);
+
+        tempUserRepository.save(tempUser_1);
+        tempUserRepository.save(tempUser_2);
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(tempUser_1.getId()))
+                .andExpect(jsonPath("$[0].name").value(tempUser_1.getName()));
+    }
 }
