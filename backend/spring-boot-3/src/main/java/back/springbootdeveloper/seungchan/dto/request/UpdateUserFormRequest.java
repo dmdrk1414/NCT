@@ -1,7 +1,6 @@
 package back.springbootdeveloper.seungchan.dto.request;
 
 import back.springbootdeveloper.seungchan.domain.User;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +10,7 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @ToString
-public class RequestUserForm {
+public class UpdateUserFormRequest {
     private String name;
     private String phoneNum;
     private String major;
@@ -26,8 +25,6 @@ public class RequestUserForm {
     private String disadvantage;
     private String selfIntroduction;
     private String photo;
-    private String email;
-    private String password;
 
     public User toEntity() {
         return User.builder()
@@ -45,8 +42,6 @@ public class RequestUserForm {
                 .disadvantage(disadvantage)
                 .selfIntroduction(selfIntroduction)
                 .photo(photo)
-                .email(email)
-                .password(password)
                 .build();
     }
 }
