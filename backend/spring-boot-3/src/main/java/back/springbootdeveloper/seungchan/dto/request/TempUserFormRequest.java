@@ -1,17 +1,18 @@
 package back.springbootdeveloper.seungchan.dto.request;
 
+import back.springbootdeveloper.seungchan.domain.TempUser;
 import back.springbootdeveloper.seungchan.domain.User;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @ToString
-public class RequestUserForm {
+public class TempUserFormRequest {
     private String name;
     private String phoneNum;
     private String major;
@@ -29,8 +30,8 @@ public class RequestUserForm {
     private String email;
     private String password;
 
-    public User toEntity() {
-        return User.builder()
+    public TempUser toEntity() {
+        return TempUser.builder()
                 .name(name)
                 .phoneNum(phoneNum)
                 .major(major)
@@ -46,7 +47,7 @@ public class RequestUserForm {
                 .selfIntroduction(selfIntroduction)
                 .photo(photo)
                 .email(email)
-                .password(password)
+                .password(new BCryptPasswordEncoder().encode(password))
                 .build();
     }
 }

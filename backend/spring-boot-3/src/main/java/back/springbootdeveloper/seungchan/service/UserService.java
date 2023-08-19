@@ -1,20 +1,10 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.domain.User;
-import back.springbootdeveloper.seungchan.domain.UserUtill;
 import back.springbootdeveloper.seungchan.dto.request.RequestUserForm;
-import back.springbootdeveloper.seungchan.dto.request.UserLoginRequest;
-import back.springbootdeveloper.seungchan.dto.response.UserLoginResponse;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
-import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor // final이 붙거나  @NotNull이 붙는 필드의 생성자 추가
