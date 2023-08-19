@@ -583,6 +583,7 @@ public class ApiTest {
                 .andExpect(jsonPath("$.tempUser.email").value(tempUserDB.getEmail()))
                 .andExpect(jsonPath("$.tempUser.password").value(tempUserDB.getPassword()))
                 .andExpect(jsonPath("$.tempUser.regularMember").value(tempUserDB.isRegularMember()))
-                .andExpect(jsonPath("$.tempUser.ob").value(tempUserDB.isOb()));
+                .andExpect(jsonPath("$.tempUser.ob").value(tempUserDB.isOb()))
+                .andExpect(jsonPath("$.nuriKing").value(true));
     }
 }
