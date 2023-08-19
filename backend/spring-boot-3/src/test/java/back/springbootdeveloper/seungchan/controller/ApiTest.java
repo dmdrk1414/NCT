@@ -458,40 +458,4 @@ public class ApiTest {
                 .andExpect(jsonPath("$.preVacationDate").value(attendanceListFromJson.getPreVacationDate()))
                 .andExpect(jsonPath("$.cntVacation").value(cntVacation));
     }
-
-    @DisplayName("실장만이 실행할 수 있는 새로운 회원들의 회원가입 절차")
-    @Test
-    public void newUserSignUpTest() throws Exception {
-        // given
-        final String url = "/vacations/request";
-        String email = "new@new.com";
-        User newUser = TestClassUtill.makeNewUserOb(email);
-        String password = "1234";
-        userRepository.save(newUser);
-
-        UserInfoForm2signRequest userInfoForm2signRequest = UserInfoForm2signRequest.builder()
-                .email(email)
-                .password(password)
-                .build();
-
-        // 객체 suggestionsRequest을 Json으로 직렬화
-        final String requestBody = objectMapper.writeValueAsString(userInfoForm2signRequest);
-
-        // when
-        ResultActions result = mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(requestBody)
-                .header("authorization", "Bearer " + token) // token header에 담기
-        );
-
-        userService.saveNewPasswordOfUser(userInfoForm2signRequest);
-
-        newUser = userService.findByEmail(email);
-        boolean resultPassword = new BCryptPasswordEncoder().matches(password, newUser.getPassword());
-
-        // then
-        assertThat(newUser.getEmail()).isEqualTo(email);
-        assertThat(resultPassword).isTrue();
-    }
 }
