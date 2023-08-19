@@ -11,6 +11,7 @@ import back.springbootdeveloper.seungchan.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.hibernate.sql.Update;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -313,7 +314,7 @@ public class ApiTest {
         final String nameUpdate = "업데이트한_이름";
         User updateUser = user;
         updateUser.setName(nameUpdate);
-        RequestUserForm requestUserForm = new RequestUserForm(
+        UpdateUserFormRequest requestUserForm = new UpdateUserFormRequest(
                 user.getName(),
                 user.getPhoneNum(),
                 user.getMajor(),
@@ -327,9 +328,7 @@ public class ApiTest {
                 user.getAdvantages(),
                 user.getDisadvantage(),
                 user.getSelfIntroduction(),
-                user.getPhoto(),
-                user.getEmail(),
-                user.getPassword()
+                user.getPhoto()
         );
         System.out.println("requestUserForm = " + requestUserForm);
 
