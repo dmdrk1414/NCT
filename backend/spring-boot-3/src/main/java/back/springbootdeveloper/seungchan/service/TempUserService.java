@@ -2,7 +2,6 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.domain.TempUser;
 import back.springbootdeveloper.seungchan.dto.request.TempUserFormRequest;
-import back.springbootdeveloper.seungchan.dto.response.NewUserEachResponse;
 import back.springbootdeveloper.seungchan.dto.response.NewUsersResponse;
 import back.springbootdeveloper.seungchan.repository.TempUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +34,13 @@ public class TempUserService {
     public TempUser findNewUsers(long id) {
         return tempUserRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected new user"));
+    }
+
+    public TempUser removeTempUserById(Long idOfNewUser) {
+        TempUser tempUser = tempUserRepository.findById(idOfNewUser)
+                .orElseThrow(() -> new IllegalArgumentException("Unexpected new user"));
+        tempUserRepository.deleteById(idOfNewUser);
+
+        return tempUser;
     }
 }

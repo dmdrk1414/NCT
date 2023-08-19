@@ -146,6 +146,28 @@ public class User implements UserDetails {
         this.regularMember = true;
     }
 
+    public static User getUserFromTempUser(TempUser tempUser) {
+        return User.builder()
+                .name(tempUser.getName())
+                .phoneNum(tempUser.getPhoneNum())
+                .major(tempUser.getMajor())
+                .gpa(tempUser.getGpa())
+                .address(tempUser.getAddress())
+                .specialtySkill(tempUser.getSpecialtySkill())
+                .hobby(tempUser.getHobby())
+                .mbti(tempUser.getMbti())
+                .studentId(tempUser.getStudentId())
+                .birthDate(tempUser.getBirthDate())
+                .advantages(tempUser.getAdvantages())
+                .disadvantage(tempUser.getDisadvantage())
+                .selfIntroduction(tempUser.getSelfIntroduction())
+                .photo(tempUser.getPhoto())
+                .isOb(tempUser.isOb())
+                .email(tempUser.getEmail())
+                .password(tempUser.getPassword())
+                .build();
+    }
+
     public void update(User user) {
         this.id = user.getId();
         this.name = user.getName();
