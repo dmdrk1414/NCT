@@ -586,4 +586,37 @@ public class ApiTest {
                 .andExpect(jsonPath("$.tempUser.ob").value(tempUserDB.isOb()))
                 .andExpect(jsonPath("$.nuriKing").value(true));
     }
+
+    @DisplayName("신청 개별 유저의 승락을 하는 메서드 테스트")
+    @Test
+    public void acceptNewUserOfKingTest() throws Exception {
+        // given
+        String email_1 = "new@new.com_1";
+        String password_1 = new BCryptPasswordEncoder().encode("1234");
+        TempUser tempUser_1 = TestClassUtill.makeNewUserOb(email_1, password_1);
+
+        TempUser tempUserDB = tempUserRepository.save(tempUser_1);
+        final String url = "/new-users/" + tempUserDB.getId() + "/acceptance";
+
+        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getId());
+
+        // 객체 suggestionsRequest을 Json으로 직렬화
+        final String requestBody = objectMapper.writeValueAsString(newUserApprovalRequest);
+
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        User newUser = userService.findByEmail(email_1);
+
+        // then
+        result
+                .andExpect(status().isOk());
+        assertThat(newUser.getEmail()).isEqualTo(tempUserDB.getEmail());
+
+    }
 }
