@@ -49,4 +49,9 @@ public class UserUtillService {
         UserUtill userUtill = userUtilRepository.findByUserId(userId);
         return userUtill.getCntVacation();
     }
+
+    public void resetCntVacation() {
+        int baseCntVacationNum = 5;
+        userUtilRepository.resetCntVacation(baseCntVacationNum);
+    }
 }

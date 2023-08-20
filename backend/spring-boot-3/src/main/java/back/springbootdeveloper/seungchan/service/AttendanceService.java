@@ -1,12 +1,9 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
-import back.springbootdeveloper.seungchan.domain.NumOfTodayAttendence;
 import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.dto.response.VacationsResponce;
 import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
-import back.springbootdeveloper.seungchan.repository.NumOfTodayAttendenceRepository;
-import back.springbootdeveloper.seungchan.util.DayUtill;
 import back.springbootdeveloper.seungchan.util.Utill;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
@@ -14,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor // final이 붙거나  @NotNull이 붙는 필드의 생성자 추가
@@ -117,5 +112,20 @@ public class AttendanceService {
         int month = today.getMonthValue();
         int day = today.getDayOfMonth();
         return String.format("%04d-%02d-%02d", year, month, day);
+    }
+
+    public void resetWeeklyData() {
+        String resetWeeklyData = "[0,0,0,0,0]";
+        attendanceStatusRepository.resetWeeklyData(resetWeeklyData);
+    }
+
+    public void resetAbsenceDates() {
+        String resetAbsenceData = "";
+        attendanceStatusRepository.resetAbsenceDate(resetAbsenceData);
+    }
+
+    public void resetVacationDates() {
+        String resetVacationDate = "";
+        attendanceStatusRepository.resetVacationDate(resetVacationDate);
     }
 }
