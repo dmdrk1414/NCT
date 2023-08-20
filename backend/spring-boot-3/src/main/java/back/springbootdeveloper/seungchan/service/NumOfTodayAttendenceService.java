@@ -36,4 +36,16 @@ public class NumOfTodayAttendenceService {
         }
         return false;
     }
+
+    public void save(String day, int randomNum) {
+        NumOfTodayAttendence numOfTodayAttendence = NumOfTodayAttendence.builder()
+                .day(day)
+                .checkNum(String.valueOf(randomNum))
+                .build();
+        numOfTodayAttendenceRepository.save(numOfTodayAttendence);
+    }
+
+    public void deleteAll() {
+        numOfTodayAttendenceRepository.deleteAll();
+    }
 }

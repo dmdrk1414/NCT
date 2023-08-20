@@ -24,4 +24,19 @@ public interface AttendanceStatusRepository extends JpaRepository<AttendanceStat
     @Modifying
     @Query("UPDATE AttendanceStatus u SET  u.id = :#{#id} WHERE u.id = :userId")
     void updateId(Long userId, Long id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE AttendanceStatus u SET u.weeklyData = :resetWeeklyData")
+    void resetWeeklyData(String resetWeeklyData);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE AttendanceStatus u SET u.absenceDates = :resetAbsenceData")
+    void resetAbsenceDate(String resetAbsenceData);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE AttendanceStatus u SET u.vacationDates = :resetVacationDate")
+    void resetVacationDate(String resetVacationDate);
 }
