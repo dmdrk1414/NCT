@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Random;
 
 /*
@@ -84,6 +85,10 @@ public class Scheduler {
         return randomNumber;
     }
 
+    private void printDateAtNow(String runMethodName) {
+        System.out.println("실행된 함수 " + runMethodName + " : " + new Date());
+    }
+
     /* 매일 자정 기준으로 num_of_today_attendence DB의  추가.*/
     @Scheduled(cron = "1 0 0 * * *") //매일 자정 1초에 추가.
     public void addNumOfTodayAttendenceCheckNumRepeat() {
@@ -91,36 +96,42 @@ public class Scheduler {
         String day = LocalDateTime.now().format(dtf);
 
         numOfTodayAttendenceService.save(day, getRandomNum());
+        printDateAtNow("addNumOfTodayAttendenceCheckNumRepeat");
     }
 
     /* 매달 1일 자정 기준으로 num_of_today_attendence DB의  reset.*/
     @Scheduled(cron = "0 0 0 1 * *") // 매달 1일 자정에 작업을 실행
     public void resetNumOfTodayAttendenceCheckNumRepeat() {
         numOfTodayAttendenceService.deleteAll();
+        printDateAtNow("resetNumOfTodayAttendenceCheckNumRepeat");
     }
 
     /* 매달 1일 자정 기준으로 user_utill DB의  cnt_vacationr 5로 리셋을 한다..*/
     @Scheduled(cron = "0 0 0 1 * *") // 매달 1일 자정에 작업을 실행
     public void resetUserUtillCntVacationRepeat() {
         userUtillService.resetCntVacation();
+        printDateAtNow("resetUserUtillCntVacationRepeat");
     }
 
     /* 매주 월요일 자정 기준으로 attendance_status DB의  weekly_data [0,0,0,0,0] 로 리셋을 한다. */
     @Scheduled(cron = "0 0 0 * * MON") // 매주 월요일 자정
     public void resetAttendanceWeeklyDataRepeat() {
         attendanceService.resetWeeklyData();
+        printDateAtNow("resetAttendanceWeeklyDataRepeat");
     }
 
     /* 매주 월요일 자정 기준으로 attendance_status DB의  absence_dates "" 로 리셋을 한다. */
     @Scheduled(cron = "0 0 0 1 * *") // 매월 1일 자정
     public void resetAttendanceAbsenceDatesRepeat() {
         attendanceService.resetAbsenceDates();
+        printDateAtNow("resetAttendanceAbsenceDatesRepeat");
     }
 
     /* 매주 월요일 자정 기준으로 attendance_status DB의  vacation_dates "" 로 리셋을 한다. */
     @Scheduled(cron = "0 0 0 1 * *") // 매월 1일 자정
     public void resetAttendanceVacationDatesRepeat() {
         attendanceService.resetVacationDates();
+        printDateAtNow("resetAttendanceAbsenceDatesRepeat");
     }
 
 
