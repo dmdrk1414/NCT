@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.hibernate.sql.Update;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -617,6 +618,39 @@ public class ApiTest {
         result
                 .andExpect(status().isOk());
         assertThat(newUser.getEmail()).isEqualTo(tempUserDB.getEmail());
+
+    }
+
+    @DisplayName("신청 개별 유저의 거절 하는 메서드 테스트")
+    @Test
+    public void rejectNewUserOfKingTest() throws Exception {
+        // given
+        String email_1 = "new@new.com_1";
+        String password_1 = new BCryptPasswordEncoder().encode("1234");
+        TempUser tempUser_1 = TestClassUtill.makeNewUserOb(email_1, password_1);
+
+        TempUser tempUserDB = tempUserRepository.save(tempUser_1);
+        final String url = "/new-users/" + tempUserDB.getId() + "/reject";
+
+        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getId());
+
+        // 객체 suggestionsRequest을 Json으로 직렬화
+        final String requestBody = objectMapper.writeValueAsString(newUserApprovalRequest);
+
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        result
+                .andExpect(status().isOk());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            tempUserService.findNewUsers(tempUserDB.getId());
+        });
 
     }
 }
