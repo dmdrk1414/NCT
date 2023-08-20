@@ -61,4 +61,14 @@ public class NewUserController {
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 
+    @Operation(summary = "실장의 추가 실원 거절 API", description = "실장이 신청 인원의 개별 페이지에서 거절 버튼구현")
+    @PostMapping("/{id}/reject")
+    public ResponseEntity<BaseResponseBody> rejectNewUserOfKing(@RequestBody NewUserApprovalRequest newUserApprovalRequest, HttpServletRequest request) {
+        boolean isNuriKing = tokenService.getNuriKingFromToken(request);
+        Long idOfNewUser = newUserApprovalRequest.getId();
+        if (isNuriKing) {
+            tempUserService.removeTempUserById(idOfNewUser);
+        }
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+    }
 }
