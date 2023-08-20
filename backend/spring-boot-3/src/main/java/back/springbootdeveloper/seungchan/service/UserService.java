@@ -31,5 +31,9 @@ public class UserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
     }
+
+    public User saveNewUser(User newUser) {
+        return userRepository.save(newUser);
+    }
 }
 

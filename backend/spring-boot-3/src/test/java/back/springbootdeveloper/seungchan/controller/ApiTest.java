@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.hibernate.sql.Update;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -517,5 +519,138 @@ public class ApiTest {
         // then
         result
                 .andExpect(status().isOk());
+    }
+
+    @DisplayName("모든 신청 유저들의 정보를 볼수 있는 API 테스트")
+    @Test
+    public void findAllNewUsersTest() throws Exception {
+        // given
+        final String url = "/new-users";
+        String email_1 = "new@new.com_1";
+        String email_2 = "new@new.com_2";
+        String password_1 = new BCryptPasswordEncoder().encode("1234");
+        String password_2 = new BCryptPasswordEncoder().encode("1234");
+        TempUser tempUser_1 = TestClassUtill.makeNewUserOb(email_1, password_1);
+        TempUser tempUser_2 = TestClassUtill.makeNewUserOb(email_2, password_2);
+
+        tempUserRepository.save(tempUser_1);
+        tempUserRepository.save(tempUser_2);
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(tempUser_1.getId()))
+                .andExpect(jsonPath("$[0].name").value(tempUser_1.getName()));
+    }
+
+    @DisplayName("신청 유저들의 개별 정보를 볼수 있는 API 테스트")
+    @Test
+    public void findNewUsersTest() throws Exception {
+        // given
+        String email_1 = "new@new.com_1";
+        String password_1 = new BCryptPasswordEncoder().encode("1234");
+        TempUser tempUser_1 = TestClassUtill.makeNewUserOb(email_1, password_1);
+
+        TempUser tempUserDB = tempUserRepository.save(tempUser_1);
+        final String url = "/new-users/" + tempUserDB.getId();
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tempUser.name").value(tempUserDB.getName()))
+                .andExpect(jsonPath("$.tempUser.phoneNum").value(tempUserDB.getPhoneNum()))
+                .andExpect(jsonPath("$.tempUser.major").value(tempUserDB.getMajor()))
+                .andExpect(jsonPath("$.tempUser.gpa").value(tempUserDB.getGpa()))
+                .andExpect(jsonPath("$.tempUser.address").value(tempUserDB.getAddress()))
+                .andExpect(jsonPath("$.tempUser.specialtySkill").value(tempUserDB.getSpecialtySkill()))
+                .andExpect(jsonPath("$.tempUser.mbti").value(tempUserDB.getMbti()))
+                .andExpect(jsonPath("$.tempUser.studentId").value(tempUserDB.getStudentId()))
+                .andExpect(jsonPath("$.tempUser.birthDate").value(tempUserDB.getBirthDate()))
+                .andExpect(jsonPath("$.tempUser.advantages").value(tempUserDB.getAdvantages()))
+                .andExpect(jsonPath("$.tempUser.disadvantage").value(tempUserDB.getDisadvantage()))
+                .andExpect(jsonPath("$.tempUser.selfIntroduction").value(tempUserDB.getSelfIntroduction()))
+                .andExpect(jsonPath("$.tempUser.photo").value(tempUserDB.getPhoto()))
+                .andExpect(jsonPath("$.tempUser.yearOfRegistration").value(tempUserDB.getYearOfRegistration()))
+                .andExpect(jsonPath("$.tempUser.email").value(tempUserDB.getEmail()))
+                .andExpect(jsonPath("$.tempUser.password").value(tempUserDB.getPassword()))
+                .andExpect(jsonPath("$.tempUser.regularMember").value(tempUserDB.isRegularMember()))
+                .andExpect(jsonPath("$.tempUser.ob").value(tempUserDB.isOb()))
+                .andExpect(jsonPath("$.nuriKing").value(true));
+    }
+
+    @DisplayName("신청 개별 유저의 승락을 하는 메서드 테스트")
+    @Test
+    public void acceptNewUserOfKingTest() throws Exception {
+        // given
+        String email_1 = "new@new.com_1";
+        String password_1 = new BCryptPasswordEncoder().encode("1234");
+        TempUser tempUser_1 = TestClassUtill.makeNewUserOb(email_1, password_1);
+
+        TempUser tempUserDB = tempUserRepository.save(tempUser_1);
+        final String url = "/new-users/" + tempUserDB.getId() + "/acceptance";
+
+        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getId());
+
+        // 객체 suggestionsRequest을 Json으로 직렬화
+        final String requestBody = objectMapper.writeValueAsString(newUserApprovalRequest);
+
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        User newUser = userService.findByEmail(email_1);
+
+        // then
+        result
+                .andExpect(status().isOk());
+        assertThat(newUser.getEmail()).isEqualTo(tempUserDB.getEmail());
+
+    }
+
+    @DisplayName("신청 개별 유저의 거절 하는 메서드 테스트")
+    @Test
+    public void rejectNewUserOfKingTest() throws Exception {
+        // given
+        String email_1 = "new@new.com_1";
+        String password_1 = new BCryptPasswordEncoder().encode("1234");
+        TempUser tempUser_1 = TestClassUtill.makeNewUserOb(email_1, password_1);
+
+        TempUser tempUserDB = tempUserRepository.save(tempUser_1);
+        final String url = "/new-users/" + tempUserDB.getId() + "/reject";
+
+        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getId());
+
+        // 객체 suggestionsRequest을 Json으로 직렬화
+        final String requestBody = objectMapper.writeValueAsString(newUserApprovalRequest);
+
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        result
+                .andExpect(status().isOk());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            tempUserService.findNewUsers(tempUserDB.getId());
+        });
+
     }
 }
