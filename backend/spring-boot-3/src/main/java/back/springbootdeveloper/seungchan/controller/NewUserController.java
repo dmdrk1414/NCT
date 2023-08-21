@@ -6,9 +6,7 @@ import back.springbootdeveloper.seungchan.dto.request.NewUserApprovalRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.NewUserEachResponse;
 import back.springbootdeveloper.seungchan.dto.response.NewUsersResponse;
-import back.springbootdeveloper.seungchan.service.TempUserService;
-import back.springbootdeveloper.seungchan.service.TokenService;
-import back.springbootdeveloper.seungchan.service.UserService;
+import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,6 +27,8 @@ public class NewUserController {
     private final TempUserService tempUserService;
     private final UserService userService;
     private final TokenService tokenService;
+    private final UserUtillService userUtillService;
+    private final AttendanceService attendanceService;
 
     @Operation(summary = "모든 신청 유저들의 정보 보기", description = "3명이 신청을 하면 3명의 정보를 모두 확인가능하다.")
     @GetMapping("")
@@ -57,6 +57,9 @@ public class NewUserController {
             TempUser tempUser = tempUserService.removeTempUserById(idOfNewUser);
             User newUser = User.getUserFromTempUser(tempUser);
             userService.saveNewUser(newUser);
+            userUtillService.saveNewUser(newUser);
+            attendanceService.saveNewUser(newUser);
+
         }
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
