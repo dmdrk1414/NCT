@@ -257,8 +257,8 @@ public class ApiTest {
     public void attendanceNumberControllerTest() throws Exception {
         // given
         final String url = "/attendance/number";
-        NumOfTodayAttendence numOfTodayAttendence = numOfTodayAttendenceRepository.findById(1L)
-                .orElseThrow(() -> new IllegalArgumentException("not found: "));
+        List<NumOfTodayAttendence> numOfTodayAttendenceList = numOfTodayAttendenceRepository.findAll();
+        NumOfTodayAttendence numOfTodayAttendence = numOfTodayAttendenceList.get(numOfTodayAttendenceList.size() - 1);
         String num = numOfTodayAttendence.getCheckNum();
 
 

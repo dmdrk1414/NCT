@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
 import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
@@ -53,5 +54,17 @@ public class UserUtillService {
     public void resetCntVacation() {
         int baseCntVacationNum = 5;
         userUtilRepository.resetCntVacation(baseCntVacationNum);
+    }
+
+    public void saveNewUser(User newUser) {
+        int baseCntVacationNum = 5;
+        UserUtill newUserUtill = UserUtill.builder()
+                .userId(newUser.getId())
+                .name(newUser.getName())
+                .cntVacation(baseCntVacationNum)
+                .isNuriKing(false)
+                .isGeneralAffairs(false)
+                .build();
+        userUtilRepository.save(newUserUtill);
     }
 }
