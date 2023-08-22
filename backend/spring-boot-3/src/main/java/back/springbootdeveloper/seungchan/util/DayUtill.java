@@ -3,6 +3,10 @@ package back.springbootdeveloper.seungchan.util;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.temporal.WeekFields;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class DayUtill {
     public static DayOfWeek getDayOfWeekAtNow(String dayStr) {
@@ -48,5 +52,25 @@ public class DayUtill {
     public static int getDayFromDayStr(String day) {
         String dayOfMonth = day.split("-")[2];
         return Integer.parseInt(dayOfMonth);
+    }
+
+
+    /**
+     * @return map ( 현재시점에서의 몇월인지, 현재시점에서 몇주차인지 )
+     * map ("month", currentMonth)
+     * map ("currentWeekNumber, currentWeekNumber)
+     */
+    public static Map<String, Integer> getMonthAndWeekNumberInMonthMap() {
+        Map<String, Integer> map = new HashMap<>();
+        // 현재 날짜 가져오기
+        LocalDate currentDate = LocalDate.now();
+
+        // WeekFields를 사용하여 주차 정보 가져오기
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        int currentWeekNumber = currentDate.get(weekFields.weekOfMonth()); // 현재 시점의 몇 주차인지
+        int currentMonth = currentDate.getMonthValue(); // 현재 시점의 월
+        map.put("month", currentMonth);
+        map.put("currentWeekNumber", currentWeekNumber);
+        return map;
     }
 }

@@ -142,7 +142,7 @@ public class Scheduler {
 
     /* 매주 월요일 자정 기준으로 periodic_data DB의  weekly_data의 정보를
     attendance_status DB의 weekly_data으로 저장한다.*/
-    @Scheduled(cron = "0 0 0 * * MON") // 매주 월요일 자정 run
+    @Scheduled(cron = "0 57 23 * * SUN") // 매주 일요일 오후23시 57분 run
     public void savePeriodicDataWeeklyDataRepeat() {
         List<AttendanceStatus> attendanceStatusList = attendanceService.findAll();
         periodicDataService.updateWeeklyDataScheduled(attendanceStatusList);
@@ -150,6 +150,14 @@ public class Scheduler {
         printDateAtNow("savePeriodicDataWeeklyDataRepeat");
     }
 
+    /* 매주 일요일 오후23시 59분 기준으로 periodic_data DB의  weekly_data의 정보를
+        this_month 으로 추가 한후 저장한다.*/
+    @Scheduled(cron = "0 59 23 * * SUN") // 매주 일요일 오후23시 57분 run
+    public void addPeriodicDataThisMonthRepeat() {
+        periodicDataService.updateThisMonthScheduled();
+
+        printDateAtNow("addPeriodicDataThisMonthRepeat");
+    }
 
     // @Scheduled(cron = "0/1 * * * * *") //매일 자정 1초에 추가.
 }
