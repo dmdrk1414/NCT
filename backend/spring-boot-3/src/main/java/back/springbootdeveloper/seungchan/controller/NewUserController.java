@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.domain.PeriodicData;
 import back.springbootdeveloper.seungchan.domain.TempUser;
 import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.dto.request.NewUserApprovalRequest;
@@ -29,6 +30,7 @@ public class NewUserController {
     private final TokenService tokenService;
     private final UserUtillService userUtillService;
     private final AttendanceService attendanceService;
+    private final PeriodicDataService periodicDataService;
 
     @Operation(summary = "모든 신청 유저들의 정보 보기", description = "3명이 신청을 하면 3명의 정보를 모두 확인가능하다.")
     @GetMapping("")
@@ -59,7 +61,7 @@ public class NewUserController {
             userService.saveNewUser(newUser);
             userUtillService.saveNewUser(newUser);
             attendanceService.saveNewUser(newUser);
-
+            periodicDataService.saveNewUser(newUser);
         }
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
