@@ -161,8 +161,7 @@ public class Scheduler {
 
     /* 매달 1일 자정 5초에 this_month의 정보를  previous_month으로 이동
      this_month의 정보를 리셋*/
-    @Scheduled(cron = "0/3 * * * * *") //매일 자정 1초에 추가.
-//    @Scheduled(cron = "5 0 0 1 * *") // 매달 1일 자정 5초에 run
+    @Scheduled(cron = "5 0 0 1 * *") // 매달 1일 자정 5초에 run
     public void addPeriodicDataPreviousMonthRepeat() {
         periodicDataService.resetPreviousMonth();
         periodicDataService.updatePreviousMonthScheduled();
