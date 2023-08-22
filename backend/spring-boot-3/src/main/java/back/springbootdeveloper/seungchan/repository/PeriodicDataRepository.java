@@ -17,5 +17,20 @@ public interface PeriodicDataRepository extends JpaRepository<PeriodicData, Long
     @Modifying
     @Query("UPDATE PeriodicData u SET u.thisMonth = :resultOfthisMonth WHERE u.userId = :userId")
     void updateThisMonthScheduled(String resultOfthisMonth, Long userId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE PeriodicData u SET u.previousMonth = :thisMonthData WHERE u.userId = :userId")
+    void updatePreviousScheduled(String thisMonthData, Long userId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE PeriodicData u SET u.thisMonth = :resetThisMonth")
+    void resetThisMonth(String resetThisMonth);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE PeriodicData u SET u.previousMonth = :resetPreviousMonth")
+    void resetPreviousMonth(String resetPreviousMonth);
 }
 

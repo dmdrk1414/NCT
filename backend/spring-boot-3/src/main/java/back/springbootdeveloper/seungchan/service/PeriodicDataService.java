@@ -65,4 +65,22 @@ public class PeriodicDataService {
         }
     }
 
+    public void updatePreviousMonthScheduled() {
+        List<PeriodicData> periodicDataList = periodicDataRepository.findAll();
+        for (PeriodicData periodicData : periodicDataList) {
+            Long userId = periodicData.getUserId();
+            String thisMonthData = periodicData.getThisMonth();
+            periodicDataRepository.updatePreviousScheduled(thisMonthData, userId);
+        }
+    }
+
+    public void resetThisMonth() {
+        String resetThisMonth = "";
+        periodicDataRepository.resetThisMonth(resetThisMonth);
+    }
+
+    public void resetPreviousMonth() {
+        String resetPreviousMonth = "";
+        periodicDataRepository.resetPreviousMonth(resetPreviousMonth);
+    }
 }
