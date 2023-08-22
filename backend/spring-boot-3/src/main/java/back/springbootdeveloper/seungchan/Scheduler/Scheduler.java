@@ -1,7 +1,10 @@
 package back.springbootdeveloper.seungchan.Scheduler;
 
+import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
+import back.springbootdeveloper.seungchan.domain.PeriodicData;
 import back.springbootdeveloper.seungchan.service.AttendanceService;
 import back.springbootdeveloper.seungchan.service.NumOfTodayAttendenceService;
+import back.springbootdeveloper.seungchan.service.PeriodicDataService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 /*
@@ -78,6 +82,8 @@ public class Scheduler {
     AttendanceService attendanceService;
     @Autowired
     private NumOfTodayAttendenceService numOfTodayAttendenceService;
+    @Autowired
+    private PeriodicDataService periodicDataService;
 
     private int getRandomNum() {
         Random random = new Random();
@@ -114,7 +120,7 @@ public class Scheduler {
     }
 
     /* 매주 월요일 자정 기준으로 attendance_status DB의  weekly_data [0,0,0,0,0] 로 리셋을 한다. */
-    @Scheduled(cron = "0 0 0 * * MON") // 매주 월요일 자정
+    @Scheduled(cron = "0 3 0 * * MON") // 매주 월요일 자정 3분에 run
     public void resetAttendanceWeeklyDataRepeat() {
         attendanceService.resetWeeklyData();
         printDateAtNow("resetAttendanceWeeklyDataRepeat");
@@ -132,6 +138,16 @@ public class Scheduler {
     public void resetAttendanceVacationDatesRepeat() {
         attendanceService.resetVacationDates();
         printDateAtNow("resetAttendanceAbsenceDatesRepeat");
+    }
+
+    /* 매주 월요일 자정 기준으로 periodic_data DB의  weekly_data의 정보를
+    attendance_status DB의 weekly_data으로 저장한다.*/
+    @Scheduled(cron = "0 0 0 * * MON") // 매주 월요일 자정 run
+    public void savePeriodicDataWeeklyDataRepeat() {
+        List<AttendanceStatus> attendanceStatusList = attendanceService.findAll();
+        periodicDataService.updateWeeklyDataScheduled(attendanceStatusList);
+
+        printDateAtNow("savePeriodicDataWeeklyDataRepeat");
     }
 
 

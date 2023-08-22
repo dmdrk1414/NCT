@@ -143,4 +143,8 @@ public class AttendanceService {
 
         attendanceStatusRepository.save(attendanceStatusOfNewUser);
     }
+
+    public List<AttendanceStatus> findAll() {
+        return attendanceStatusRepository.findAll();
+    }
 }
