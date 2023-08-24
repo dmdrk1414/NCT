@@ -1,11 +1,11 @@
-import MainHeader from '../atoms/molecule/main-header';
+import Header from '../atoms/molecule/header';
 import MainCarousel from '../atoms/template/main-carousel';
 
 export default function Home() {
   return (
     <main>
       <header>
-        <MainHeader />
+        <Header isVisible={true} />
       </header>
       <article>
         <MainCarousel />

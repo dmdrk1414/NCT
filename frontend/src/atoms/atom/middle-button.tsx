@@ -1,6 +1,6 @@
 type data = {
   text: string;
-  addClass: string;
+  addClass?: string;
 };
 
 export default function MiddleButton({ text, addClass }: data) {

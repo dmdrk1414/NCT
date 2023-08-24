@@ -14,12 +14,12 @@ export default function MainCarousel() {
   return (
     <div>
       <Slider {...settings}>
-        <div className="one bg-cover h-[133vw]"></div>
-        <div className="bg-[url('/Images/main_two.jpg')] bg-cover h-[133vw]"></div>
-        <div className="bg-[url('/Images/main_three.jpg')] bg-cover h-[133vw]"></div>
-        <div className="bg-[url('/Images/main_four.jpg')] bg-cover h-[133vw]"></div>
-        <div className="bg-[url('/Images/main_five.jpg')] bg-cover h-[133vw]"></div>
-        <div className="bg-[url('/Images/main_six.jpg')] bg-cover h-[133vw]"></div>
+        <div className="bg-[url('/Images/main_one.jpg')] bg-cover h-[133vw] mb-[5rem]"></div>
+        <div className="bg-[url('/Images/main_two.jpg')] bg-cover h-[133vw] mb-[5rem]"></div>
+        <div className="bg-[url('/Images/main_three.jpg')] bg-cover h-[133vw] mb-[5rem]"></div>
+        <div className="bg-[url('/Images/main_four.jpg')] bg-cover h-[133vw] mb-[5rem]"></div>
+        <div className="bg-[url('/Images/main_five.jpg')] bg-cover h-[133vw] mb-[5rem]"></div>
+        <div className="bg-[url('/Images/main_six.jpg')] bg-cover h-[133vw] mb-[5rem]"></div>
       </Slider>
     </div>
   );
