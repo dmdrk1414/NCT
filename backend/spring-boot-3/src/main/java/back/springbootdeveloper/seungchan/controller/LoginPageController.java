@@ -44,7 +44,6 @@ public class LoginPageController {
     @PostMapping("/login")
     public ResponseEntity<UserLoginResponse> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request, HttpServletResponse response) {
         UserLoginResponse userLoginResponse = loginService.login(userLoginRequest, request, response);
-
         return ResponseEntity.ok().body(userLoginResponse);
     }
 }
