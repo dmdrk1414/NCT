@@ -13,4 +13,9 @@ public interface UserUtilRepository extends JpaRepository<UserUtill, Long> {
     @Modifying
     @Query("UPDATE UserUtill u SET u.cntVacation = :cntVacation WHERE u.userId = :userId")
     void updateCntVacationUserUtilData(Long userId, int cntVacation);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE UserUtill u SET u.cntVacation = :cntVacation")
+    void resetCntVacation(int cntVacation);
 }

@@ -22,7 +22,7 @@ public class AttendanceController {
     private final NumOfTodayAttendenceService numOfTodayAttendenceService;
     private final TokenService tokenService;
 
-    @Operation(summary = "main page 5. 출석 번호 입력 API", description = "출석 번호를 입력을 하면 출석하였다는 결과를 얻는다.")
+    @Operation(summary = "main page 5. 출석 번호 입력 API ", description = "출석 번호를 입력을 하면 출석하였다는 결과를 얻는다.")
     @PostMapping("/number")
     public ResponseEntity<AttendanceNumberResponse> AttendanceNumberController(@RequestBody AttendanceNumberRequest attendanceNumberRequest, HttpServletRequest request) {
         String numOfAttendance = attendanceNumberRequest.getNumOfAttendance();

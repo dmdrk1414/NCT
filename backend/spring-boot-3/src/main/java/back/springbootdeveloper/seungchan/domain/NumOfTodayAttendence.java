@@ -15,10 +15,10 @@ public class NumOfTodayAttendence {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "check_num", updatable = false)
+    @Column(name = "check_num", nullable = false, updatable = false)
     private String checkNum;
 
-    @Column(name = "day", updatable = false)
+    @Column(name = "day", nullable = false, updatable = false)
     private String day;
 
     @Builder

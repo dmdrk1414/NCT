@@ -78,27 +78,8 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Builder
-    public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, boolean isOb) {
-        this.name = name;
-        this.phoneNum = phoneNum;
-        this.major = major;
-        this.gpa = gpa;
-        this.address = address;
-        this.specialtySkill = specialtySkill;
-        this.hobby = hobby;
-        this.mbti = mbti;
-        this.studentId = studentId;
-        this.birthDate = birthDate;
-        this.advantages = advantages;
-        this.disadvantage = disadvantage;
-        this.selfIntroduction = selfIntroduction;
-        this.photo = photo;
-        this.isOb = isOb;
-        this.yearOfRegistration = DayUtill.getYear();
-        this.email = "";
-        this.password = "";
-    }
+    @Column(name = "regular_member", nullable = false)
+    private boolean regularMember;
 
     @Builder
     public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, boolean isOb, String email, String password) {
@@ -120,6 +101,71 @@ public class User implements UserDetails {
         this.yearOfRegistration = DayUtill.getYear();
         this.email = email;
         this.password = password;
+        this.regularMember = true;
+    }
+
+    @Builder
+    public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, String email, String password) {
+        this.name = name;
+        this.phoneNum = phoneNum;
+        this.major = major;
+        this.gpa = gpa;
+        this.address = address;
+        this.specialtySkill = specialtySkill;
+        this.hobby = hobby;
+        this.mbti = mbti;
+        this.studentId = studentId;
+        this.birthDate = birthDate;
+        this.advantages = advantages;
+        this.disadvantage = disadvantage;
+        this.selfIntroduction = selfIntroduction;
+        this.photo = photo;
+        this.yearOfRegistration = DayUtill.getYear();
+        this.email = email;
+        this.password = password;
+        this.regularMember = true;
+    }
+
+    @Builder
+    public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo) {
+        this.name = name;
+        this.phoneNum = phoneNum;
+        this.major = major;
+        this.gpa = gpa;
+        this.address = address;
+        this.specialtySkill = specialtySkill;
+        this.hobby = hobby;
+        this.mbti = mbti;
+        this.studentId = studentId;
+        this.birthDate = birthDate;
+        this.advantages = advantages;
+        this.disadvantage = disadvantage;
+        this.selfIntroduction = selfIntroduction;
+        this.photo = photo;
+        this.yearOfRegistration = DayUtill.getYear();
+        this.regularMember = true;
+    }
+
+    public static User getUserFromTempUser(TempUser tempUser) {
+        return User.builder()
+                .name(tempUser.getName())
+                .phoneNum(tempUser.getPhoneNum())
+                .major(tempUser.getMajor())
+                .gpa(tempUser.getGpa())
+                .address(tempUser.getAddress())
+                .specialtySkill(tempUser.getSpecialtySkill())
+                .hobby(tempUser.getHobby())
+                .mbti(tempUser.getMbti())
+                .studentId(tempUser.getStudentId())
+                .birthDate(tempUser.getBirthDate())
+                .advantages(tempUser.getAdvantages())
+                .disadvantage(tempUser.getDisadvantage())
+                .selfIntroduction(tempUser.getSelfIntroduction())
+                .photo(tempUser.getPhoto())
+                .isOb(tempUser.isOb())
+                .email(tempUser.getEmail())
+                .password(tempUser.getPassword())
+                .build();
     }
 
     public void update(User user) {
