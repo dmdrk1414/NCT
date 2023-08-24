@@ -24,7 +24,13 @@ export default function Login() {
         email: username,
         password: password,
       },
-    });
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (

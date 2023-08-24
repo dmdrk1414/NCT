@@ -11,7 +11,7 @@ export const interceptors = (instance: AxiosInstance, token: string | null) => {
   return instance;
 };
 
-const BASE_URL: string = process.env.REACT_APP_AXIOS_URL!;
+const BASE_URL = 'http://localhost:8080';
 
 const axiosApi = (url: string, options?: object) => {
   const instance = axios.create({ baseURL: url, ...options });
