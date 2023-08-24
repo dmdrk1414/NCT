@@ -1,0 +1,21 @@
+.one {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0) 10%,
+      rgba(255, 255, 255, 0.5) 25%,
+      rgba(255, 255, 255, 0.7) 40%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 1) 75%,
+      rgba(255, 255, 255, 1) 100%
+    ),
+    url('/public/Images/main_one.jpg');
+}
+
+.slick-dots li button:before {
+  color: #4b8acc;
+  font-size: 20px;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #4b8acc;
+  font-size: 20px;
+}
