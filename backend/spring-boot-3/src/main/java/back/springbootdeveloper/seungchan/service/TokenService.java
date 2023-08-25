@@ -23,6 +23,9 @@ public class TokenService {
     public static final String ACCESS_TOKEN_COOKIE_NAME = "access_token"; // 리프레쉬 토큰의 이름
     public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(14); // 리프레쉬 토큰의 유효기간
     public static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(1); // 액세스 토큰의 유효기간
+
+    private final static String HEADER_AUTHORIZATION = "Authorization";
+
     private final TokenProvider tokenProvider;
     private final RefreshTokenService refreshTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -90,7 +93,7 @@ public class TokenService {
 
     private String getToken(HttpServletRequest request) {
         // HTTP Request에서 "Authorization" 헤더 값 얻기
-        String header = request.getHeader("Authorization");
+        String header = request.getHeader(HEADER_AUTHORIZATION);
 
         // 토큰이 없는 경우나 "Bearer " 접두사를 포함하지 않은 경우 처리
         if (header == null || !header.startsWith("Bearer ")) {
