@@ -195,12 +195,12 @@ public class ApiTest {
         vacationDates = "2023-08-08, 2023-08-18";
         absenceDates = "2023-08-11";
         weeklyData = "[1,1,1,0,0]";
-        attendanceStatus_3 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
+        attendanceStatus_3 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user_3, vacationDates, absenceDates, weeklyData));
 
         vacationDates = " 2023-08-07, 2023-08-11";
         absenceDates = "2023-08-15";
         weeklyData = "[1,1,0,-1,1]";
-        attendanceStatus_5 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
+        attendanceStatus_5 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user_5, vacationDates, absenceDates, weeklyData));
 
     }
 
