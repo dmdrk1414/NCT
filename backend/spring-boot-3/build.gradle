@@ -8,6 +8,12 @@ group = 'back.springbootdeveloper'
 version = '1.0-SNAPSHOT'
 sourceCompatibility = '17' //  자바 소스를 컴파일할 때 사용할 자바 버전을 입력
 
+bootJar {
+    archivesBaseName = 'app'
+    archiveFileName = 'app.jar'
+    archiveVersion = "0.0.0"
+}
+
 repositories {
     mavenCentral()
 }
