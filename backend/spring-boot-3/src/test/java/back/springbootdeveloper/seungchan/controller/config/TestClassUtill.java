@@ -5,9 +5,9 @@ import back.springbootdeveloper.seungchan.domain.*;
 public class TestClassUtill {
     private static final String NAME_TEST = "현재실원_이름";
 
-    public static User makeUser() {
+    public static User makeUser(String name, String email) {
         User user = User.builder()
-                .name(NAME_TEST)
+                .name(name)
                 .phoneNum("010-2383-6578")
                 .major("컴퓨터 공학과")
                 .gpa("4.2")
@@ -23,15 +23,15 @@ public class TestClassUtill {
                 .photo("사진")
                 .isOb(false)
                 .build();
-        user.setEmail("seungchan141414@gmail.com");
+        user.setEmail(email);
         user.setPassword(BCryptPasswordEncoderObject.getCryptPassword("1234"));
         user.setRegularMember(true);
         return user;
     }
 
-    public static User makeUserOb() {
+    public static User makeUserOb(String name, String email) {
         User user = User.builder()
-                .name("졸업인원_이름")
+                .name(name)
                 .phoneNum("010-2383-6578")
                 .major("컴퓨터 공학과")
                 .gpa("4.2")
@@ -47,7 +47,7 @@ public class TestClassUtill {
                 .photo("사진")
                 .isOb(true)
                 .build();
-        user.setEmail("Test@gmail.com");
+        user.setEmail(email);
         user.setPassword(BCryptPasswordEncoderObject.getCryptPassword("1234"));
         user.setRegularMember(true);
 
@@ -78,12 +78,12 @@ public class TestClassUtill {
         return user;
     }
 
-    public static UserUtill makeUserUtill(User testUser) {
+    public static UserUtill makeUserUtill(User testUser, int cntVacation, boolean isNuriKing) {
         return UserUtill.builder()
-                .name(NAME_TEST)
+                .name(testUser.getName())
                 .userId(testUser.getId())
-                .cntVacation(5)
-                .isNuriKing(true)
+                .cntVacation(cntVacation)
+                .isNuriKing(isNuriKing)
                 .build();
     }
 
@@ -99,7 +99,7 @@ public class TestClassUtill {
                 .build();
     }
 
-    public static AttendanceStatus makeAttendanceStatus(User user) {
+    public static AttendanceStatus makeAttendanceStatus(User user, String VacationDates, String absenceDataes, String weeklyData) {
         return AttendanceStatus
                 .builder()
                 .userId(user.getId())
