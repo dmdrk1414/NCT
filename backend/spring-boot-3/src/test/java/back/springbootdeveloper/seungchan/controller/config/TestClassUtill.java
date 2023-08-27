@@ -104,9 +104,9 @@ public class TestClassUtill {
                 .builder()
                 .userId(user.getId())
                 .name(user.getName())
-                .vacationDates("2023-07-02, 2023-07-11, 2023-07-13, 2023-07-25, 2023-07-31")
-                .absenceDates("2023-07-15, 2023-07-16")
-                .weeklyData("[1,1,1,0,1]")
+                .vacationDates(VacationDates)
+                .absenceDates(absenceDataes)
+                .weeklyData(weeklyData)
                 .build();
     }
 }
