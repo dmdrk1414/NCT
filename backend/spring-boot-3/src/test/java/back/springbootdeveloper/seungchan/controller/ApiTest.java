@@ -192,15 +192,15 @@ public class ApiTest {
         String weeklyData = "[0,0,0,0,0]";
         attendanceStatus = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
 
-        vacationDates = "2023-08-08, 2023-08-18";
-        absenceDates = "2023-08-11";
-        weeklyData = "[1,1,1,0,0]";
-        attendanceStatus_3 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user_3, vacationDates, absenceDates, weeklyData));
+        String vacationDates_3 = "2023-08-08, 2023-08-18";
+        String absenceDates_3 = "2023-08-11";
+        String weeklyData_3 = "[1,1,1,0,0]";
+        attendanceStatus_3 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user_3, vacationDates_3, absenceDates_3, weeklyData_3));
 
-        vacationDates = " 2023-08-07, 2023-08-11";
-        absenceDates = "2023-08-15";
-        weeklyData = "[1,1,0,-1,1]";
-        attendanceStatus_5 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user_5, vacationDates, absenceDates, weeklyData));
+        String vacationDates_5 = " 2023-08-07, 2023-08-11";
+        String absenceDates_5 = "2023-08-15";
+        String weeklyData_5 = "[1,1,0,-1,1]";
+        attendanceStatus_5 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user_5, vacationDates_5, absenceDates_5, weeklyData_5));
 
     }
 
