@@ -117,6 +117,45 @@ public class ApiTest {
         attendanceStatusRepository.deleteAll();
         tempUserRepository.deleteAll();
 
+        // userID 1
+        Long userId_1 = 1L;
+        user = userRepository.save(TestClassUtill.makeUser("박승찬", "seungchan141414@gmail.com"));
+        userRepository.updateId(user.getId(), userId_1);
+        user.setId(userId_1);
+
+        // userId OD 2
+        Long userId_2 = 2L;
+        userOb = userRepository.save(TestClassUtill.makeUserOb("이승훈", "2@gmail.com"));
+        userRepository.updateId(userOb.getId(), userId_2);
+        userOb.setId(userId_2);
+
+        userUtill = userUtilRepository.save(TestClassUtill.makeUserUtill(user, 0, true));
+
+        String vacationDates = "2023-08-01, 2023-08-07, 2023-08-14";
+        String absenceDates = "2023-08-15";
+        String weeklyData = "[0,0,0,0,0]";
+        attendanceStatus = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
+
+        String url = "/login";
+        HttpServletRequest request = mockMvc.perform(
+                post(url).param("email", user.getEmail()).param("password", user.getPassword())
+        ).andReturn().getRequest();
+
+        HttpServletResponse response = mockMvc.perform(
+                post(url).param("email", user.getEmail()).param("password", user.getPassword())
+        ).andReturn().getResponse();
+
+        token = tokenService.createAccessAndRefreshToken(request, response, user.getEmail());
+    }
+
+    @DisplayName("오성훈 ㅅㅂ 테스트")
+    @Test
+    public void 오성훈을위한테스트함수() throws Exception {
+        userRepository.deleteAll();
+        userUtilRepository.deleteAll();
+        attendanceStatusRepository.deleteAll();
+        tempUserRepository.deleteAll();
+
         // userID 1 3 5
         Long userId_1 = 1L;
         user = userRepository.save(TestClassUtill.makeUser("박승찬", "seungchan141414@gmail.com"));
@@ -163,16 +202,6 @@ public class ApiTest {
         weeklyData = "[1,1,0,-1,1]";
         attendanceStatus_5 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
 
-        String url = "/login";
-        HttpServletRequest request = mockMvc.perform(
-                post(url).param("email", user.getEmail()).param("password", user.getPassword())
-        ).andReturn().getRequest();
-
-        HttpServletResponse response = mockMvc.perform(
-                post(url).param("email", user.getEmail()).param("password", user.getPassword())
-        ).andReturn().getResponse();
-
-        token = tokenService.createAccessAndRefreshToken(request, response, user.getEmail());
     }
 
     @DisplayName("건의 게시판 전체  조회 테스트")
