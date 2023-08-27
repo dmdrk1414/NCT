@@ -6,13 +6,14 @@ type data = {
 };
 
 export default function TextAreaForm({ title, userData, setUserData, dataname }: data & { userData: any; setUserData: any }) {
+  const [textLength, setTextLength] = useState(0);
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setTextLength(value.length);
     setUserData((prevData: any) => ({ ...prevData, [dataname]: value }));
   };
 
-  const [textLength, setTextLength] = useState(0);
   return (
     <div className="w-[100%] mb-[0.5rem] relative">
       <label htmlFor={`${title}`} className="font-bold">
