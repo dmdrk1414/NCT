@@ -150,7 +150,7 @@ public class ApiTest {
 
         String vacationDates = "2023-08-01, 2023-08-07, 2023-08-14";
         String absenceDates = "2023-08-15";
-        String weeklyData = "[1,0,1,1,1]";
+        String weeklyData = "[0,0,0,0,0]";
         attendanceStatus = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
 
         vacationDates = "2023-08-08, 2023-08-18";
