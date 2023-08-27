@@ -42,10 +42,10 @@ public class TokenProviderTest {
         userRepository.deleteAll();
         userUtilRepository.deleteAll();
 
-        User user = TestClassUtill.makeUser();
+        User user = TestClassUtill.makeUser("박승찬", "seungchan141414@gmail.com");
         User testUser = userRepository.save(user);
 
-        userUtilRepository.save(TestClassUtill.makeUserUtill(user));
+        userUtilRepository.save(TestClassUtill.makeUserUtill(user, 0, true));
 
         // when
         // 토큰 제공자의 generateToken()메서드를 호출해 토큰을 만든다.
