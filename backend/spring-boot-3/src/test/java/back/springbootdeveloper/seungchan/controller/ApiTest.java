@@ -92,9 +92,16 @@ public class ApiTest {
 
     private String token;
     private User user;
+    private User user_3;
+    private User user_5;
     private User userOb;
+    private User userOb_4;
     private UserUtill userUtill;
+    private UserUtill userUtill_3;
+    private UserUtill userUtill_5;
     private AttendanceStatus attendanceStatus;
+    private AttendanceStatus attendanceStatus_3;
+    private AttendanceStatus attendanceStatus_5;
 
     @BeforeEach // 테스트 실행 전 실행하는 메서드
     public void mockMvcSetUp() {
@@ -110,17 +117,51 @@ public class ApiTest {
         attendanceStatusRepository.deleteAll();
         tempUserRepository.deleteAll();
 
-        user = userRepository.save(TestClassUtill.makeUser());
-        userRepository.updateId(user.getId(), 1L);
-        user.setId(1L);
+        // userID 1 3 5
+        Long userId_1 = 1L;
+        user = userRepository.save(TestClassUtill.makeUser("박승찬", "seungchan141414@gmail.com"));
+        userRepository.updateId(user.getId(), userId_1);
+        user.setId(userId_1);
 
-        userOb = userRepository.save(TestClassUtill.makeUserOb());
-        userRepository.updateId(userOb.getId(), 2L);
-        userOb.setId(2L);
+        Long userId_3 = 3L;
+        user_3 = userRepository.save(TestClassUtill.makeUser("김주연", "3@gmail.com"));
+        userRepository.updateId(user_3.getId(), userId_3);
+        user_3.setId(userId_3);
 
-        userUtill = userUtilRepository.save(TestClassUtill.makeUserUtill(user));
+        Long userId_5 = 5L;
+        user_5 = userRepository.save(TestClassUtill.makeUser("허진범", "5@gmail.com"));
+        userRepository.updateId(user_5.getId(), userId_5);
+        user_5.setId(userId_5);
 
-        attendanceStatus = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user));
+        // userId OD 2 4
+        Long userId_2 = 2L;
+        userOb = userRepository.save(TestClassUtill.makeUserOb("이승훈", "2@gmail.com"));
+        userRepository.updateId(userOb.getId(), userId_2);
+        userOb.setId(userId_2);
+
+        Long userId_4 = 4L;
+        userOb_4 = userRepository.save(TestClassUtill.makeUserOb("이동근", "4@gmail.com"));
+        userRepository.updateId(userOb_4.getId(), userId_4);
+        userOb_4.setId(userId_4);
+
+        userUtill = userUtilRepository.save(TestClassUtill.makeUserUtill(user, 0, true));
+        userUtill_3 = userUtilRepository.save(TestClassUtill.makeUserUtill(user_3, 1, false));
+        userUtill_5 = userUtilRepository.save(TestClassUtill.makeUserUtill(user_5, 1, false));
+
+        String vacationDates = "2023-08-01, 2023-08-07, 2023-08-14";
+        String absenceDates = "2023-08-15";
+        String weeklyData = "[1,0,1,1,1]";
+        attendanceStatus = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
+
+        vacationDates = "2023-08-08, 2023-08-18";
+        absenceDates = "2023-08-11";
+        weeklyData = "[1,1,1,0,0]";
+        attendanceStatus_3 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
+
+        vacationDates = " 2023-08-07, 2023-08-11";
+        absenceDates = "2023-08-15";
+        weeklyData = "[1,1,0,-1,1]";
+        attendanceStatus_5 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
 
         String url = "/login";
         HttpServletRequest request = mockMvc.perform(
