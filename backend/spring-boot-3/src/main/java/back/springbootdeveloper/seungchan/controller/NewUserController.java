@@ -53,9 +53,9 @@ public class NewUserController {
     @PostMapping("/{id}/acceptance")
     public ResponseEntity<BaseResponseBody> acceptNewUserOfKing(@RequestBody NewUserApprovalRequest newUserApprovalRequest, HttpServletRequest request) {
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
-        Long idOfNewUser = newUserApprovalRequest.getId();
+        String emailOfNewUser = newUserApprovalRequest.getEmail();
         if (isNuriKing) {
-            TempUser tempUser = tempUserService.removeTempUserById(idOfNewUser);
+            TempUser tempUser = tempUserService.removeTempUserByEmail(emailOfNewUser);
             UserInfo newUser = UserInfo.getUserFromTempUser(tempUser);
             userService.saveNewUser(newUser);
             userUtillService.saveNewUser(newUser);
@@ -69,9 +69,9 @@ public class NewUserController {
     @PostMapping("/{id}/reject")
     public ResponseEntity<BaseResponseBody> rejectNewUserOfKing(@RequestBody NewUserApprovalRequest newUserApprovalRequest, HttpServletRequest request) {
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
-        Long idOfNewUser = newUserApprovalRequest.getId();
+        String emailOfNewUser = newUserApprovalRequest.getEmail();
         if (isNuriKing) {
-            tempUserService.removeTempUserById(idOfNewUser);
+            tempUserService.removeTempUserByEmail(emailOfNewUser);
         }
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }

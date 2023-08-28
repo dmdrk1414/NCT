@@ -684,7 +684,7 @@ public class ApiTest {
         TempUser tempUserDB = tempUserRepository.save(tempUser_1);
         final String url = "/new-users/" + tempUserDB.getId() + "/acceptance";
 
-        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getId());
+        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getEmail());
 
         // 객체 suggestionsRequest을 Json으로 직렬화
         final String requestBody = objectMapper.writeValueAsString(newUserApprovalRequest);
@@ -717,7 +717,7 @@ public class ApiTest {
         TempUser tempUserDB = tempUserRepository.save(tempUser_1);
         final String url = "/new-users/" + tempUserDB.getId() + "/reject";
 
-        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getId());
+        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getEmail());
 
         // 객체 suggestionsRequest을 Json으로 직렬화
         final String requestBody = objectMapper.writeValueAsString(newUserApprovalRequest);

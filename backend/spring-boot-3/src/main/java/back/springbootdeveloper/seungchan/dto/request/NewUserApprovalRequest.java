@@ -8,5 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class NewUserApprovalRequest {
-    private Long id;
+    private String email;
 }

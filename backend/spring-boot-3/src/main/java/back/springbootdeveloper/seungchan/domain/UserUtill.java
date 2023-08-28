@@ -8,14 +8,13 @@ import lombok.*;
 @Table(name = "user_utill")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-@Builder
 public class UserUtill {
-    @Id // id 필드를 기본키로 지정
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 자동으로 1씩 증가
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "user_id", nullable = false, updatable = false)
+    @Column(name = "user_id", nullable = false, updatable = false, unique = true)
     private Long userId;
 
     @Column(name = "name", nullable = false, updatable = false)
@@ -30,32 +29,13 @@ public class UserUtill {
     @Column(name = "is_general_affairs", nullable = false, updatable = false)
     private boolean isGeneralAffairs;
 
-    public UserUtill(Long id, Long userId, String name, int cntVacation, boolean isNuriKing) {
-        this.id = id;
-        this.userId = userId;
-        this.name = name;
-        this.cntVacation = cntVacation;
-        this.isNuriKing = isNuriKing;
-    }
-
-    public UserUtill(Long id, Long userId, String name, int cntVacation, boolean isNuriKing, boolean isGeneralAffairs) {
-        this.id = id;
+    @Builder
+    public UserUtill(Long userId, String name, int cntVacation, boolean isNuriKing, boolean isGeneralAffairs) {
         this.userId = userId;
         this.name = name;
         this.cntVacation = cntVacation;
         this.isNuriKing = isNuriKing;
         this.isGeneralAffairs = isGeneralAffairs;
-    }
-
-    @Override
-    public String toString() {
-        return "UserUtill{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", name='" + name + '\'' +
-                ", cntVacation=" + cntVacation +
-                ", isNuriKing=" + isNuriKing +
-                '}';
     }
 
     public void updateVacationNum(int resultVacationNum) {
