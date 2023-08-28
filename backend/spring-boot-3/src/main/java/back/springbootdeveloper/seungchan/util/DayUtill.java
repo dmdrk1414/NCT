@@ -20,9 +20,7 @@ public class DayUtill {
         // 요일을 얻습니다.
         DayOfWeek dayOfWeek = date.getDayOfWeek();
 
-        // TODO: 8/27/23 다시 변경
-//        if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
-        if (dayOfWeek != DayOfWeek.SATURDAY) {
+        if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
             return dayOfWeek;
         }
         throw new IllegalArgumentException("토요일 일요일은 안됩니다.");
