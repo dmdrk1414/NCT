@@ -3,6 +3,7 @@ jwt:
   issuer: seungchan141414@gmail.com
   secret_key: nct-springboot
 
+# 스웨그 설정
 springdoc:
   packages-to-scan: back.springbootdeveloper.seungchan.controller
   default-consumes-media-type: application/json;charset=UTF-8
