@@ -8,6 +8,7 @@ import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.TempUserService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserService;
+import back.springbootdeveloper.seungchan.util.Utill;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,6 +30,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -268,12 +271,26 @@ public class ApiTest {
                 .header("authorization", "Bearer " + token) // token header에 담기
         );
 
+        String inputWeeklyData = attendanceStatus.getWeeklyData();
+        List<Integer> weeklyDataList = new ArrayList<>();
+
+        // 정규 표현식을 사용하여 숫자 추출
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(inputWeeklyData);
+
+        while (matcher.find()) {
+            // 추출된 문자열을 Integer로 변환하여 리스트에 추가
+            weeklyDataList.add(Integer.parseInt(matcher.group()));
+        }
+
         // then
         resultActions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].cntVacation").value(userUtill.getCntVacation()))
-                .andExpect(jsonPath("$[0].name").value(userUtill.getName()))
-                .andExpect(jsonPath("$[0].weeklyData").value(attendanceStatus.getWeeklyData()));
+                .andExpect(jsonPath("$.ybUserInfomationList[0].cntVacation").value(userUtill.getCntVacation()))
+                .andExpect(jsonPath("$.ybUserInfomationList[0].name").value(userUtill.getName()))
+                .andExpect(jsonPath("$.ybUserInfomationList[0].weeklyData").value(weeklyDataList))
+                .andExpect(jsonPath("$.passAttendanceOfSearchUse").value(false));
+
     }
 
     @DisplayName("메인 회원상세(일반, 졸업자) 조회")
