@@ -49,9 +49,41 @@ VALUES (1, '건의', TRUE, '건의 제목 1', ''),
 INSERT INTO attendance_status (id, absence_dates, name, user_id, vacation_dates, weekly_data)
 VALUES (1, '2023-08-15', '박승찬', 1, '2023-08-01, 2023-08-07, 2023-08-14', '[0,0,0,0,0]'),
        (2, '2023-08-11', '김주연', 3, '2023-08-08, 2023-08-18', '[0,0,0,0,0]'),
-       (3, '2023-08-21', '허진범', 5, '2023-08-07, 2023-08-11', '[1,0,0,0,0]');
+       (3, '2023-08-18', '허진범', 5, '2023-08-07, 2023-08-11', '[1,0,0,0,0]');
 
 INSERT INTO num_of_today_attendance (check_num, `day`)
 VALUES ('1234', '2023-08-28');
 
+INSERT INTO temp_user (id,
+                       gpa,
+                       mbti,
+                       address,
+                       advantages,
+                       birth_date,
+                       disadvantage,
+                       hobby,
+                       major,
+                       name,
+                       phone_num,
+                       photo,
+                       self_introduction,
+                       specialty_skill,
+                       student_id,
+                       is_ob,
+                       year_registration,
+                       email,
+                       password,
+                       regular_member)
+VALUES (1, 4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단점', '달리기', '컴퓨터 공학과', '새로운신입_1', '010-2383-6578', '사진',
+        '자기소개',
+        '특기', '20161822', FALSE, '2023', 'new1@gmail.com',
+        '$2a$10$735DgTje5HKqKqQrD3Jd5.j4sfdDF5Q4aXx7TUq2JWYwj/pz3n05a', FALSE),
+       (2, 4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단점', '달리기', '컴퓨터 공학과', '새로운신입_2', '010-2383-6578', '사진',
+        '자기소개',
+        '특기', '20161822', FALSE, '2023', 'new2@gmail.com',
+        '$2a$10$735DgTje5HKqKqQrD3Jd5.j4sfdDF5Q4aXx7TUq2JWYwj/pz3n05a', FALSE);
 
+INSERT INTO PERIODIC_DATA (NAME, PREVIOUS_MONTH, THIS_MONTH, USER_ID, WEEKLY_DATA)
+VALUES ('박승찬', '1:[1,0,1,1,1] , 2:[0,1,1,1,1] , 3:[0,-1,1,1,1] , 4:[0,0,0,0,0] , ', 6, 1, '[0,0,0,0,0]'),
+       ('김주연', '1:[1,1,1,1,1] , 2:[1,0,1,1,-1] , 3:[1,1,1,1,0] , 4:[0,0,0,0,0] , ', 6, 3, '[0,0,0,0,0]'),
+       ('허진범', '1:[1,1,1,1,1] , 2:[0,1,1,1,0] , 3:[1,1,1,1,-1] , 4:[0,0,0,0,0] , ', 6, 5, '[1,0,0,0,0]');

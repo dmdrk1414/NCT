@@ -53,7 +53,7 @@ public class PeriodicDataService {
             String weeklyData = periodicData.getWeeklyData();
             StringBuilder thisMonthData = new StringBuilder(periodicData.getThisMonth());
 
-            // thisMonthData = "4:[1,1,1,0,1] , 5:[1,1,1,0,1] ,
+            // thisMonthData = "4:[1,1,1,0,1] , 5:[1,1,1,0,1] , "
             thisMonthData = thisMonthData.append(currentWeekNumber + ":" + weeklyData + " , ");
 
             periodicDataRepository.updateThisMonthScheduled(String.valueOf(thisMonthData), periodicData.getUserId());

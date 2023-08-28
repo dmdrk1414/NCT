@@ -7,7 +7,8 @@ jwt:
 # localhost:8080/h2-console 으로접속
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
+    #    h2 2.xx번전부터는 MODE 설정
+    url: jdbc:h2:mem:testdb;MODE=MySQL
   h2:
     console:
       enabled: true
