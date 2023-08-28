@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.domain.ObUser;
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
 import back.springbootdeveloper.seungchan.dto.response.ObUserOfMainResponse;
 import back.springbootdeveloper.seungchan.dto.response.UserOfDetail2MainResponse;
@@ -60,7 +60,7 @@ public class MainController {
     @GetMapping("/detail/{id}")
     public ResponseEntity<UserOfDetail2MainResponse> fetchUserOfDetail2Main(HttpServletRequest request, @PathVariable long id) {
         Long userIdOfSearch = tokenService.getUserIdFromToken(request);
-        User user = userServiceImp.findUserById(id);
+        UserInfo user = userServiceImp.findUserById(id);
 
         Long userId = user.getId();
         UserUtill userUtill = userUtilRepository.findByUserId(userIdOfSearch);

@@ -1,0 +1,57 @@
+INSERT INTO USER_INFO (gpa,
+                       mbti,
+                       address,
+                       advantages,
+                       birth_date,
+                       disadvantage,
+                       hobby,
+                       major,
+                       name,
+                       phone_num,
+                       photo,
+                       self_introduction,
+                       specialty_skill,
+                       student_id,
+                       is_ob,
+                       year_registration,
+                       email,
+                       password,
+                       regular_member)
+VALUES (4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단점', '달리기', '컴퓨터 공학과', '박승찬', '010-2383-6578', '사진', '자기소개',
+        '특기', '20161822', FALSE, '2023', 'seungchan141414@gmail.com',
+        '$2a$10$735DgTje5HKqKqQrD3Jd5.j4sfdDF5Q4aXx7TUq2JWYwj/pz3n05a', TRUE),
+       (4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단점', '달리기', '컴퓨터 공학과', '이승훈', '010-2383-6578', '사진', '자기소개',
+        '특기', '20161822', TRUE, '2023', '2@gmail.com', '$2a$10$5tb6qszu4wtEmbQHZDKVPutSiqjPB.sisziAFHcWXXwo2akedGpxK',
+        TRUE),
+       (4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단점', '달리기', '컴퓨터 공학과', '김주연', '010-2383-6578', '사진', '자기소개',
+        '특기', '20161822', FALSE, '2023', '3@gmail.com', '$2a$10$5tb6qszu4wtEmbQHZDKVPutSiqjPB.sisziAFHcWXXwo2akedGpxK',
+        TRUE),
+       (4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단점', '달리기', '컴퓨터 공학과', '이동근', '010-2383-6578', '사진', '자기소개',
+        '특기', '20161822', TRUE, '2023', '4@gmail.com', '$2a$10$5tb6qszu4wtEmbQHZDKVPutSiqjPB.sisziAFHcWXXwo2akedGpxK',
+        TRUE),
+       (4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단점', '달리기', '컴퓨터 공학과', '허진범', '010-2383-6578', '사진', '자기소개',
+        '특기', '20161822', FALSE, '2023', '5@gmail.com', '$2a$10$5tb6qszu4wtEmbQHZDKVPutSiqjPB.sisziAFHcWXXwo2akedGpxK',
+        TRUE);
+
+
+
+INSERT INTO user_utill (id, cnt_vacation, is_nuri_king, name, user_id, is_general_affairs)
+VALUES (1, 0, TRUE, '박승찬', 1, FALSE),
+       (2, 1, FALSE, '김주연', 3, FALSE),
+       (3, 1, FALSE, '허진범', 5, TRUE);
+
+INSERT INTO suggestions (id, classification, is_check, title, holiday_period)
+VALUES (1, '건의', TRUE, '건의 제목 1', ''),
+       (2, '휴가', FALSE, '휴가 제목 1', '2023-08-01 ~ 2023-08-07'),
+       (3, '자유', TRUE, '자유 제목 1', ''),
+       (4, '비밀', FALSE, '비밀 제목 1', '');
+
+INSERT INTO attendance_status (id, absence_dates, name, user_id, vacation_dates, weekly_data)
+VALUES (1, '2023-08-15', '박승찬', 1, '2023-08-01, 2023-08-07, 2023-08-14', '[0,0,0,0,0]'),
+       (2, '2023-08-11', '김주연', 3, '2023-08-08, 2023-08-18', '[0,0,0,0,0]'),
+       (3, '2023-08-21', '허진범', 5, '2023-08-07, 2023-08-11', '[1,0,0,0,0]');
+
+INSERT INTO num_of_today_attendance (check_num, `day`)
+VALUES ('1234', '2023-08-28');
+
+

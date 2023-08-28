@@ -2,19 +2,14 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
 import back.springbootdeveloper.seungchan.domain.PeriodicData;
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.repository.PeriodicDataRepository;
 import back.springbootdeveloper.seungchan.util.DayUtill;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.temporal.WeekFields;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -22,7 +17,7 @@ import java.util.Map;
 public class PeriodicDataService {
     private final PeriodicDataRepository periodicDataRepository;
 
-    public void saveNewUser(User newUser) {
+    public void saveNewUser(UserInfo newUser) {
         String basicWeeklyData = "[0,0,0,0,0]";
         String basicMonth = "";
 

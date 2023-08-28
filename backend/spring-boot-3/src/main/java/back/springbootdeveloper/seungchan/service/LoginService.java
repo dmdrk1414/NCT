@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
 import back.springbootdeveloper.seungchan.dto.request.UserLoginRequest;
 import back.springbootdeveloper.seungchan.dto.response.UserLoginResponse;
@@ -11,8 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor // final이 붙거나  @NotNull이 붙는 필드의 생성자 추가
@@ -25,7 +23,7 @@ public class LoginService {
         String email = userLoginInfo.getEmail();
         String password = userLoginInfo.getPassword();
 
-        User user = userRepository.findByEmail(email)
+        UserInfo user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + email)); // 찾아서 없으면 예외처리.;
         UserUtill userUtill = userUtilRepository.findByUserId(user.getId());
 

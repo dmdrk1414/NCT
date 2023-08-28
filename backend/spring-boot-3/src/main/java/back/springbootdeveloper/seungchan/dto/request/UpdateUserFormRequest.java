@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.dto.request;
 
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,8 +26,8 @@ public class UpdateUserFormRequest {
     private String selfIntroduction;
     private String photo;
 
-    public User toEntity() {
-        return User.builder()
+    public UserInfo toEntity() {
+        return UserInfo.builder()
                 .name(name)
                 .phoneNum(phoneNum)
                 .major(major)

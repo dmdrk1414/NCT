@@ -1,8 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.domain.PeriodicData;
 import back.springbootdeveloper.seungchan.domain.TempUser;
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.dto.request.NewUserApprovalRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.NewUserEachResponse;
@@ -57,7 +56,7 @@ public class NewUserController {
         Long idOfNewUser = newUserApprovalRequest.getId();
         if (isNuriKing) {
             TempUser tempUser = tempUserService.removeTempUserById(idOfNewUser);
-            User newUser = User.getUserFromTempUser(tempUser);
+            UserInfo newUser = UserInfo.getUserFromTempUser(tempUser);
             userService.saveNewUser(newUser);
             userUtillService.saveNewUser(newUser);
             attendanceService.saveNewUser(newUser);

@@ -1,7 +1,6 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
-import back.springbootdeveloper.seungchan.domain.User;
-import jakarta.persistence.Column;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +28,7 @@ public class MyPageResponse {
     private boolean isOb;
     private String yearOfRegistration;
 
-    public MyPageResponse(User user) {
+    public MyPageResponse(UserInfo user) {
         this.name = user.getName();
         this.phoneNum = user.getPhoneNum();
         this.major = user.getMajor();

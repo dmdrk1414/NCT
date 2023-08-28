@@ -8,11 +8,9 @@ import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.TempUserService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserService;
-import back.springbootdeveloper.seungchan.util.Utill;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.hibernate.sql.Update;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -94,11 +92,11 @@ public class ApiTest {
     private TempUserRepository tempUserRepository;
 
     private String token;
-    private User user;
-    private User user_3;
-    private User user_5;
-    private User userOb;
-    private User userOb_4;
+    private UserInfo user;
+    private UserInfo user_3;
+    private UserInfo user_5;
+    private UserInfo userOb;
+    private UserInfo userOb_4;
     private UserUtill userUtill;
     private UserUtill userUtill_3;
     private UserUtill userUtill_5;
@@ -401,7 +399,7 @@ public class ApiTest {
         // given
         final String url = "/mypage/update";
         final String nameUpdate = "업데이트한_이름";
-        User updateUser = user;
+        UserInfo updateUser = user;
         updateUser.setName(nameUpdate);
         UpdateUserFormRequest requestUserForm = new UpdateUserFormRequest(
                 user.getName(),
@@ -699,7 +697,7 @@ public class ApiTest {
                 .header("authorization", "Bearer " + token) // token header에 담기
         );
 
-        User newUser = userService.findByEmail(email_1);
+        UserInfo newUser = userService.findByEmail(email_1);
 
         // then
         result

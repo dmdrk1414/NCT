@@ -1,8 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
-import back.springbootdeveloper.seungchan.domain.User;
-import back.springbootdeveloper.seungchan.dto.request.RequestUserForm;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.dto.request.UpdateUserFormRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.MyPageResponse;
@@ -13,7 +12,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +32,7 @@ public class MypageController {
     public ResponseEntity<MyPageResponse> findMypage(HttpServletRequest request) {
         // TODO: 토큰을 이용해 유저의 id 찾기
         Long id = tokenService.getUserIdFromToken(request);
-        User user = userServiceImp.findUserById(id);
+        UserInfo user = userServiceImp.findUserById(id);
         return ResponseEntity.ok().body(new MyPageResponse(user));
     }
 

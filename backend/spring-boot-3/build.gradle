@@ -62,6 +62,9 @@ dependencies {
 
     // Jackson을 이용해서 Java 객체를 JSON으로 직렬화하거나 JSON을 Java 객체로 역직렬화
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+
+    // 임메모리 데이터배이스, 로컬과 테스트 환경에서 사용
+    runtimeOnly 'com.h2database:h2'
 }
 
 test {

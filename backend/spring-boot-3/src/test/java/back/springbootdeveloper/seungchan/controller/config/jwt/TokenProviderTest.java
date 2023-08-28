@@ -3,7 +3,7 @@ package back.springbootdeveloper.seungchan.controller.config.jwt;
 import back.springbootdeveloper.seungchan.config.jwt.JwtProperties;
 import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
 import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import io.jsonwebtoken.Jwts;
@@ -42,8 +42,8 @@ public class TokenProviderTest {
         userRepository.deleteAll();
         userUtilRepository.deleteAll();
 
-        User user = TestClassUtill.makeUser("박승찬", "seungchan141414@gmail.com");
-        User testUser = userRepository.save(user);
+        UserInfo user = TestClassUtill.makeUser("박승찬", "seungchan141414@gmail.com");
+        UserInfo testUser = userRepository.save(user);
 
         userUtilRepository.save(TestClassUtill.makeUserUtill(user, 0, true));
 

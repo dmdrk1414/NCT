@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.dto.response.VacationsResponce;
 import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
@@ -131,7 +131,7 @@ public class AttendanceService {
         attendanceStatusRepository.resetVacationDate(resetVacationDate);
     }
 
-    public void saveNewUser(User newUser) {
+    public void saveNewUser(UserInfo newUser) {
         String basicDate = "";
         String basicWeeklyData = "[0,0,0,0,0]";
         AttendanceStatus attendanceStatusOfNewUser = AttendanceStatus.builder()

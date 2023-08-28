@@ -2,7 +2,7 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
 import back.springbootdeveloper.seungchan.domain.ObUser;
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
 import back.springbootdeveloper.seungchan.domain.YbUserInfomation;
 import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
@@ -27,7 +27,7 @@ public class UserOfMainService {
 
     public List<YbUserInfomation> findAllByIsOb(boolean isOb) {
         List<YbUserInfomation> responseList = new ArrayList<>();
-        List<User> users = userRepository.findAll();
+        List<UserInfo> users = userRepository.findAll();
         for (int id = 1; id < users.size() + 1; id++) {
             boolean isObUser = users.get(id - 1).isOb();
             if (isObUser == isOb) {
@@ -43,12 +43,12 @@ public class UserOfMainService {
 
     public List<ObUser> findAllObUser() {
         List<ObUser> responseList = new ArrayList<>();
-        List<User> users = userRepository.findAll();
+        List<UserInfo> users = userRepository.findAll();
         for (int id = 1; id < users.size() + 1; id++) {
             boolean isObUser = users.get(id - 1).isOb();
             if (isObUser) {
                 int indexOfuser = id - 1;
-                User user = users.get(indexOfuser);
+                UserInfo user = users.get(indexOfuser);
                 responseList.add(new ObUser(user));
             }
         }
