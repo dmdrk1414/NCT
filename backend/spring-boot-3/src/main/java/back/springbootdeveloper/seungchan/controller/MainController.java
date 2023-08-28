@@ -1,20 +1,14 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
 import back.springbootdeveloper.seungchan.domain.ObUser;
 import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
-import back.springbootdeveloper.seungchan.dto.request.VacationCountRequest;
-import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.ObUserOfMainResponse;
 import back.springbootdeveloper.seungchan.dto.response.UserOfDetail2MainResponse;
-import back.springbootdeveloper.seungchan.dto.response.YbUserOfMainResponse;
+import back.springbootdeveloper.seungchan.domain.YbUserInfomation;
+import back.springbootdeveloper.seungchan.dto.response.YbUserListResponse;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
-import back.springbootdeveloper.seungchan.service.TokenService;
-import back.springbootdeveloper.seungchan.service.UserOfMainService;
-import back.springbootdeveloper.seungchan.service.UserService;
-import back.springbootdeveloper.seungchan.service.UserUtillService;
-import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
+import back.springbootdeveloper.seungchan.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,13 +31,19 @@ public class MainController {
     private final UserOfMainService userOfMainService;
     private final UserUtillService userUtillService;
     private final TokenService tokenService;
+    private final AttendanceService attendanceService;
 
     @Operation(summary = "main page 현재 인원들의 정보", description = "main page 현재 재학 인원들의 정보들을 나열")
     @GetMapping("/ybs")
-    public ResponseEntity<List<YbUserOfMainResponse>> findAllYbUser() {
+    public ResponseEntity<YbUserListResponse> findAllYbUser(HttpServletRequest request) {
+        Long UserIdOfSearch = tokenService.getUserIdFromToken(request);
+        boolean isPassAttendanceOfSearchUser = attendanceService.isPassAttendanceAtToday(UserIdOfSearch);
         boolean isObUser = false;
-        List<YbUserOfMainResponse> list = userOfMainService.findAllByIsOb(isObUser);
-        return ResponseEntity.ok().body(list);
+        List<YbUserInfomation> ybUserInfomationList = userOfMainService.findAllByIsOb(isObUser);
+        return ResponseEntity.ok().body(YbUserListResponse.builder()
+                .ybUserInfomationList(ybUserInfomationList)
+                .isPassAttendanceOfSearchUse(isPassAttendanceOfSearchUser)
+                .build());
     }
 
     @Operation(summary = "main page 졸업 인원들의 정보", description = "main page 졸업 인원들의 정보들을 나열, 실장들과 일반인들이 볼수 있는 정보가 나누어져 있다.")

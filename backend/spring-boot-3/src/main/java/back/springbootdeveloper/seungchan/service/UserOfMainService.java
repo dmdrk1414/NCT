@@ -4,8 +4,7 @@ import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
 import back.springbootdeveloper.seungchan.domain.ObUser;
 import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
-import back.springbootdeveloper.seungchan.dto.response.ObUserOfMainResponse;
-import back.springbootdeveloper.seungchan.dto.response.YbUserOfMainResponse;
+import back.springbootdeveloper.seungchan.domain.YbUserInfomation;
 import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
@@ -26,8 +25,8 @@ public class UserOfMainService {
     @Autowired
     private UserUtilRepository userUtilRepository;
 
-    public List<YbUserOfMainResponse> findAllByIsOb(boolean isOb) {
-        List<YbUserOfMainResponse> responseList = new ArrayList<>();
+    public List<YbUserInfomation> findAllByIsOb(boolean isOb) {
+        List<YbUserInfomation> responseList = new ArrayList<>();
         List<User> users = userRepository.findAll();
         for (int id = 1; id < users.size() + 1; id++) {
             boolean isObUser = users.get(id - 1).isOb();
@@ -36,7 +35,7 @@ public class UserOfMainService {
                 System.out.println("longId = " + longId);
                 UserUtill userUtill = userUtilRepository.findByUserId(longId);
                 AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(longId);
-                responseList.add(new YbUserOfMainResponse(attendanceStatus, userUtill));
+                responseList.add(new YbUserInfomation(attendanceStatus, userUtill));
             }
         }
         return responseList;

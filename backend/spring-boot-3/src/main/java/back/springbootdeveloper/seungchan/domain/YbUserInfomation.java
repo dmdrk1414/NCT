@@ -1,4 +1,4 @@
-package back.springbootdeveloper.seungchan.dto.response;
+package back.springbootdeveloper.seungchan.domain;
 
 import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
@@ -13,14 +13,14 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class YbUserOfMainResponse {
+public class YbUserInfomation {
     private String name;
     private int cntVacation;
     private List<Integer> weeklyData;
     private Long userId;
 
     @Builder
-    public YbUserOfMainResponse(AttendanceStatus attendanceStatus, UserUtill userUtill) {
+    public YbUserInfomation(AttendanceStatus attendanceStatus, UserUtill userUtill) {
         this.name = userUtill.getName();
         this.cntVacation = userUtill.getCntVacation();
         this.weeklyData = Utill.extractNumbers(attendanceStatus.getWeeklyData());

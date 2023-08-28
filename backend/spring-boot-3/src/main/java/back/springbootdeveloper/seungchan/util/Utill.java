@@ -35,4 +35,16 @@ public class Utill {
 
         return integerList;
     }
+
+    /**
+     * @param target_1 비교대상_1
+     * @param target_2 비교대상_2
+     * @return 비교대상이 같으면 true, 다르면 false
+     */
+    public static boolean isSameInteger(int target_1, int target_2) {
+        if (Integer.compare(target_1, target_2) == 0) {
+            return true;
+        }
+        return false;
+    }
 }
