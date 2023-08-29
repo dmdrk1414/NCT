@@ -1,0 +1,76 @@
+# practice-build/docker-compose.yml
+# /docker-compose.yml
+# docker-compose의 버전
+version: '3'
+# 서비스의 정의 서비스의 이름은 각자 정할수 있습니다.
+# docker-compose 가 관리해야되는 서비스(container)들을 정의
+services:
+  # nextjs의 서비스 정의
+  nextjs:
+    container_name: compose-nextjs
+    build: ./frontend
+    #컨테이너 다운 시 재시작하라는 명령어
+    restart: always
+    # 불룸 로컬과 도커 마운트 설정
+    # 로컬 폴더와 컨터이너안의 임이의 폴더와 마운트
+    volumes:
+      - ./frontend:/home/node/next
+    # 연결할 외부 디렉토리 : 컨테이너 내 디렉토리
+    #  호스트 머신의 3000번 포트와 컨테이너의 3000번 포트를 매핑합니다. 
+    ports:
+      - "3000:3000"
+
+  spring-boot-3:
+    container_name: compose-spring-boot-3
+    # Dockerfile이 있는 위치
+    build: ./backend/spring-boot-3
+    #컨테이너 다운 시 재시작하라는 명령어
+    restart: always
+    # 불룸 로컬과 도커 마운트 설정
+    # 로컬 폴더와 컨터이너안의 임이의 폴더와 마운트
+    volumes:
+      - ./backend/spring-boot-3/build/libs:/home/spring-boot-3/build
+    # 연결할 외부 디렉토리 : 컨테이너 내 디렉토리
+    #  호스트 머신의 8080번 포트와 컨테이너의 8080번 포트를 매핑합니다. 
+    ports:
+      - "8080:8080"
+    # mysql서비스가 먼저 시작하고 그 뒤에 spring-boot-3 가 시작된다.
+    depends_on:
+     - mysql
+    # mysql 컨테이너(서비스)와 spring-boot-3 컨테이너(서비스)와의 연결을 하기위한 환경설정
+    # spring-boot-3의 db 설정보다 우선순위가 높다 
+    environment:
+      # 만약 다른 컨테이너(서비스)와의 db을 연결하고 싶으면 원하는 컨테이너의 이름을 적어라
+      # SPRING_DATASOURCE_URL: jdbc:mysql://원하는db컨테이너이름:3306/nct-db?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://compose-mysql:3306/nct-db?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "1234"
+
+  nginx:
+    container_name: compose-nginx
+    # Dockerfile이 있는 위치
+    build: ./nginx
+    #컨테이너 다운 시 재시작하라는 명령어
+    restart: always
+    # 연결할 외부 디렉토리 : 컨테이너 내 디렉토리
+    #  호스트 머신의 80번 포트와 컨테이너의 80번 포트를 매핑합니다.
+    ports:
+      - "80:80"
+    # depends_on은 설정 서비스 명이 nextjs, pring-boot-3 이 먼저 실행되고 nginx의 서비스가 먼저 실행된다.
+    depends_on:
+      - nextjs
+      - spring-boot-3
+
+  mysql:   
+    container_name: compose-mysql
+    # Dockerfile이 있는 위치
+    build: ./database/mysql
+    # build: ./database/mysql
+    restart: always 
+    # 연결할 외부 디렉토리 : 컨테이너 내 디렉토리
+    #  호스트 머신의 3306번 포트와 컨테이너의 33060번 포트를 매핑합니다. 
+    ports: 
+      - "3306:3306"
+    # 테이블 이름 소문자로 맞춘다.
+    volumes:
+      - ./database/mysql/scripts:/docker-entrypoint-initdb.d
