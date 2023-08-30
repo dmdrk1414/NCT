@@ -63,7 +63,7 @@ export default function Main() {
       })
         .then(res => {
           console.log(res);
-          setUserList(res.data);
+          setUserList(res.data.ybUserInfomationList);
         })
         .catch(err => {
           console.log(err);
