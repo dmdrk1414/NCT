@@ -24,10 +24,11 @@ public class TempUserService {
         List<NewUsersResponse> newUsersResponseList = new ArrayList<>();
         List<TempUser> tempUserList = tempUserRepository.findAll();
         for (TempUser tempUser : tempUserList) {
+            Long id = tempUser.getId();
             String email = tempUser.getEmail();
             String name = tempUser.getName();
             String applicationDate = tempUser.getApplicationDate();
-            newUsersResponseList.add(new NewUsersResponse(email, name, applicationDate));
+            newUsersResponseList.add(new NewUsersResponse(id, email, name, applicationDate));
         }
         return newUsersResponseList;
     }
