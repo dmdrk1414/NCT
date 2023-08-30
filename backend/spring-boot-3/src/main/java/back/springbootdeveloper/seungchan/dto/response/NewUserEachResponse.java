@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
-import back.springbootdeveloper.seungchan.domain.TempUser;
+import back.springbootdeveloper.seungchan.entity.TempUser;
 import lombok.*;
 
 @Getter

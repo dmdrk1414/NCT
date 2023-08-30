@@ -2,8 +2,8 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.controller.config.AttendanceListFromJson;
 import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
-import back.springbootdeveloper.seungchan.domain.*;
 import back.springbootdeveloper.seungchan.dto.request.*;
+import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.TempUserService;
 import back.springbootdeveloper.seungchan.service.TokenService;

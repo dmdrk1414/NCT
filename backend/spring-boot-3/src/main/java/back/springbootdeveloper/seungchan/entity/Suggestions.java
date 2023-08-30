@@ -1,4 +1,4 @@
-package back.springbootdeveloper.seungchan.domain;
+package back.springbootdeveloper.seungchan.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

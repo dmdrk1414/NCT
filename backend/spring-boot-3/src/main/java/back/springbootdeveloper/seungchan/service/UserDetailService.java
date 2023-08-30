@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.domain.UserInfo;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;

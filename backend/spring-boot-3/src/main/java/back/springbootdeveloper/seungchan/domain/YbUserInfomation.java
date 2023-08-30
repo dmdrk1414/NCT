@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.domain;
 
-import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
-import back.springbootdeveloper.seungchan.domain.UserUtill;
+import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
+import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.util.Utill;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.domain.UserInfo;
-import back.springbootdeveloper.seungchan.domain.UserUtill;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
+import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import lombok.RequiredArgsConstructor;

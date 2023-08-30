@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.domain.NumOfTodayAttendence;
+import back.springbootdeveloper.seungchan.entity.NumOfTodayAttendence;
 import back.springbootdeveloper.seungchan.repository.NumOfTodayAttendenceRepository;
 import back.springbootdeveloper.seungchan.util.DayUtill;
 import back.springbootdeveloper.seungchan.util.Utill;

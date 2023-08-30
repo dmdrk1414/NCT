@@ -1,7 +1,6 @@
 package back.springbootdeveloper.seungchan.repository;
 
-import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
-import back.springbootdeveloper.seungchan.domain.Suggestions;
+import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

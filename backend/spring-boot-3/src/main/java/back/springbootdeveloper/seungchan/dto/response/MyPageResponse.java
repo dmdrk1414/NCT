@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
-import back.springbootdeveloper.seungchan.domain.UserInfo;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

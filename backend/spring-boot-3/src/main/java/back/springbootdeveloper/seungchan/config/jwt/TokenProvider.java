@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.config.jwt;
 
-import back.springbootdeveloper.seungchan.domain.UserInfo;
-import back.springbootdeveloper.seungchan.domain.UserUtill;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
+import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;

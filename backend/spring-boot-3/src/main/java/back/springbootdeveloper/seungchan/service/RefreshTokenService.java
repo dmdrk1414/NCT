@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.domain.RefreshToken;
+import back.springbootdeveloper.seungchan.entity.RefreshToken;
 import back.springbootdeveloper.seungchan.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

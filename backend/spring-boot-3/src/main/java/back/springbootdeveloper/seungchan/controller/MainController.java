@@ -1,8 +1,8 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.domain.ObUser;
-import back.springbootdeveloper.seungchan.domain.UserInfo;
-import back.springbootdeveloper.seungchan.domain.UserUtill;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
+import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.dto.response.ObUserOfMainResponse;
 import back.springbootdeveloper.seungchan.dto.response.UserOfDetail2MainResponse;
 import back.springbootdeveloper.seungchan.domain.YbUserInfomation;

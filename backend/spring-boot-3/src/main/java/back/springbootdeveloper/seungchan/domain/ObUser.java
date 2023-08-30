@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.domain;
 
+import back.springbootdeveloper.seungchan.entity.UserInfo;
 import lombok.*;
 
 @Getter

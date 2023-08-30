@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.controller.config;
 
-import back.springbootdeveloper.seungchan.domain.*;
+import back.springbootdeveloper.seungchan.entity.*;
 
 public class TestClassUtill {
     private static final String NAME_TEST = "현재실원_이름";

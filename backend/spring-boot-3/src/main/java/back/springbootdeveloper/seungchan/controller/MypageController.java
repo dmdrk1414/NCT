@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
-import back.springbootdeveloper.seungchan.domain.UserInfo;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.dto.request.UpdateUserFormRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.MyPageResponse;

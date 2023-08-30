@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.domain.TempUser;
+import back.springbootdeveloper.seungchan.entity.TempUser;
 import back.springbootdeveloper.seungchan.dto.request.TempUserFormRequest;
 import back.springbootdeveloper.seungchan.dto.response.NewUsersResponse;
 import back.springbootdeveloper.seungchan.repository.TempUserRepository;
