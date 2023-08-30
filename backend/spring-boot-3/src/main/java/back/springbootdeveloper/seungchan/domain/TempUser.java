@@ -80,6 +80,9 @@ public class TempUser {
     @Column(name = "regular_member", nullable = false)
     private boolean regularMember;
 
+    @Column(name = "application_date", nullable = false)
+    private String applicationDate;
+
     @Builder
     public TempUser(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, boolean isOb, String email, String password) {
         this.name = name;
@@ -101,6 +104,7 @@ public class TempUser {
         this.email = email;
         this.password = password;
         this.regularMember = false;
+        this.applicationDate = DayUtill.getStrYearMonthDay();
     }
 
     public void update(TempUser user) {

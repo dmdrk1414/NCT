@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.util;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
 import java.util.*;
 
@@ -95,5 +96,22 @@ public class DayUtill {
         map.put("month", currentMonth);
         map.put("currentWeekNumber", currentWeekNumber);
         return map;
+    }
+
+    /**
+     * "2023-08-30"
+     *
+     * @return 오늘일자의 년도, 달, 일자의 String을 알수있음.
+     */
+    public static String getStrYearMonthDay() {
+        LocalDate currentDate = LocalDate.now();
+
+        // 원하는 형식으로 날짜 포맷 설정
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // 형식에 맞게 날짜를 문자열로 변환
+        String formattedDate = currentDate.format(formatter);
+
+        return formattedDate;
     }
 }
