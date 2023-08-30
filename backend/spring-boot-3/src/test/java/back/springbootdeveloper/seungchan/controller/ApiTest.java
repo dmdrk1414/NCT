@@ -629,7 +629,7 @@ public class ApiTest {
         // then
         result
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(tempUser_1.getId()))
+                .andExpect(jsonPath("$[0].email").value(tempUser_1.getEmail()))
                 .andExpect(jsonPath("$[0].name").value(tempUser_1.getName()));
     }
 
@@ -684,7 +684,7 @@ public class ApiTest {
         TempUser tempUserDB = tempUserRepository.save(tempUser_1);
         final String url = "/new-users/" + tempUserDB.getId() + "/acceptance";
 
-        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getEmail());
+        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getId());
 
         // 객체 suggestionsRequest을 Json으로 직렬화
         final String requestBody = objectMapper.writeValueAsString(newUserApprovalRequest);
@@ -717,7 +717,7 @@ public class ApiTest {
         TempUser tempUserDB = tempUserRepository.save(tempUser_1);
         final String url = "/new-users/" + tempUserDB.getId() + "/reject";
 
-        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getEmail());
+        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getId());
 
         // 객체 suggestionsRequest을 Json으로 직렬화
         final String requestBody = objectMapper.writeValueAsString(newUserApprovalRequest);

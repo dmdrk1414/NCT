@@ -44,4 +44,12 @@ public class TempUserService {
 
         return tempUser;
     }
+
+    public TempUser removeTempUserById(Long idOfNewUser) {
+        TempUser tempUser = tempUserRepository.findById(idOfNewUser)
+                .orElseThrow(() -> new IllegalArgumentException("Unexpected new user"));
+        tempUserRepository.deleteById(idOfNewUser);
+
+        return tempUser;
+    }
 }

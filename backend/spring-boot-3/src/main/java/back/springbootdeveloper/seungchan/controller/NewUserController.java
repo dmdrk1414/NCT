@@ -2,7 +2,6 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.entity.TempUser;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
-import back.springbootdeveloper.seungchan.dto.request.NewUserApprovalRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.NewUserEachResponse;
 import back.springbootdeveloper.seungchan.dto.response.NewUsersResponse;
@@ -51,11 +50,11 @@ public class NewUserController {
 
     @Operation(summary = "실장의 추가 실원 승락 API", description = "실장이 신청 인원의 개별 페이지에서 승락 버튼구현")
     @PostMapping("/{id}/acceptance")
-    public ResponseEntity<BaseResponseBody> acceptNewUserOfKing(@RequestBody NewUserApprovalRequest newUserApprovalRequest, HttpServletRequest request) {
+    public ResponseEntity<BaseResponseBody> acceptNewUserOfKing(@PathVariable long id, HttpServletRequest request) {
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
-        String emailOfNewUser = newUserApprovalRequest.getEmail();
+        Long idOfNewUser = id;
         if (isNuriKing) {
-            TempUser tempUser = tempUserService.removeTempUserByEmail(emailOfNewUser);
+            TempUser tempUser = tempUserService.removeTempUserById(idOfNewUser);
             UserInfo newUser = UserInfo.getUserFromTempUser(tempUser);
             userService.saveNewUser(newUser);
             userUtillService.saveNewUser(newUser);
@@ -67,11 +66,11 @@ public class NewUserController {
 
     @Operation(summary = "실장의 추가 실원 거절 API", description = "실장이 신청 인원의 개별 페이지에서 거절 버튼구현")
     @PostMapping("/{id}/reject")
-    public ResponseEntity<BaseResponseBody> rejectNewUserOfKing(@RequestBody NewUserApprovalRequest newUserApprovalRequest, HttpServletRequest request) {
+    public ResponseEntity<BaseResponseBody> rejectNewUserOfKing(@PathVariable long id, HttpServletRequest request) {
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
-        String emailOfNewUser = newUserApprovalRequest.getEmail();
+        Long idOfNewUser = id;
         if (isNuriKing) {
-            tempUserService.removeTempUserByEmail(emailOfNewUser);
+            tempUserService.removeTempUserById(idOfNewUser);
         }
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
