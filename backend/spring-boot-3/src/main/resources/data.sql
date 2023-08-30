@@ -73,15 +73,16 @@ INSERT INTO temp_user (id,
                        year_registration,
                        email,
                        password,
-                       regular_member)
+                       regular_member,
+                       application_date)
 VALUES (1, 4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단점', '달리기', '컴퓨터 공학과', '새로운신입_1', '010-2383-6578', '사진',
         '자기소개',
         '특기', '20161822', FALSE, '2023', 'new1@gmail.com',
-        '$2a$10$735DgTje5HKqKqQrD3Jd5.j4sfdDF5Q4aXx7TUq2JWYwj/pz3n05a', FALSE),
+        '$2a$10$735DgTje5HKqKqQrD3Jd5.j4sfdDF5Q4aXx7TUq2JWYwj/pz3n05a', FALSE, '2023-08-20'),
        (2, 4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단점', '달리기', '컴퓨터 공학과', '새로운신입_2', '010-2383-6578', '사진',
         '자기소개',
         '특기', '20161822', FALSE, '2023', 'new2@gmail.com',
-        '$2a$10$735DgTje5HKqKqQrD3Jd5.j4sfdDF5Q4aXx7TUq2JWYwj/pz3n05a', FALSE);
+        '$2a$10$735DgTje5HKqKqQrD3Jd5.j4sfdDF5Q4aXx7TUq2JWYwj/pz3n05a', FALSE, '2023-08-21');
 
 INSERT INTO PERIODIC_DATA (NAME, PREVIOUS_MONTH, THIS_MONTH, USER_ID, WEEKLY_DATA)
 VALUES ('박승찬', '1:[1,0,1,1,1] , 2:[0,1,1,1,1] , 3:[0,-1,1,1,1] , 4:[0,0,0,0,0] , ', 6, 1, '[0,0,0,0,0]'),
