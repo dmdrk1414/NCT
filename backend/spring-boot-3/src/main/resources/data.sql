@@ -12,7 +12,7 @@ INSERT INTO USER_INFO (gpa,
                        self_introduction,
                        specialty_skill,
                        student_id,
-                       is_ob,
+                       ob,
                        year_registration,
                        email,
                        password,
@@ -35,12 +35,12 @@ VALUES (4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단�
 
 
 
-INSERT INTO user_utill (id, cnt_vacation, is_nuri_king, name, user_id, is_general_affairs)
+INSERT INTO user_utill (id, cnt_vacation, nuri_king, name, user_id, general_affairs)
 VALUES (1, 0, TRUE, '박승찬', 1, FALSE),
        (2, 1, FALSE, '김주연', 3, FALSE),
        (3, 1, FALSE, '허진범', 5, TRUE);
 
-INSERT INTO suggestions (id, classification, is_check, title, holiday_period)
+INSERT INTO suggestions (id, classification, check_content, title, holiday_period)
 VALUES (1, '건의', TRUE, '건의 제목 1', ''),
        (2, '휴가', FALSE, '휴가 제목 1', '2023-08-01 ~ 2023-08-07'),
        (3, '자유', TRUE, '자유 제목 1', ''),
@@ -69,7 +69,7 @@ INSERT INTO temp_user (id,
                        self_introduction,
                        specialty_skill,
                        student_id,
-                       is_ob,
+                       ob,
                        year_registration,
                        email,
                        password,
@@ -78,11 +78,11 @@ INSERT INTO temp_user (id,
 VALUES (1, 4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단점', '달리기', '컴퓨터 공학과', '새로운신입_1', '010-2383-6578', '사진',
         '자기소개',
         '특기', '20161822', FALSE, '2023', 'new1@gmail.com',
-        '$2a$10$735DgTje5HKqKqQrD3Jd5.j4sfdDF5Q4aXx7TUq2JWYwj/pz3n05a', FALSE, '2023-08-20'),
+        '$2a$10$735DgTje5HKqKqQrD3Jd5.j4sfdDF5Q4aXx7TUq2JWYwj/pz3n05a', FALSE, '2023-08-21'),
        (2, 4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단점', '달리기', '컴퓨터 공학과', '새로운신입_2', '010-2383-6578', '사진',
         '자기소개',
         '특기', '20161822', FALSE, '2023', 'new2@gmail.com',
-        '$2a$10$735DgTje5HKqKqQrD3Jd5.j4sfdDF5Q4aXx7TUq2JWYwj/pz3n05a', FALSE, '2023-08-21');
+        '$2a$10$735DgTje5HKqKqQrD3Jd5.j4sfdDF5Q4aXx7TUq2JWYwj/pz3n05a', FALSE, '2023-08-22');
 
 INSERT INTO PERIODIC_DATA (NAME, PREVIOUS_MONTH, THIS_MONTH, USER_ID, WEEKLY_DATA)
 VALUES ('박승찬', '1:[1,0,1,1,1] , 2:[0,1,1,1,1] , 3:[0,-1,1,1,1] , 4:[0,0,0,0,0] , ', 6, 1, '[0,0,0,0,0]'),

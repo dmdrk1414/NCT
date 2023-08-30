@@ -17,16 +17,16 @@ public class UserUtill {
     @Column(name = "user_id", nullable = false, updatable = false, unique = true)
     private Long userId;
 
-    @Column(name = "name", nullable = false, updatable = false)
+    @Column(name = "name", length = 10, nullable = false, updatable = false)
     private String name;
 
     @Column(name = "cnt_vacation", nullable = false, updatable = false)
     private int cntVacation;
 
-    @Column(name = "is_nuri_king", nullable = false, updatable = false)
+    @Column(name = "nuri_king", nullable = false, updatable = false)
     private boolean isNuriKing;
 
-    @Column(name = "is_general_affairs", nullable = false, updatable = false)
+    @Column(name = "general_affairs", nullable = false, updatable = false)
     private boolean isGeneralAffairs;
 
     @Builder
