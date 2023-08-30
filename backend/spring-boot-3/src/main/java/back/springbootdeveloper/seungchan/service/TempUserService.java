@@ -36,10 +36,10 @@ public class TempUserService {
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected new user"));
     }
 
-    public TempUser removeTempUserById(Long idOfNewUser) {
-        TempUser tempUser = tempUserRepository.findById(idOfNewUser)
+    public TempUser removeTempUserByEmail(String emailOfNewUser) {
+        TempUser tempUser = tempUserRepository.findByEmail(emailOfNewUser)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected new user"));
-        tempUserRepository.deleteById(idOfNewUser);
+        tempUserRepository.deleteByEmail(emailOfNewUser);
 
         return tempUser;
     }

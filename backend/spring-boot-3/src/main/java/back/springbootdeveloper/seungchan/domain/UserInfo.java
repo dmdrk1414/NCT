@@ -2,7 +2,6 @@ package back.springbootdeveloper.seungchan.domain;
 
 
 import back.springbootdeveloper.seungchan.util.DayUtill;
-import back.springbootdeveloper.seungchan.util.Utill;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,7 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-public class User implements UserDetails {
+public class UserInfo implements UserDetails {
     @Id // id 필드를 기본키로 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 자동으로 1씩 증가
     @Column(name = "id", updatable = false)
@@ -82,7 +81,7 @@ public class User implements UserDetails {
     private boolean regularMember;
 
     @Builder
-    public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, boolean isOb, String email, String password) {
+    public UserInfo(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, boolean isOb, String email, String password) {
         this.name = name;
         this.phoneNum = phoneNum;
         this.major = major;
@@ -105,7 +104,7 @@ public class User implements UserDetails {
     }
 
     @Builder
-    public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, String email, String password) {
+    public UserInfo(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo, String email, String password) {
         this.name = name;
         this.phoneNum = phoneNum;
         this.major = major;
@@ -127,7 +126,7 @@ public class User implements UserDetails {
     }
 
     @Builder
-    public User(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo) {
+    public UserInfo(String name, String phoneNum, String major, String gpa, String address, String specialtySkill, String hobby, String mbti, String studentId, String birthDate, String advantages, String disadvantage, String selfIntroduction, String photo) {
         this.name = name;
         this.phoneNum = phoneNum;
         this.major = major;
@@ -146,8 +145,8 @@ public class User implements UserDetails {
         this.regularMember = true;
     }
 
-    public static User getUserFromTempUser(TempUser tempUser) {
-        return User.builder()
+    public static UserInfo getUserFromTempUser(TempUser tempUser) {
+        return UserInfo.builder()
                 .name(tempUser.getName())
                 .phoneNum(tempUser.getPhoneNum())
                 .major(tempUser.getMajor())
@@ -168,7 +167,7 @@ public class User implements UserDetails {
                 .build();
     }
 
-    public void update(User user) {
+    public void update(UserInfo user) {
         this.id = user.getId();
         this.name = user.getName();
         this.phoneNum = user.getPhoneNum();

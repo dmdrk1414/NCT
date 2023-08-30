@@ -1,6 +1,5 @@
 package back.springbootdeveloper.seungchan.domain;
 
-import jakarta.persistence.Entity;
 import lombok.*;
 
 @Getter
@@ -14,7 +13,7 @@ public class ObUser {
     private Long userId;
 
     @Builder
-    public ObUser(User user) {
+    public ObUser(UserInfo user) {
         this.name = user.getName();
         this.yearOfRegistration = user.getYearOfRegistration();
         this.phoneNum = user.getPhoneNum();

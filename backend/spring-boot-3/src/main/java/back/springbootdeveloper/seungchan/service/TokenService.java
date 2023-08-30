@@ -2,19 +2,16 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
 import back.springbootdeveloper.seungchan.domain.RefreshToken;
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.repository.RefreshTokenRepository;
 import back.springbootdeveloper.seungchan.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -38,14 +35,14 @@ public class TokenService {
         }
 
         Long userId = refreshTokenService.findByRefreshToken(refreshToken).getUserId();
-        User user = userService.findUserById(userId);
+        UserInfo user = userService.findUserById(userId);
 
         return tokenProvider.generateToken(user, ACCESS_TOKEN_DURATION);
     }
 
     public String createAccessAndRefreshToken(HttpServletRequest request, HttpServletResponse response, String userEmail) {
         // 이메일을 기반으로 사용자 정보를 조회
-        User user = userService.findByEmail(userEmail);
+        UserInfo user = userService.findByEmail(userEmail);
 
         // 새로운 리프레쉬 토큰을 생성한다.
         String refreshToken = tokenProvider.generateToken(user, REFRESH_TOKEN_DURATION);

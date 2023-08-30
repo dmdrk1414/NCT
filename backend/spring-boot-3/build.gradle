@@ -8,6 +8,12 @@ group = 'back.springbootdeveloper'
 version = '1.0-SNAPSHOT'
 sourceCompatibility = '17' //  자바 소스를 컴파일할 때 사용할 자바 버전을 입력
 
+bootJar {
+    archivesBaseName = 'app'
+    archiveFileName = 'app.jar'
+    archiveVersion = "0.0.0"
+}
+
 repositories {
     mavenCentral()
 }
@@ -56,6 +62,9 @@ dependencies {
 
     // Jackson을 이용해서 Java 객체를 JSON으로 직렬화하거나 JSON을 Java 객체로 역직렬화
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+
+    // 임메모리 데이터배이스, 로컬과 테스트 환경에서 사용
+    runtimeOnly 'com.h2database:h2'
 }
 
 test {

@@ -4,11 +4,34 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.temporal.WeekFields;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class DayUtill {
+
+    /**
+     * @return 오늘이 몇 요일인지 확인 index로 준다.
+     * 토요일과 일요일은 5으로 처리, 그 외 요일은 0부터 4까지의 값을 반환
+     */
+    public static int getIndexOfWeekDay() {
+        // 현재 날짜와 시간 가져오기
+        Date currentDate = new Date();
+
+        // Calendar 객체 생성 및 현재 날짜 설정
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+
+        // 현재 요일 얻기 (1: 일요일, 2: 월요일, ..., 7: 토요일)
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        int NUM_SATURDAY_SUNDAY = 5;
+        // 토요일 (7)과 일요일 (1)은 5으로 처리, 그 외 요일은 0부터 4까지의 값을 반환
+        if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
+            return NUM_SATURDAY_SUNDAY;
+        } else {
+            return dayOfWeek - Calendar.MONDAY;
+        }
+    }
+
     public static DayOfWeek getDayOfWeekAtNow(String dayStr) {
         int year = DayUtill.getYearFromDayStr(dayStr);
         int month = DayUtill.getMonthFromDayStr(dayStr);
@@ -20,9 +43,7 @@ public class DayUtill {
         // 요일을 얻습니다.
         DayOfWeek dayOfWeek = date.getDayOfWeek();
 
-        // TODO: 8/27/23 다시 변경
-//        if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
-        if (dayOfWeek != DayOfWeek.SATURDAY) {
+        if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
             return dayOfWeek;
         }
         throw new IllegalArgumentException("토요일 일요일은 안됩니다.");

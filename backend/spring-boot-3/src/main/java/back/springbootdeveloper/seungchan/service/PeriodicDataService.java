@@ -2,19 +2,14 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
 import back.springbootdeveloper.seungchan.domain.PeriodicData;
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.repository.PeriodicDataRepository;
 import back.springbootdeveloper.seungchan.util.DayUtill;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.temporal.WeekFields;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -22,7 +17,7 @@ import java.util.Map;
 public class PeriodicDataService {
     private final PeriodicDataRepository periodicDataRepository;
 
-    public void saveNewUser(User newUser) {
+    public void saveNewUser(UserInfo newUser) {
         String basicWeeklyData = "[0,0,0,0,0]";
         String basicMonth = "";
 
@@ -58,7 +53,7 @@ public class PeriodicDataService {
             String weeklyData = periodicData.getWeeklyData();
             StringBuilder thisMonthData = new StringBuilder(periodicData.getThisMonth());
 
-            // thisMonthData = "4:[1,1,1,0,1] , 5:[1,1,1,0,1] ,
+            // thisMonthData = "4:[1,1,1,0,1] , 5:[1,1,1,0,1] , "
             thisMonthData = thisMonthData.append(currentWeekNumber + ":" + weeklyData + " , ");
 
             periodicDataRepository.updateThisMonthScheduled(String.valueOf(thisMonthData), periodicData.getUserId());

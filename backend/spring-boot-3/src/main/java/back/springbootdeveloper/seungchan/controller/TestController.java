@@ -74,11 +74,11 @@ public class TestController {
         String[] phoneNums = {"010-1111-1111", "010-2222-2222", "010-3333-3333", "010-4444-4444", "010-5555-5555"};
         String[] majors = {"computer", "math", "physics", "chemistry", "biology"};
 
-        List<User> userList = new ArrayList<>();
+        List<UserInfo> userList = new ArrayList<>();
         Random random = new Random();
 
         for (int i = 0; i < names.length; i++) {
-            User user = User.builder()
+            UserInfo user = UserInfo.builder()
                     .name(names[i])
                     .phoneNum(phoneNums[i])
                     .major(majors[i])
@@ -97,7 +97,7 @@ public class TestController {
 
             userList.add(user);
         }
-        for (User user : userList) {
+        for (UserInfo user : userList) {
             userRepository.save(user);
         }
         return "Hello World";
@@ -105,8 +105,8 @@ public class TestController {
 
     @GetMapping("/userUtil-test")
     public String userUtilTestController() {
-        List<User> userList = userRepository.findAll();
-        for (User user : userList) {
+        List<UserInfo> userList = userRepository.findAll();
+        for (UserInfo user : userList) {
             if ("박승찬".equals(user.getName())) {
                 userUtilRepository.save(UserUtill
                         .builder()
@@ -130,8 +130,8 @@ public class TestController {
 
     @GetMapping("/attendance-test")
     public String attendanceStatus() {
-        List<User> userList = userRepository.findAll();
-        for (User user : userList) {
+        List<UserInfo> userList = userRepository.findAll();
+        for (UserInfo user : userList) {
             attendanceStatusRepository.save(AttendanceStatus
                     .builder()
                     .userId(user.getId())

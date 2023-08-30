@@ -1,8 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.domain.PeriodicData;
 import back.springbootdeveloper.seungchan.domain.TempUser;
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.dto.request.NewUserApprovalRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.NewUserEachResponse;
@@ -54,10 +53,10 @@ public class NewUserController {
     @PostMapping("/{id}/acceptance")
     public ResponseEntity<BaseResponseBody> acceptNewUserOfKing(@RequestBody NewUserApprovalRequest newUserApprovalRequest, HttpServletRequest request) {
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
-        Long idOfNewUser = newUserApprovalRequest.getId();
+        String emailOfNewUser = newUserApprovalRequest.getEmail();
         if (isNuriKing) {
-            TempUser tempUser = tempUserService.removeTempUserById(idOfNewUser);
-            User newUser = User.getUserFromTempUser(tempUser);
+            TempUser tempUser = tempUserService.removeTempUserByEmail(emailOfNewUser);
+            UserInfo newUser = UserInfo.getUserFromTempUser(tempUser);
             userService.saveNewUser(newUser);
             userUtillService.saveNewUser(newUser);
             attendanceService.saveNewUser(newUser);
@@ -70,9 +69,9 @@ public class NewUserController {
     @PostMapping("/{id}/reject")
     public ResponseEntity<BaseResponseBody> rejectNewUserOfKing(@RequestBody NewUserApprovalRequest newUserApprovalRequest, HttpServletRequest request) {
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
-        Long idOfNewUser = newUserApprovalRequest.getId();
+        String emailOfNewUser = newUserApprovalRequest.getEmail();
         if (isNuriKing) {
-            tempUserService.removeTempUserById(idOfNewUser);
+            tempUserService.removeTempUserByEmail(emailOfNewUser);
         }
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }

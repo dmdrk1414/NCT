@@ -30,9 +30,7 @@ public class NumOfTodayAttendenceService {
 
         if (Utill.isEqualStr(numOfAttendance, checkNum)) {
             DayOfWeek dayOfWeekAtNow = DayUtill.getDayOfWeekAtNow(dayStr);
-            // TODO: 8/27/23 다시 원위치로 변경
-//            int indexDayOfWeekAtNow = dayOfWeekAtNow.getValue() - 1; // - 1을 해야한다. MONDAY = 1 이기때문에
-            int indexDayOfWeekAtNow = dayOfWeekAtNow.getValue() - 1 + 1; // - 1을 해야한다. MONDAY = 1 이기때문에
+            int indexDayOfWeekAtNow = dayOfWeekAtNow.getValue() - 1; // - 1을 해야한다. MONDAY = 1 이기때문에
             attendanceService.UpdateweeklyData(indexDayOfWeekAtNow, userId);
             return true;
         }

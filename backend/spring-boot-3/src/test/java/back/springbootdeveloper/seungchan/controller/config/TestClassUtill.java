@@ -5,8 +5,8 @@ import back.springbootdeveloper.seungchan.domain.*;
 public class TestClassUtill {
     private static final String NAME_TEST = "현재실원_이름";
 
-    public static User makeUser(String name, String email) {
-        User user = User.builder()
+    public static UserInfo makeUser(String name, String email) {
+        UserInfo user = UserInfo.builder()
                 .name(name)
                 .phoneNum("010-2383-6578")
                 .major("컴퓨터 공학과")
@@ -29,8 +29,8 @@ public class TestClassUtill {
         return user;
     }
 
-    public static User makeUserOb(String name, String email) {
-        User user = User.builder()
+    public static UserInfo makeUserOb(String name, String email) {
+        UserInfo user = UserInfo.builder()
                 .name(name)
                 .phoneNum("010-2383-6578")
                 .major("컴퓨터 공학과")
@@ -78,7 +78,7 @@ public class TestClassUtill {
         return user;
     }
 
-    public static UserUtill makeUserUtill(User testUser, int cntVacation, boolean isNuriKing) {
+    public static UserUtill makeUserUtill(UserInfo testUser, int cntVacation, boolean isNuriKing) {
         return UserUtill.builder()
                 .name(testUser.getName())
                 .userId(testUser.getId())
@@ -99,7 +99,7 @@ public class TestClassUtill {
                 .build();
     }
 
-    public static AttendanceStatus makeAttendanceStatus(User user, String VacationDates, String absenceDataes, String weeklyData) {
+    public static AttendanceStatus makeAttendanceStatus(UserInfo user, String VacationDates, String absenceDataes, String weeklyData) {
         return AttendanceStatus
                 .builder()
                 .userId(user.getId())

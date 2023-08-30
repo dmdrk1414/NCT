@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class UserOfDetail2MainResponse {
     private boolean isOb;
     private Long userId;
 
-    public UserOfDetail2MainResponse(UserUtill userUtill, User user) {
+    public UserOfDetail2MainResponse(UserUtill userUtill, UserInfo user) {
         this.name = user.getName();
         this.major = user.getMajor();
         this.studentId = user.getStudentId();

@@ -53,9 +53,6 @@ cmake-build-*/
 # File-based project format
 *.iws
 
-# IntelliJ
-*.properties
-
 out/
 
 # mpeltonen/sbt-idea plugin

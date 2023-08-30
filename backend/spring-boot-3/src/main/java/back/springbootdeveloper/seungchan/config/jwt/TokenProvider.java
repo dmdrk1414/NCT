@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.config.jwt;
 
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
 import io.jsonwebtoken.Header;
@@ -29,7 +29,7 @@ public class TokenProvider {
     private final UserUtillService userUtillService;
 
     // 토큰 생성을 한다. user의 정보와 원하는 유효기간을 매개 변수로 받는다.
-    public String generateToken(User user, Duration expiredAt) {
+    public String generateToken(UserInfo user, Duration expiredAt) {
         UserUtill userUtill = userUtillService.findUserByUserId(user.getId());
         Date now = new Date();
         // 현제 시간 + 원하는 유효기간을 토대로 토큰을 만든다.
@@ -42,7 +42,7 @@ public class TokenProvider {
     // 헤더는 typ(타입),
     // 내용 iss(발급자), iat(발급일시), exp(만료일시), sub(토큰 제목)이, 클레임에는 유저 ID를 지정
     // 토큰을 만들 때는 프로퍼티즈 파일에 선언해둔 비밀값과 함께 HS256 방식으로 암호화한다.
-    private String makeToken(Date expiry, User user, UserUtill userUtill) {
+    private String makeToken(Date expiry, UserInfo user, UserUtill userUtill) {
         Date now = new Date();
 
         // 헤더 : 타입, alg | 내용 : 키, 값 | 서명

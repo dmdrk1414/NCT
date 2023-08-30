@@ -1,10 +1,11 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.dto.response.VacationsResponce;
 import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
+import back.springbootdeveloper.seungchan.util.DayUtill;
 import back.springbootdeveloper.seungchan.util.Utill;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
@@ -130,7 +131,7 @@ public class AttendanceService {
         attendanceStatusRepository.resetVacationDate(resetVacationDate);
     }
 
-    public void saveNewUser(User newUser) {
+    public void saveNewUser(UserInfo newUser) {
         String basicDate = "";
         String basicWeeklyData = "[0,0,0,0,0]";
         AttendanceStatus attendanceStatusOfNewUser = AttendanceStatus.builder()
@@ -146,5 +147,26 @@ public class AttendanceService {
 
     public List<AttendanceStatus> findAll() {
         return attendanceStatusRepository.findAll();
+    }
+
+    public boolean isPassAttendanceAtToday(Long userIdOfSearch) {
+        boolean isPassAttendance = true;
+        int COMPLETE_ATTENDANCE = 1;
+        int attendanceStatusNumOneAndZero = 0;
+        AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(userIdOfSearch);
+        String weeklyDataStr = attendanceStatus.getWeeklyData();
+        List<Integer> weeklyDataList = Utill.extractNumbers(weeklyDataStr);
+        int indexOfWeekDay = DayUtill.getIndexOfWeekDay();
+        int NUM_SATURDAY_SUNDAY = 5;
+
+        if (indexOfWeekDay == NUM_SATURDAY_SUNDAY) {
+            return false;
+        } else {
+            // 출석했으면 1, 출석안했으면 0
+            attendanceStatusNumOneAndZero = weeklyDataList.get(indexOfWeekDay);
+        }
+
+        isPassAttendance = Utill.isSameInteger(COMPLETE_ATTENDANCE, attendanceStatusNumOneAndZero);
+        return isPassAttendance;
     }
 }

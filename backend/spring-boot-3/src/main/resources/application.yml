@@ -3,6 +3,22 @@ jwt:
   issuer: seungchan141414@gmail.com
   secret_key: nct-springboot
 
+# 스프링 테스트 db 설정
+# localhost:8080/h2-console 으로접속
+spring:
+  datasource:
+    #    h2 2.xx번전부터는 MODE 설정
+    url: jdbc:h2:mem:testdb;MODE=MySQL
+  h2:
+    console:
+      enabled: true
+      settings:
+        trace: false
+        web-allow-others: true
+  jpa:
+    defer-datasource-initialization: true
+
+# 스웨그 설정
 springdoc:
   packages-to-scan: back.springbootdeveloper.seungchan.controller
   default-consumes-media-type: application/json;charset=UTF-8

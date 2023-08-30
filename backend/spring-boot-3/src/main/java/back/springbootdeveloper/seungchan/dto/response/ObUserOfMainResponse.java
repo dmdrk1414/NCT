@@ -1,7 +1,6 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
 import back.springbootdeveloper.seungchan.domain.ObUser;
-import back.springbootdeveloper.seungchan.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

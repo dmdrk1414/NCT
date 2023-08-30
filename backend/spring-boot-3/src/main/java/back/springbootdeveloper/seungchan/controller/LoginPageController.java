@@ -1,9 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.domain.User;
 import back.springbootdeveloper.seungchan.dto.request.TempUserFormRequest;
 import back.springbootdeveloper.seungchan.dto.request.UserLoginRequest;
-import back.springbootdeveloper.seungchan.dto.request.RequestUserForm;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.UserLoginResponse;
 import back.springbootdeveloper.seungchan.service.LoginService;
@@ -11,7 +9,6 @@ import back.springbootdeveloper.seungchan.service.TempUserService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

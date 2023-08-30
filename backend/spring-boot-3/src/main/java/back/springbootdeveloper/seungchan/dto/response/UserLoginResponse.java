@@ -1,10 +1,8 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
-import back.springbootdeveloper.seungchan.domain.User;
+import back.springbootdeveloper.seungchan.domain.UserInfo;
 import back.springbootdeveloper.seungchan.domain.UserUtill;
 import lombok.*;
-
-import java.util.Map;
 
 @Getter
 @Setter
@@ -15,7 +13,7 @@ public class UserLoginResponse {
     private Long userId;
     private boolean isNuriKing;
 
-    public UserLoginResponse(String accessToken, User user, UserUtill userUtill) {
+    public UserLoginResponse(String accessToken, UserInfo user, UserUtill userUtill) {
         this.accessToken = accessToken;
         this.name = user.getName();
         this.userId = user.getId();

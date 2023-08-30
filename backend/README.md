@@ -20,6 +20,82 @@
 
 5. 아침마다 얼마나 했는지 어디를 했는지 서로 확인하는 과정의 중요성
 
+6. 테스트 디비를 꼭연결하자 어디든, 누구든 테스트를 할수있도록
+
+   1. 테스트 데이터는 5개이상 넣자
+
+7. 변수이름, respond json 변수명은 규칙대로 실행하자.
+
+8. 자바버전확인 꼭!!!! 제발 이상한 버전 쓰지말고 생각 많이 하고 정하기
+
+배포할시
+
+https://github.com/dmdrk1414?tab=repositories
+
+https://github.com/dmdrk1414/docker-test
+
+1. 서버 컴퓨터의 사양을 체크하자.
+2. 도커 컨테이너의 이름을 지정하자
+   1. compose을 사용할시 랜덤으로 폴더이름으로 변경이 되는 점이 찾기 힘들다.
+      1. 왜냐하면 nginx을 할때도 컨테이너의 이름으로 리버싱 프록시를 하기 때문이다.
+3. 도커 파일을 설정할때 생각을 많이 하고 설정하자 설정파일을 깃에 올릴테니 확인하고 설정
+
+4. 버전 관리 툴의 소중함 nvm 
+
+5. aws의 소중함. 이런 귀찮음을 해결해주는 aws에게 감사하자
+6. mysql의 접근 ip의 다양함을 생각하자.
+
+# 배포 주의 실제 배포시
+
+------
+
+db - spring
+
+[practice-build-spring-boot-1  | java.sql.SQLException: null,  message from server: "Host '192.168.32.4' is not allowed to connect to this MySQL server" (2)](https://www.notion.so/practice-build-spring-boot-1-java-sql-SQLException-null-message-from-server-Host-192-168-32-0d4b312cbc2044c4a6a26b7759498f43?pvs=21)
+
+- docker compose up —build
+
+  이것은 변경된 사항만 적용
+
+1. 스프링 build의 .jar파일 이름 변경
+
+   이 글은 해당 jar 파일의 이름을 원하는 방식으로 변경하는 방법을 소개합니다.
+
+   먼저 스프링 부트 프로젝트의 build.gradle 파일의 다음과 같은 코드를 추가합니다.
+
+   ```html
+   bootJar{
+   archivesBaseName = '원하는이름'
+   archiveFileName = '원하는이름.jar'
+   archiveVersion = "0.0.0"
+   }
+   ```
+
+   https://scshim.tistory.com/236
+
+2. spring
+
+   1. [application.properties](http://application.properties) 파일 gladle 안의 파일 만들기
+   2. resources 폴더 만들기
+
+3. docker-compose
+
+   1. 폴더이름 주의 왜냐하면 폴더이름으로 컨테이너 생성
+
+4. front
+
+   1. npm i 하기
+
+------
+
+느낀점
+
+1. 도커 컨테이너는 지정을 하자
+   1. 지정을 안하니 임의로 생성하는 점에서 힘들다.
+
+
+
+
 # spring boot 3.0.2 
 
 ```java
