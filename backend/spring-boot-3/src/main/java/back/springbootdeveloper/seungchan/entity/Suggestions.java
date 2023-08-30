@@ -1,4 +1,4 @@
-package back.springbootdeveloper.seungchan.domain;
+package back.springbootdeveloper.seungchan.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "suggestions")
 public class Suggestions {
     // classification
     // title
@@ -15,16 +16,16 @@ public class Suggestions {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "classification", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "classification", length = 5, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String classification;
 
     @Column(name = "title", nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String title;
 
-    @Column(name = "isCheck", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "check_content", nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private boolean isCheck;
 
-    @Column(name = "holidayPeriod", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "holiday_period", length = 100, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String holidayPeriod;
 
     // 휴가 기간 포함 건의 사항

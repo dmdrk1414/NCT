@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.repository;
 
-import back.springbootdeveloper.seungchan.domain.TempUser;
+import back.springbootdeveloper.seungchan.entity.TempUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 

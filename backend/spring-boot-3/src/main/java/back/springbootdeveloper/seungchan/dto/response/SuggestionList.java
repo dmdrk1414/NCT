@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
-import back.springbootdeveloper.seungchan.domain.Suggestions;
+import back.springbootdeveloper.seungchan.entity.Suggestions;
 import lombok.*;
 
 @Getter

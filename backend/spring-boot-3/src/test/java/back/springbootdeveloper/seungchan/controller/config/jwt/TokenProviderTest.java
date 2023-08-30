@@ -3,7 +3,7 @@ package back.springbootdeveloper.seungchan.controller.config.jwt;
 import back.springbootdeveloper.seungchan.config.jwt.JwtProperties;
 import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
 import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
-import back.springbootdeveloper.seungchan.domain.UserInfo;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import io.jsonwebtoken.Jwts;

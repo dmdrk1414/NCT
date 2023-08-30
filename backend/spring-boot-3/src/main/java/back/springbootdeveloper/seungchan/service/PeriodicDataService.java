@@ -1,8 +1,8 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
-import back.springbootdeveloper.seungchan.domain.PeriodicData;
-import back.springbootdeveloper.seungchan.domain.UserInfo;
+import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
+import back.springbootdeveloper.seungchan.entity.PeriodicData;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.repository.PeriodicDataRepository;
 import back.springbootdeveloper.seungchan.util.DayUtill;
 import com.fasterxml.jackson.databind.ObjectMapper;

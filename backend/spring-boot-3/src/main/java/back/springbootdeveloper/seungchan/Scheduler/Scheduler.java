@@ -1,7 +1,6 @@
 package back.springbootdeveloper.seungchan.Scheduler;
 
-import back.springbootdeveloper.seungchan.domain.AttendanceStatus;
-import back.springbootdeveloper.seungchan.domain.PeriodicData;
+import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
 import back.springbootdeveloper.seungchan.service.AttendanceService;
 import back.springbootdeveloper.seungchan.service.NumOfTodayAttendenceService;
 import back.springbootdeveloper.seungchan.service.PeriodicDataService;

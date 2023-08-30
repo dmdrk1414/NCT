@@ -1,4 +1,4 @@
-package back.springbootdeveloper.seungchan.domain;
+package back.springbootdeveloper.seungchan.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
+@Table(name = "refresh_token")
 public class RefreshToken {
 
     @Id

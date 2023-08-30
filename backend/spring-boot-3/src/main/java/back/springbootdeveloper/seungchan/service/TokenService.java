@@ -1,8 +1,8 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
-import back.springbootdeveloper.seungchan.domain.RefreshToken;
-import back.springbootdeveloper.seungchan.domain.UserInfo;
+import back.springbootdeveloper.seungchan.entity.RefreshToken;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.repository.RefreshTokenRepository;
 import back.springbootdeveloper.seungchan.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;

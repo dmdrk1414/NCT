@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.domain.Suggestions;
+import back.springbootdeveloper.seungchan.entity.Suggestions;
 import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.SuggestionList;

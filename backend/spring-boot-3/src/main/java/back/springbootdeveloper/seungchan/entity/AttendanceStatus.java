@@ -1,4 +1,4 @@
-package back.springbootdeveloper.seungchan.domain;
+package back.springbootdeveloper.seungchan.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "attendance_status")
 public class AttendanceStatus {
     @Id // id 필드를 기본키로 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 자동으로 1씩 증가
@@ -18,16 +19,16 @@ public class AttendanceStatus {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", length = 10, nullable = false)
     private String name;
 
-    @Column(name = "vacation_dates", nullable = false)
+    @Column(name = "vacation_dates", length = 400, nullable = false)
     private String vacationDates;
 
-    @Column(name = "absence_dates", nullable = false)
+    @Column(name = "absence_dates", length = 255, nullable = false)
     private String absenceDates;
 
-    @Column(name = "weekly_data", nullable = false)
+    @Column(name = "weekly_data", length = 30, nullable = false)
     private String weeklyData = "[ 0, 0, 0, 0, 0]";
 
     @Builder

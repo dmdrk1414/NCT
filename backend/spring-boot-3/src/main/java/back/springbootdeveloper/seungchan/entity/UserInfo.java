@@ -1,4 +1,4 @@
-package back.springbootdeveloper.seungchan.domain;
+package back.springbootdeveloper.seungchan.entity;
 
 
 import back.springbootdeveloper.seungchan.util.DayUtill;
@@ -16,65 +16,65 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
+@Table(name = "user_info")
 public class UserInfo implements UserDetails {
     @Id // id 필드를 기본키로 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 자동으로 1씩 증가
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "name", length = 10, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String name;
 
-    @Column(name = "phoneNum", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "phone_num", length = 20, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String phoneNum;
 
-    @Column(name = "major", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "major", length = 20, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String major;
 
-    @Column(name = "gpa", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "gpa", length = 10, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String gpa;
 
-    @Column(name = "address", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "address", length = 100, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String address;
 
-
-    @Column(name = "specialtySkill", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "specialty_skill", length = 255, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String specialtySkill;
 
-    @Column(name = "hobby", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "hobby", length = 255, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String hobby;
 
-    @Column(name = "mbti", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "mbti", length = 10, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String mbti;
 
-    @Column(name = "studentId", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "student_id", length = 10, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String studentId;
 
-    @Column(name = "birthDate", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "birth_date", length = 20, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String birthDate;
 
-    @Column(name = "advantages", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "advantages", length = 1000, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String advantages;
 
-    @Column(name = "disadvantage", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "disadvantage", length = 1000, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String disadvantage;
 
-    @Column(name = "selfIntroduction", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "self_introduction", length = 1000, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String selfIntroduction;
 
-    @Column(name = "photo", nullable = false) // 'title'이라는 not null 컴럼과 매핑
+    @Column(name = "photo", length = 255, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String photo;
 
-    @Column(name = "is_ob", nullable = false)
+    @Column(name = "ob", nullable = false)
     private boolean isOb;
 
-    @Column(name = "year_registration", nullable = false)
+    @Column(name = "year_registration", length = 20, nullable = false)
     private String yearOfRegistration;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", length = 40, nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", length = 100, nullable = false)
     private String password;
 
     @Column(name = "regular_member", nullable = false)
