@@ -56,7 +56,7 @@ services:
     ports:
       - "80:80"
     # 현재 nginx 폴더와 도커의 /etc/nginx/conf.d 와 마운트
-      volumes:
+    volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d
     # depends_on은 설정 서비스 명이 nextjs, pring-boot-3 이 먼저 실행되고 nginx의 서비스가 먼저 실행된다.
     depends_on:
