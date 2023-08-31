@@ -9,7 +9,6 @@
 - [x] controller
 - [x] responsedto
 - [x] service
-
 - [x]  Suggestion artile write
 
 - [x] Holliday 컬럼, 변수 추가
