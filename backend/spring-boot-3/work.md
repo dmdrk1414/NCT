@@ -16,6 +16,7 @@
 - [x] controller
 - [x] responsedto
 
+
 - [ ]   3-4 메인 - 회원상세(일반, 실장)
 
 - [x] Controller 의 서비스 주입
