@@ -15,7 +15,6 @@
 - [x] Holliday 컬럼, 변수 추가
 - [x] controller
 - [x] responsedto
-- [x] service
 
 - [ ]   3-4 메인 - 회원상세(일반, 실장)
 
