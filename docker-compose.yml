@@ -41,7 +41,7 @@ services:
     environment:
       # 만약 다른 컨테이너(서비스)와의 db을 연결하고 싶으면 원하는 컨테이너의 이름을 적어라
       # SPRING_DATASOURCE_URL: jdbc:mysql://원하는db컨테이너이름:3306/nct-db?useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_URL: jdbc:mysql://compose-database-mysql:3306/nct_db?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&ueUnicode=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://compose-database-mysql:3306/nct_db?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&useUnicode=true&serverTimezone=Asia/Seoul
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "1234"
 
