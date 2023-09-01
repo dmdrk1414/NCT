@@ -43,7 +43,7 @@ services:
       # SPRING_DATASOURCE_URL: jdbc:mysql://원하는db컨테이너이름:3306/nct-db?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_URL: jdbc:mysql://compose-database-mysql:3306/nct_db?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&useUnicode=true&serverTimezone=Asia/Seoul
       SPRING_DATASOURCE_USERNAME: "root"
-      SPRING_DATASOURCE_PASSWORD: "1234"
+      SPRING_DATASOURCE_PASSWORD: "nuri777!"
 
   server-nginx:
     container_name: compose-nginx
