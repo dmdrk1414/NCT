@@ -25,6 +25,7 @@ public class UpdateUserFormRequest {
     private String disadvantage;
     private String selfIntroduction;
     private String photo;
+    private String email;
 
     public UserInfo toEntity() {
         return UserInfo.builder()
@@ -42,6 +43,7 @@ public class UpdateUserFormRequest {
                 .disadvantage(disadvantage)
                 .selfIntroduction(selfIntroduction)
                 .photo(photo)
+                .email(email)
                 .build();
     }
 }
