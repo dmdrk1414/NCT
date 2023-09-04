@@ -684,16 +684,10 @@ public class ApiTest {
         TempUser tempUserDB = tempUserRepository.save(tempUser_1);
         final String url = "/new-users/" + tempUserDB.getId() + "/acceptance";
 
-        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getId());
-
-        // 객체 suggestionsRequest을 Json으로 직렬화
-        final String requestBody = objectMapper.writeValueAsString(newUserApprovalRequest);
-
         // when
         ResultActions result = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(requestBody)
                 .header("authorization", "Bearer " + token) // token header에 담기
         );
 
@@ -717,16 +711,10 @@ public class ApiTest {
         TempUser tempUserDB = tempUserRepository.save(tempUser_1);
         final String url = "/new-users/" + tempUserDB.getId() + "/reject";
 
-        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getId());
-
-        // 객체 suggestionsRequest을 Json으로 직렬화
-        final String requestBody = objectMapper.writeValueAsString(newUserApprovalRequest);
-
         // when
         ResultActions result = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(requestBody)
                 .header("authorization", "Bearer " + token) // token header에 담기
         );
 
