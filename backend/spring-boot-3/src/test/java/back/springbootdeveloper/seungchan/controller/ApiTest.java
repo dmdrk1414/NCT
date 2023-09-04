@@ -416,7 +416,8 @@ public class ApiTest {
                 user.getAdvantages(),
                 user.getDisadvantage(),
                 user.getSelfIntroduction(),
-                user.getPhoto()
+                user.getPhoto(),
+                user.getEmail()
         );
         System.out.println("requestUserForm = " + requestUserForm);
 
