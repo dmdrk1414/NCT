@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -725,5 +726,41 @@ public class ApiTest {
             tempUserService.findNewUsers(tempUserDB.getId());
         });
 
+    }
+
+    @DisplayName("나의 정보를 업데이트를 할때 기존에 기입하였던 정보를 find하는 테스트 함수")
+    @Test
+    public void testFindMypageToUpdate() throws Exception {
+        // given
+        final String url = "/mypage/update";
+
+
+        UserInfo userInfo = userService.findUserById(1L);
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(userInfo.getName()))
+                .andExpect(jsonPath("$.phoneNum").value(userInfo.getPhoneNum()))
+                .andExpect(jsonPath("$.major").value(userInfo.getMajor()))
+                .andExpect(jsonPath("$.gpa").value(userInfo.getGpa()))
+                .andExpect(jsonPath("$.address").value(userInfo.getAddress()))
+                .andExpect(jsonPath("$.specialtySkill").value(userInfo.getSpecialtySkill()))
+                .andExpect(jsonPath("$.hobby").value(userInfo.getHobby()))
+                .andExpect(jsonPath("$.mbti").value(userInfo.getMbti()))
+                .andExpect(jsonPath("$.studentId").value(userInfo.getStudentId()))
+                .andExpect(jsonPath("$.birthDate").value(userInfo.getBirthDate()))
+                .andExpect(jsonPath("$.advantages").value(userInfo.getAdvantages()))
+                .andExpect(jsonPath("$.disadvantage").value(userInfo.getDisadvantage()))
+                .andExpect(jsonPath("$.selfIntroduction").value(userInfo.getSelfIntroduction()))
+                .andExpect(jsonPath("$.photo").value(userInfo.getPhoto()))
+                .andExpect(jsonPath("$.email").value(userInfo.getEmail()))
+                .andExpect(jsonPath("$.yearOfRegistration").value(userInfo.getYearOfRegistration()))
+                .andExpect(jsonPath("$.ob").value(userInfo.isOb()));
     }
 }
