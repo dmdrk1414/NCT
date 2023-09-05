@@ -10,16 +10,20 @@ export default function MainCarousel() {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 500,
+    pauseOnHover: true,
+    vertical: false,
   };
   return (
-    <div>
-      <Slider {...settings}>
-        <div className="bg-[url('/Images/main_one.jpg')] bg-cover h-[133vw] mb-[5rem]"></div>
-        <div className="bg-[url('/Images/main_two.jpg')] bg-cover h-[133vw] mb-[5rem]"></div>
-        <div className="bg-[url('/Images/main_three.jpg')] bg-cover h-[133vw] mb-[5rem]"></div>
-        <div className="bg-[url('/Images/main_four.jpg')] bg-cover h-[133vw] mb-[5rem]"></div>
-        <div className="bg-[url('/Images/main_five.jpg')] bg-cover h-[133vw] mb-[5rem]"></div>
-        <div className="bg-[url('/Images/main_six.jpg')] bg-cover h-[133vw] mb-[5rem]"></div>
+    <div className="overflow-x-hidden">
+      <Slider {...settings} className="h-[60vh] mb-[5rem]">
+        <div className="bg-[url('/Images/main_one.jpg')] bg-cover w-[100%] aspect-[3/4]"></div>
+        <div className="bg-[url('/Images/main_two.jpg')] bg-cover w-[100vw] aspect-[3/4]"></div>
+        <div className="bg-[url('/Images/main_three.jpg')] bg-cover w-[100vw] aspect-[3/4]"></div>
+        <div className="bg-[url('/Images/main_four.jpg')] bg-cover w-[100vw] aspect-[3/4]"></div>
+        <div className="bg-[url('/Images/main_five.jpg')] bg-cover w-[100vw] aspect-[3/4]"></div>
+        <div className="bg-[url('/Images/main_six.jpg')] bg-cover w-[100vw] aspect-[3/4]"></div>
       </Slider>
     </div>
   );
