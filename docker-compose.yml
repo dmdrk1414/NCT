@@ -59,8 +59,7 @@ services:
     # 현재 nginx 폴더와 도커의 /etc/nginx/conf.d 와 마운트
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d
-      - ./data/certbot/conf:/etc/letsencrypt # https
-      - ./data/certbot/www:/var/www/certbot # https
+      - /etc/letsencrypt:/etc/letsencrypt # https
     # depends_on은 설정 서비스 명이 nextjs, pring-boot-3 이 먼저 실행되고 nginx의 서비스가 먼저 실행된다.
     depends_on:
       - frontend-nextjs
@@ -80,12 +79,3 @@ services:
     volumes:
       - ./database/mysql/scripts:/docker-entrypoint-initdb.d
     command: --default-authentication-plugin=caching_sha2_password
-
-  # https을 위한 certbot 활성활
-  certbot:
-    image: certbot/certbot
-    container_name: compose-certbot
-    restart: unless-stopped
-    volumes:
-      - ./data/certbot/conf:/etc/letsencrypt 
-      - ./data/certbot/www:/var/www/certbot
