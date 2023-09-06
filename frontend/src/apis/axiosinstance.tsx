@@ -11,7 +11,7 @@ export const interceptors = (instance: AxiosInstance, token: string | null) => {
   return instance;
 };
 
-const BASE_URL = 'http://203.237.107.65:80/api';
+const BASE_URL = 'https://203.237.107.65:80/api';
 
 const axiosApi = (url: string, options?: object) => {
   const instance = axios.create({ baseURL: url, ...options });
