@@ -55,9 +55,12 @@ services:
     #  호스트 머신의 80번 포트와 컨테이너의 80번 포트를 매핑합니다.
     ports:
       - "80:80"
+      - "443:443" # https
     # 현재 nginx 폴더와 도커의 /etc/nginx/conf.d 와 마운트
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt # https
+      - ./data/certbot/www:/var/www/certbot # https
     # depends_on은 설정 서비스 명이 nextjs, pring-boot-3 이 먼저 실행되고 nginx의 서비스가 먼저 실행된다.
     depends_on:
       - frontend-nextjs
@@ -77,3 +80,11 @@ services:
     volumes:
       - ./database/mysql/scripts:/docker-entrypoint-initdb.d
     command: --default-authentication-plugin=caching_sha2_password
+
+  # https을 위한 certbot 활성활
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt 
+      - ./data/certbot/www:/var/www/certbot
