@@ -84,6 +84,7 @@ services:
   # https을 위한 certbot 활성활
   certbot:
     image: certbot/certbot
+    container_name: compose-certbot
     restart: unless-stopped
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt 
