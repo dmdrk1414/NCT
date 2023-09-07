@@ -13,3 +13,9 @@ export const userToken = atom({
   default: '',
   effects_UNSTABLE: [persistAtom],
 });
+
+export const isNuriKing = atom({
+  key: 'iNuriKing',
+  default: false,
+  effects_UNSTABLE: [persistAtom],
+});
