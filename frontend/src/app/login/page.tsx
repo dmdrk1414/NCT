@@ -5,11 +5,12 @@ import Button from '../../atoms/atom/middle-button';
 import { axBase } from '../../apis/axiosinstance';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
-import { userToken } from '../../states/index';
+import { userToken, isNuriKing } from '../../states/index';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
   const [token, setToken] = useRecoilState(userToken);
+  const [isKing, setIsNuriKing] = useRecoilState(isNuriKing);
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
@@ -32,7 +33,9 @@ export default function Login() {
       },
     })
       .then(response => {
+        console.log(response.data);
         setToken(response.data.accessToken);
+        setIsNuriKing(response.data.nuriKing);
         router.replace('/main');
       })
       .catch(err => {

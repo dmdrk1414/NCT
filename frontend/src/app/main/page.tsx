@@ -3,7 +3,7 @@ import { axAuth } from '@/apis/axiosinstance';
 import Header from '../../atoms/molecule/header';
 import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { userToken } from '../../states/index';
+import { userToken, isNuriKing } from '../../states/index';
 import { useRouter } from 'next/navigation';
 import Navigation from '../../atoms/template/navigation';
 import Button from '../../atoms/atom/large-button';
@@ -32,7 +32,7 @@ export default function Main() {
   const [token, setToken] = useRecoilState(userToken);
   const [type, setType] = useState(0);
   const [userList, setUserList] = useState([]);
-  const [isKing, setIsKing] = useState(false);
+  const [isKing, setIsKing] = useRecoilState(isNuriKing);
   const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
   const [AllertModalstatus, setAllertModalStatus] = useState(0);
   const [isTodayAttendance, setIsTodayAttendance] = useState(false);
@@ -75,7 +75,6 @@ export default function Main() {
       })
         .then(res => {
           setUserList(res.data[0].obUserList);
-          setIsKing(res.data[0].nuriKing);
         })
         .catch(err => {
           console.log(err);
@@ -92,7 +91,7 @@ export default function Main() {
       {AllertModalstatus !== 0 ? (
         <AllertModal title={textOfAllert[AllertModalstatus - 1].title} context={textOfAllert[AllertModalstatus - 1].context} type={textOfAllert[AllertModalstatus - 1].type} />
       ) : null}
-      {isMemberInfoOpen !== 0 ? <MemberInformationModal userId={isMemberInfoOpen} setIsMemberInfoOpen={setIsMemberInfoOpen} /> : null}
+      {isMemberInfoOpen !== 0 ? <MemberInformationModal userId={isMemberInfoOpen} setIsMemberInfoOpen={setIsMemberInfoOpen} isKing={isKing} type={type} /> : null}
       <header>
         <Header isVisible={false} />
       </header>

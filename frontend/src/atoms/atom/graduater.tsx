@@ -9,7 +9,11 @@ type data = {
 
 export default function Graduater({ name, year, phoneNum, isKing, userId, setIsMemberInfoOpen }: data) {
   const handleModal = () => {
-    setIsMemberInfoOpen(userId);
+    if (isKing) {
+      setIsMemberInfoOpen(userId);
+    } else {
+      return;
+    }
   };
   return (
     <>
