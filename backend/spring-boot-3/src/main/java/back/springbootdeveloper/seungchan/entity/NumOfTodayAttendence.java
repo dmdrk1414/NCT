@@ -19,7 +19,7 @@ public class NumOfTodayAttendence {
     @Column(name = "check_num", length = 10, nullable = false, updatable = false)
     private String checkNum;
 
-    @Column(name = "day", length = 20, nullable = false, updatable = false)
+    @Column(name = "today", length = 20, nullable = false, updatable = false)
     private String day;
 
     @Builder

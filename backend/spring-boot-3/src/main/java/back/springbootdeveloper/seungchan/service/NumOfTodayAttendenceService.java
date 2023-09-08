@@ -48,4 +48,10 @@ public class NumOfTodayAttendenceService {
     public void deleteAll() {
         numOfTodayAttendenceRepository.deleteAll();
     }
+
+    public NumOfTodayAttendence findNumOfTodayAttendenceAtNow() {
+        List<NumOfTodayAttendence> numAttendencelist = numOfTodayAttendenceRepository.findAll();
+        int indexOfLast = numAttendencelist.size() - 1;
+        return numAttendencelist.get(indexOfLast);
+    }
 }
