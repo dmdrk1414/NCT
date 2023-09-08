@@ -1,18 +1,13 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
-@Setter
-@NoArgsConstructor
+@Builder
 public class AttendanceNumberResponse {
-    private boolean isPassAtNow;
-
-    @Builder
-    public AttendanceNumberResponse(boolean isPassAtNow) {
-        this.isPassAtNow = isPassAtNow;
-    }
+    private String attendanceNum;
+    private String dayAtNow;
 }
