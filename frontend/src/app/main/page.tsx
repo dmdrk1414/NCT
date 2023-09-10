@@ -64,6 +64,7 @@ export default function Main() {
         .then(res => {
           console.log(res);
           setUserList(res.data.ybUserInfomationList);
+          setIsTodayAttendance(res.data.passAttendanceOfSearchUse);
         })
         .catch(err => {
           console.log(err);
@@ -121,9 +122,13 @@ export default function Main() {
               userList.map((item: userDataPropsTypeZero, idx) => (
                 <CurrentMember key={idx} name={item.name} token={item.cntVacation} week={item.weeklyData} userId={item.userId} setIsMemberInfoOpen={setIsMemberInfoOpen} />
               ))}
-            <div onClick={() => setIsAttendanceModalOpen(true)}>
-              <Button text={'출석하기'} addClass="text-2xl" />
-            </div>
+            {isTodayAttendance ? (
+              <Button text={'출석완료'} addClass="text-2xl bg-grey" />
+            ) : (
+              <div onClick={() => setIsAttendanceModalOpen(true)}>
+                <Button text={'출석하기'} addClass="text-2xl" />
+              </div>
+            )}
           </article>
         ) : (
           <article className="mx-[7.5%]">
