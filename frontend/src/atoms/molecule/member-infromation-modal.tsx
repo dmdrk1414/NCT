@@ -4,7 +4,6 @@ import { useRecoilState } from 'recoil';
 import { userToken } from '../../states/index';
 import { useEffect, useState } from 'react';
 import { data } from 'autoprefixer';
-import { SourceTextModule } from 'vm';
 
 type props = {
   userId: number;
@@ -61,10 +60,13 @@ export default function MemberInformationModal({ userId, setIsMemberInfoOpen, is
       },
     })
       .then(res => {
+        setVacationCount(0);
+        handleModal();
         console.log(res.data);
       })
       .catch(err => {
-        console.log(err);
+        setVacationCount(0);
+        handleModal();
       });
   };
 
