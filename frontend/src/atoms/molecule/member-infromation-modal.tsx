@@ -53,7 +53,7 @@ export default function MemberInformationModal({ userId, setIsMemberInfoOpen, is
   const giveVacation = () => {
     axAuth(token)({
       method: 'post',
-      url: 'vacation/count',
+      url: 'vacations/count',
       data: {
         vacationCount: vacationCount,
         userId: userId,
