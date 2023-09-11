@@ -340,7 +340,7 @@ public class ApiTest {
 
     @DisplayName("출석 번호 입력 API 테스트")
     @Test
-    public void attendanceNumberControllerTest() throws Exception {
+    public void AttendanceIsPassController() throws Exception {
         // given
         final String url = "/attendance/number";
         List<NumOfTodayAttendence> numOfTodayAttendenceList = numOfTodayAttendenceRepository.findAll();
@@ -763,5 +763,28 @@ public class ApiTest {
                 .andExpect(jsonPath("$.email").value(userInfo.getEmail()))
                 .andExpect(jsonPath("$.yearOfRegistration").value(userInfo.getYearOfRegistration()))
                 .andExpect(jsonPath("$.ob").value(userInfo.isOb()));
+    }
+
+    @DisplayName("출석을 하기위한 번호를 response하기 위한 method 테스트")
+    @Test
+    public void attendanceNumberControllerTest() throws Exception {
+        // given
+        final String url = "/attendance/find/number";
+        NumOfTodayAttendence numOfTodayAttendence = numOfTodayAttendenceRepository.findById(1L)
+                .orElseThrow();
+
+        String attendenceNum = numOfTodayAttendence.getCheckNum();
+        String dayAtNow = numOfTodayAttendence.getDay();
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.attendanceNum").value(attendenceNum))
+                .andExpect(jsonPath("$.dayAtNow").value(dayAtNow));
     }
 }
