@@ -27,9 +27,14 @@ type data = {
 export default function MemberInformationModal({ userId, setIsMemberInfoOpen, isKing, type }: props) {
   const [token, setToken] = useRecoilState(userToken);
   const [userInfo, setUserInfo] = useState<data>();
+  const [vacationCount, setVacationCount] = useState(0);
 
   const handleModal = () => {
     setIsMemberInfoOpen(0);
+  };
+
+  const inputVacation = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVacationCount(parseInt(e.target.value));
   };
 
   useEffect(() => {
@@ -48,8 +53,19 @@ export default function MemberInformationModal({ userId, setIsMemberInfoOpen, is
 
   const giveVacation = () => {
     axAuth(token)({
-      method: '',
-    });
+      method: 'post',
+      url: 'vacation/count',
+      data: {
+        vacationCount: vacationCount,
+        userId: userId,
+      },
+    })
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
@@ -77,7 +93,7 @@ export default function MemberInformationModal({ userId, setIsMemberInfoOpen, is
                 <div className="mb-auto">
                   <div>
                     <span className="font-semibold text-base">휴가 제공 : </span>
-                    <input type="number" className="border w-[7rem] mr-[1rem] mb-[1rem]" />
+                    <input type="number" className="border w-[7rem] mr-[1rem] mb-[1rem]" onChange={inputVacation} />
                     <button className="bg-red w-[4rem] rounded-[10%]" onClick={giveVacation}>
                       부여하기
                     </button>
