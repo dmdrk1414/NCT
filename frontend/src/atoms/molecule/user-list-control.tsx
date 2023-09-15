@@ -23,7 +23,12 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
   const [attendanceHopeTime, setAttendanceHopeTime] = useState<string>(''); // 초기값을 빈 문자열로 설정
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target; // 입력 요소의 값을 가져옴
+    let { value } = e.target; // 입력 요소의 값을 가져옴
+
+    if (!isNaN(Number(value)) && Number(value) <= 10) {
+      value = value.padStart(2, '0');
+    }
+
     setAttendanceHopeTime(
       value, // attendanceTime을 업데이트
     );
