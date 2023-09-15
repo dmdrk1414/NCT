@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.controller.config.AttendanceListFromJson;
 import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
 import back.springbootdeveloper.seungchan.dto.request.*;
+import back.springbootdeveloper.seungchan.dto.response.UserControlResponse;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.TempUserService;
@@ -91,6 +92,9 @@ public class ApiTest {
     private NumOfTodayAttendenceRepository numOfTodayAttendenceRepository;
     @Autowired
     private TempUserRepository tempUserRepository;
+    @Autowired
+    private AttendanceTimeRepository attendanceTimeRepository;
+
 
     private String token;
     private UserInfo user;
@@ -786,5 +790,27 @@ public class ApiTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.attendanceNum").value(attendenceNum))
                 .andExpect(jsonPath("$.dayAtNow").value(dayAtNow));
+    }
+
+
+    @DisplayName("개개인의 유저에게 기능적인 정보를 find하는 컨트롤러")
+    @Test
+    public void userControlFindInfoTest() throws Exception {
+        // given
+        final String url = "/main/detail/1/control";
+        AttendanceTime attendanceTime = attendanceTimeRepository.findById(1L)
+                .orElseThrow(() -> new IllegalArgumentException("not found: ")); // 찾아서 없으면 예외처리.;;
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(attendanceTime.getName()))
+                .andExpect(jsonPath("$.attendanceTime").value(attendanceTime.getAttendanceTime()));
+
     }
 }
