@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.dto.request.UserControlRequest;
 import back.springbootdeveloper.seungchan.dto.response.UserControlResponse;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
@@ -22,5 +23,10 @@ public class AttendanceTimeService {
     public void saveNewUser(UserInfo newUser) {
         AttendanceTime attendanceTime = new AttendanceTime(newUser);
         attendanceTimeRepository.save(attendanceTime);
+    }
+
+    public void updateAttendanceTime(UserControlRequest userControlRequest, Long userId) {
+        String attendanceTime = userControlRequest.getAttendanceTime();
+        attendanceTimeRepository.updateAttemdanceTime(attendanceTime, userId);
     }
 }

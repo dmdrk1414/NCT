@@ -1,15 +1,14 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.domain.ObUser;
-import back.springbootdeveloper.seungchan.dto.response.UserControlResponse;
+import back.springbootdeveloper.seungchan.dto.request.UserControlRequest;
+import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
-import back.springbootdeveloper.seungchan.dto.response.ObUserOfMainResponse;
-import back.springbootdeveloper.seungchan.dto.response.UserOfDetail2MainResponse;
 import back.springbootdeveloper.seungchan.domain.YbUserInfomation;
-import back.springbootdeveloper.seungchan.dto.response.YbUserListResponse;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import back.springbootdeveloper.seungchan.service.*;
+import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -72,10 +71,17 @@ public class MainController {
         return ResponseEntity.ok().body(response);
     }
 
-    @Operation(summary = "유저의 개인적인 커스텀을 위한 컨트롤러", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
+    @Operation(summary = "유저의 개인적인 커스텀을 위한 컨트롤러 get", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
     @GetMapping("/detail/{id}/control")
     public ResponseEntity<UserControlResponse> userControlFindInfo(HttpServletRequest request, @PathVariable long id) {
         UserControlResponse userControlResponse = attendanceTimeService.findUserControlResById(id);
         return ResponseEntity.ok().body(userControlResponse);
+    }
+
+    @Operation(summary = "유저의 개인적인 커스텀을 위한 컨트롤러 post", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
+    @PostMapping("/detail/{id}/control")
+    public ResponseEntity<BaseResponseBody> userControlPostInfo(@RequestBody UserControlRequest userControlRequest, @PathVariable long id) {
+        attendanceTimeService.updateAttendanceTime(userControlRequest, id);
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 }
