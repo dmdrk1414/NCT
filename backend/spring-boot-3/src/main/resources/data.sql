@@ -90,3 +90,8 @@ INSERT INTO num_of_today_attendance (check_num, today)
 VALUES ('1234', '2023-09-07'),
        ('2345', '2023-09-08');
 
+
+INSERT INTO attendance_time (attendance_time, name, user_id)
+VALUES ('09', '박승찬', 1),
+       ('09', '김주연', 3),
+       ('09', '허진범', 5);
