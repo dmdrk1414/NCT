@@ -813,4 +813,33 @@ public class ApiTest {
                 .andExpect(jsonPath("$.attendanceTime").value(attendanceTime.getAttendanceTime()));
 
     }
+
+    @DisplayName("개개인의 유저에게 기능적인 정보를 post하는 컨트롤러")
+    @Test
+    public void userControlPostInfoTest() throws Exception {
+        // given
+        final String url = "/main/detail/1/control";
+
+        String TestAttendanceTime = "15";
+        UserControlRequest userControlRequest = new UserControlRequest(TestAttendanceTime);
+
+        // 객체 suggestionsRequest을 Json으로 직렬화
+        final String requestBody = objectMapper.writeValueAsString(userControlRequest);
+
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        AttendanceTime attendanceTime = attendanceTimeRepository.findById(1L)
+                .orElseThrow(() -> new IllegalArgumentException("not found: ")); // 찾아서 없으면 예외처리.;
+
+        // then
+        result
+                .andExpect(status().isOk());
+        assertThat(attendanceTime.getAttendanceTime()).isEqualTo(TestAttendanceTime);
+    }
 }
