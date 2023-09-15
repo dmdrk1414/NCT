@@ -29,6 +29,7 @@ public class NewUserController {
     private final UserUtillService userUtillService;
     private final AttendanceService attendanceService;
     private final PeriodicDataService periodicDataService;
+    private final AttendanceTimeService attendanceTimeService;
 
     @Operation(summary = "모든 신청 유저들의 정보 보기", description = "3명이 신청을 하면 3명의 정보를 모두 확인가능하다.")
     @GetMapping("")
@@ -60,6 +61,7 @@ public class NewUserController {
             userUtillService.saveNewUser(newUser);
             attendanceService.saveNewUser(newUser);
             periodicDataService.saveNewUser(newUser);
+            attendanceTimeService.saveNewUser(newUser);
         }
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }

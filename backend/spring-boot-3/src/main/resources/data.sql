@@ -51,27 +51,27 @@ VALUES (1, '2023-08-15', '박승찬', 1, '2023-08-01, 2023-08-07, 2023-08-14', '
        (2, '2023-08-11', '김주연', 3, '2023-08-08, 2023-08-18', '[0,0,0,0,0]'),
        (3, '2023-08-18', '허진범', 5, '2023-08-07, 2023-08-11', '[1,0,0,0,0]');
 
---INSERT INTO temp_user (id,
---                       gpa,
---                       mbti,
---                       address,
---                       advantages,
---                       birth_date,
---                       disadvantage,
---                       hobby,
---                       major,
---                       name,
---                       phone_num,
---                       photo,
---                       self_introduction,
---                       specialty_skill,
---                       student_id,
---                       ob,
---                       year_registration,
---                       email,
---                       password,
---                       regular_member,
---                       application_date)
+INSERT INTO temp_user (id,
+                       gpa,
+                       mbti,
+                       address,
+                       advantages,
+                       birth_date,
+                       disadvantage,
+                       hobby,
+                       major,
+                       name,
+                       phone_num,
+                       photo,
+                       self_introduction,
+                       specialty_skill,
+                       student_id,
+                       ob,
+                       year_registration,
+                       email,
+                       password,
+                       regular_member,
+                       application_date)
 VALUES (1, 4.2, 'ENTP', '수완동', '나의 장점은', '1996-04-15', '나의 단점', '달리기', '컴퓨터 공학과', '새로운신입_1', '010-2383-6578', '사진',
         '자기소개',
         '특기', '20161822', FALSE, '2023', 'new1@gmail.com',
@@ -90,3 +90,8 @@ INSERT INTO num_of_today_attendance (check_num, today)
 VALUES ('1234', '2023-09-07'),
        ('2345', '2023-09-08');
 
+
+INSERT INTO attendance_time (attendance_time, name, user_id)
+VALUES ('09', '박승찬', 1),
+       ('09', '김주연', 3),
+       ('09', '허진범', 5);
