@@ -88,7 +88,8 @@ VALUES ('박승찬', '1:[1,0,1,1,1] , 2:[0,1,1,1,1] , 3:[0,-1,1,1,1] , 4:[0,0,0,
 
 INSERT INTO num_of_today_attendance (check_num, today)
 VALUES ('1234', '2023-09-07'),
-       ('2345', '2023-09-08');
+       ('2345', '2023-09-08'),
+       ('2345', '2023-09-09');
 
 
 INSERT INTO attendance_time (attendance_time, name, user_id)
