@@ -7,6 +7,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString
 @Table(name = "attendance_time")
 @Builder
 public class AttendanceTime {

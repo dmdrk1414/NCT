@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor // final이 붙거나  @NotNull이 붙는 필드의 생성자 추가
 @Service
 public class AttendanceTimeService {
@@ -28,5 +30,9 @@ public class AttendanceTimeService {
     public void updateAttendanceTime(UserControlRequest userControlRequest, Long userId) {
         String attendanceTime = userControlRequest.getAttendanceTime();
         attendanceTimeRepository.updateAttemdanceTime(attendanceTime, userId);
+    }
+
+    public List<AttendanceTime> findAll() {
+        return attendanceTimeRepository.findAll();
     }
 }

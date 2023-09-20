@@ -114,4 +114,19 @@ public class DayUtill {
 
         return formattedDate;
     }
+
+    /**
+     * 오늘 날짜기준으로
+     * MONDAY = 0, TUESDAY = 1, ...
+     *
+     * @return
+     */
+    public static int getIndexDayOfWeek() {
+        LocalDate currentDate = LocalDate.now();
+        DayOfWeek dayOfWeekAtNow = currentDate.getDayOfWeek();
+        int indexDayOfWeekAtNow = dayOfWeekAtNow.getValue() - 1; // MONDAY = 0, TUESDAY = 1, ...
+        return indexDayOfWeekAtNow;
+    }
+
+    // TODO: 9/20/23 평일 여부 boolean 확인 
 }
