@@ -4,6 +4,7 @@ import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.service.AttendanceService;
 import back.springbootdeveloper.seungchan.service.AttendanceTimeService;
+import back.springbootdeveloper.seungchan.util.DayUtill;
 import back.springbootdeveloper.seungchan.util.Utill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -52,6 +53,7 @@ public class SchedulerAutoAttendanceTimeCheck {
     @Scheduled(cron = "0 10 9 * * *")
     public void autoCheckAttendanceTime09() {
         autoCheckAttendanceTime(ATTENDANCE_TIME_09);
+        autoCheckExceptionAttendance();
         printDateAtNow("autoCheckAttendanceTime09");
     }
 
@@ -190,6 +192,8 @@ public class SchedulerAutoAttendanceTimeCheck {
      * @param attendanceWantTimeOfUser 출석을 원하는 시간 ( "09" )
      */
     private void autoCheckAttendanceTime(String attendanceWantTimeOfUser) {
+        // TODO: 9/20/23 평일 여부 확인 추가.
+
         List<AttendanceTime> attendanceTimeList = attendanceTimeService.findAll();
         List<AttendanceTime> attendanceTimeAboutTimeList = new ArrayList<>();
         String attendanceTimeEachUser = "";
@@ -209,6 +213,24 @@ public class SchedulerAutoAttendanceTimeCheck {
             isPassAttendanceAtToday = attendanceService.isPassAttendanceAtToday(userId);
             if (!isPassAttendanceAtToday) {
                 attendanceService.updateAbsenceVacationDate(userId);
+            }
+        }
+    }
+
+    /**
+     * 예외 사항 -> 장기휴가를 신청한 인원들은 휴가처리를 하였다.
+     */
+    private void autoCheckExceptionAttendance() {
+        if (DayUtill.isWeekendDay()) {
+            return;
+        }
+        List<AttendanceTime> attendanceTimeList = attendanceTimeService.findAll();
+
+        for (AttendanceTime attendanceTime : attendanceTimeList) {
+            Long userId = attendanceTime.getUserId();
+            // 장기 휴가를 사용하는 인원
+            if (attendanceTime.isExceptonAttendance()) {
+                attendanceService.updateVacationDate2PassAttendance(userId);
             }
         }
     }
