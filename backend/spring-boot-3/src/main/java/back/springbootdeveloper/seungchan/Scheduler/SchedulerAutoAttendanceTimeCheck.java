@@ -192,7 +192,9 @@ public class SchedulerAutoAttendanceTimeCheck {
      * @param attendanceWantTimeOfUser 출석을 원하는 시간 ( "09" )
      */
     private void autoCheckAttendanceTime(String attendanceWantTimeOfUser) {
-        // TODO: 9/20/23 평일 여부 확인 추가.
+        if (DayUtill.isWeekendDay()) {
+            return;
+        }
 
         List<AttendanceTime> attendanceTimeList = attendanceTimeService.findAll();
         List<AttendanceTime> attendanceTimeAboutTimeList = new ArrayList<>();
