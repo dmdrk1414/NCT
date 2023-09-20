@@ -11,7 +11,7 @@ export default function Navigation(data: data) {
       <img className={`icon ${data.now === 2 ? 'fill-dark-grey' : 'fill-grey'}`} src="/Images/dollar.svg" alt="" onClick={() => router.push('/home')} />
       <img className={data.now === 3 ? 'text-dark-grey' : 'text-grey'} src="/Images/pencil.svg" alt="" onClick={() => router.push('/home')} />
       <img className={data.now === 4 ? 'text-dark-grey' : 'text-grey'} src="/Images/check.svg" alt="" onClick={() => router.push('/home')} />
-      <img className={data.now === 5 ? 'text-dark-grey' : 'text-grey'} src="/Images/person.svg" alt="" onClick={() => router.push('/home')} />
+      <img className={data.now === 5 ? 'text-dark-grey' : 'text-grey'} src="/Images/person.svg" alt="" onClick={() => router.push('/mypage')} />
     </div>
   );
 }

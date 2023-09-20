@@ -16,7 +16,13 @@ export default function Header(Data: Data) {
         <Link href="/login" className="absolute right-[0.5rem]">
           <MiddleButton addClass="text-xl" text="로그인/지원서 작성" />
         </Link>
-      ) : null}
+      ) : (
+        <div className="absolute right-[0.5rem]">
+          <div>
+            <MiddleButton addClass="text-xl" text="휴가 사용하기" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
