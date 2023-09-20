@@ -21,6 +21,8 @@ import java.util.List;
 @Service
 public class AttendanceService {
     private final int attendanceOK = 1;
+    private final int ABSENCE_TODAY = -1;
+    private final int VACATION_TODAY = 2;
 
     @Autowired
     private AttendanceStatusRepository attendanceStatusRepository;
@@ -40,6 +42,13 @@ public class AttendanceService {
         attendanceStatusRepository.updateWeeklyDataByUserId(userId, updateWeeklyData);
     }
 
+    /**
+     * [ 1, 1, 1, 0, -1 ]을 indexDay = 5을 입력하면 [ 1, 1, 1, 0, 1 ] 으로 변환해준다.
+     *
+     * @param weeklyData "[ 1, 1, 1, 0, -1 ]"의 문자열
+     * @param indexDay   변경을 원하는 index MONDAY = 0
+     * @return
+     */
     private String updateOfWeeklyData(String weeklyData, int indexDay) {
         // "[ 1, 1, 1, 0, -1 ]"
         JSONArray jsonArray = new JSONArray(weeklyData);
@@ -64,6 +73,12 @@ public class AttendanceService {
         return jsonArray;
     }
 
+    /**
+     * Attendance_status의 테이블의 vacationDate을 업데이트하는 함수
+     *
+     * @param userId
+     * @param vacationRequest
+     */
     public void updateVacationDate(Long userId, VacationRequest vacationRequest) {
         AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(userId);
         String vacationDates = attendanceStatus.getVacationDates();
@@ -168,5 +183,56 @@ public class AttendanceService {
 
         isPassAttendance = Utill.isSameInteger(COMPLETE_ATTENDANCE, attendanceStatusNumOneAndZero);
         return isPassAttendance;
+    }
+
+    public void updateAbsenceVacationDate(Long userId) {
+        AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(userId);
+        String weeklyData = attendanceStatus.getWeeklyData();
+        int indexDay = DayUtill.getIndexDayOfWeek();
+
+        // 문자열 json으로 변경 "[ 0, 0, 0, 0, 0 ]"
+        JSONArray jsonArray = new JSONArray(weeklyData);
+        int[] intArray = new int[jsonArray.length()];
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            intArray[i] = jsonArray.getInt(i);
+        }
+
+        intArray[indexDay] = ABSENCE_TODAY;
+
+        // [ 1, 1, 1, 0, -1 ]
+        JSONArray resultJsonArray = arrayToJSONArray(intArray);
+        String updateWeeklyData = resultJsonArray.toString();
+
+        attendanceStatusRepository.updateWeeklyDataByUserId(userId, updateWeeklyData);
+    }
+
+    /**
+     * userId을 이용하여 원하는 유저의 휴가를 사용하는 것으로 표시
+     * [... "0" ] => [... "2"] 으로 변경
+     *
+     * @param userId
+     */
+    public void updateVacationDate2PassAttendance(Long userId) {
+        AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(userId);
+        String weeklyData = attendanceStatus.getWeeklyData();
+        int indexDay = DayUtill.getIndexDayOfWeek();
+
+        // 문자열 json으로 변경 "[ 0, 0, 0, 0, 0 ]"
+        JSONArray jsonArray = new JSONArray(weeklyData);
+        int[] intArray = new int[jsonArray.length()];
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            intArray[i] = jsonArray.getInt(i);
+        }
+
+        // indexDay의 index에 3으로 변경 (휴가 표시)
+        intArray[indexDay] = VACATION_TODAY;
+
+        // [ 0, 0, 0, 0, 2 ]
+        JSONArray resultJsonArray = arrayToJSONArray(intArray);
+        String updateWeeklyData = resultJsonArray.toString();
+
+        attendanceStatusRepository.updateWeeklyDataByUserId(userId, updateWeeklyData);
     }
 }
