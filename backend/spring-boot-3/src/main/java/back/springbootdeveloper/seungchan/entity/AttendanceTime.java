@@ -22,6 +22,9 @@ public class AttendanceTime {
     private String name;
     @Column(name = "attendance_time", length = 10, nullable = false, columnDefinition = "varchar(10) default '09'")
     private String attendanceTime;
+    @Column(name = "exception_attendance", nullable = false)
+    private boolean isExceptonAttendance;
+
 
     /**
      * user의 출석 시간 정보를 변경하기위한 생성자
@@ -33,6 +36,7 @@ public class AttendanceTime {
         this.userId = userInfo.getId();
         this.name = userInfo.getName();
         this.attendanceTime = attendanceTime;
+        this.isExceptonAttendance = false;
     }
 
     /**
@@ -44,5 +48,6 @@ public class AttendanceTime {
         this.userId = userInfo.getId();
         this.name = userInfo.getName();
         this.attendanceTime = BASE_ATTENDANCE_TIME;
+        this.isExceptonAttendance = false;
     }
 }
