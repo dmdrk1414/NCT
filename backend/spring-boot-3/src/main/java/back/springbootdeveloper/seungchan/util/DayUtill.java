@@ -128,5 +128,31 @@ public class DayUtill {
         return indexDayOfWeekAtNow;
     }
 
-    // TODO: 9/20/23 평일 여부 boolean 확인 
+    /**
+     * 현제 오늘이 평일인지 아닌지 확인하는 메서드
+     *
+     * @return true: 평일, false: 주말
+     */
+    public static boolean isWeekDay() {
+        int MONDAY = 1;
+        int FRIDAY = 5;
+        LocalDate currentDate = LocalDate.now();
+        DayOfWeek dayOfWeekAtNow = currentDate.getDayOfWeek();
+
+        // 요일이 월요일(1)부터 금요일(5) 사이인 경우에만 평일로 간주
+        return (dayOfWeekAtNow.getValue() >= MONDAY) && (dayOfWeekAtNow.getValue() <= FRIDAY);
+    }
+
+    /**
+     * 현제 오늘이 주말인지 아닌지 확인하는 메서드
+     *
+     * @return true: 주말, false: 평일
+     */
+    public static boolean isWeekendDay() {
+        LocalDate currentDate = LocalDate.now();
+        DayOfWeek dayOfWeekAtNow = currentDate.getDayOfWeek();
+
+        // 요일이 토요일(6) 또는 일요일(7)인 경우에만 주말로 간주
+        return dayOfWeekAtNow == DayOfWeek.SATURDAY || dayOfWeekAtNow == DayOfWeek.SUNDAY;
+    }
 }
