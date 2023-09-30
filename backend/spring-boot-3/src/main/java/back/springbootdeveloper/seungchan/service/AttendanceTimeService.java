@@ -35,4 +35,18 @@ public class AttendanceTimeService {
     public List<AttendanceTime> findAll() {
         return attendanceTimeRepository.findAll();
     }
+
+    public void updateExceptionAttendance(long id) {
+        AttendanceTime attendanceTime = attendanceTimeRepository.findByUserId(id);
+        boolean isException = attendanceTime.isExceptonAttendance();
+        boolean isFalseException = false;
+        boolean isTrueException = true;
+        Long userId = id;
+
+        if (isException) {
+            attendanceTimeRepository.updateException(userId, isFalseException);
+        } else {
+            attendanceTimeRepository.updateException(userId, isTrueException);
+        }
+    }
 }
