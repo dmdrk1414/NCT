@@ -867,4 +867,22 @@ public class ApiTest {
         }
 
     }
+
+    @DisplayName("버튼을 누르면 장기 휴가 신청을 의미하는 Attendance_time 테이블의 exception의 값이 true/false가 반환된다.")
+    @Test
+    public void userFindExceptionAttendanceControlTest() throws Exception {
+        // given
+        final String url = "/main/detail/1/control/exception/attendance";
+        boolean isExceptionAttendance = attendanceTimeRepository.findByUserId(1L).isExceptonAttendance();
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.exceptionAttendance").value(isExceptionAttendance));
+    }
 }
