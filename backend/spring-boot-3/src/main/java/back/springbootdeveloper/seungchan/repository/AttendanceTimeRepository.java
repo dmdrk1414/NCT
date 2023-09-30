@@ -13,4 +13,9 @@ public interface AttendanceTimeRepository extends JpaRepository<AttendanceTime, 
     @Modifying
     @Query("UPDATE AttendanceTime a SET a.attendanceTime = :attendanceTime WHERE a.userId = :userId")
     void updateAttemdanceTime(String attendanceTime, Long userId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE AttendanceTime a SET a.isExceptonAttendance = :isChangeException WHERE a.userId = :userId")
+    void updateException(long userId, boolean isChangeException);
 }
