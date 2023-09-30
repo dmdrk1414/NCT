@@ -49,4 +49,9 @@ public class AttendanceTimeService {
             attendanceTimeRepository.updateException(userId, isTrueException);
         }
     }
+
+    public boolean findExceptionAttendance(long id) {
+        AttendanceTime attendanceTime = attendanceTimeRepository.findByUserId(id);
+        return attendanceTime.isExceptonAttendance();
+    }
 }
