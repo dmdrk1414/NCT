@@ -19,7 +19,6 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
   const [isExceptionAttendance, setIsExceptionAttendance] = useState(false);
   const [attendanceTimeData, setAttendanceTimeData] = useState({
     attendanceTime: '',
-    name: '',
   });
   const [attendanceHopeTime, setAttendanceHopeTime] = useState<string>(''); // 초기값을 빈 문자열로 설정
 
@@ -49,7 +48,6 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
       })
         .then(res => {
           const data = res.data;
-
           setAttendanceTimeData(data);
         })
         .catch(err => {
@@ -72,6 +70,11 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
   }, []);
 
   const submitUserData = () => {
+    setAttendanceTimeData(prevData => ({
+      ...prevData, // 기존 데이터를 복사
+      attendanceTime: attendanceHopeTime, // 새로운 값을 할당
+    }));
+
     if (!isKing) {
       router.replace('/main');
     }
