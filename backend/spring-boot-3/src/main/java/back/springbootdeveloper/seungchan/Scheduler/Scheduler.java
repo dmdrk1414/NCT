@@ -70,7 +70,7 @@ cron = "0 0 10 L * ?"
 https://itworldyo.tistory.com/entry/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-%EC%8A%A4%EC%BC%80%EC%A4%84-%EC%84%A4%EC%A0%95-%EB%B2%95-Cron-%EC%A3%BC%EA%B8%B0%EC%84%A4%EC%A0%95
 https://velog.io/@kekim20/Spring-boot-Scheduler%EC%99%80-cron%ED%91%9C%ED%98%84%EC%8B%9D
 
-@Scheduled(cron = "0/1 * * * * *") //매일 자정 1초에 추가.
+@Scheduled(cron = "0/1 * * * * *") // 매초마다.
  * */
 
 @Component
