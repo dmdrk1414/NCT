@@ -7,7 +7,7 @@ import SubmitButton from '../../atoms/atom/large-button';
 
 // 박승찬 추가
 import { axAuth } from '@/apis/axiosinstance';
-import { userToken } from '../../states/index';
+import { userToken, isNuriKing } from '../../states/index';
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import Navigation from '../../atoms/template/navigation';
@@ -15,6 +15,7 @@ import Navigation from '../../atoms/template/navigation';
 export default function SignUp() {
   const router = useRouter();
   const [token, setToken] = useRecoilState(userToken);
+  const [isKing, setISKing] = useRecoilState(isNuriKing);
   const [userData, setUserData] = useState({
     name: '',
     phoneNum: '',
@@ -47,6 +48,8 @@ export default function SignUp() {
       });
     }
   }, []);
+
+  const logout = () => {};
 
   const isLoginAndSignupButton = false;
 
@@ -86,8 +89,14 @@ export default function SignUp() {
           </a>
         </div>
       </article>
+      <div className="mt-[3rem]">
+        <div onClick={logout}>
+          <SubmitButton text={'로그아웃'} addClass={'bg-red'} />
+        </div>
+      </div>
+
       <footer>
-        <Navigation now={1} />
+        <Navigation now={1} isNuriKing={isKing} />
       </footer>
     </main>
   );
