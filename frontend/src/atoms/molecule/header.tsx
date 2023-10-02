@@ -9,7 +9,6 @@ type Data = {
 export default function Header(Data: Data) {
   const [token, setToken] = useRecoilState(userToken);
 
-  const useVacation = () => {};
   return (
     <div className="flex items-center py-[1.3rem] relative">
       <div className="w-[8rem] h-[3rem] ms-[0.5rem]">
@@ -24,7 +23,7 @@ export default function Header(Data: Data) {
       ) : null}
       {token ? (
         <div className="absolute right-[0.5rem]">
-          <div onClick={useVacation}>
+          <div>
             <MiddleButton addClass="text-xl" text="휴가 사용하기" />
           </div>
         </div>
