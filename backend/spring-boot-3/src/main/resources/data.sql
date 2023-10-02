@@ -89,10 +89,11 @@ VALUES ('박승찬', '1:[1,0,1,1,1] , 2:[0,1,1,1,1] , 3:[0,-1,1,1,1] , 4:[0,0,0,
 INSERT INTO num_of_today_attendance (check_num, today)
 VALUES ('1234', '2023-09-07'),
        ('2345', '2023-09-08'),
-       ('2345', '2023-09-09');
+       ('2345', '2023-09-09'),
+       ('1234', '2023-09-20');
 
 
-INSERT INTO attendance_time (attendance_time, name, user_id)
-VALUES ('09', '박승찬', 1),
-       ('09', '김주연', 3),
-       ('09', '허진범', 5);
+INSERT INTO attendance_time (attendance_time, name, exception_attendance, user_id)
+VALUES ('09', '박승찬', true, 1),
+       ('09', '김주연', false, 3),
+       ('09', '허진범', false, 5);

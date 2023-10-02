@@ -84,4 +84,23 @@ public class MainController {
         attendanceTimeService.updateAttendanceTime(userControlRequest, id);
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
+
+    @Operation(summary = "장기휴가 신청을 위한 버튼api", description = "버튼을 누르면 장기 휴가 신청을 의미하는 Attendance_time 테이블의 exception의 값이 true/false가 된다.")
+    @PostMapping("/detail/{id}/control/exception/attendance")
+    public ResponseEntity<BaseResponseBody> userExceptionAttendanceControl(@PathVariable long id) {
+        attendanceTimeService.updateExceptionAttendance(id);
+
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+    }
+
+    @Operation(summary = "장기휴가 신청을 위한 버튼api", description = "버튼을 누르면 장기 휴가 신청을 의미하는 Attendance_time 테이블의 exception의 값이 true/false가 반환된다.")
+    @GetMapping("/detail/{id}/control/exception/attendance")
+    public ResponseEntity<AttendanceTimeExceptionAttendanceResponse> userFindExceptionAttendanceControl(@PathVariable long id) {
+        boolean isExceptionAttendance = true;
+        isExceptionAttendance = attendanceTimeService.findExceptionAttendance(id);
+
+        return ResponseEntity.ok().body(AttendanceTimeExceptionAttendanceResponse.builder()
+                .isExceptionAttendance(isExceptionAttendance)
+                .build());
+    }
 }
