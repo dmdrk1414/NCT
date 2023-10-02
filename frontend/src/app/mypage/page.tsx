@@ -1,8 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Header from '../../atoms/molecule/header';
-import Input from '../../atoms/atom/input-form-value';
-import Textarea from '../../atoms/atom/text-area-form-value';
 import SubmitButton from '../../atoms/atom/large-button';
 
 // 박승찬 추가
@@ -49,8 +47,6 @@ export default function SignUp() {
     }
   }, []);
 
-  const logout = () => {};
-
   const isLoginAndSignupButton = false;
 
   return (
@@ -90,7 +86,7 @@ export default function SignUp() {
         </div>
       </article>
       <div className="mt-[3rem]">
-        <div onClick={logout}>
+        <div>
           <SubmitButton text={'로그아웃'} addClass={'bg-red'} />
         </div>
       </div>
