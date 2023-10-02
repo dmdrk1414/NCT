@@ -63,7 +63,7 @@ export default function Main() {
         </article>
       </section>
       <footer>
-        <Navigation now={1} />
+        <Navigation now={1} isNuriKing={isKing} />
       </footer>
     </main>
   );

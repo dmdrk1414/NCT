@@ -144,7 +144,7 @@ export default function Main() {
         )}
       </section>
       <footer>
-        <Navigation now={1} />
+        <Navigation now={1} isNuriKing={isKing} />
       </footer>
     </main>
   );
