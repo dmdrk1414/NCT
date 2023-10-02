@@ -7,11 +7,6 @@ import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router = useRouter();
-  useEffect(() => {
-    if (userToken) {
-      router.replace('/main');
-    }
-  });
   return (
     <main>
       <header>
