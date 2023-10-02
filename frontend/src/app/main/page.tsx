@@ -53,9 +53,6 @@ export default function Main() {
   }, [AllertModalstatus]);
 
   useEffect(() => {
-    if (!userToken) {
-      router.replace('/login');
-    }
     if (type === 0) {
       axAuth(token)({
         method: 'get',
