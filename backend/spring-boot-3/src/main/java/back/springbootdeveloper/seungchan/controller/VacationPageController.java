@@ -72,4 +72,18 @@ public class VacationPageController {
 
         return ResponseEntity.ok().body(findsVacationResponse);
     }
+
+    @Operation(summary = "개인별 휴가 신청", description = "개인별 휴가 신청")
+    @PostMapping("/request/each")
+    public ResponseEntity<BaseResponseBody> applyVacationEachPerson(HttpServletRequest request) {
+        // 현재 접속 유저의 id을 가져온다.
+        Long userId = tokenService.getUserIdFromToken(request);
+
+        // 현재 접속 유저의 휴가 사용
+        attendanceService.updateVacationDate2PassAttendance(userId);
+
+        // 현재 접속 유저의 휴가 사용 갯수를 -1 을한다.
+        userUtillService.subVacationCount(userId);
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+    }
 }
