@@ -885,4 +885,25 @@ public class ApiTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.exceptionAttendance").value(isExceptionAttendance));
     }
+
+    @DisplayName("개인 별 휴가 신청을 위한 api")
+    @Test
+    public void applyVacationEachPersonTest() throws Exception {
+        // given
+        final String url = "/vacations/request/each";
+        int vacationCount = userUtilRepository.findByUserId(1L).getCntVacation();
+
+        // when
+       mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        int result = userUtilRepository.findByUserId(1L).getCntVacation();
+        System.out.println("result = " + result);
+
+        // then
+        assertThat(result).isEqualTo(vacationCount - 1);
+    }
 }

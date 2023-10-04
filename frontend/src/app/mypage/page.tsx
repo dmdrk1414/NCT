@@ -80,7 +80,7 @@ export default function SignUp() {
           <div className="mt-2">단점: {userData.disadvantage}</div>
           <div className="mt-2">자기소개: {userData.selfIntroduction}</div>
 
-          <a href="http://203.237.107.65:80/mypage/update">
+          <a href="https://www.nuri777.kro.kr/mypage/update">
             <div className="mt-2 font-bold">나의 페이지 수정하기 이동</div>
           </a>
         </div>

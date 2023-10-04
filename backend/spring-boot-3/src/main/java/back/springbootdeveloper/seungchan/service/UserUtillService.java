@@ -46,6 +46,15 @@ public class UserUtillService {
         userUtilRepository.updateCntVacationUserUtilData(userId, resultVacationNum);
     }
 
+    public void subVacationCount(Long userId) {
+        int vacationNumWantSub = 1;
+        UserUtill userUtillByUserId = userUtilRepository.findByUserId(userId);
+        int vacationNumAtNow = userUtillByUserId.getCntVacation();
+        int resultVacationNum = vacationNumAtNow - vacationNumWantSub;
+
+        userUtilRepository.updateCntVacationUserUtilData(userId, resultVacationNum);
+    }
+
     public int cntVacation(Long userId) {
         UserUtill userUtill = userUtilRepository.findByUserId(userId);
         return userUtill.getCntVacation();
