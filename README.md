@@ -1,6 +1,8 @@
 # NCT
 
-![nct logo](https://github.com/dmdrk1414/NCT/issues/61) 
+
+
+<img src='https://github.com/dmdrk1414/NCT/issues/61'>    
 
 ##  Nuri Control Tower
 
