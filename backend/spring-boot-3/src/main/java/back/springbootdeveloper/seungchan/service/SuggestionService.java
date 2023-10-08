@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.service;
 
 
-import back.springbootdeveloper.seungchan.domain.Suggestions;
+import back.springbootdeveloper.seungchan.entity.Suggestions;
 import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteRequest;
 import back.springbootdeveloper.seungchan.repository.SuggestionRepository;
 import lombok.RequiredArgsConstructor;

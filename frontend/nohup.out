@@ -1,0 +1,60 @@
+
+> frontend@0.1.0 start
+> next start
+
+- ready started server on 0.0.0.0:3000, url: http://localhost:3000
+Error: Could not find a production build in the '/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at NextNodeServer.getBuildId (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next-server.js:348:23)
+    at new Server (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/base-server.js:153:29)
+    at new NextNodeServer (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next-server.js:175:9)
+    at NextServer.createServer (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next.js:179:24)
+    at async /Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next.js:200:31
+    at async NextServer.prepare (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next.js:161:24)
+    at async Server.<anonymous> (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/lib/render-server.js:136:17) {
+  type: 'Error'
+}
+
+> frontend@0.1.0 start
+> next start
+
+- ready started server on 0.0.0.0:3000, url: http://localhost:3000
+Error: Could not find a production build in the '/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at NextNodeServer.getBuildId (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next-server.js:348:23)
+    at new Server (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/base-server.js:153:29)
+    at new NextNodeServer (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next-server.js:175:9)
+    at NextServer.createServer (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next.js:179:24)
+    at async /Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next.js:200:31
+    at async NextServer.prepare (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next.js:161:24)
+    at async Server.<anonymous> (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/lib/render-server.js:136:17) {
+  type: 'Error'
+}
+
+> frontend@0.1.0 start
+> next start
+
+- ready started server on 0.0.0.0:3000, url: http://localhost:3000
+Error: Could not find a production build in the '/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at NextNodeServer.getBuildId (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next-server.js:348:23)
+    at new Server (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/base-server.js:153:29)
+    at new NextNodeServer (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next-server.js:175:9)
+    at NextServer.createServer (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next.js:179:24)
+    at async /Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next.js:200:31
+    at async NextServer.prepare (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next.js:161:24)
+    at async Server.<anonymous> (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/lib/render-server.js:136:17) {
+  type: 'Error'
+}
+
+> frontend@0.1.0 start
+> next start
+
+- ready started server on 0.0.0.0:3000, url: http://localhost:3000
+Error: Could not find a production build in the '/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at NextNodeServer.getBuildId (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next-server.js:348:23)
+    at new Server (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/base-server.js:153:29)
+    at new NextNodeServer (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next-server.js:175:9)
+    at NextServer.createServer (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next.js:179:24)
+    at async /Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next.js:200:31
+    at async NextServer.prepare (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/next.js:161:24)
+    at async Server.<anonymous> (/Users/seungchan/program_project/intellij-workspace/NCT(Nuri_Control_Tower)/frontend/node_modules/next/dist/server/lib/render-server.js:136:17) {
+  type: 'Error'
+}
