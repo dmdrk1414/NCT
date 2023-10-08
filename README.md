@@ -1,8 +1,6 @@
 # NCT
 
-
-
-<img src='https://user-images.githubusercontent.com/76943741/273447079-732127ea-59ba-404a-ae27-0bb963199c1a.png'>    
+<img src='https://user-images.githubusercontent.com/76943741/273447079-732127ea-59ba-404a-ae27-0bb963199c1a.png' width="40%" height="40%">    
 
 ##  Nuri Control Tower
 
@@ -25,7 +23,7 @@
 
 ## 1. 📺 서비스 소개 (화면)
 
-
+<img src='https://user-images.githubusercontent.com/76943741/273447171-cbaad8fb-9c1d-49c2-b06b-a0840f7d00ff.gif' width="30%" height="30%">
 
 ## 2. 🔎 서비스 개요
 
@@ -50,15 +48,19 @@
 
 ## 5. 📦 아키텍처
 
-
+<img src='https://user-images.githubusercontent.com/76943741/273447123-237d4516-50a4-4d43-a1f1-05e01ddd0a9b.png' width="80%" height="100%">
 
 ## 6. 🕸️ ERD
+
+<img src='https://user-images.githubusercontent.com/76943741/273447236-920471b6-ec62-4188-a74d-0f01287d7d58.png' width="80%" height="100%">
+
+<img src='https://user-images.githubusercontent.com/76943741/273447255-cb121191-cfce-44ca-a3af-88a5320bf5da.png' width="50%" height="100%">
 
 
 
 ## 7. 💻 피그마
 
-
+<img src='https://user-images.githubusercontent.com/76943741/273447277-bf31ab16-9555-46c2-8e7a-55176aa9e4e8.png' width="90%" height="100%">
 
 ## 8. API 명세표
 
@@ -66,14 +68,14 @@
 
 https://oceanic-tenor-b93.notion.site/API-fae70f6d5a724e1fa3cff3d5406bd2d4
 
-
+<img src='https://user-images.githubusercontent.com/76943741/273447196-0e33a36d-2df8-406f-beb1-d4ce917eeda2.png' width="80%" height="100%">
 
 **스웨거 (spring boot 실행이후)**
 
 http://localhost:8080/v3/api-docs
 *http://localhost:8080/swagger-ui/index.html*
 
-
+<img src='https://user-images.githubusercontent.com/76943741/273447224-e38e0877-d61e-4d1f-bd9c-0ed54b64d0c0.png' width="80%" height="100%">
 
 ---
 
