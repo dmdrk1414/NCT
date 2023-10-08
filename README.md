@@ -2,7 +2,7 @@
 
 
 
-<img src='https://github.com/dmdrk1414/NCT/issues/61'>    
+<img src='https://user-images.githubusercontent.com/76943741/273447079-732127ea-59ba-404a-ae27-0bb963199c1a.png'>    
 
 ##  Nuri Control Tower
 
