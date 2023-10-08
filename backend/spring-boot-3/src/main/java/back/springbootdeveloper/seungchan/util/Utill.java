@@ -26,7 +26,7 @@ public class Utill {
         List<Integer> integerList = new ArrayList<>();
 
         // 정규 표현식을 사용하여 숫자 추출
-        Pattern pattern = Pattern.compile("\\d+");
+        Pattern pattern = Pattern.compile("-?\\d+");
         Matcher matcher = pattern.matcher(input);
 
         while (matcher.find()) {
