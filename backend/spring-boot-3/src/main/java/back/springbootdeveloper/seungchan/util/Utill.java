@@ -54,6 +54,7 @@ public class Utill {
      * 출력
      * 객체의 정보의 한줄
      * 객체의 정보의 한줄
+     * 객체의 정보의 한줄
      */
     public static <T> void printObjectList(List<T> objectList) {
         System.out.println("printObjectList");
