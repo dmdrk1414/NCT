@@ -6,8 +6,6 @@ type data = {
 };
 
 export default function CheckBox({ type }: data) {
-  console.log('Data:', { type }); // Log the 'data' object
-
   return (
     <>
       {type === 1 ? (
