@@ -2,6 +2,7 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.dto.request.VacationCountRequest;
 import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
+import back.springbootdeveloper.seungchan.dto.response.AvailableApplyVacationResponse;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.FindsVacationResponse;
 import back.springbootdeveloper.seungchan.dto.response.VacationsResponce;
@@ -75,15 +76,22 @@ public class VacationPageController {
 
     @Operation(summary = "개인별 휴가 신청", description = "개인별 휴가 신청")
     @PostMapping("/request/each")
-    public ResponseEntity<BaseResponseBody> applyVacationEachPerson(HttpServletRequest request) {
+    public ResponseEntity<AvailableApplyVacationResponse> applyVacationEachPerson(HttpServletRequest request) {
         // 현재 접속 유저의 id을 가져온다.
         Long userId = tokenService.getUserIdFromToken(request);
+        Boolean availableApply = false;
 
-        // 현재 접속 유저의 휴가 사용
-        attendanceService.updateVacationDate2PassAttendance(userId);
+        if (attendanceService.availableApplyVacation(userId)) {
+            // 현재 접속 유저의 휴가 사용
+            attendanceService.updateVacationDate2PassAttendance(userId);
 
-        // 현재 접속 유저의 휴가 사용 갯수를 -1 을한다.
-        userUtillService.subVacationCount(userId);
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+            // 현재 접속 유저의 휴가 사용 갯수를 -1 을한다.
+            userUtillService.subVacationCount(userId);
+            availableApply = true;
+        }
+
+        return ResponseEntity.ok().body(AvailableApplyVacationResponse.builder()
+                .availableApplyVacation(availableApply)
+                .build());
     }
 }
