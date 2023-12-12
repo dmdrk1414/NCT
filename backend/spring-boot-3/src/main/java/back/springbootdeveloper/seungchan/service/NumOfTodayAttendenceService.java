@@ -28,7 +28,11 @@ public class NumOfTodayAttendenceService {
         String checkNum = numOfTodayAttendenceAtNow.getCheckNum();
         String dayStr = numOfTodayAttendenceAtNow.getDay();
 
-        if (Utill.isEqualStr(numOfAttendance, checkNum)) {
+//        - [ ] 이미 휴가를 사용했다면 휴가를 사용할 수 없다
+//        - [ ] 이미 출석을 하였다면 휴가을 사용할수 없다.
+//        - [ ] 이미 휴가를 사용했다면 중복으로 사용할 수 없다.
+//        - [ ] 이미 휴가를 사용했다면 결석, 출석을 할수없다.
+        if (Utill.isEqualStr(numOfAttendance, checkNum) && availableAttendance(userId)) {
             DayOfWeek dayOfWeekAtNow = DayUtill.getDayOfWeekAtNow(dayStr);
             int indexDayOfWeekAtNow = dayOfWeekAtNow.getValue() - 1; // - 1을 해야한다. MONDAY = 1 이기때문에
             attendanceService.UpdateweeklyData(indexDayOfWeekAtNow, userId);
@@ -43,6 +47,11 @@ public class NumOfTodayAttendenceService {
                 .checkNum(String.valueOf(randomNum))
                 .build();
         numOfTodayAttendenceRepository.save(numOfTodayAttendence);
+    }
+
+    private Boolean availableAttendance(Long userId) {
+        // 0인 경우에만 출석을 할수 있다.
+        return attendanceService.available(userId);
     }
 
     public void deleteAll() {
