@@ -50,12 +50,12 @@ export default function SignUp() {
       alert('학번을 확인해주세요.');
     } else if (!userData.birthDate) {
       alert('생년월일을 확인해주세요.');
-    } else if (userData.advantages.length < 200) {
-      alert('장점을 200자 이상 입력해주세요.');
-    } else if (userData.disadvantage.length < 200) {
-      alert('단점을 200자 이상 입력해주세요.');
-    } else if (userData.selfIntroduction.length < 300) {
-      alert('자기소개를 300자 이상 입력해주세요.');
+    } else if (userData.advantages.length < 100) {
+      alert('장점을 100자 이상 입력해주세요.');
+    } else if (userData.disadvantage.length < 100) {
+      alert('단점을 100자 이상 입력해주세요.');
+    } else if (userData.selfIntroduction.length < 200) {
+      alert('자기소개를 200자 이상 입력해주세요.');
     } else if (!userData.email) {
       alert('이메일을 확인해주세요.');
     } else if (!userData.password) {
@@ -114,9 +114,9 @@ export default function SignUp() {
         <Input title={'MBTI'} userData={userData} setUserData={setUserData} dataname="mbti" />
         <Input title={'학번'} userData={userData} setUserData={setUserData} dataname="studentId" />
         <Input title={'생년월일'} userData={userData} setUserData={setUserData} dataname="birthDate" />
-        <Textarea title={'장점(200자 이상)'} userData={userData} setUserData={setUserData} dataname="advantages" />
-        <Textarea title={'단점(200자 이상)'} userData={userData} setUserData={setUserData} dataname="disadvantage" />
-        <Textarea title={'자기소개(300자 이상)'} userData={userData} setUserData={setUserData} dataname="selfIntroduction" />
+        <Textarea title={'장점(100자 이상)'} userData={userData} setUserData={setUserData} dataname="advantages" />
+        <Textarea title={'단점(100자 이상)'} userData={userData} setUserData={setUserData} dataname="disadvantage" />
+        <Textarea title={'자기소개(200자 이상)'} userData={userData} setUserData={setUserData} dataname="selfIntroduction" />
         <Input title={'이메일'} userData={userData} setUserData={setUserData} dataname="email" />
         <Input title={'비밀번호( 8자 이상, 특수문자, 숫자, 영문자 포함)'} type={'password'} userData={userData} setUserData={setUserData} dataname="password" />
         <Input title={'비밀번호 확인'} type={'password'} userData={userData} setUserData={setUserData} dataname="passwordConfirm" />
