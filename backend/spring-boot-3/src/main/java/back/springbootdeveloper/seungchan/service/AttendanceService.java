@@ -259,4 +259,27 @@ public class AttendanceService {
         }
         return false;
     }
+
+    /**
+     * 휴가 신청 가능 한지 알수있다.
+     *
+     * @param userId
+     * @return
+     */
+    public boolean availableApplyVacation(Long userId) {
+        Integer unDecided = AttendanceStateConstant.UN_DECIDED.getState();
+        String weeklyDataString = "";
+        List<Integer> weeklyDatas = null;
+        Integer attendanceTodayState = 0;
+
+        AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(userId);
+        weeklyDataString = attendanceStatus.getWeeklyData();
+        weeklyDatas = Utill.extractNumbers(weeklyDataString);
+        attendanceTodayState = weeklyDatas.get(DayUtill.getIndexDayOfWeek());
+
+        if (attendanceTodayState.equals(unDecided)) {
+            return true;
+        }
+        return false;
+    }
 }

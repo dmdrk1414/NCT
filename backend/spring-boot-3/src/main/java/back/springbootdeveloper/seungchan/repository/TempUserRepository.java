@@ -11,4 +11,6 @@ public interface TempUserRepository extends JpaRepository<TempUser, Long> {
 
     @Transactional
     void deleteByEmail(String emailOfNewUser);
+
+    Boolean existsByNameAndEmail(String name, String email);
 }
