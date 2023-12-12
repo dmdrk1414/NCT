@@ -39,7 +39,7 @@ export default function Main() {
   const [isMemberInfoOpen, setIsMemberInfoOpen] = useState(0);
 
   const textOfAllert = [
-    { title: '틀렸습니다!', context: '번호를 다시 확인해주세요', type: 'danger' },
+    { title: '틀렸습니다!', context: '결석, 휴가 완료 또는 번호를 다시 확인해주세요', type: 'danger' },
     { title: '오류!', context: '인터넷 연결을 확인해주세요', type: 'danger' },
     { title: '출석이 완료되었습니다.', context: '', type: 'success' },
   ];

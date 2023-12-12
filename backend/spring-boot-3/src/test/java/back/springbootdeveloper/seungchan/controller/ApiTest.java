@@ -366,6 +366,36 @@ public class ApiTest {
                 .andExpect(jsonPath("$.passAtNow").value(true));
     }
 
+    @DisplayName("출석 번호 입력 API 테스트")
+    @Test
+    public void 출석_번호_입력__출석_결석_휴가를_이미_한상태에서의_출석_예외_1() throws Exception {
+        // given
+        final String url = "/attendance/number";
+        List<NumOfTodayAttendence> numOfTodayAttendenceList = numOfTodayAttendenceRepository.findAll();
+        NumOfTodayAttendence numOfTodayAttendence = numOfTodayAttendenceList.get(numOfTodayAttendenceList.size() - 1);
+        String num = numOfTodayAttendence.getCheckNum();
+
+
+        AttendanceNumberRequest attendanceNumberRequest = new AttendanceNumberRequest();
+        attendanceNumberRequest.setNumOfAttendance(num);
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(attendanceNumberRequest))
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        ResultActions result_2 = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(attendanceNumberRequest))
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        result_2
+                .andExpect(jsonPath("$.passAtNow").value(false));
+    }
+
     @DisplayName("내 정보를 조회한다.")
     @Test
     public void findMypageTest() throws Exception {
@@ -894,7 +924,7 @@ public class ApiTest {
         int vacationCount = userUtilRepository.findByUserId(1L).getCntVacation();
 
         // when
-       mockMvc.perform(post(url)
+        mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("authorization", "Bearer " + token) // token header에 담기
