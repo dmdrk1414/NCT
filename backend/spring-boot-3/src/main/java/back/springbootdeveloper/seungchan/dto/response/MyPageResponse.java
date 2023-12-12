@@ -25,6 +25,7 @@ public class MyPageResponse {
     private String disadvantage;
     private String selfIntroduction;
     private String photo;
+    private String email;
     private boolean isOb;
     private String yearOfRegistration;
 
@@ -45,5 +46,6 @@ public class MyPageResponse {
         this.photo = user.getPhoto();
         this.isOb = user.isOb();
         this.yearOfRegistration = user.getYearOfRegistration();
+        this.email = user.getEmail();
     }
 }

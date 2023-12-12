@@ -1,18 +1,21 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../atoms/molecule/header';
 import Button from '../../atoms/atom/middle-button';
 import { axBase } from '../../apis/axiosinstance';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
-import { userToken } from '../../states/index';
+import { userToken, isNuriKing } from '../../states/index';
 import { useRouter } from 'next/navigation';
+import Modal from '../../atoms/atom/allert-modal';
 
 export default function Login() {
   const [token, setToken] = useRecoilState(userToken);
+  const [isKing, setIsNuriKing] = useRecoilState(isNuriKing);
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const inputUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value);
@@ -21,6 +24,14 @@ export default function Login() {
   const inputPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
+
+  useEffect(() => {
+    if (isModalOpen === true) {
+      setTimeout(() => {
+        setIsModalOpen(false); // 2초 후에 AllertModal 닫기
+      }, 2000);
+    }
+  }, [isModalOpen]);
 
   const login = () => {
     axBase()({
@@ -32,16 +43,20 @@ export default function Login() {
       },
     })
       .then(response => {
+        console.log(response.data);
         setToken(response.data.accessToken);
+        setIsNuriKing(response.data.nuriKing);
         router.replace('/main');
       })
       .catch(err => {
+        setIsModalOpen(true);
         console.log(err);
       });
   };
 
   return (
     <main>
+      {isModalOpen ? <Modal title={'틀렸습니다'} context={'아이디/비밀번호를 확인해주세요'} type={'danger'} /> : null}
       <header>
         <Header isVisible={false} />
       </header>

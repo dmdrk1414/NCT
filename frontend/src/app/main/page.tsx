@@ -3,7 +3,7 @@ import { axAuth } from '@/apis/axiosinstance';
 import Header from '../../atoms/molecule/header';
 import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { userToken } from '../../states/index';
+import { userToken, isNuriKing } from '../../states/index';
 import { useRouter } from 'next/navigation';
 import Navigation from '../../atoms/template/navigation';
 import Button from '../../atoms/atom/large-button';
@@ -32,14 +32,14 @@ export default function Main() {
   const [token, setToken] = useRecoilState(userToken);
   const [type, setType] = useState(0);
   const [userList, setUserList] = useState([]);
-  const [isKing, setIsKing] = useState(false);
+  const [isKing, setIsKing] = useRecoilState(isNuriKing);
   const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
   const [AllertModalstatus, setAllertModalStatus] = useState(0);
   const [isTodayAttendance, setIsTodayAttendance] = useState(false);
   const [isMemberInfoOpen, setIsMemberInfoOpen] = useState(0);
 
   const textOfAllert = [
-    { title: '틀렸습니다!', context: '번호를 다시 확인해주세요', type: 'danger' },
+    { title: '틀렸습니다!', context: '결석, 휴가 완료 또는 번호를 다시 확인해주세요', type: 'danger' },
     { title: '오류!', context: '인터넷 연결을 확인해주세요', type: 'danger' },
     { title: '출석이 완료되었습니다.', context: '', type: 'success' },
   ];
@@ -53,9 +53,6 @@ export default function Main() {
   }, [AllertModalstatus]);
 
   useEffect(() => {
-    if (!userToken) {
-      router.replace('/login');
-    }
     if (type === 0) {
       axAuth(token)({
         method: 'get',
@@ -64,6 +61,7 @@ export default function Main() {
         .then(res => {
           console.log(res);
           setUserList(res.data.ybUserInfomationList);
+          setIsTodayAttendance(res.data.passAttendanceOfSearchUse);
         })
         .catch(err => {
           console.log(err);
@@ -75,7 +73,6 @@ export default function Main() {
       })
         .then(res => {
           setUserList(res.data[0].obUserList);
-          setIsKing(res.data[0].nuriKing);
         })
         .catch(err => {
           console.log(err);
@@ -92,7 +89,7 @@ export default function Main() {
       {AllertModalstatus !== 0 ? (
         <AllertModal title={textOfAllert[AllertModalstatus - 1].title} context={textOfAllert[AllertModalstatus - 1].context} type={textOfAllert[AllertModalstatus - 1].type} />
       ) : null}
-      {isMemberInfoOpen !== 0 ? <MemberInformationModal userId={isMemberInfoOpen} setIsMemberInfoOpen={setIsMemberInfoOpen} /> : null}
+      {isMemberInfoOpen !== 0 ? <MemberInformationModal userId={isMemberInfoOpen} setIsMemberInfoOpen={setIsMemberInfoOpen} isKing={isKing} type={type} /> : null}
       <header>
         <Header isVisible={false} />
       </header>
@@ -122,9 +119,13 @@ export default function Main() {
               userList.map((item: userDataPropsTypeZero, idx) => (
                 <CurrentMember key={idx} name={item.name} token={item.cntVacation} week={item.weeklyData} userId={item.userId} setIsMemberInfoOpen={setIsMemberInfoOpen} />
               ))}
-            <div onClick={() => setIsAttendanceModalOpen(true)}>
-              <Button text={'출석하기'} addClass="text-2xl" />
-            </div>
+            {isTodayAttendance ? (
+              <Button text={'출석완료'} addClass="text-2xl bg-grey" />
+            ) : (
+              <div onClick={() => setIsAttendanceModalOpen(true)}>
+                <Button text={'출석하기'} addClass="text-2xl" />
+              </div>
+            )}
           </article>
         ) : (
           <article className="mx-[7.5%]">
@@ -140,7 +141,7 @@ export default function Main() {
         )}
       </section>
       <footer>
-        <Navigation now={1} />
+        <Navigation now={1} isNuriKing={isKing} />
       </footer>
     </main>
   );

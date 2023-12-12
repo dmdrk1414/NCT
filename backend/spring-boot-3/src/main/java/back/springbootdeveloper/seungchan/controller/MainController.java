@@ -1,14 +1,14 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.domain.ObUser;
+import back.springbootdeveloper.seungchan.dto.request.UserControlRequest;
+import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
-import back.springbootdeveloper.seungchan.dto.response.ObUserOfMainResponse;
-import back.springbootdeveloper.seungchan.dto.response.UserOfDetail2MainResponse;
 import back.springbootdeveloper.seungchan.domain.YbUserInfomation;
-import back.springbootdeveloper.seungchan.dto.response.YbUserListResponse;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import back.springbootdeveloper.seungchan.service.*;
+import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +32,7 @@ public class MainController {
     private final UserUtillService userUtillService;
     private final TokenService tokenService;
     private final AttendanceService attendanceService;
+    private final AttendanceTimeService attendanceTimeService;
 
     @Operation(summary = "main page 현재 인원들의 정보", description = "main page 현재 재학 인원들의 정보들을 나열")
     @GetMapping("/ybs")
@@ -70,4 +71,36 @@ public class MainController {
         return ResponseEntity.ok().body(response);
     }
 
+    @Operation(summary = "유저의 개인적인 커스텀을 위한 컨트롤러 get", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
+    @GetMapping("/detail/{id}/control")
+    public ResponseEntity<UserControlResponse> userControlFindInfo(HttpServletRequest request, @PathVariable long id) {
+        UserControlResponse userControlResponse = attendanceTimeService.findUserControlResById(id);
+        return ResponseEntity.ok().body(userControlResponse);
+    }
+
+    @Operation(summary = "유저의 개인적인 커스텀을 위한 컨트롤러 post", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
+    @PostMapping("/detail/{id}/control")
+    public ResponseEntity<BaseResponseBody> userControlPostInfo(@RequestBody UserControlRequest userControlRequest, @PathVariable long id) {
+        attendanceTimeService.updateAttendanceTime(userControlRequest, id);
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+    }
+
+    @Operation(summary = "장기휴가 신청을 위한 버튼api", description = "버튼을 누르면 장기 휴가 신청을 의미하는 Attendance_time 테이블의 exception의 값이 true/false가 된다.")
+    @PostMapping("/detail/{id}/control/exception/attendance")
+    public ResponseEntity<BaseResponseBody> userExceptionAttendanceControl(@PathVariable long id) {
+        attendanceTimeService.updateExceptionAttendance(id);
+
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+    }
+
+    @Operation(summary = "장기휴가 신청을 위한 버튼api", description = "버튼을 누르면 장기 휴가 신청을 의미하는 Attendance_time 테이블의 exception의 값이 true/false가 반환된다.")
+    @GetMapping("/detail/{id}/control/exception/attendance")
+    public ResponseEntity<AttendanceTimeExceptionAttendanceResponse> userFindExceptionAttendanceControl(@PathVariable long id) {
+        boolean isExceptionAttendance = true;
+        isExceptionAttendance = attendanceTimeService.findExceptionAttendance(id);
+
+        return ResponseEntity.ok().body(AttendanceTimeExceptionAttendanceResponse.builder()
+                .isExceptionAttendance(isExceptionAttendance)
+                .build());
+    }
 }

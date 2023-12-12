@@ -47,12 +47,9 @@ VALUES (1, '건의', TRUE, '건의 제목 1', ''),
        (4, '비밀', FALSE, '비밀 제목 1', '');
 
 INSERT INTO attendance_status (id, absence_dates, name, user_id, vacation_dates, weekly_data)
-VALUES (1, '2023-08-15', '박승찬', 1, '2023-08-01, 2023-08-07, 2023-08-14', '[0,0,0,0,0]'),
+VALUES (1, '2023-08-15', '박승찬', 1, '2023-08-01, 2023-08-07, 2023-08-14', '[0,0,0,0,-1]'),
        (2, '2023-08-11', '김주연', 3, '2023-08-08, 2023-08-18', '[0,0,0,0,0]'),
        (3, '2023-08-18', '허진범', 5, '2023-08-07, 2023-08-11', '[1,0,0,0,0]');
-
-INSERT INTO num_of_today_attendance (check_num, `day`)
-VALUES ('1234', '2023-08-28');
 
 INSERT INTO temp_user (id,
                        gpa,
@@ -88,3 +85,16 @@ INSERT INTO PERIODIC_DATA (NAME, PREVIOUS_MONTH, THIS_MONTH, USER_ID, WEEKLY_DAT
 VALUES ('박승찬', '1:[1,0,1,1,1] , 2:[0,1,1,1,1] , 3:[0,-1,1,1,1] , 4:[0,0,0,0,0] , ', 6, 1, '[0,0,0,0,0]'),
        ('김주연', '1:[1,1,1,1,1] , 2:[1,0,1,1,-1] , 3:[1,1,1,1,0] , 4:[0,0,0,0,0] , ', 6, 3, '[0,0,0,0,0]'),
        ('허진범', '1:[1,1,1,1,1] , 2:[0,1,1,1,0] , 3:[1,1,1,1,-1] , 4:[0,0,0,0,0] , ', 6, 5, '[1,0,0,0,0]');
+
+INSERT INTO num_of_today_attendance (check_num, today)
+VALUES ('1234', '2023-09-07'),
+       ('2345', '2023-09-08'),
+       ('2345', '2023-09-09'),
+       ('1234', '2023-09-20'),
+       ('1234', '2023-12-12');
+
+
+INSERT INTO attendance_time (attendance_time, name, exception_attendance, user_id)
+VALUES ('09', '박승찬', true, 1),
+       ('09', '김주연', false, 3),
+       ('09', '허진범', false, 5);

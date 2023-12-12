@@ -44,4 +44,13 @@ public class MypageController {
 
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
+
+    @Operation(summary = "내 정보을 찾는다.", description = "토큰을 이용해 정보를 조회한후 user 테이블을 find한다.")
+    @GetMapping("/update")
+    public ResponseEntity<MyPageResponse> findMypageToUpdate(HttpServletRequest request) {
+        Long userId = tokenService.getUserIdFromToken(request);
+        UserInfo userInfo = userServiceImp.findUserById(userId);
+
+        return ResponseEntity.ok().body(new MyPageResponse(userInfo));
+    }
 }

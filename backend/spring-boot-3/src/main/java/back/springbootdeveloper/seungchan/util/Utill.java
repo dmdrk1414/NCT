@@ -5,6 +5,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +26,7 @@ public class Utill {
         List<Integer> integerList = new ArrayList<>();
 
         // 정규 표현식을 사용하여 숫자 추출
-        Pattern pattern = Pattern.compile("\\d+");
+        Pattern pattern = Pattern.compile("-?\\d+");
         Matcher matcher = pattern.matcher(input);
 
         while (matcher.find()) {
@@ -46,5 +47,20 @@ public class Utill {
             return true;
         }
         return false;
+    }
+
+    /**
+     * printf ObjectList
+     * 출력
+     * 객체의 정보의 한줄
+     * 객체의 정보의 한줄
+     * 객체의 정보의 한줄
+     */
+    public static <T> void printObjectList(List<T> objectList) {
+        System.out.println("printObjectList");
+        for (int index = 0; index < objectList.size(); index++) {
+            System.out.println(index + ": " + objectList.get(index));
+        }
+        System.out.println();
     }
 }

@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.controller.config.AttendanceListFromJson;
 import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
 import back.springbootdeveloper.seungchan.dto.request.*;
+import back.springbootdeveloper.seungchan.dto.response.UserControlResponse;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.TempUserService;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -90,6 +92,9 @@ public class ApiTest {
     private NumOfTodayAttendenceRepository numOfTodayAttendenceRepository;
     @Autowired
     private TempUserRepository tempUserRepository;
+    @Autowired
+    private AttendanceTimeRepository attendanceTimeRepository;
+
 
     private String token;
     private UserInfo user;
@@ -339,7 +344,7 @@ public class ApiTest {
 
     @DisplayName("출석 번호 입력 API 테스트")
     @Test
-    public void attendanceNumberControllerTest() throws Exception {
+    public void AttendanceIsPassController() throws Exception {
         // given
         final String url = "/attendance/number";
         List<NumOfTodayAttendence> numOfTodayAttendenceList = numOfTodayAttendenceRepository.findAll();
@@ -359,6 +364,36 @@ public class ApiTest {
         // then
         result
                 .andExpect(jsonPath("$.passAtNow").value(true));
+    }
+
+    @DisplayName("출석 번호 입력 API 테스트")
+    @Test
+    public void 출석_번호_입력__출석_결석_휴가를_이미_한상태에서의_출석_예외_1() throws Exception {
+        // given
+        final String url = "/attendance/number";
+        List<NumOfTodayAttendence> numOfTodayAttendenceList = numOfTodayAttendenceRepository.findAll();
+        NumOfTodayAttendence numOfTodayAttendence = numOfTodayAttendenceList.get(numOfTodayAttendenceList.size() - 1);
+        String num = numOfTodayAttendence.getCheckNum();
+
+
+        AttendanceNumberRequest attendanceNumberRequest = new AttendanceNumberRequest();
+        attendanceNumberRequest.setNumOfAttendance(num);
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(attendanceNumberRequest))
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        ResultActions result_2 = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(attendanceNumberRequest))
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        result_2
+                .andExpect(jsonPath("$.passAtNow").value(false));
     }
 
     @DisplayName("내 정보를 조회한다.")
@@ -415,7 +450,8 @@ public class ApiTest {
                 user.getAdvantages(),
                 user.getDisadvantage(),
                 user.getSelfIntroduction(),
-                user.getPhoto()
+                user.getPhoto(),
+                user.getEmail()
         );
         System.out.println("requestUserForm = " + requestUserForm);
 
@@ -684,16 +720,10 @@ public class ApiTest {
         TempUser tempUserDB = tempUserRepository.save(tempUser_1);
         final String url = "/new-users/" + tempUserDB.getId() + "/acceptance";
 
-        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getId());
-
-        // 객체 suggestionsRequest을 Json으로 직렬화
-        final String requestBody = objectMapper.writeValueAsString(newUserApprovalRequest);
-
         // when
         ResultActions result = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(requestBody)
                 .header("authorization", "Bearer " + token) // token header에 담기
         );
 
@@ -717,16 +747,10 @@ public class ApiTest {
         TempUser tempUserDB = tempUserRepository.save(tempUser_1);
         final String url = "/new-users/" + tempUserDB.getId() + "/reject";
 
-        NewUserApprovalRequest newUserApprovalRequest = new NewUserApprovalRequest(tempUserDB.getId());
-
-        // 객체 suggestionsRequest을 Json으로 직렬화
-        final String requestBody = objectMapper.writeValueAsString(newUserApprovalRequest);
-
         // when
         ResultActions result = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(requestBody)
                 .header("authorization", "Bearer " + token) // token header에 담기
         );
 
@@ -737,5 +761,179 @@ public class ApiTest {
             tempUserService.findNewUsers(tempUserDB.getId());
         });
 
+    }
+
+    @DisplayName("나의 정보를 업데이트를 할때 기존에 기입하였던 정보를 find하는 테스트 함수")
+    @Test
+    public void testFindMypageToUpdate() throws Exception {
+        // given
+        final String url = "/mypage/update";
+
+
+        UserInfo userInfo = userService.findUserById(1L);
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(userInfo.getName()))
+                .andExpect(jsonPath("$.phoneNum").value(userInfo.getPhoneNum()))
+                .andExpect(jsonPath("$.major").value(userInfo.getMajor()))
+                .andExpect(jsonPath("$.gpa").value(userInfo.getGpa()))
+                .andExpect(jsonPath("$.address").value(userInfo.getAddress()))
+                .andExpect(jsonPath("$.specialtySkill").value(userInfo.getSpecialtySkill()))
+                .andExpect(jsonPath("$.hobby").value(userInfo.getHobby()))
+                .andExpect(jsonPath("$.mbti").value(userInfo.getMbti()))
+                .andExpect(jsonPath("$.studentId").value(userInfo.getStudentId()))
+                .andExpect(jsonPath("$.birthDate").value(userInfo.getBirthDate()))
+                .andExpect(jsonPath("$.advantages").value(userInfo.getAdvantages()))
+                .andExpect(jsonPath("$.disadvantage").value(userInfo.getDisadvantage()))
+                .andExpect(jsonPath("$.selfIntroduction").value(userInfo.getSelfIntroduction()))
+                .andExpect(jsonPath("$.photo").value(userInfo.getPhoto()))
+                .andExpect(jsonPath("$.email").value(userInfo.getEmail()))
+                .andExpect(jsonPath("$.yearOfRegistration").value(userInfo.getYearOfRegistration()))
+                .andExpect(jsonPath("$.ob").value(userInfo.isOb()));
+    }
+
+    @DisplayName("출석을 하기위한 번호를 response하기 위한 method 테스트")
+    @Test
+    public void attendanceNumberControllerTest() throws Exception {
+        // given
+        final String url = "/attendance/find/number";
+        NumOfTodayAttendence numOfTodayAttendence = numOfTodayAttendenceRepository.findById(1L)
+                .orElseThrow();
+
+        String attendenceNum = numOfTodayAttendence.getCheckNum();
+        String dayAtNow = numOfTodayAttendence.getDay();
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.attendanceNum").value(attendenceNum))
+                .andExpect(jsonPath("$.dayAtNow").value(dayAtNow));
+    }
+
+
+    @DisplayName("개개인의 유저에게 기능적인 정보를 find하는 컨트롤러")
+    @Test
+    public void userControlFindInfoTest() throws Exception {
+        // given
+        final String url = "/main/detail/1/control";
+        AttendanceTime attendanceTime = attendanceTimeRepository.findById(1L)
+                .orElseThrow(() -> new IllegalArgumentException("not found: ")); // 찾아서 없으면 예외처리.;;
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(attendanceTime.getName()))
+                .andExpect(jsonPath("$.attendanceTime").value(attendanceTime.getAttendanceTime()));
+
+    }
+
+    @DisplayName("개개인의 유저에게 기능적인 정보를 post하는 컨트롤러")
+    @Test
+    public void userControlPostInfoTest() throws Exception {
+        // given
+        final String url = "/main/detail/1/control";
+
+        String TestAttendanceTime = "15";
+        UserControlRequest userControlRequest = new UserControlRequest(TestAttendanceTime);
+
+        // 객체 suggestionsRequest을 Json으로 직렬화
+        final String requestBody = objectMapper.writeValueAsString(userControlRequest);
+
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        AttendanceTime attendanceTime = attendanceTimeRepository.findById(1L)
+                .orElseThrow(() -> new IllegalArgumentException("not found: ")); // 찾아서 없으면 예외처리.;
+
+        // then
+        result
+                .andExpect(status().isOk());
+        assertThat(attendanceTime.getAttendanceTime()).isEqualTo(TestAttendanceTime);
+    }
+
+    @DisplayName("개개의 유저의 장기 출장신청을 위한 api")
+    @Test
+    public void userExceptionAttendanceControlTest() throws Exception {
+        // given
+        final String url = "/main/detail/1/control/exception/attendance";
+        boolean isExceptionAttendance = attendanceTimeRepository.findByUserId(1L).isExceptonAttendance();
+
+        // when
+        mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+
+        boolean result = attendanceTimeRepository.findByUserId(1L).isExceptonAttendance();
+        // then
+        if (isExceptionAttendance) {
+            assertThat(result).isFalse();
+        } else {
+            assertThat(result).isTrue();
+        }
+
+    }
+
+    @DisplayName("버튼을 누르면 장기 휴가 신청을 의미하는 Attendance_time 테이블의 exception의 값이 true/false가 반환된다.")
+    @Test
+    public void userFindExceptionAttendanceControlTest() throws Exception {
+        // given
+        final String url = "/main/detail/1/control/exception/attendance";
+        boolean isExceptionAttendance = attendanceTimeRepository.findByUserId(1L).isExceptonAttendance();
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token)); // token header에 담기
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.exceptionAttendance").value(isExceptionAttendance));
+    }
+
+    @DisplayName("개인 별 휴가 신청을 위한 api")
+    @Test
+    public void applyVacationEachPersonTest() throws Exception {
+        // given
+        final String url = "/vacations/request/each";
+        int vacationCount = userUtilRepository.findByUserId(1L).getCntVacation();
+
+        // when
+        mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        int result = userUtilRepository.findByUserId(1L).getCntVacation();
+        System.out.println("result = " + result);
+
+        // then
+        assertThat(result).isEqualTo(vacationCount - 1);
     }
 }
