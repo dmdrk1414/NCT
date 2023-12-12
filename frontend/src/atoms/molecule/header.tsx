@@ -19,7 +19,7 @@ export default function Header(Data: Data) {
     if (AllertModalstatus !== 0) {
       setTimeout(() => {
         setAllertModalStatus(0); // 2초 후에 AllertModal 닫기
-      }, 1000);
+      }, 2000);
     }
   }, [AllertModalstatus]);
 
