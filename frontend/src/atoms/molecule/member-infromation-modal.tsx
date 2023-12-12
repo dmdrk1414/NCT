@@ -42,7 +42,7 @@ export default function MemberInformationModal({ userId, setIsMemberInfoOpen, is
       url: `/main/detail/${userId}`,
     })
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         setUserInfo(res.data);
       })
       .catch(err => {

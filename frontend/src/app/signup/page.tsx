@@ -1,12 +1,34 @@
 'use client';
 import { axBase } from '@/apis/axiosinstance';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../atoms/molecule/header';
 import Input from '../../atoms/atom/input-form';
 import Textarea from '../../atoms/atom/text-area-form';
 import SubmitButton from '../../atoms/atom/large-button';
+import AllertModal from '../../atoms/atom/allert-modal';
+import { useRouter } from 'next/navigation';
 
 export default function SignUp() {
+  const router = useRouter();
+  const [AllertModalstatus, setAllertModalStatus] = useState(0);
+
+  useEffect(() => {
+    // 휴가 신청 모달창
+    if (AllertModalstatus !== 0) {
+      window.scrollTo(0, 0); // Scroll to the top of the page
+      setTimeout(() => {
+        setAllertModalStatus(0); // 5초 후에 AllertModal 닫기
+        router.replace('/');
+      }, 5000);
+    }
+  }, [AllertModalstatus]);
+
+  const textOfAllert = [
+    // 휴가 신청 모달창 텍스트 입력
+    { title: '지원 완료', context: '누리 고시원 실장분께 연락 주세요, 5초후에 메이페이지로 이동합니다.', type: 'success' },
+    { title: '지원 할수 없습니다.', context: '누리 고시원 실장분께 연락 주세요', type: 'danger' },
+  ];
+
   const [userData, setUserData] = useState({
     name: '',
     phoneNum: '',
@@ -50,12 +72,12 @@ export default function SignUp() {
       alert('학번을 확인해주세요.');
     } else if (!userData.birthDate) {
       alert('생년월일을 확인해주세요.');
-    } else if (userData.advantages.length < 200) {
-      alert('장점을 200자 이상 입력해주세요.');
-    } else if (userData.disadvantage.length < 200) {
-      alert('단점을 200자 이상 입력해주세요.');
-    } else if (userData.selfIntroduction.length < 300) {
-      alert('자기소개를 300자 이상 입력해주세요.');
+    } else if (userData.advantages.length < 100) {
+      alert('장점을 100자 이상 입력해주세요.');
+    } else if (userData.disadvantage.length < 100) {
+      alert('단점을 100자 이상 입력해주세요.');
+    } else if (userData.selfIntroduction.length < 200) {
+      alert('자기소개를 200자 이상 입력해주세요.');
     } else if (!userData.email) {
       alert('이메일을 확인해주세요.');
     } else if (!userData.password) {
@@ -91,7 +113,14 @@ export default function SignUp() {
       },
     })
       .then(res => {
-        console.log(res.data);
+        const isApply = res.data.isApply;
+
+        // 0이 닫기, 1이 성공, 2가 실패
+        if (isApply) {
+          setAllertModalStatus(1);
+        } else {
+          setAllertModalStatus(2);
+        }
       })
       .catch(err => {
         console.log(err);
@@ -100,6 +129,9 @@ export default function SignUp() {
 
   return (
     <main>
+      {AllertModalstatus !== 0 ? (
+        <AllertModal title={textOfAllert[AllertModalstatus - 1].title} context={textOfAllert[AllertModalstatus - 1].context} type={textOfAllert[AllertModalstatus - 1].type} />
+      ) : null}
       <header>
         <Header isVisible={false} />
       </header>
@@ -114,9 +146,9 @@ export default function SignUp() {
         <Input title={'MBTI'} userData={userData} setUserData={setUserData} dataname="mbti" />
         <Input title={'학번'} userData={userData} setUserData={setUserData} dataname="studentId" />
         <Input title={'생년월일'} userData={userData} setUserData={setUserData} dataname="birthDate" />
-        <Textarea title={'장점(200자 이상)'} userData={userData} setUserData={setUserData} dataname="advantages" />
-        <Textarea title={'단점(200자 이상)'} userData={userData} setUserData={setUserData} dataname="disadvantage" />
-        <Textarea title={'자기소개(300자 이상)'} userData={userData} setUserData={setUserData} dataname="selfIntroduction" />
+        <Textarea title={'장점(100자 이상)'} userData={userData} setUserData={setUserData} dataname="advantages" />
+        <Textarea title={'단점(100자 이상)'} userData={userData} setUserData={setUserData} dataname="disadvantage" />
+        <Textarea title={'자기소개(200자 이상)'} userData={userData} setUserData={setUserData} dataname="selfIntroduction" />
         <Input title={'이메일'} userData={userData} setUserData={setUserData} dataname="email" />
         <Input title={'비밀번호( 8자 이상, 특수문자, 숫자, 영문자 포함)'} type={'password'} userData={userData} setUserData={setUserData} dataname="password" />
         <Input title={'비밀번호 확인'} type={'password'} userData={userData} setUserData={setUserData} dataname="passwordConfirm" />
