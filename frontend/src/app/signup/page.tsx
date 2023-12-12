@@ -1,12 +1,34 @@
 'use client';
 import { axBase } from '@/apis/axiosinstance';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../atoms/molecule/header';
 import Input from '../../atoms/atom/input-form';
 import Textarea from '../../atoms/atom/text-area-form';
 import SubmitButton from '../../atoms/atom/large-button';
+import AllertModal from '../../atoms/atom/allert-modal';
+import { useRouter } from 'next/navigation';
 
 export default function SignUp() {
+  const router = useRouter();
+  const [AllertModalstatus, setAllertModalStatus] = useState(0);
+
+  useEffect(() => {
+    // 휴가 신청 모달창
+    if (AllertModalstatus !== 0) {
+      window.scrollTo(0, 0); // Scroll to the top of the page
+      setTimeout(() => {
+        setAllertModalStatus(0); // 5초 후에 AllertModal 닫기
+        router.replace('/');
+      }, 5000);
+    }
+  }, [AllertModalstatus]);
+
+  const textOfAllert = [
+    // 휴가 신청 모달창 텍스트 입력
+    { title: '지원 완료', context: '누리 고시원 실장분께 연락 주세요, 5초후에 메이페이지로 이동합니다.', type: 'success' },
+    { title: '지원 할수 없습니다.', context: '누리 고시원 실장분께 연락 주세요', type: 'danger' },
+  ];
+
   const [userData, setUserData] = useState({
     name: '',
     phoneNum: '',
@@ -91,7 +113,14 @@ export default function SignUp() {
       },
     })
       .then(res => {
-        console.log(res.data);
+        const isApply = res.data.isApply;
+
+        // 0이 닫기, 1이 성공, 2가 실패
+        if (isApply) {
+          setAllertModalStatus(1);
+        } else {
+          setAllertModalStatus(2);
+        }
       })
       .catch(err => {
         console.log(err);
@@ -100,6 +129,9 @@ export default function SignUp() {
 
   return (
     <main>
+      {AllertModalstatus !== 0 ? (
+        <AllertModal title={textOfAllert[AllertModalstatus - 1].title} context={textOfAllert[AllertModalstatus - 1].context} type={textOfAllert[AllertModalstatus - 1].type} />
+      ) : null}
       <header>
         <Header isVisible={false} />
       </header>
