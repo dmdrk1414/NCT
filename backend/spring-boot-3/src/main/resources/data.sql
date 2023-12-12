@@ -90,7 +90,8 @@ INSERT INTO num_of_today_attendance (check_num, today)
 VALUES ('1234', '2023-09-07'),
        ('2345', '2023-09-08'),
        ('2345', '2023-09-09'),
-       ('1234', '2023-09-20');
+       ('1234', '2023-09-20'),
+       ('1234', '2023-12-12');
 
 
 INSERT INTO attendance_time (attendance_time, name, exception_attendance, user_id)
