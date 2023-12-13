@@ -69,11 +69,11 @@ export default function SignUp() {
       alert('학번을 확인해주세요.');
     } else if (!userData.birthDate) {
       alert('생년월일을 확인해주세요.');
-    } else if (userData.advantages.length < 200) {
+    } else if (userData.advantages.length < 100) {
       alert('장점을 200자 이상 입력해주세요.');
-    } else if (userData.disadvantage.length < 200) {
+    } else if (userData.disadvantage.length < 100) {
       alert('단점을 200자 이상 입력해주세요.');
-    } else if (userData.selfIntroduction.length < 300) {
+    } else if (userData.selfIntroduction.length < 200) {
       alert('자기소개를 300자 이상 입력해주세요.');
     } else if (!userData.email) {
       alert('이메일을 확인해주세요.');
@@ -131,9 +131,9 @@ export default function SignUp() {
         <Input title={'MBTI'} userData={userData} setUserData={setUserData} dataname="mbti" value={userData.mbti} />
         <Input title={'학번'} userData={userData} setUserData={setUserData} dataname="studentId" value={userData.studentId} />
         <Input title={'생년월일 (예 960415)'} userData={userData} setUserData={setUserData} dataname="birthDate" value={userData.birthDate} />
-        <Textarea title={'장점(200자 이상)'} userData={userData} setUserData={setUserData} dataname="advantages" value={userData.advantages} />
-        <Textarea title={'단점(200자 이상)'} userData={userData} setUserData={setUserData} dataname="disadvantage" value={userData.disadvantage} />
-        <Textarea title={'자기소개(300자 이상)'} userData={userData} setUserData={setUserData} dataname="selfIntroduction" value={userData.selfIntroduction} />
+        <Textarea title={'장점(100자 이상)'} userData={userData} setUserData={setUserData} dataname="advantages" value={userData.advantages} />
+        <Textarea title={'단점(100자 이상)'} userData={userData} setUserData={setUserData} dataname="disadvantage" value={userData.disadvantage} />
+        <Textarea title={'자기소개(200자 이상)'} userData={userData} setUserData={setUserData} dataname="selfIntroduction" value={userData.selfIntroduction} />
         <Input title={'이메일'} userData={userData} setUserData={setUserData} dataname="email" value={userData.email} />
       </article>
       <footer className="flex justify-center px-[7.5%] mt-[2rem] mb-[3rem]">

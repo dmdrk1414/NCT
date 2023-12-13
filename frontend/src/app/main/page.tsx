@@ -59,7 +59,6 @@ export default function Main() {
         url: '/main/ybs',
       })
         .then(res => {
-          console.log(res);
           setUserList(res.data.ybUserInfomationList);
           setIsTodayAttendance(res.data.passAttendanceOfSearchUse);
         })
@@ -104,6 +103,15 @@ export default function Main() {
           <div className={`border-t-2 mt-[1rem] ${type === 0 ? 'border-black' : 'border-grey'}`}></div>
           <div className={`border-t-2 mt-[1rem] ${type === 1 ? 'border-black' : 'border-light-grey'}`}></div>
         </div>
+
+        {isTodayAttendance ? (
+          <Button text={'출석완료'} addClass="text-2xl bg-grey" />
+        ) : (
+          <div onClick={() => setIsAttendanceModalOpen(true)}>
+            <Button text={'출석하기'} addClass="text-2xl mb-3" />
+          </div>
+        )}
+
         {type === 0 ? (
           <article className="mx-[7.5%]">
             <div className="ml-auto w-[80%] font-bold text-[0.9rem] flex place-content-between">
@@ -119,13 +127,6 @@ export default function Main() {
               userList.map((item: userDataPropsTypeZero, idx) => (
                 <CurrentMember key={idx} name={item.name} token={item.cntVacation} week={item.weeklyData} userId={item.userId} setIsMemberInfoOpen={setIsMemberInfoOpen} />
               ))}
-            {isTodayAttendance ? (
-              <Button text={'출석완료'} addClass="text-2xl bg-grey" />
-            ) : (
-              <div onClick={() => setIsAttendanceModalOpen(true)}>
-                <Button text={'출석하기'} addClass="text-2xl" />
-              </div>
-            )}
           </article>
         ) : (
           <article className="mx-[7.5%]">
@@ -140,7 +141,7 @@ export default function Main() {
           </article>
         )}
       </section>
-      <footer>
+      <footer className="mt-10">
         <Navigation now={1} isNuriKing={isKing} />
       </footer>
     </main>
