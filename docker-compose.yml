@@ -18,6 +18,9 @@ services:
     #  호스트 머신의 3000번 포트와 컨테이너의 3000번 포트를 매핑합니다. 
     ports:
       - "3000:3000"
+    environment:
+    # To set the time zone to Seoul.
+      TZ: "Asia/Seoul"
 
   backend-spring-boot-3:
     container_name: compose-backend-spring-boot-3
@@ -44,6 +47,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://compose-database-mysql:3306/nct_db?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&useUnicode=true&serverTimezone=Asia/Seoul
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "nuri777!"
+      # To set the time zone to Seoul.
+      TZ: "Asia/Seoul"
 
   server-nginx:
     container_name: compose-nginx
@@ -64,6 +69,10 @@ services:
     depends_on:
       - frontend-nextjs
       - backend-spring-boot-3
+    environment:
+    # To set the time zone to Seoul.
+      TZ: "Asia/Seoul"
+
 
   database-mysql:   
     container_name: compose-database-mysql
@@ -79,3 +88,6 @@ services:
     volumes:
       - ./database/mysql/scripts:/docker-entrypoint-initdb.d
     command: --default-authentication-plugin=caching_sha2_password
+    environment:
+    # To set the time zone to Seoul.
+      TZ: "Asia/Seoul"

@@ -156,12 +156,24 @@ https://github.com/dmdrk1414?tab=repositories
 https://github.com/dmdrk1414/docker-test
 
 1. 서버 컴퓨터의 사양을 체크하자.
+
 2. 도커 컨테이너의 이름을 지정하자
    1. compose을 사용할시 랜덤으로 폴더이름으로 변경이 되는 점이 찾기 힘들다.
       1. 왜냐하면 nginx을 할때도 컨테이너의 이름으로 리버싱 프록시를 하기 때문이다.
+
 3. 도커 파일을 설정할때 생각을 많이 하고 설정하자 설정파일을 깃에 올릴테니 확인하고 설정
 
 4. 버전 관리 툴의 소중함 nvm 
 
 5. aws의 소중함. 이런 귀찮음을 해결해주는 aws에게 감사하자
+
 6. mysql의 접근 ip의 다양함을 생각하자.
+
+7. Time Zone을 
+
+   1. ```java
+          environment:
+          # To set the time zone to Seoul.
+            TZ: "Asia/Seoul"
+      
+      ```
