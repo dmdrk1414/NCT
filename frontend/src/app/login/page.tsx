@@ -8,6 +8,8 @@ import { useRecoilState } from 'recoil';
 import { userToken, isNuriKing } from '../../states/index';
 import { useRouter } from 'next/navigation';
 import Modal from '../../atoms/atom/allert-modal';
+import { hasToken } from '@/utils/validate/ExistenceChecker';
+import { replaceRouterMain } from '@/utils/RouteHandling';
 
 export default function Login() {
   const [token, setToken] = useRecoilState(userToken);
@@ -24,6 +26,13 @@ export default function Login() {
   const inputPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
+
+  useEffect(() => {
+    // 토큰이 있을시 메인 페이지로 이동
+    if (hasToken(token)) {
+      replaceRouterMain(router);
+    }
+  }, []);
 
   useEffect(() => {
     if (isModalOpen === true) {
