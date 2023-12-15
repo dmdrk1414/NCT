@@ -13,6 +13,7 @@ type Data = {
 export default function Header(Data: Data) {
   const [token, setToken] = useRecoilState(userToken);
   const [AllertModalstatus, setAllertModalStatus] = useState(0);
+  const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
     // 휴가 신청 모달창
@@ -22,6 +23,13 @@ export default function Header(Data: Data) {
       }, 2000);
     }
   }, [AllertModalstatus]);
+
+  useEffect(() => {
+    // 휴가 신청 모달창
+    if (token) {
+      setIsLogin(true);
+    }
+  }, [token]);
 
   const textOfAllert = [
     // 휴가 신청 모달창 텍스트 입력
@@ -66,7 +74,7 @@ export default function Header(Data: Data) {
             <MiddleButton addClass="text-xl" text="로그인/지원서 작성" />
           </Link>
         ) : null}
-        {token ? (
+        {isLogin ? (
           <div className="absolute right-[0.5rem]">
             <div onClick={useVacation}>
               <MiddleButton addClass="text-xl" text="휴가 사용하기" />
