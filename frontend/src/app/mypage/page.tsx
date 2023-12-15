@@ -9,6 +9,8 @@ import { userToken, isNuriKing } from '../../states/index';
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import Navigation from '../../atoms/template/navigation';
+import { hasNotToken } from '@/utils/validate/ExistenceChecker';
+import { replaceRouterInitialize } from '@/utils/RouteHandling';
 
 export default function SignUp() {
   const router = useRouter();
@@ -34,17 +36,22 @@ export default function SignUp() {
   });
 
   useEffect(() => {
-    if (!userToken) {
-      router.replace('/login');
-    } else {
-      axAuth(token)({
-        method: 'get',
-        url: '/mypage',
-      }).then(res => {
-        const data = res.data;
-        setUserData(data);
-      });
+    // 토큰이 없을시 초기화면으로 이동
+    if (hasNotToken(token)) {
+      replaceRouterInitialize(router);
     }
+
+    // 해당 유저가 아니면 페이지 접근 불가능
+  }, []);
+
+  useEffect(() => {
+    axAuth(token)({
+      method: 'get',
+      url: '/mypage',
+    }).then(res => {
+      const data = res.data;
+      setUserData(data);
+    });
   }, []);
 
   const isLoginAndSignupButton = false;
