@@ -15,3 +15,12 @@ export function hasToken(token: string): boolean {
 export function hasNotToken(token: string): boolean {
   return !hasToken(token);
 }
+
+/**
+ * 실장확인 검증
+ * @param isNuriKing
+ * @returns 실장이 아니면 true
+ */
+export function isNotNuriKing(isNuriKing: boolean): boolean {
+  return !isNuriKing;
+}
