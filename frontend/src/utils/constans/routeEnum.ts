@@ -3,4 +3,5 @@
  */
 export enum RouteUrl {
   ROUTE_MAIN = '/main',
+  ROUTE_INITIALIZE = '/',
 }
