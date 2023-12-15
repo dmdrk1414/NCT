@@ -2,7 +2,7 @@
 import { axAuth } from '@/apis/axiosinstance';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { userToken } from '../../states/index';
+import { userToken } from '../../../../states/index';
 
 type userData = {
   id: number;
