@@ -13,7 +13,7 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    // 토큰이 있을시 초기화면 접근 불가능
+    // 토큰이 있을시 메인페이지 이동
     if (hasToken(token)) {
       replaceRouterMain(router);
     }
