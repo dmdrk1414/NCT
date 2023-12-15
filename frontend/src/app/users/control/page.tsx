@@ -7,6 +7,8 @@ import { userToken, isNuriKing } from '../../../states/index';
 import { useRouter } from 'next/navigation';
 import Navigation from '../../../atoms/template/navigation';
 import UserListOnControl from '@/atoms/molecule/user-list-control';
+import { hasNotToken, isNotNuriKing } from '@/utils/validate/ExistenceChecker';
+import { replaceRouterInitialize, replaceRouterMain } from '@/utils/RouteHandling';
 
 interface userDataPropsTypeOne {
   name: string;
@@ -24,12 +26,18 @@ export default function Main() {
   const [isMemberInfoOpen, setIsMemberInfoOpen] = useState(0);
 
   useEffect(() => {
-    if (!userToken) {
-      router.replace('/login');
+    // 토큰이 없을시 초기화면으로 이동
+    if (hasNotToken(token)) {
+      replaceRouterInitialize(router);
     }
-    if (!isKing) {
-      router.replace('/main');
+
+    // 실장이 아니면 메인페이지
+    if (isNotNuriKing(isKing)) {
+      replaceRouterMain(router);
     }
+  }, []);
+
+  useEffect(() => {
     if (type === 0) {
       axAuth(token)({
         method: 'get',
