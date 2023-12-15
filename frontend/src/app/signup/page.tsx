@@ -7,10 +7,22 @@ import Textarea from '../../atoms/atom/text-area-form';
 import SubmitButton from '../../atoms/atom/large-button';
 import AllertModal from '../../atoms/atom/allert-modal';
 import { useRouter } from 'next/navigation';
+import { hasToken } from '@/utils/validate/ExistenceChecker';
+import { replaceRouterMain } from '@/utils/RouteHandling';
+import { useRecoilState } from 'recoil';
+import { userToken } from '../../states/index';
 
 export default function SignUp() {
   const router = useRouter();
   const [AllertModalstatus, setAllertModalStatus] = useState(0);
+  const [token, setToken] = useRecoilState(userToken);
+
+  useEffect(() => {
+    // 토큰이 있을시 메인화면 이동
+    if (hasToken(token)) {
+      replaceRouterMain(router);
+    }
+  }, []);
 
   useEffect(() => {
     // 휴가 신청 모달창
