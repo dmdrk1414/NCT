@@ -2,7 +2,7 @@
 import { axAuth } from '@/apis/axiosinstance';
 import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { userToken } from '../../states/index';
+import { userToken } from '../../../states/index';
 
 export default function AttendanceNumber() {
   const [number, setNumber] = useState();
