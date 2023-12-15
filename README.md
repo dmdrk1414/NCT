@@ -149,6 +149,18 @@ http://localhost:3000/mypage/update
 
 8. 자바버전확인 꼭!!!! 제발 이상한 버전 쓰지말고 생각 많이 하고 정하기
 
+9. 상수관리를 잘하자
+
+   1. 변경할시 문제가 발생한다
+
+10. 토큰과 접근 허락이 없으면 페이지 접근을 못하도록
+
+11. 매직넘버 금지
+
+12. response에는 @Getter 사용
+
+13. 서버 시간 맞추기.
+
 배포할시
 
 https://github.com/dmdrk1414?tab=repositories
