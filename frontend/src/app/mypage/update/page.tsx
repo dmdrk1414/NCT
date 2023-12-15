@@ -10,6 +10,8 @@ import { axAuth } from '@/apis/axiosinstance';
 import { userToken } from '../../../states/index';
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
+import { hasNotToken } from '@/utils/validate/ExistenceChecker';
+import { replaceRouterInitialize } from '@/utils/RouteHandling';
 
 export default function SignUp() {
   const router = useRouter();
@@ -34,17 +36,22 @@ export default function SignUp() {
   });
 
   useEffect(() => {
-    if (!userToken) {
-      router.replace('/login');
-    } else {
-      axAuth(token)({
-        method: 'get',
-        url: '/mypage/update',
-      }).then(res => {
-        const data = res.data;
-        setUserData(data);
-      });
+    // 토큰이 없을시 초기화면으로 이동
+    if (hasNotToken(token)) {
+      replaceRouterInitialize(router);
     }
+
+    // 해당 유저가 아니면 페이지 접근 불가능
+  }, []);
+
+  useEffect(() => {
+    axAuth(token)({
+      method: 'get',
+      url: '/mypage/update',
+    }).then(res => {
+      const data = res.data;
+      setUserData(data);
+    });
   }, []);
 
   const validation = () => {
@@ -83,37 +90,33 @@ export default function SignUp() {
   };
 
   const submitUserData = () => {
-    if (!userToken) {
-      router.replace('/login');
-    } else {
-      axAuth(token)({
-        method: 'put',
-        url: '/mypage/update',
-        data: {
-          name: userData.name,
-          phoneNum: userData.phoneNum,
-          major: userData.major,
-          gpa: userData.gpa,
-          address: userData.address,
-          specialtySkill: userData.specialtySkill,
-          hobby: userData.hobby,
-          mbti: userData.mbti,
-          studentId: userData.studentId,
-          birthDate: userData.birthDate,
-          advantages: userData.advantages,
-          disadvantage: userData.disadvantage,
-          selfIntroduction: userData.selfIntroduction,
-          photo: userData.photo,
-          email: userData.email,
-        },
+    axAuth(token)({
+      method: 'put',
+      url: '/mypage/update',
+      data: {
+        name: userData.name,
+        phoneNum: userData.phoneNum,
+        major: userData.major,
+        gpa: userData.gpa,
+        address: userData.address,
+        specialtySkill: userData.specialtySkill,
+        hobby: userData.hobby,
+        mbti: userData.mbti,
+        studentId: userData.studentId,
+        birthDate: userData.birthDate,
+        advantages: userData.advantages,
+        disadvantage: userData.disadvantage,
+        selfIntroduction: userData.selfIntroduction,
+        photo: userData.photo,
+        email: userData.email,
+      },
+    })
+      .then(res => {
+        // console.log(res.data);
       })
-        .then(res => {
-          // console.log(res.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
+      .catch(err => {
+        console.log(err);
+      });
   };
   return (
     <main>
