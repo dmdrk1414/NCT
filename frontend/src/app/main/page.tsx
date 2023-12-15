@@ -12,6 +12,9 @@ import AllertModal from '../../atoms/atom/allert-modal';
 import Graduater from '@/atoms/atom/graduater';
 import CurrentMember from '@/atoms/molecule/current-member';
 import MemberInformationModal from '@/atoms/molecule/member-infromation-modal';
+import { hasNotToken } from '@/utils/validate/ExistenceChecker';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
+import { replaceRouterInitialize } from '@/utils/RouteHandling';
 
 interface userDataPropsTypeZero {
   cntVacation: number;
@@ -43,6 +46,13 @@ export default function Main() {
     { title: '오류!', context: '인터넷 연결을 확인해주세요', type: 'danger' },
     { title: '출석이 완료되었습니다.', context: '', type: 'success' },
   ];
+
+  useEffect(() => {
+    // 토큰이 없을시 초기화면으로 이동
+    if (hasNotToken(token)) {
+      replaceRouterInitialize(router);
+    }
+  }, []);
 
   useEffect(() => {
     if (AllertModalstatus !== 0) {
@@ -146,4 +156,7 @@ export default function Main() {
       </footer>
     </main>
   );
+}
+function replaceRouterItialize(router: AppRouterInstance) {
+  throw new Error('Function not implemented.');
 }

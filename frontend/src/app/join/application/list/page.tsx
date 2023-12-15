@@ -2,7 +2,10 @@
 import { axAuth } from '@/apis/axiosinstance';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { userToken } from '../../states/index';
+import { userToken, isNuriKing } from '../../../../states/index';
+import { hasNotToken, isNotNuriKing } from '@/utils/validate/ExistenceChecker';
+import { replaceRouterInitialize, replaceRouterMain } from '@/utils/RouteHandling';
+import { useRouter } from 'next/navigation';
 
 type userData = {
   id: number;
@@ -13,6 +16,20 @@ export default function JoinApplicationForm() {
   const [token, setToken] = useRecoilState(userToken);
   const [data, setData] = useState<userData[]>();
   const [refresh, setRefresh] = useState(0);
+  const router = useRouter();
+  const [isKing, setISKing] = useRecoilState(isNuriKing);
+
+  useEffect(() => {
+    // 토큰이 없을시 초기화면으로 이동
+    if (hasNotToken(token)) {
+      replaceRouterInitialize(router);
+    }
+
+    // 실장이 아니면 메인페이지으로 이동한다.
+    if (isNotNuriKing(isKing)) {
+      replaceRouterMain(router);
+    }
+  }, []);
 
   useEffect(() => {
     axAuth(token)({
