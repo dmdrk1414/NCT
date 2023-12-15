@@ -8,3 +8,11 @@ import { RouteUrl } from './constans/routeEnum';
 export function replaceRouterMain(router: AppRouterInstance): void {
   router.replace(RouteUrl.ROUTE_MAIN);
 }
+
+/**
+ * 초기 페이지로 redirect을 해준다.
+ * @param router
+ */
+export function replaceRouternItialize(router: AppRouterInstance): void {
+  router.replace(RouteUrl.ROUTE_INITIALIZE);
+}
