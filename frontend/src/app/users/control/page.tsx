@@ -31,7 +31,7 @@ export default function Main() {
       replaceRouterInitialize(router);
     }
 
-    // 실장이 아니면 메인페이지
+    // 실장이 아니면 메인페이지으로 이동
     if (isNotNuriKing(isKing)) {
       replaceRouterMain(router);
     }

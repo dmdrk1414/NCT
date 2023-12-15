@@ -25,7 +25,7 @@ export default function JoinApplicationForm() {
       replaceRouterInitialize(router);
     }
 
-    // 실장이 아니면 메인페이지
+    // 실장이 아니면 메인페이지으로 이동한다.
     if (isNotNuriKing(isKing)) {
       replaceRouterMain(router);
     }
