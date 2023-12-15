@@ -8,13 +8,15 @@ import { useRouter } from 'next/navigation';
 export default function Home() {
   const router = useRouter();
   return (
-    <main>
+    <>
       <header>
         <Header isVisible={true} />
       </header>
-      <article>
-        <MainCarousel />
-      </article>
-    </main>
+      <main>
+        <article>
+          <MainCarousel />
+        </article>
+      </main>
+    </>
   );
 }
