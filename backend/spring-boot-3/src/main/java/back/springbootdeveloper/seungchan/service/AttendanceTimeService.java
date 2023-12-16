@@ -2,7 +2,7 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.Constant.DateConstants;
 import back.springbootdeveloper.seungchan.dto.request.UserEachAttendanceControlReqDto;
-import back.springbootdeveloper.seungchan.dto.response.UserControlResponse;
+import back.springbootdeveloper.seungchan.dto.response.UserControlResDto;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.repository.AttendanceTimeRepository;
@@ -18,9 +18,9 @@ public class AttendanceTimeService {
     @Autowired
     private AttendanceTimeRepository attendanceTimeRepository;
 
-    public UserControlResponse findUserControlResById(Long id) {
+    public UserControlResDto findUserControlResById(Long id) {
         AttendanceTime attendanceTime = attendanceTimeRepository.findByUserId(id);
-        return new UserControlResponse(attendanceTime);
+        return new UserControlResDto(attendanceTime);
     }
 
     public void saveNewUser(UserInfo newUser) {
