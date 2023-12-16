@@ -7,7 +7,7 @@ import SubmitButton from '../../../atoms/atom/large-button';
 
 // 박승찬 추가
 import { axAuth } from '@/apis/axiosinstance';
-import { userToken } from '../../../states/index';
+import { userToken, isNuriKing } from '../../../states/index';
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import { hasNotToken } from '@/utils/validate/ExistenceChecker';
@@ -15,11 +15,13 @@ import { replaceRouterInitialize, replaceRouterMain } from '@/utils/RouteHandlin
 import AllertModal from '@/atoms/atom/allert-modal';
 import { data } from 'autoprefixer';
 import { goToPageTop } from '@/utils/windowScrollUtils';
+import NavigationFooter from '@/atoms/molecule/navigation-footer';
 
 export default function SignUp() {
   const router = useRouter();
   const [token, setToken] = useRecoilState(userToken);
   const [AllertModalstatus, setAllertModalStatus] = useState(0);
+  const [isKing, setIsKing] = useRecoilState(isNuriKing);
 
   const textOfAllert = [
     // 휴가 신청 모달창 텍스트 입력
@@ -145,36 +147,40 @@ export default function SignUp() {
       });
   };
   return (
-    <main>
-      <header>
-        <Header isVisible={false} />
-      </header>
-      <div>
-        {AllertModalstatus !== 0 ? (
-          <AllertModal title={textOfAllert[AllertModalstatus - 1].title} context={textOfAllert[AllertModalstatus - 1].context} type={textOfAllert[AllertModalstatus - 1].type} />
-        ) : null}
-      </div>
-      <article className="px-[7.5%]">
-        <Input title={'성함'} userData={userData} setUserData={setUserData} dataname="name" value={userData.name} />
-        <Input title={"핸드폰 번호('-' 포함)"} userData={userData} setUserData={setUserData} dataname="phoneNum" value={userData.phoneNum} />
-        <Input title={'전공'} userData={userData} setUserData={setUserData} dataname="major" value={userData.major} />
-        <Input title={'학점'} userData={userData} setUserData={setUserData} dataname="gpa" value={userData.gpa} />
-        <Input title={'주소'} userData={userData} setUserData={setUserData} dataname="address" value={userData.address} />
-        <Input title={'특기'} userData={userData} setUserData={setUserData} dataname="specialtySkill" value={userData.specialtySkill} />
-        <Input title={'취미'} userData={userData} setUserData={setUserData} dataname="hobby" value={userData.hobby} />
-        <Input title={'MBTI'} userData={userData} setUserData={setUserData} dataname="mbti" value={userData.mbti} />
-        <Input title={'학번'} userData={userData} setUserData={setUserData} dataname="studentId" value={userData.studentId} />
-        <Input title={'생년월일 (예 960415)'} userData={userData} setUserData={setUserData} dataname="birthDate" value={userData.birthDate} />
-        <Textarea title={'장점(100자 이상)'} userData={userData} setUserData={setUserData} dataname="advantages" value={userData.advantages} />
-        <Textarea title={'단점(100자 이상)'} userData={userData} setUserData={setUserData} dataname="disadvantage" value={userData.disadvantage} />
-        <Textarea title={'자기소개(200자 이상)'} userData={userData} setUserData={setUserData} dataname="selfIntroduction" value={userData.selfIntroduction} />
-        <Input title={'이메일'} userData={userData} setUserData={setUserData} dataname="email" value={userData.email} />
-      </article>
-      <footer className="flex justify-center px-[7.5%] mt-[2rem] mb-[3rem]">
-        <div className="w-[100%]" onClick={validation}>
-          <SubmitButton text={'수정하기'} addClass="text-2xl" />
+    <>
+      <main>
+        <header>
+          <Header isVisible={false} />
+        </header>
+        <div>
+          {AllertModalstatus !== 0 ? (
+            <AllertModal title={textOfAllert[AllertModalstatus - 1].title} context={textOfAllert[AllertModalstatus - 1].context} type={textOfAllert[AllertModalstatus - 1].type} />
+          ) : null}
         </div>
-      </footer>
-    </main>
+        <article className="px-[7.5%]">
+          <Input title={'성함'} userData={userData} setUserData={setUserData} dataname="name" value={userData.name} />
+          <Input title={"핸드폰 번호('-' 포함)"} userData={userData} setUserData={setUserData} dataname="phoneNum" value={userData.phoneNum} />
+          <Input title={'전공'} userData={userData} setUserData={setUserData} dataname="major" value={userData.major} />
+          <Input title={'학점'} userData={userData} setUserData={setUserData} dataname="gpa" value={userData.gpa} />
+          <Input title={'주소'} userData={userData} setUserData={setUserData} dataname="address" value={userData.address} />
+          <Input title={'특기'} userData={userData} setUserData={setUserData} dataname="specialtySkill" value={userData.specialtySkill} />
+          <Input title={'취미'} userData={userData} setUserData={setUserData} dataname="hobby" value={userData.hobby} />
+          <Input title={'MBTI'} userData={userData} setUserData={setUserData} dataname="mbti" value={userData.mbti} />
+          <Input title={'학번'} userData={userData} setUserData={setUserData} dataname="studentId" value={userData.studentId} />
+          <Input title={'생년월일 (예 960415)'} userData={userData} setUserData={setUserData} dataname="birthDate" value={userData.birthDate} />
+          <Textarea title={'장점(100자 이상)'} userData={userData} setUserData={setUserData} dataname="advantages" value={userData.advantages} />
+          <Textarea title={'단점(100자 이상)'} userData={userData} setUserData={setUserData} dataname="disadvantage" value={userData.disadvantage} />
+          <Textarea title={'자기소개(200자 이상)'} userData={userData} setUserData={setUserData} dataname="selfIntroduction" value={userData.selfIntroduction} />
+          <Input title={'이메일'} userData={userData} setUserData={setUserData} dataname="email" value={userData.email} />
+        </article>
+        <div className="flex justify-center px-[7.5%] mt-[2rem] mb-[3rem]">
+          <div className="w-[100%]" onClick={validation}>
+            <SubmitButton text={'수정하기'} addClass="text-2xl" />
+          </div>
+        </div>
+      </main>
+
+      <NavigationFooter isKing={isKing}></NavigationFooter>
+    </>
   );
 }

@@ -9,6 +9,7 @@ import Navigation from '../../../atoms/template/navigation';
 import UserListOnControl from '@/atoms/molecule/user-list-control';
 import { hasNotToken, isNotNuriKing } from '@/utils/validate/ExistenceChecker';
 import { replaceRouterInitialize, replaceRouterMain } from '@/utils/RouteHandling';
+import NavigationFooter from '@/atoms/molecule/navigation-footer';
 
 interface userDataPropsTypeOne {
   name: string;
@@ -59,7 +60,7 @@ export default function Main() {
         <Header isVisible={false} />
       </header>
       <section>
-        <div className="mx-[7.5%] grid grid-cols-2 mb-[2rem]">
+        <div className="mx-[7.5%] grid grid-cols-2 mb-[1rem]">
           <div className={`text-center font-bold text-xl' ${type === 0 ? 'text-black' : 'text-grey'}`} onClick={() => setType(0)}>
             현재 인원 개인별 설정
           </div>
@@ -70,9 +71,8 @@ export default function Main() {
           ))}
         </article>
       </section>
-      <footer>
-        <Navigation now={1} isNuriKing={isKing} />
-      </footer>
+
+      <NavigationFooter isKing={isKing}></NavigationFooter>
     </main>
   );
 }
