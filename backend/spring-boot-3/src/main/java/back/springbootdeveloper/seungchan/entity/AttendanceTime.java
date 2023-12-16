@@ -21,24 +21,19 @@ public class AttendanceTime {
     private Long userId;
     @Column(name = "name", length = 10, nullable = false) // 'title'이라는 not null 컴럼과 매핑
     private String name;
-    @Column(name = "attendance_time", length = 10, nullable = false, columnDefinition = "varchar(10) default '09'")
-    private String attendanceTime;
+    @Column(name = "monday", length = 10, nullable = false, columnDefinition = "varchar(10) default '09'")
+    private String monday;
+    @Column(name = "tuesday", length = 10, nullable = false, columnDefinition = "varchar(10) default '09'")
+    private String tuesday;
+    @Column(name = "wednesday", length = 10, nullable = false, columnDefinition = "varchar(10) default '09'")
+    private String wednesday;
+    @Column(name = "thursday", length = 10, nullable = false, columnDefinition = "varchar(10) default '09'")
+    private String thursday;
+    @Column(name = "friday", length = 10, nullable = false, columnDefinition = "varchar(10) default '09'")
+    private String friday;
     @Column(name = "exception_attendance", nullable = false)
     private boolean isExceptonAttendance;
 
-
-    /**
-     * user의 출석 시간 정보를 변경하기위한 생성자
-     *
-     * @param userInfo       UserInfo의 entity
-     * @param attendanceTime 개인적으로 설정하고 싶은 출석의 시간을 설정
-     */
-    public AttendanceTime(UserInfo userInfo, String attendanceTime) {
-        this.userId = userInfo.getId();
-        this.name = userInfo.getName();
-        this.attendanceTime = attendanceTime;
-        this.isExceptonAttendance = false;
-    }
 
     /**
      * user의 출석을 위한 시간을 기본적인 "09"으로 맞춘다.
@@ -48,7 +43,11 @@ public class AttendanceTime {
     public AttendanceTime(UserInfo userInfo) {
         this.userId = userInfo.getId();
         this.name = userInfo.getName();
-        this.attendanceTime = BASE_ATTENDANCE_TIME;
+        this.monday = BASE_ATTENDANCE_TIME;
+        this.tuesday = BASE_ATTENDANCE_TIME;
+        this.wednesday = BASE_ATTENDANCE_TIME;
+        this.thursday = BASE_ATTENDANCE_TIME;
+        this.friday = BASE_ATTENDANCE_TIME;
         this.isExceptonAttendance = false;
     }
 }
