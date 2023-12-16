@@ -10,6 +10,7 @@ import UserListOnControl from '@/atoms/molecule/user-list-control';
 import { hasNotToken, isNotNuriKing } from '@/utils/validate/ExistenceChecker';
 import { replaceRouterInitialize, replaceRouterMain } from '@/utils/RouteHandling';
 import NavigationFooter from '@/atoms/molecule/navigation-footer';
+import { RouteUrl } from '@/utils/constans/routeEnum';
 
 interface userDataPropsTypeOne {
   name: string;
@@ -25,6 +26,8 @@ export default function Main() {
   const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
   const [isTodayAttendance, setIsTodayAttendance] = useState(false);
   const [isMemberInfoOpen, setIsMemberInfoOpen] = useState(0);
+  const [page, setPage] = useState(1);
+  const kingManagePageCss = 'flex justify-around items-center w-[25vw] bg-[#ffffff] rounded-lg h-[2.5rem] font-bold';
 
   useEffect(() => {
     // 토큰이 없을시 초기화면으로 이동
@@ -72,6 +75,14 @@ export default function Main() {
         </article>
       </section>
 
+      <div className="w-[100vw] flex justify-around items-center bg-[#F3F3F3] h-[3rem]  bottom-[3.1rem] fixed">
+        <div className={kingManagePageCss} onClick={() => router.push(RouteUrl.ROUTE_JOIN_APPLICATION_LIST)}>
+          신입 신청 확인
+        </div>
+        <div className={kingManagePageCss} onClick={() => router.push(RouteUrl.ROUTE_ATTENDANCE_NUMBER)}>
+          출석 번호
+        </div>
+      </div>
       <NavigationFooter isKing={isKing}></NavigationFooter>
     </main>
   );
