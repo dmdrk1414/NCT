@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../../../atoms/molecule/header';
 import Input from '../../../atoms/atom/input-form-value';
 import Textarea from '../../../atoms/atom/text-area-form-value';
@@ -11,11 +11,34 @@ import { userToken } from '../../../states/index';
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import { hasNotToken } from '@/utils/validate/ExistenceChecker';
-import { replaceRouterInitialize } from '@/utils/RouteHandling';
+import { replaceRouterInitialize, replaceRouterMain } from '@/utils/RouteHandling';
+import AllertModal from '@/atoms/atom/allert-modal';
+import { data } from 'autoprefixer';
+import { goToPageTop } from '@/utils/windowScrollUtils';
 
 export default function SignUp() {
   const router = useRouter();
   const [token, setToken] = useRecoilState(userToken);
+  const [AllertModalstatus, setAllertModalStatus] = useState(0);
+
+  const textOfAllert = [
+    // 휴가 신청 모달창 텍스트 입력
+    { title: '정보 수정 완료', context: '정보를 확인하세요', type: 'success' },
+    { title: '정보 수정을 할수 없습니다.', context: '인터넷 상태, 로그인 상태를 확인하세요.', type: 'danger' },
+  ];
+
+  useEffect(() => {
+    // 유저 정보 수정 모달창
+    if (AllertModalstatus !== 0) {
+      goToPageTop();
+
+      setTimeout(() => {
+        setAllertModalStatus(0); // 2초 후에 AllertModal 닫기
+        replaceRouterMain(router); // 메인페이지로 이등
+      }, 2000);
+    }
+  }, [AllertModalstatus]);
+
   const [userData, setUserData] = useState({
     name: '',
     phoneNum: '',
@@ -112,7 +135,10 @@ export default function SignUp() {
       },
     })
       .then(res => {
-        // console.log(res.data);
+        const message: string = res.data.message;
+        if (message.includes('SUCCESS')) {
+          setAllertModalStatus(1);
+        }
       })
       .catch(err => {
         console.log(err);
@@ -123,6 +149,11 @@ export default function SignUp() {
       <header>
         <Header isVisible={false} />
       </header>
+      <div>
+        {AllertModalstatus !== 0 ? (
+          <AllertModal title={textOfAllert[AllertModalstatus - 1].title} context={textOfAllert[AllertModalstatus - 1].context} type={textOfAllert[AllertModalstatus - 1].type} />
+        ) : null}
+      </div>
       <article className="px-[7.5%]">
         <Input title={'성함'} userData={userData} setUserData={setUserData} dataname="name" value={userData.name} />
         <Input title={"핸드폰 번호('-' 포함)"} userData={userData} setUserData={setUserData} dataname="phoneNum" value={userData.phoneNum} />
