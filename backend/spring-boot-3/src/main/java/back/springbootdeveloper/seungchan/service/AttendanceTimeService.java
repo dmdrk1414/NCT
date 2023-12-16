@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.dto.request.UserControlRequest;
+import back.springbootdeveloper.seungchan.Constant.DateConstants;
+import back.springbootdeveloper.seungchan.dto.request.UserEachAttendanceControlReqDto;
 import back.springbootdeveloper.seungchan.dto.response.UserControlResponse;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
@@ -27,10 +28,26 @@ public class AttendanceTimeService {
         attendanceTimeRepository.save(attendanceTime);
     }
 
-    public void updateAttendanceTime(UserControlRequest userControlRequest, Long userId) {
-        String attendanceTime = userControlRequest.getAttendanceTime();
-        attendanceTimeRepository.updateAttemdanceTime(attendanceTime, userId);
+    /**
+     * attendance time DB에 요일별 개인 시간을 업데이트 한다.
+     *
+     * @param userEachAttendanceControlReqDto
+     * @param userId
+     */
+    public void updateAttendanceTime(UserEachAttendanceControlReqDto userEachAttendanceControlReqDto, Long userId) {
+        List<String> attendanceTimes = userEachAttendanceControlReqDto.getAttendanceTimes();
+        if (attendanceTimes.size() >= 5) {
+            attendanceTimeRepository.updateAttendanceTime(
+                    attendanceTimes.get(DateConstants.MONDAY.getIndex()), // Monday
+                    attendanceTimes.get(DateConstants.TUESDAY.getIndex()), // Tuesday
+                    attendanceTimes.get(DateConstants.WEDNESDAY.getIndex()), // Wednesday
+                    attendanceTimes.get(DateConstants.THURSDAY.getIndex()), // Thursday
+                    attendanceTimes.get(DateConstants.FRIDAY.getIndex()), // Friday
+                    userId
+            );
+        }
     }
+
 
     public List<AttendanceTime> findAll() {
         return attendanceTimeRepository.findAll();
