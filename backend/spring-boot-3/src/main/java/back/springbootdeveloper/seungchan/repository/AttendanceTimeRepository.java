@@ -6,13 +6,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface AttendanceTimeRepository extends JpaRepository<AttendanceTime, Long> {
     AttendanceTime findByUserId(Long id);
 
     @Transactional
     @Modifying
-    @Query("UPDATE AttendanceTime a SET a.attendanceTime = :attendanceTime WHERE a.userId = :userId")
-    void updateAttemdanceTime(String attendanceTime, Long userId);
+    @Query("UPDATE AttendanceTime a SET a.monday = :monday, a.tuesday = :tuesday, a.wednesday = :wednesday, a.thursday = :thursday, a.friday = :friday WHERE a.userId = :userId")
+    void updateAttendanceTime(String monday, String tuesday, String wednesday, String thursday, String friday, Long userId);
+
 
     @Transactional
     @Modifying

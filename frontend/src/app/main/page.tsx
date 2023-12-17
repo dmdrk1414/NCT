@@ -15,6 +15,7 @@ import MemberInformationModal from '@/atoms/molecule/member-infromation-modal';
 import { hasNotToken } from '@/utils/validate/ExistenceChecker';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 import { replaceRouterInitialize } from '@/utils/RouteHandling';
+import NavigationFooter from '@/atoms/molecule/navigation-footer';
 
 interface userDataPropsTypeZero {
   cntVacation: number;
@@ -151,9 +152,7 @@ export default function Main() {
           </article>
         )}
       </section>
-      <footer className="mt-10">
-        <Navigation now={1} isNuriKing={isKing} />
-      </footer>
+      <NavigationFooter isKing={isKing}></NavigationFooter>
     </main>
   );
 }

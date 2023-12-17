@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { userToken, isNuriKing } from '../../states/index';
 import { useRouter } from 'next/navigation';
+import { InputControlTimeFrom } from '../atom/input-control-time-form';
+import { formatNumberWithLeadingZero, validateInputAttendanceTime } from '@/utils/validate/numberValidate';
 
 type data = {
   name: string;
@@ -18,21 +20,100 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
   const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
   const [isExceptionAttendance, setIsExceptionAttendance] = useState(false);
   const [attendanceTimeData, setAttendanceTimeData] = useState({
-    attendanceTime: '',
+    // get으로 얻는 현재 출석 정보
+    mondayAttendanceTime: '',
+    tuesdayAttendanceTime: '',
+    wednesdayAttendanceTime: '',
+    thursdayAttendanceTime: '',
+    fridayAttendanceTime: '',
   });
-  const [attendanceHopeTime, setAttendanceHopeTime] = useState<string>(''); // 초기값을 빈 문자열로 설정
+  const attendanceTimeCss = 'font-semibold flex justify-around bg-[#ececec] w-[15vw]  rounded-lg ';
+  const [hopeAttendanceTimes, setHopeAttendanceTimes] = useState({
+    // 희망하는 출석 시간 번호
+    newMondayAttendanceTime: '',
+    newTuesdayAttendanceTime: '',
+    newWednesdayAttendanceTime: '',
+    newThursdayAttendanceTime: '',
+    newFridayAttendanceTime: '',
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let { value } = e.target; // 입력 요소의 값을 가져옴
+  const handleMondayAttendanceTimeChange = (newMondayAttendanceTime: string) => {
+    // 월요일 출석 시간 핸들러
+    let formatTime = attendanceTimeData.mondayAttendanceTime;
 
-    if (!isNaN(Number(value)) && Number(value) <= 10) {
-      value = value.padStart(2, '0');
+    if (validateInputAttendanceTime(newMondayAttendanceTime)) {
+      formatTime = formatNumberWithLeadingZero(newMondayAttendanceTime);
+
+      setHopeAttendanceTimes({
+        ...hopeAttendanceTimes,
+        newMondayAttendanceTime: formatTime,
+      });
     }
-
-    setAttendanceHopeTime(
-      value, // attendanceTime을 업데이트
-    );
   };
+
+  const handleTuesdayAttendanceTimeChange = (newTuesdayAttendanceTime: string) => {
+    // 화요일 출석 시간 핸들러
+    let formatTime = attendanceTimeData.tuesdayAttendanceTime;
+    if (validateInputAttendanceTime(newTuesdayAttendanceTime)) {
+      formatTime = formatNumberWithLeadingZero(newTuesdayAttendanceTime);
+
+      setHopeAttendanceTimes({
+        ...hopeAttendanceTimes,
+        newTuesdayAttendanceTime: formatTime,
+      });
+    }
+  };
+
+  const handleWednesdayAttendanceTimeChange = (newWednesdayAttendanceTime: string) => {
+    // 수요일 출석 시간 핸들러
+    let formatTime = attendanceTimeData.wednesdayAttendanceTime;
+    if (validateInputAttendanceTime(newWednesdayAttendanceTime)) {
+      formatTime = formatNumberWithLeadingZero(newWednesdayAttendanceTime);
+
+      setHopeAttendanceTimes({
+        ...hopeAttendanceTimes,
+        newWednesdayAttendanceTime: formatTime,
+      });
+    }
+  };
+
+  const handleThursdayAttendanceTimeChange = (newThursdayAttendanceTime: string) => {
+    // 목요일 출석 시간 핸들러
+    let formatTime = attendanceTimeData.thursdayAttendanceTime;
+    if (validateInputAttendanceTime(newThursdayAttendanceTime)) {
+      formatTime = formatNumberWithLeadingZero(newThursdayAttendanceTime);
+
+      setHopeAttendanceTimes({
+        ...hopeAttendanceTimes,
+        newThursdayAttendanceTime: formatTime,
+      });
+    }
+  };
+
+  const handleFridayAttendanceTimeChange = (newFridayAttendanceTime: string) => {
+    // 금요일 출석 시간 핸들러
+    let formatTime = attendanceTimeData.fridayAttendanceTime;
+    if (validateInputAttendanceTime(newFridayAttendanceTime)) {
+      formatTime = formatNumberWithLeadingZero(newFridayAttendanceTime);
+
+      setHopeAttendanceTimes({
+        ...hopeAttendanceTimes,
+        newFridayAttendanceTime: formatTime,
+      });
+    }
+  };
+
+  useEffect(() => {
+    // 출석시간 변경시 hopeAttendanceTimes 설정
+    setHopeAttendanceTimes({
+      ...hopeAttendanceTimes,
+      newMondayAttendanceTime: attendanceTimeData.mondayAttendanceTime,
+      newTuesdayAttendanceTime: attendanceTimeData.tuesdayAttendanceTime,
+      newWednesdayAttendanceTime: attendanceTimeData.wednesdayAttendanceTime,
+      newThursdayAttendanceTime: attendanceTimeData.thursdayAttendanceTime,
+      newFridayAttendanceTime: attendanceTimeData.fridayAttendanceTime,
+    });
+  }, [attendanceTimeData]);
 
   useEffect(() => {
     if (!userToken) {
@@ -48,6 +129,7 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
       })
         .then(res => {
           const data = res.data;
+
           setAttendanceTimeData(data);
         })
         .catch(err => {
@@ -70,9 +152,14 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
   }, []);
 
   const submitUserData = () => {
+    // 출석시간 변경 버튼
     setAttendanceTimeData(prevData => ({
       ...prevData, // 기존 데이터를 복사
-      attendanceTime: attendanceHopeTime, // 새로운 값을 할당
+      mondayAttendanceTime: hopeAttendanceTimes.newMondayAttendanceTime, // 새로운 값을 할당
+      tuesdayAttendanceTime: hopeAttendanceTimes.newTuesdayAttendanceTime, // 새로운 값을 할당
+      wednesdayAttendanceTime: hopeAttendanceTimes.newWednesdayAttendanceTime, // 새로운 값을 할당
+      thursdayAttendanceTime: hopeAttendanceTimes.newThursdayAttendanceTime, // 새로운 값을 할당
+      fridayAttendanceTime: hopeAttendanceTimes.newFridayAttendanceTime, // 새로운 값을 할당
     }));
 
     if (!isKing) {
@@ -85,12 +172,14 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
         method: 'post',
         url: `/main/detail/${userId}/control`,
         data: {
-          attendanceTime: attendanceHopeTime,
+          mondayAttendanceTime: hopeAttendanceTimes.newMondayAttendanceTime,
+          tuesdayAttendanceTime: hopeAttendanceTimes.newTuesdayAttendanceTime,
+          wednesdayAttendanceTime: hopeAttendanceTimes.newWednesdayAttendanceTime,
+          thursdayAttendanceTime: hopeAttendanceTimes.newThursdayAttendanceTime,
+          fridayAttendanceTime: hopeAttendanceTimes.newFridayAttendanceTime,
         },
       })
-        .then(res => {
-          console.log(res.data);
-        })
+        .then(res => {})
         .catch(err => {
           console.log(err);
         });
@@ -119,7 +208,7 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
         },
       })
         .then(res => {
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch(err => {
           console.log(err);
@@ -131,12 +220,38 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
     <>
       <div>
         <div className="font-semibold">{name}</div>
-        <div className="font-semibold">현제출석 시간: {attendanceTimeData.attendanceTime}시</div>
+        <div className="font-semibold">현제출석 시간</div>
+        <div className="flex justify-around ">
+          <div className={attendanceTimeCss}>월요일: {attendanceTimeData.mondayAttendanceTime}시</div>
+          <div className={attendanceTimeCss}>화요일: {attendanceTimeData.tuesdayAttendanceTime}시</div>
+          <div className={attendanceTimeCss}>수요일: {attendanceTimeData.wednesdayAttendanceTime}시</div>
+          <div className={attendanceTimeCss}>목요일: {attendanceTimeData.thursdayAttendanceTime}시</div>
+          <div className={attendanceTimeCss}>금요일: {attendanceTimeData.fridayAttendanceTime}시</div>
+        </div>
         {isExceptionAttendance === true ? <div className="font-semibold">장기휴가 신청 : 신청 완료</div> : <div className="font-semibold">장기휴가 신청 : 신청 안함</div>}
 
-        <div className="flex">
-          <div className="mr-[0.5rem] font-semibold">원하는 출석 시간: </div>
-          <input className="border border-gray-300 rounded-md  focus:border-blue-500" type="text" placeholder="Enter text" onChange={handleChange} />
+        <div className="mr-[0.5rem] font-semibold">원하는 출석 시간 [숫자만 입력 (1~24 까지), 글자 반영안됩니다.]:</div>
+        <div className="flex justify-around">
+          <div className={attendanceTimeCss}>
+            월요일:
+            <InputControlTimeFrom time={attendanceTimeData.mondayAttendanceTime} onChange={handleMondayAttendanceTimeChange} />
+          </div>
+          <div className={attendanceTimeCss}>
+            화요일:
+            <InputControlTimeFrom time={attendanceTimeData.tuesdayAttendanceTime} onChange={handleTuesdayAttendanceTimeChange} />
+          </div>
+          <div className={attendanceTimeCss}>
+            수요일:
+            <InputControlTimeFrom time={attendanceTimeData.wednesdayAttendanceTime} onChange={handleWednesdayAttendanceTimeChange} />
+          </div>
+          <div className={attendanceTimeCss}>
+            목요일:
+            <InputControlTimeFrom time={attendanceTimeData.thursdayAttendanceTime} onChange={handleThursdayAttendanceTimeChange} />
+          </div>
+          <div className={attendanceTimeCss}>
+            금요일:
+            <InputControlTimeFrom time={attendanceTimeData.fridayAttendanceTime} onChange={handleFridayAttendanceTimeChange} />
+          </div>
         </div>
       </div>
       <button
