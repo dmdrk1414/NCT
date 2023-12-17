@@ -178,11 +178,9 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
           thursdayAttendanceTime: hopeAttendanceTimes.newThursdayAttendanceTime,
           fridayAttendanceTime: hopeAttendanceTimes.newFridayAttendanceTime,
         },
-      })
-        .then(res => {})
-        .catch(err => {
-          console.log(err);
-        });
+      }).catch(err => {
+        console.log(err);
+      });
     }
   };
 
