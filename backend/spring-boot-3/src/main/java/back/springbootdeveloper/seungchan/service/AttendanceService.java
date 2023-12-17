@@ -187,6 +187,27 @@ public class AttendanceService {
         return isPassAttendance;
     }
 
+    public boolean isPassVacationAtToday(Long userIdOfSearch) {
+        boolean isPassVacation = true;
+        int COMPLETE_ATTENDANCE = 1;
+        int attendanceStatusc = 0;
+        AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(userIdOfSearch);
+        String weeklyDataStr = attendanceStatus.getWeeklyData();
+        List<Integer> weeklyDataList = Utill.extractNumbers(weeklyDataStr);
+        int indexOfWeekDay = DayUtill.getIndexOfWeekDay();
+        int NUM_SATURDAY_SUNDAY = 5;
+
+        if (indexOfWeekDay == NUM_SATURDAY_SUNDAY) {
+            return false;
+        } else {
+            // 방학여부
+            attendanceStatusc = weeklyDataList.get(indexOfWeekDay);
+        }
+
+        isPassVacation = Utill.isSameInteger(AttendanceStateConstant.VACATION.getState(), attendanceStatusc);
+        return isPassVacation;
+    }
+
     public void updateAbsenceVacationDate(Long userId) {
         AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(userId);
         String weeklyData = attendanceStatus.getWeeklyData();

@@ -11,6 +11,7 @@ import { useRecoilState } from 'recoil';
 import Navigation from '../../atoms/template/navigation';
 import { hasNotToken } from '@/utils/validate/ExistenceChecker';
 import { replaceRouterInitialize } from '@/utils/RouteHandling';
+import NavigationFooter from '@/atoms/molecule/navigation-footer';
 
 export default function SignUp() {
   const router = useRouter();
@@ -99,9 +100,7 @@ export default function SignUp() {
         </div>
       </div>
 
-      <footer>
-        <Navigation now={1} isNuriKing={isKing} />
-      </footer>
+      <NavigationFooter isKing={isKing}></NavigationFooter>
     </main>
   );
 }

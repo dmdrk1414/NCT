@@ -165,13 +165,13 @@ VALUES ('1234', '2023-09-07'),
        ('1234', '2023-12-12');
 
 
-INSERT INTO attendance_time (attendance_time, name, exception_attendance, user_id)
-VALUES ('09', '박승찬', true, 1),
-       ('09', '김주연', false, 3),
-       ('09', '허진범', false, 5),
---        추가
-       ('09', '장미경', false, 6),
-       ('09', '이승우', false, 7),
-       ('09', '최영진', false, 8),
-       ('09', '김영희', false, 9),
-       ('09', '이순신', false, 10);
+INSERT INTO attendance_time (monday, tuesday, wednesday, thursday, friday, name, exception_attendance, user_id)
+VALUES ('09', '09', '09', '09', '09', '박승찬', true, 1),
+       ('09', '09', '09', '09', '09', '김주연', false, 3),
+       ('09', '09', '09', '09', '09', '허진범', false, 5),
+       -- 추가
+       ('09', '09', '09', '09', '09', '장미경', false, 6),
+       ('09', '09', '09', '09', '09', '이승우', false, 7),
+       ('09', '09', '09', '09', '09', '최영진', false, 8),
+       ('09', '09', '09', '09', '09', '김영희', false, 9),
+       ('09', '09', '09', '09', '09', '이순신', false, 10);

@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.domain.ObUser;
-import back.springbootdeveloper.seungchan.dto.request.UserControlRequest;
+import back.springbootdeveloper.seungchan.dto.request.UserEachAttendanceControlReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
@@ -73,15 +73,15 @@ public class MainController {
 
     @Operation(summary = "유저의 개인적인 커스텀을 위한 컨트롤러 get", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
     @GetMapping("/detail/{id}/control")
-    public ResponseEntity<UserControlResponse> userControlFindInfo(HttpServletRequest request, @PathVariable long id) {
-        UserControlResponse userControlResponse = attendanceTimeService.findUserControlResById(id);
+    public ResponseEntity<UserControlResDto> userControlFindInfo(HttpServletRequest request, @PathVariable long id) {
+        UserControlResDto userControlResponse = attendanceTimeService.findUserControlResById(id);
         return ResponseEntity.ok().body(userControlResponse);
     }
 
     @Operation(summary = "유저의 개인적인 커스텀을 위한 컨트롤러 post", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
     @PostMapping("/detail/{id}/control")
-    public ResponseEntity<BaseResponseBody> userControlPostInfo(@RequestBody UserControlRequest userControlRequest, @PathVariable long id) {
-        attendanceTimeService.updateAttendanceTime(userControlRequest, id);
+    public ResponseEntity<BaseResponseBody> userControlPostInfo(@RequestBody UserEachAttendanceControlReqDto userEachAttendanceControlRequest, @PathVariable long id) {
+        attendanceTimeService.updateAttendanceTime(userEachAttendanceControlRequest, id);
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 

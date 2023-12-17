@@ -11,6 +11,7 @@ import { hasToken } from '@/utils/validate/ExistenceChecker';
 import { replaceRouterMain } from '@/utils/RouteHandling';
 import { useRecoilState } from 'recoil';
 import { userToken } from '../../states/index';
+import { goToPageTop } from '@/utils/windowScrollUtils';
 
 export default function SignUp() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function SignUp() {
   useEffect(() => {
     // 휴가 신청 모달창
     if (AllertModalstatus !== 0) {
-      window.scrollTo(0, 0); // Scroll to the top of the page
+      goToPageTop(); // Scroll to the top of the page
       setTimeout(() => {
         setAllertModalStatus(0); // 5초 후에 AllertModal 닫기
         router.replace('/');
