@@ -30,6 +30,11 @@
   src: url('../font/pretendard/Pretendard-Regular.woff') format('woff');
 }
 
+::placeholder {
+  /* 전역 input의 중앙정렬 */
+  text-align: center;
+}
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

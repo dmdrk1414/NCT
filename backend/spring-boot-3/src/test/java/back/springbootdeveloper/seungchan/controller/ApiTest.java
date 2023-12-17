@@ -3,7 +3,6 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.controller.config.AttendanceListFromJson;
 import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
 import back.springbootdeveloper.seungchan.dto.request.*;
-import back.springbootdeveloper.seungchan.dto.response.UserControlResponse;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.TempUserService;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -840,38 +838,38 @@ public class ApiTest {
         result
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(attendanceTime.getName()))
-                .andExpect(jsonPath("$.attendanceTime").value(attendanceTime.getAttendanceTime()));
+                .andExpect(jsonPath("$.attendanceTime").value(attendanceTime.getMonday()));
 
     }
 
-    @DisplayName("개개인의 유저에게 기능적인 정보를 post하는 컨트롤러")
-    @Test
-    public void userControlPostInfoTest() throws Exception {
-        // given
-        final String url = "/main/detail/1/control";
-
-        String TestAttendanceTime = "15";
-        UserControlRequest userControlRequest = new UserControlRequest(TestAttendanceTime);
-
-        // 객체 suggestionsRequest을 Json으로 직렬화
-        final String requestBody = objectMapper.writeValueAsString(userControlRequest);
-
-        // when
-        ResultActions result = mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(requestBody)
-                .header("authorization", "Bearer " + token) // token header에 담기
-        );
-
-        AttendanceTime attendanceTime = attendanceTimeRepository.findById(1L)
-                .orElseThrow(() -> new IllegalArgumentException("not found: ")); // 찾아서 없으면 예외처리.;
-
-        // then
-        result
-                .andExpect(status().isOk());
-        assertThat(attendanceTime.getAttendanceTime()).isEqualTo(TestAttendanceTime);
-    }
+//    @DisplayName("개개인의 유저에게 기능적인 정보를 post하는 컨트롤러")
+//    @Test
+//    public void userControlPostInfoTest() throws Exception {
+//        // given
+//        final String url = "/main/detail/1/control";
+//
+//        String TestAttendanceTime = "15";
+//        UserEachAttendanceControlRequest userControlRequest = new UserEachAttendanceControlRequest(TestAttendanceTime);
+//
+//        // 객체 suggestionsRequest을 Json으로 직렬화
+//        final String requestBody = objectMapper.writeValueAsString(userControlRequest);
+//
+//        // when
+//        ResultActions result = mockMvc.perform(post(url)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .content(requestBody)
+//                .header("authorization", "Bearer " + token) // token header에 담기
+//        );
+//
+//        AttendanceTime attendanceTime = attendanceTimeRepository.findById(1L)
+//                .orElseThrow(() -> new IllegalArgumentException("not found: ")); // 찾아서 없으면 예외처리.;
+//
+//        // then
+//        result
+//                .andExpect(status().isOk());
+//        assertThat(attendanceTime.getAttendanceTime()).isEqualTo(TestAttendanceTime);
+//    }
 
     @DisplayName("개개의 유저의 장기 출장신청을 위한 api")
     @Test

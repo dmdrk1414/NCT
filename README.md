@@ -149,17 +149,12 @@ http://localhost:3000/mypage/update
 
 8. 자바버전확인 꼭!!!! 제발 이상한 버전 쓰지말고 생각 많이 하고 정하기
 
-9. 상수관리를 잘하자
+9. 비동기 문제 해결을 위한 값의 변경은 useState으로 해결하라.
 
-   1. 변경할시 문제가 발생한다
+   setAllertModalStatus(1);가 즉시 AllertModalstatus 상태를 1로 변경하지 않는 이유는 React의 상태 업데이트가 비동기적으로 작동하기 때문입니다. 즉, setAllertModalStatus(1)를 호출한 직후에 AllertModalstatus 상태를 확인하면, 아직 업데이트가 반영되지 않았을 수 있습니다.
 
-10. 토큰과 접근 허락이 없으면 페이지 접근을 못하도록
+   React의 useState 훅은 상태를 즉시 업데이트하지 않습니다. 대신, React는 상태 업데이트를 예약하고, 컴포넌트를 비동기적으로 재렌더링합니다. 이로 인해 setAllertModalStatus(1)를 호출한 직후에 AllertModalstatus를 확인하면 이전 상태값을 볼 수 있습니다.
 
-11. 매직넘버 금지
-
-12. response에는 @Getter 사용
-
-13. 서버 시간 맞추기.
 
 배포할시
 
@@ -168,24 +163,12 @@ https://github.com/dmdrk1414?tab=repositories
 https://github.com/dmdrk1414/docker-test
 
 1. 서버 컴퓨터의 사양을 체크하자.
-
 2. 도커 컨테이너의 이름을 지정하자
    1. compose을 사용할시 랜덤으로 폴더이름으로 변경이 되는 점이 찾기 힘들다.
       1. 왜냐하면 nginx을 할때도 컨테이너의 이름으로 리버싱 프록시를 하기 때문이다.
-
 3. 도커 파일을 설정할때 생각을 많이 하고 설정하자 설정파일을 깃에 올릴테니 확인하고 설정
 
 4. 버전 관리 툴의 소중함 nvm 
 
 5. aws의 소중함. 이런 귀찮음을 해결해주는 aws에게 감사하자
-
 6. mysql의 접근 ip의 다양함을 생각하자.
-
-7. Time Zone을 
-
-   1. ```java
-          environment:
-          # To set the time zone to Seoul.
-            TZ: "Asia/Seoul"
-      
-      ```
