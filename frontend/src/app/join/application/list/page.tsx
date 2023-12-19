@@ -6,10 +6,14 @@ import { userToken, isNuriKing } from '../../../../states/index';
 import { hasNotToken, isNotNuriKing } from '@/utils/validate/ExistenceChecker';
 import { replaceRouterInitialize, replaceRouterMain } from '@/utils/RouteHandling';
 import { useRouter } from 'next/navigation';
+import CurrentNewMember from '@/atoms/molecule/current-new-member';
+import NewMemberInformationModal from '@/atoms/molecule/new-member-infomation-modal';
 
 type userData = {
   id: number;
   name: string;
+  email: string;
+  applicationDate: string;
 };
 
 export default function JoinApplicationForm() {
@@ -17,7 +21,8 @@ export default function JoinApplicationForm() {
   const [data, setData] = useState<userData[]>();
   const [refresh, setRefresh] = useState(0);
   const router = useRouter();
-  const [isKing, setISKing] = useRecoilState(isNuriKing);
+  const [isNewMemberInfoOpen, setIsNewMemberInfoOpen] = useState(0);
+  const [isKing, setIsKing] = useRecoilState(isNuriKing);
 
   useEffect(() => {
     // 토큰이 없을시 초기화면으로 이동
@@ -37,7 +42,7 @@ export default function JoinApplicationForm() {
       url: '/new-users',
     })
       .then(res => {
-        console.log(res);
+        console.log(res.data);
         setData(res.data);
       })
       .catch(err => {
@@ -45,47 +50,13 @@ export default function JoinApplicationForm() {
       });
   }, [refresh]);
 
-  function accept(id: number) {
-    axAuth(token)({
-      method: 'post',
-      url: `/new-users/${id}/acceptance`,
-    })
-      .then(res => {
-        console.log(res);
-        setRefresh(refresh + 1);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  function reject(id: number) {
-    axAuth(token)({
-      method: 'post',
-      url: `/new-users/${id}/reject`,
-    })
-      .then(res => {
-        console.log(res);
-        setRefresh(refresh + 1);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
   return (
-    <div>
-      {data?.map((item, idx) => (
-        <div key={idx}>
-          <span>{item.name}</span>
-          <button className="border bg-blue mx-3" onClick={() => accept(item.id)}>
-            수락
-          </button>
-          <button className="border bg-red" onClick={() => reject(item.id)}>
-            거절
-          </button>
-        </div>
-      ))}
+    <div className="m-[2rem]">
+      {isNewMemberInfoOpen !== 0 ? (
+        <NewMemberInformationModal userId={isNewMemberInfoOpen} setIsNewMemberInfoOpen={setIsNewMemberInfoOpen} isKing={isKing} setRefresh={setRefresh} refresh={refresh} />
+      ) : null}
+      <div className="text-center font-bold text-2xl mb-[2rem]">신입 신청 리스트</div>
+      {data?.map((item, idx) => <CurrentNewMember key={idx} userId={item.id} applicationDate={item.applicationDate} name={item.name} setIsNewMemberInfoOpen={setIsNewMemberInfoOpen} />)}
     </div>
   );
 }
