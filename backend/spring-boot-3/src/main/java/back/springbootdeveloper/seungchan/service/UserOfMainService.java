@@ -35,7 +35,8 @@ public class UserOfMainService {
                 Long longId = (long) user.getId();
                 UserUtill userUtill = userUtilRepository.findByUserId(longId);
                 AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(longId);
-                responseList.add(new YbUserInfomation(attendanceStatus, userUtill));
+                UserInfo userInfo = userRepository.findById(longId).orElseThrow(() -> new IllegalArgumentException(String.valueOf((longId))));
+                responseList.add(new YbUserInfomation(userInfo, attendanceStatus, userUtill));
             }
         }
         return responseList;
