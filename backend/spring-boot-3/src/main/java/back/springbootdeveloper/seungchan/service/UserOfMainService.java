@@ -28,10 +28,11 @@ public class UserOfMainService {
     public List<YbUserInfomation> findAllByIsOb(boolean isOb) {
         List<YbUserInfomation> responseList = new ArrayList<>();
         List<UserInfo> users = userRepository.findAll();
-        for (int id = 1; id < users.size() + 1; id++) {
-            boolean isObUser = users.get(id - 1).isOb();
+
+        for (UserInfo user : users) {
+            boolean isObUser = user.isOb();
             if (isObUser == isOb) {
-                Long longId = (long) id;
+                Long longId = (long) user.getId();
                 UserUtill userUtill = userUtilRepository.findByUserId(longId);
                 AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(longId);
                 responseList.add(new YbUserInfomation(attendanceStatus, userUtill));
