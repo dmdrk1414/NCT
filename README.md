@@ -172,3 +172,19 @@ https://github.com/dmdrk1414/docker-test
 
 5. aws의 소중함. 이런 귀찮음을 해결해주는 aws에게 감사하자
 6. mysql의 접근 ip의 다양함을 생각하자.
+7. mysql
+   1. 한글 설정
+
+
+
+```
+INSERT INTO user_info VALUES    (4.2, 'ENTP', 'dong',
+        'advantege',
+        '1996',
+        'false',
+        'favorite', 'computer', 'name', '010-1234-1234', 'image',
+        'self-introduce',
+        '1234', '123', TRUE, '', 'view@gmail.com', '$2a$10$5tb6qszu4wtEmbQHZDKVPutSiqjPB.sisziAFHcWXXwo2akedGpxK',
+        TRUE);
+```
+
