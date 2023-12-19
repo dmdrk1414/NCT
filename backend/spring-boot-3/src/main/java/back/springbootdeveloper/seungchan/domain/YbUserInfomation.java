@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.domain;
 
 import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.util.Utill;
 import lombok.Builder;
@@ -20,10 +21,10 @@ public class YbUserInfomation {
     private Long userId;
 
     @Builder
-    public YbUserInfomation(AttendanceStatus attendanceStatus, UserUtill userUtill) {
-        this.name = userUtill.getName();
+    public YbUserInfomation(UserInfo userInfo, AttendanceStatus attendanceStatus, UserUtill userUtill) {
+        this.name = userInfo.getName();
         this.cntVacation = userUtill.getCntVacation();
         this.weeklyData = Utill.extractNumbers(attendanceStatus.getWeeklyData());
-        this.userId = userUtill.getUserId();
+        this.userId = userInfo.getId();
     }
 }
