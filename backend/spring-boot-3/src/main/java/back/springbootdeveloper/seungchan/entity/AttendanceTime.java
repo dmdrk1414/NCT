@@ -3,6 +3,8 @@ package back.springbootdeveloper.seungchan.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -49,5 +51,9 @@ public class AttendanceTime {
         this.thursday = BASE_ATTENDANCE_TIME;
         this.friday = BASE_ATTENDANCE_TIME;
         this.isExceptonAttendance = false;
+    }
+
+    public List<String> getCustomTimes() {
+        return List.of(monday, tuesday, wednesday, thursday, friday);
     }
 }

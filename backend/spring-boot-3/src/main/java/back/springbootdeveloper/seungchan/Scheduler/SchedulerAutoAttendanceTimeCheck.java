@@ -1,17 +1,15 @@
 package back.springbootdeveloper.seungchan.Scheduler;
 
-import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
+import back.springbootdeveloper.seungchan.entity.UserUtill;
+import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import back.springbootdeveloper.seungchan.service.AttendanceService;
 import back.springbootdeveloper.seungchan.service.AttendanceTimeService;
 import back.springbootdeveloper.seungchan.util.DayUtill;
-import back.springbootdeveloper.seungchan.util.Utill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +41,9 @@ public class SchedulerAutoAttendanceTimeCheck {
     @Autowired
     private AttendanceService attendanceService;
 
+    @Autowired
+    private UserUtilRepository userUtilRepository;
+
     private void printDateAtNow(String methodName) {
         System.out.println("실행된 함수 " + methodName + " : " + new Date());
     }
@@ -52,8 +53,8 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 9 * * *")
     public void autoCheckAttendanceTime09() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_09);
         autoCheckExceptionAttendance();
+        autoCheckAttendanceTime(ATTENDANCE_TIME_09);
         printDateAtNow("autoCheckAttendanceTime09");
     }
 
@@ -196,25 +197,36 @@ public class SchedulerAutoAttendanceTimeCheck {
             return;
         }
 
-        List<AttendanceTime> attendanceTimeList = attendanceTimeService.findAll();
+        int vacationSubNumber = 1;
+        List<AttendanceTime> attendanceTimeList = attendanceTimeService.findAll(); // 전체 회원의 출석시간 entity
         List<AttendanceTime> attendanceTimeAboutTimeList = new ArrayList<>();
         String attendanceTimeEachUser = "";
         boolean isPassAttendanceAtToday = true;
+        boolean isPassVacationAtToday = true;
 
         // 원하는 시간에 출석을 원하는 인원들 찾기
         for (AttendanceTime attendanceTime : attendanceTimeList) {
-            attendanceTimeEachUser = attendanceTime.getAttendanceTime();
+            Integer dayIndex = DayUtill.getIndexDayOfWeek();
+            attendanceTimeEachUser = attendanceTime.getCustomTimes().get(dayIndex); // 해당하는 날짜의 원하는 출석 시간을 얻는다.
             if (sameAttendanceTime(attendanceWantTimeOfUser, attendanceTimeEachUser)) {
                 attendanceTimeAboutTimeList.add(attendanceTime);
             }
         }
 
         // 원하는 시간에 출석을하지 않는 인원들은 결석처리를 한다.
-        for (AttendanceTime attendanceTimeAbout09 : attendanceTimeAboutTimeList) {
-            Long userId = attendanceTimeAbout09.getUserId();
+        for (AttendanceTime attendanceTimeAbout : attendanceTimeAboutTimeList) {
+            Long userId = attendanceTimeAbout.getUserId();
             isPassAttendanceAtToday = attendanceService.isPassAttendanceAtToday(userId);
-            if (!isPassAttendanceAtToday) {
+            isPassVacationAtToday = attendanceService.isPassVacationAtToday(userId);
+
+            if (!isPassAttendanceAtToday && !isPassVacationAtToday) {
                 attendanceService.updateAbsenceVacationDate(userId);
+
+                UserUtill userUtillByUserId = userUtilRepository.findByUserId(userId);
+                int vacationNumAtNow = userUtillByUserId.getCntVacation();
+                int resultVacationNum = vacationNumAtNow - vacationSubNumber;
+
+                userUtilRepository.updateCntVacationUserUtilData(userId, resultVacationNum);
             }
         }
     }
