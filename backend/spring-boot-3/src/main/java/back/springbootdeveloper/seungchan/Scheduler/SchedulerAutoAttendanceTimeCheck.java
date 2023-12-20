@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.Scheduler;
 
+import back.springbootdeveloper.seungchan.Constant.AttendanceTimeConstant;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
@@ -18,23 +19,6 @@ import java.util.List;
 
 @Component
 public class SchedulerAutoAttendanceTimeCheck {
-    private final String ATTENDANCE_TIME_09 = "09";
-    private final String ATTENDANCE_TIME_10 = "10";
-    private final String ATTENDANCE_TIME_11 = "11";
-    private final String ATTENDANCE_TIME_12 = "12";
-    private final String ATTENDANCE_TIME_13 = "13";
-    private final String ATTENDANCE_TIME_14 = "14";
-    private final String ATTENDANCE_TIME_15 = "15";
-    private final String ATTENDANCE_TIME_16 = "16";
-    private final String ATTENDANCE_TIME_17 = "17";
-    private final String ATTENDANCE_TIME_18 = "18";
-    private final String ATTENDANCE_TIME_19 = "19";
-    private final String ATTENDANCE_TIME_20 = "20";
-    private final String ATTENDANCE_TIME_21 = "21";
-    private final String ATTENDANCE_TIME_22 = "22";
-    private final String ATTENDANCE_TIME_23 = "23";
-    private final String ATTENDANCE_TIME_24 = "24";
-
     @Autowired
     private AttendanceTimeService attendanceTimeService;
 
@@ -54,7 +38,7 @@ public class SchedulerAutoAttendanceTimeCheck {
     @Scheduled(cron = "0 10 9 * * *")
     public void autoCheckAttendanceTime09() {
         autoCheckExceptionAttendance();
-        autoCheckAttendanceTime(ATTENDANCE_TIME_09);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_09.getTime());
         printDateAtNow("autoCheckAttendanceTime09");
     }
 
@@ -64,7 +48,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 10 * * *")
     public void autoCheckAttendanceTime10() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_10);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_10.getTime());
         printDateAtNow("autoCheckAttendanceTime10");
     }
 
@@ -73,7 +57,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 11 * * *")
     public void autoCheckAttendanceTime11() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_11);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_11.getTime());
         printDateAtNow("autoCheckAttendanceTime11");
     }
 
@@ -82,7 +66,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 12 * * *")
     public void autoCheckAttendanceTime12() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_12);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_12.getTime());
         printDateAtNow("autoCheckAttendanceTime12");
     }
 
@@ -91,7 +75,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 13 * * *")
     public void autoCheckAttendanceTime13() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_13);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_13.getTime());
         printDateAtNow("autoCheckAttendanceTime13");
     }
 
@@ -100,7 +84,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 14 * * *")
     public void autoCheckAttendanceTime14() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_14);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_14.getTime());
         printDateAtNow("autoCheckAttendanceTime14");
     }
 
@@ -109,7 +93,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 15 * * *")
     public void autoCheckAttendanceTime15() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_15);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_15.getTime());
         printDateAtNow("autoCheckAttendanceTime15");
     }
 
@@ -118,7 +102,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 16 * * *")
     public void autoCheckAttendanceTime16() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_16);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_16.getTime());
         printDateAtNow("autoCheckAttendanceTime16");
     }
 
@@ -127,7 +111,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 17 * * *")
     public void autoCheckAttendanceTime17() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_17);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_17.getTime());
         printDateAtNow("autoCheckAttendanceTime17");
     }
 
@@ -136,7 +120,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 18 * * *")
     public void autoCheckAttendanceTime18() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_18);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_18.getTime());
         printDateAtNow("autoCheckAttendanceTime18");
     }
 
@@ -145,7 +129,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 19 * * *")
     public void autoCheckAttendanceTime19() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_19);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_19.getTime());
         printDateAtNow("autoCheckAttendanceTime19");
     }
 
@@ -155,7 +139,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 20 * * *")
     public void autoCheckAttendanceTime20() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_20);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_20.getTime());
         printDateAtNow("autoCheckAttendanceTime20");
     }
 
@@ -165,7 +149,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 21 * * *")
     public void autoCheckAttendanceTime21() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_21);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_21.getTime());
         printDateAtNow("autoCheckAttendanceTime21");
     }
 
@@ -174,7 +158,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 22 * * *")
     public void autoCheckAttendanceTime22() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_22);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_22.getTime());
         printDateAtNow("autoCheckAttendanceTime22");
     }
 
@@ -183,7 +167,7 @@ public class SchedulerAutoAttendanceTimeCheck {
      */
     @Scheduled(cron = "0 10 23 * * *")
     public void autoCheckAttendanceTime23() {
-        autoCheckAttendanceTime(ATTENDANCE_TIME_23);
+        autoCheckAttendanceTime(AttendanceTimeConstant.TIME_23.getTime());
         printDateAtNow("autoCheckAttendanceTime23");
     }
 
