@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.controller.config.AttendanceListFromJson;
-import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
+import back.springbootdeveloper.seungchan.controller.config.TestMakeObject;
 import back.springbootdeveloper.seungchan.dto.request.*;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.repository.*;
@@ -123,24 +123,24 @@ public class ApiTest {
 
         // userID 1
         Long userId_1 = 1L;
-        user = userRepository.save(TestClassUtill.makeUser("박승찬", "seungchan141414@gmail.com"));
+        user = userRepository.save(TestMakeObject.makeUser("박승찬", "seungchan141414@gmail.com"));
         userRepository.updateId(user.getId(), userId_1);
         user.setId(userId_1);
 
         // userId OD 2
         Long userId_2 = 2L;
-        userOb = userRepository.save(TestClassUtill.makeUserOb("이승훈", "2@gmail.com"));
+        userOb = userRepository.save(TestMakeObject.makeUserOb("이승훈", "2@gmail.com"));
         userRepository.updateId(userOb.getId(), userId_2);
         userOb.setId(userId_2);
 
-        userUtill = userUtilRepository.save(TestClassUtill.makeUserUtill(user, 0, true));
+        userUtill = userUtilRepository.save(TestMakeObject.makeUserUtill(user, 0, true));
 
         String vacationDates = "2023-08-01, 2023-08-07, 2023-08-14";
         String absenceDates = "2023-08-15";
         String weeklyData = "[0,0,0,0,0]";
-        attendanceStatus = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
+        attendanceStatus = attendanceStatusRepository.save(TestMakeObject.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
 
-        String url = "/login";
+        String url = "/logn";
         HttpServletRequest request = mockMvc.perform(
                 post(url).param("email", user.getEmail()).param("password", user.getPassword())
         ).andReturn().getRequest();
@@ -162,49 +162,49 @@ public class ApiTest {
 
         // userID 1 3 5
         Long userId_1 = 1L;
-        user = userRepository.save(TestClassUtill.makeUser("박승찬", "seungchan141414@gmail.com"));
+        user = userRepository.save(TestMakeObject.makeUser("박승찬", "seungchan141414@gmail.com"));
         userRepository.updateId(user.getId(), userId_1);
         user.setId(userId_1);
 
         Long userId_3 = 3L;
-        user_3 = userRepository.save(TestClassUtill.makeUser("김주연", "3@gmail.com"));
+        user_3 = userRepository.save(TestMakeObject.makeUser("김주연", "3@gmail.com"));
         userRepository.updateId(user_3.getId(), userId_3);
         user_3.setId(userId_3);
 
         Long userId_5 = 5L;
-        user_5 = userRepository.save(TestClassUtill.makeUser("허진범", "5@gmail.com"));
+        user_5 = userRepository.save(TestMakeObject.makeUser("허진범", "5@gmail.com"));
         userRepository.updateId(user_5.getId(), userId_5);
         user_5.setId(userId_5);
 
         // userId OD 2 4
         Long userId_2 = 2L;
-        userOb = userRepository.save(TestClassUtill.makeUserOb("이승훈", "2@gmail.com"));
+        userOb = userRepository.save(TestMakeObject.makeUserOb("이승훈", "2@gmail.com"));
         userRepository.updateId(userOb.getId(), userId_2);
         userOb.setId(userId_2);
 
         Long userId_4 = 4L;
-        userOb_4 = userRepository.save(TestClassUtill.makeUserOb("이동근", "4@gmail.com"));
+        userOb_4 = userRepository.save(TestMakeObject.makeUserOb("이동근", "4@gmail.com"));
         userRepository.updateId(userOb_4.getId(), userId_4);
         userOb_4.setId(userId_4);
 
-        userUtill = userUtilRepository.save(TestClassUtill.makeUserUtill(user, 0, true));
-        userUtill_3 = userUtilRepository.save(TestClassUtill.makeUserUtill(user_3, 1, false));
-        userUtill_5 = userUtilRepository.save(TestClassUtill.makeUserUtill(user_5, 1, false));
+        userUtill = userUtilRepository.save(TestMakeObject.makeUserUtill(user, 0, true));
+        userUtill_3 = userUtilRepository.save(TestMakeObject.makeUserUtill(user_3, 1, false));
+        userUtill_5 = userUtilRepository.save(TestMakeObject.makeUserUtill(user_5, 1, false));
 
         String vacationDates = "2023-08-01, 2023-08-07, 2023-08-14";
         String absenceDates = "2023-08-15";
         String weeklyData = "[0,0,0,0,0]";
-        attendanceStatus = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
+        attendanceStatus = attendanceStatusRepository.save(TestMakeObject.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
 
         String vacationDates_3 = "2023-08-08, 2023-08-18";
         String absenceDates_3 = "2023-08-11";
         String weeklyData_3 = "[1,1,1,0,0]";
-        attendanceStatus_3 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user_3, vacationDates_3, absenceDates_3, weeklyData_3));
+        attendanceStatus_3 = attendanceStatusRepository.save(TestMakeObject.makeAttendanceStatus(user_3, vacationDates_3, absenceDates_3, weeklyData_3));
 
         String vacationDates_5 = " 2023-08-07, 2023-08-11";
         String absenceDates_5 = "2023-08-15";
         String weeklyData_5 = "[1,1,0,-1,1]";
-        attendanceStatus_5 = attendanceStatusRepository.save(TestClassUtill.makeAttendanceStatus(user_5, vacationDates_5, absenceDates_5, weeklyData_5));
+        attendanceStatus_5 = attendanceStatusRepository.save(TestMakeObject.makeAttendanceStatus(user_5, vacationDates_5, absenceDates_5, weeklyData_5));
 
     }
 
@@ -216,7 +216,7 @@ public class ApiTest {
 
         final String url = "/suggestions";
 
-        Suggestions saveSuggestions = suggestionRepository.save(TestClassUtill.makeSuggestions());
+        Suggestions saveSuggestions = suggestionRepository.save(TestMakeObject.makeSuggestions());
         // when
         final ResultActions resultActions = mockMvc.perform(get(url)
                 .accept(MediaType.APPLICATION_JSON)
@@ -239,7 +239,7 @@ public class ApiTest {
         // given
         this.suggestionRepository.deleteAll();
         final String url = "/suggestions/write";
-        Suggestions suggestionsRequest = TestClassUtill.makeSuggestions();
+        Suggestions suggestionsRequest = TestMakeObject.makeSuggestions();
 
         // 객체 suggestionsRequest을 Json으로 직렬화
         final String requestBody = objectMapper.writeValueAsString(suggestionsRequest);
@@ -592,8 +592,8 @@ public class ApiTest {
         // given
         final String url = "/sign";
         String email = "new@new.com";
-        String password = new BCryptPasswordEncoder().encode("1234");
-        TempUser newUser = TestClassUtill.makeNewUserOb(email, password);
+        String name = "새로운 유저";
+        TempUser newUser = TestMakeObject.makeNewUserOb(email, name);
 
         TempUserFormRequest requestUserForm = new TempUserFormRequest(
                 newUser.getName(),
@@ -628,7 +628,7 @@ public class ApiTest {
         TempUser newUserOfTempDb = tempUserRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("not found: ")); // 찾아서 없으면 예외처리.;;
 
-        boolean resultPassword = new BCryptPasswordEncoder().matches(password, newUserOfTempDb.getPassword());
+        boolean resultPassword = new BCryptPasswordEncoder().matches(name, newUserOfTempDb.getPassword());
 
         // then
         assertThat(newUser.getEmail()).isEqualTo(email);
@@ -647,10 +647,10 @@ public class ApiTest {
         final String url = "/new-users";
         String email_1 = "new@new.com_1";
         String email_2 = "new@new.com_2";
-        String password_1 = new BCryptPasswordEncoder().encode("1234");
-        String password_2 = new BCryptPasswordEncoder().encode("1234");
-        TempUser tempUser_1 = TestClassUtill.makeNewUserOb(email_1, password_1);
-        TempUser tempUser_2 = TestClassUtill.makeNewUserOb(email_2, password_2);
+        String name_1 = "새로운 유저 1";
+        String name_2 = "새로운 유저 2";
+        TempUser tempUser_1 = TestMakeObject.makeNewUserOb(email_1, name_1);
+        TempUser tempUser_2 = TestMakeObject.makeNewUserOb(email_2, name_2);
 
         tempUserRepository.save(tempUser_1);
         tempUserRepository.save(tempUser_2);
@@ -672,8 +672,8 @@ public class ApiTest {
     public void findNewUsersTest() throws Exception {
         // given
         String email_1 = "new@new.com_1";
-        String password_1 = new BCryptPasswordEncoder().encode("1234");
-        TempUser tempUser_1 = TestClassUtill.makeNewUserOb(email_1, password_1);
+        String name_1 = "새로운 유저 1";
+        TempUser tempUser_1 = TestMakeObject.makeNewUserOb(email_1, name_1);
 
         TempUser tempUserDB = tempUserRepository.save(tempUser_1);
         final String url = "/new-users/" + tempUserDB.getId();
@@ -712,8 +712,8 @@ public class ApiTest {
     public void acceptNewUserOfKingTest() throws Exception {
         // given
         String email_1 = "new@new.com_1";
-        String password_1 = new BCryptPasswordEncoder().encode("1234");
-        TempUser tempUser_1 = TestClassUtill.makeNewUserOb(email_1, password_1);
+        String name_1 = "새로운 유저_1";
+        TempUser tempUser_1 = TestMakeObject.makeNewUserOb(email_1, name_1);
 
         TempUser tempUserDB = tempUserRepository.save(tempUser_1);
         final String url = "/new-users/" + tempUserDB.getId() + "/acceptance";
@@ -739,8 +739,8 @@ public class ApiTest {
     public void rejectNewUserOfKingTest() throws Exception {
         // given
         String email_1 = "new@new.com_1";
-        String password_1 = new BCryptPasswordEncoder().encode("1234");
-        TempUser tempUser_1 = TestClassUtill.makeNewUserOb(email_1, password_1);
+        String name_1 = "새로운 유저_1";
+        TempUser tempUser_1 = TestMakeObject.makeNewUserOb(email_1, name_1);
 
         TempUser tempUserDB = tempUserRepository.save(tempUser_1);
         final String url = "/new-users/" + tempUserDB.getId() + "/reject";

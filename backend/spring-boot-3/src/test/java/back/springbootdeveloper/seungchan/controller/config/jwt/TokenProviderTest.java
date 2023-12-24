@@ -2,7 +2,7 @@ package back.springbootdeveloper.seungchan.controller.config.jwt;
 
 import back.springbootdeveloper.seungchan.config.jwt.JwtProperties;
 import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
-import back.springbootdeveloper.seungchan.controller.config.TestClassUtill;
+import back.springbootdeveloper.seungchan.controller.config.TestMakeObject;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
@@ -42,10 +42,10 @@ public class TokenProviderTest {
         userRepository.deleteAll();
         userUtilRepository.deleteAll();
 
-        UserInfo user = TestClassUtill.makeUser("박승찬", "seungchan141414@gmail.com");
+        UserInfo user = TestMakeObject.makeUser("박승찬", "seungchan141414@gmail.com");
         UserInfo testUser = userRepository.save(user);
 
-        userUtilRepository.save(TestClassUtill.makeUserUtill(user, 0, true));
+        userUtilRepository.save(TestMakeObject.makeUserUtill(user, 0, true));
 
         // when
         // 토큰 제공자의 generateToken()메서드를 호출해 토큰을 만든다.
