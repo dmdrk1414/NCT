@@ -1,5 +1,6 @@
-package back.springbootdeveloper.seungchan.controller.config;
+package back.springbootdeveloper.seungchan.controller.testutills;
 
+import back.springbootdeveloper.seungchan.controller.config.BCryptPasswordEncoderObject;
 import back.springbootdeveloper.seungchan.entity.*;
 
 public class TestMakeObject {
