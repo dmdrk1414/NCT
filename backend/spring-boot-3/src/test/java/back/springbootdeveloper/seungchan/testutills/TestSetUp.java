@@ -1,8 +1,7 @@
-package back.springbootdeveloper.seungchan.controller.testutills;
+package back.springbootdeveloper.seungchan.testutills;
 
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.repository.*;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

@@ -1,4 +1,4 @@
-package back.springbootdeveloper.seungchan.controller.testutills;
+package back.springbootdeveloper.seungchan.testutills;
 
 import back.springbootdeveloper.seungchan.repository.*;
 import org.junit.jupiter.api.Test;
