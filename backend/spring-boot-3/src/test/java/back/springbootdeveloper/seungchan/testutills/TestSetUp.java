@@ -22,7 +22,7 @@ public class TestSetUp {
     /**
      * 실장 유저를 설정한다.
      */
-    public void setUpKingUser() {
+    public UserInfo setUpKingUser() {
         // userID 1
         UserInfo user = userRepository.save(TestMakeObject.makeUser("실장 유저", "seungchan141414@gmail.com"));
 
@@ -48,12 +48,14 @@ public class TestSetUp {
                 .previousMonth(basicMonth)
                 .build();
         periodicDataRepository.save(periodicDataOfNewUser);
+
+        return user;
     }
 
     /**
      * 테스트 유저를 위한 설정
      */
-    public void setUpUser() {
+    public UserInfo setUpUser() {
         // userID 1
         UserInfo user = userRepository.save(TestMakeObject.makeUser("일반 유저", "seungchan141414@gmail.com"));
 
@@ -78,13 +80,14 @@ public class TestSetUp {
                 .previousMonth(basicMonth)
                 .build();
         periodicDataRepository.save(periodicDataOfNewUser);
+
+        return user;
     }
 
-    public void setUpOldUser() {
+    public UserInfo setUpOldUser() {
         // userId OB 2
-        Long userId_2 = 2L;
         UserInfo userOb = userRepository.save(TestMakeObject.makeUserOb("졸업 유저", "2@gmail.com"));
-        userRepository.updateId(userOb.getId(), userId_2);
-        userOb.setId(userId_2);
+
+        return userOb;
     }
 }
