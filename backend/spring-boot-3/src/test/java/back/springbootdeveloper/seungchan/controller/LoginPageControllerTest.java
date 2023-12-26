@@ -1,27 +1,25 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberRequest;
+import back.springbootdeveloper.seungchan.Constant.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.UserLoginRequest;
-import back.springbootdeveloper.seungchan.entity.NumOfTodayAttendence;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
-import back.springbootdeveloper.seungchan.exception.common.EmptyValueExistException;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
-import back.springbootdeveloper.seungchan.service.LoginService;
-import back.springbootdeveloper.seungchan.testutills.TestDatabases;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
+import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -32,8 +30,6 @@ class LoginPageControllerTest {
     protected MockMvc mockMvc;
     @Autowired
     protected ObjectMapper objectMapper;
-    @Autowired
-    private LoginService loginService;
     @Autowired
     private DatabaseService databaseService;
     @Autowired
@@ -46,14 +42,21 @@ class LoginPageControllerTest {
         this.kingUser = testSetUp.setUpKingUser();
     }
 
-    @Test
-    void 유저_로그인_테스트_예외_테스트_값이_없는_경우_1() throws Exception {
-//        EmptyValueExistException
-//        UserNotExistException
+    @ParameterizedTest
+    @CsvSource({"null,1234", "seungchan@gmail.com,null", "null,null"})
+    void 유저_로그인_테스트_예외_테스트_값이_없는_경우_1(String email, String password) throws Exception {
+        if (email.equals("null")) {
+            email = null;
+        }
+
+        if (password.equals("null")) {
+            password = null;
+        }
+
         // given
         UserLoginRequest userLoginRequest = UserLoginRequest.builder()
-                .email(null)
-                .password(null)
+                .email(email)
+                .password(password)
                 .build();
 
         final String url = "/login";
@@ -61,8 +64,18 @@ class LoginPageControllerTest {
         // when
         final String requestBody = objectMapper.writeValueAsString(userLoginRequest);
 
-        ResultActions result = mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestBody));
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody))
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+
+        assertThat(message).isEqualTo(ExceptionMessage.EMPTY_VALUE_EXCEPTION.get());
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }
