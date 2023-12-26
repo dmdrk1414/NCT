@@ -9,7 +9,7 @@ import lombok.*;
 @Data
 @Builder
 public class UserLoginRequest {
-    @NotNull(message = "이메일은 비어있는 값은 사용할 수 없습니다.")
+    @NotNull(message = "{email.notnull}")
     @Email
     private String email;
 
