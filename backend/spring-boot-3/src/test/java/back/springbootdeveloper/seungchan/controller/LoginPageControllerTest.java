@@ -7,15 +7,21 @@ import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hibernate.cfg.Environment;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -23,7 +29,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@SpringBootTest
+@TestPropertySource(locations = "classpath:/messages/validation.properties")
+@SpringBootTest()
 @AutoConfigureMockMvc
 class LoginPageControllerTest {
     @Autowired
@@ -35,6 +42,8 @@ class LoginPageControllerTest {
     @Autowired
     private TestSetUp testSetUp;
     private UserInfo kingUser;
+    @Value("${email.notnull}")
+    private String test;
 
     @BeforeEach
     public void setUp() {
@@ -75,7 +84,7 @@ class LoginPageControllerTest {
         String message = TestUtills.getMessageFromResponse(response);
         HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
 
-        assertThat(message).isEqualTo(ExceptionMessage.EMPTY_VALUE_EXCEPTION.get());
+        assertThat(message).isEqualTo(test);
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }
