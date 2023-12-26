@@ -10,9 +10,9 @@ import lombok.*;
 @Builder
 public class UserLoginRequest {
     @NotNull(message = "{email.notnull}")
-    @Email
+    @Email(message = "{email.invalid}")
     private String email;
 
-    @NotNull
+    @NotNull(message = "{password.notnull}")
     private String password;
 }
