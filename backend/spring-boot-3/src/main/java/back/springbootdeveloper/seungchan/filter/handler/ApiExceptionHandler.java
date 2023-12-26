@@ -1,8 +1,8 @@
-package back.springbootdeveloper.seungchan.exception;
+package back.springbootdeveloper.seungchan.filter.handler;
 
 import back.springbootdeveloper.seungchan.Constant.exception.ExceptionMessage;
-import back.springbootdeveloper.seungchan.exception.common.EmptyValueExistException;
-import back.springbootdeveloper.seungchan.exception.user.UserNotExistException;
+import back.springbootdeveloper.seungchan.filter.exception.ApiException;
+import back.springbootdeveloper.seungchan.filter.exception.user.UserNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -28,19 +28,6 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, httpStatus);
     }
 
-    @ExceptionHandler(value = {EmptyValueExistException.class})
-    public ResponseEntity<Object> handleEmptyValueException(EmptyValueExistException e) {
-
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-
-        ApiException apiException = new ApiException(
-                ExceptionMessage.EMPTY_VALUE_EXCEPTION.get(),
-                httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
-
-        return new ResponseEntity<>(apiException, httpStatus);
-    }
 
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {

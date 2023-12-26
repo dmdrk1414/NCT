@@ -1,4 +1,4 @@
-package back.springbootdeveloper.seungchan.exception;
+package back.springbootdeveloper.seungchan.filter.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
