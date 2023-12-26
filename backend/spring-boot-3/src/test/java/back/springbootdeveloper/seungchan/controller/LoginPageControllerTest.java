@@ -8,6 +8,7 @@ import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -163,7 +164,7 @@ class LoginPageControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
-    @ParameterizedTest
+    @Test
     void 유저_로그인_테스트_예외_테스트_해당_유저가_없는_경우() throws Exception {
         String email = "NOTING@gmail.com";
         String password = "NOTING_PASSWORD";
