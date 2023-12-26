@@ -24,8 +24,8 @@ public class LoginService {
     private final TokenService tokenService;
 
     public UserLoginResponse login(UserLoginRequest userLoginRequest, HttpServletRequest request, HttpServletResponse response) {
-        String email = Optional.ofNullable(userLoginRequest.getEmail()).orElseThrow(EmptyValueExistException::new);
-        String password = Optional.ofNullable(userLoginRequest.getPassword()).orElseThrow(EmptyValueExistException::new);
+        String email = userLoginRequest.getEmail();
+        String password = userLoginRequest.getPassword();
 
         Optional<UserInfo> user = userRepository.findByEmail(email);
         if (!user.isPresent()) {

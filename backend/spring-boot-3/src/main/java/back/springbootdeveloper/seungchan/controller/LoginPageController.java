@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,9 +47,9 @@ public class LoginPageController {
 
     @Operation(summary = "로그인", description = "기존 회원들의 로그인이다")
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<UserLoginResponse> userLogin(@RequestBody @Valid UserLoginRequest userLoginRequest, HttpServletRequest request, HttpServletResponse response) {
         UserLoginResponse userLoginResponse = loginService.login(userLoginRequest, request, response);
-        
+
         return ResponseEntity.ok().body(userLoginResponse);
     }
 }
