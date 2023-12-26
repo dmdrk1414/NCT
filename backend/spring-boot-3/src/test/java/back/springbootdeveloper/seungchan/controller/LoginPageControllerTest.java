@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.Constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.UserLoginRequest;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
@@ -159,6 +160,37 @@ class LoginPageControllerTest {
         HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
 
         assertThat(message).isEqualTo(MESSAGE_EMAIL_INVALID);
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @ParameterizedTest
+    void 유저_로그인_테스트_예외_테스트_해당_유저가_없는_경우() throws Exception {
+        String email = "NOTING@gmail.com";
+        String password = "NOTING_PASSWORD";
+
+        // given
+        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
+                .email(email)
+                .password(password)
+                .build();
+
+        final String url = "/login";
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(userLoginRequest);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody))
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+
+        assertThat(message).isEqualTo(ExceptionMessage.USER_NOT_EXIST_MESSAGE.get());
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }
