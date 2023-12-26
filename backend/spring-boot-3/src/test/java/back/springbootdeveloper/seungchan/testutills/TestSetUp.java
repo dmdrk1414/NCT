@@ -2,40 +2,45 @@ package back.springbootdeveloper.seungchan.testutills;
 
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.repository.*;
+import back.springbootdeveloper.seungchan.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Component;
 
-@SpringBootTest
+@Component
 public class TestSetUp {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserUtilRepository userUtilRepository;
-    @Autowired
-    private AttendanceStatusRepository attendanceStatusRepository;
-    @Autowired
-    private AttendanceTimeRepository attendanceTimeRepository;
-    @Autowired
-    private PeriodicDataRepository periodicDataRepository;
+    private final UserService userService;
+    private final UserUtillService userUtillService;
+    private final AttendanceService attendanceService;
+    private final AttendanceTimeService attendanceTimeService;
+    private final PeriodicDataService periodicDataService;
 
+    @Autowired
+    public TestSetUp(UserService userService, UserUtillService userUtillService, AttendanceService attendanceService, AttendanceTimeService attendanceTimeService, PeriodicDataService periodicDataService) {
+        this.userService = userService;
+        this.userUtillService = userUtillService;
+        this.attendanceService = attendanceService;
+        this.attendanceTimeService = attendanceTimeService;
+        this.periodicDataService = periodicDataService;
+    }
 
     /**
      * 실장 유저를 설정한다.
      */
     public UserInfo setUpKingUser() {
         // userID 1
-        UserInfo user = userRepository.save(TestMakeObject.makeUser("실장 유저", "seungchan141414@gmail.com"));
+        UserInfo user = userService.save(TestMakeObject.makeUser("실장 유저", "seungchan141414@gmail.com"));
 
 
-        userUtilRepository.save(TestMakeObject.makeUserUtill(user, 0, true));
+        userUtillService.save(TestMakeObject.makeUserUtill(user, 0, true));
 
         String vacationDates = "2023-08-01, 2023-08-07, 2023-08-14";
         String absenceDates = "2023-08-15";
         String weeklyData = "[0,0,0,0,0]";
-        attendanceStatusRepository.save(TestMakeObject.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
+        attendanceService.save(TestMakeObject.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
 
         AttendanceTime attendanceTime = new AttendanceTime(user);
-        attendanceTimeRepository.save(attendanceTime);
+        attendanceTimeService.save(attendanceTime);
 
 
         String basicWeeklyData = "[0,0,0,0,0]";
@@ -47,7 +52,7 @@ public class TestSetUp {
                 .thisMonth(basicMonth)
                 .previousMonth(basicMonth)
                 .build();
-        periodicDataRepository.save(periodicDataOfNewUser);
+        periodicDataService.save(periodicDataOfNewUser);
 
         return user;
     }
@@ -57,17 +62,17 @@ public class TestSetUp {
      */
     public UserInfo setUpUser() {
         // userID 1
-        UserInfo user = userRepository.save(TestMakeObject.makeUser("일반 유저", "seungchan141414@gmail.com"));
+        UserInfo user = userService.save(TestMakeObject.makeUser("일반 유저", "seungchan141414@gmail.com"));
 
-        userUtilRepository.save(TestMakeObject.makeUserUtill(user, 5, false));
+        userUtillService.save(TestMakeObject.makeUserUtill(user, 5, false));
 
         String vacationDates = "";
         String absenceDates = "";
         String weeklyData = "[0,0,0,0,0]";
-        attendanceStatusRepository.save(TestMakeObject.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
+        attendanceService.save(TestMakeObject.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
 
         AttendanceTime attendanceTime = new AttendanceTime(user);
-        attendanceTimeRepository.save(attendanceTime);
+        attendanceTimeService.save(attendanceTime);
 
 
         String basicWeeklyData = "[0,0,0,0,0]";
@@ -79,14 +84,14 @@ public class TestSetUp {
                 .thisMonth(basicMonth)
                 .previousMonth(basicMonth)
                 .build();
-        periodicDataRepository.save(periodicDataOfNewUser);
+        periodicDataService.save(periodicDataOfNewUser);
 
         return user;
     }
 
     public UserInfo setUpOldUser() {
         // userId OB 2
-        UserInfo userOb = userRepository.save(TestMakeObject.makeUserOb("졸업 유저", "2@gmail.com"));
+        UserInfo userOb = userService.save(TestMakeObject.makeUserOb("졸업 유저", "2@gmail.com"));
 
         return userOb;
     }

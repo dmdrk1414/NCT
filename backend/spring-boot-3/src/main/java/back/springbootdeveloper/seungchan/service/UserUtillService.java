@@ -76,4 +76,8 @@ public class UserUtillService {
                 .build();
         userUtilRepository.save(newUserUtill);
     }
+
+    public UserUtill save(UserUtill userUtill) {
+        return userUtilRepository.save(userUtill);
+    }
 }

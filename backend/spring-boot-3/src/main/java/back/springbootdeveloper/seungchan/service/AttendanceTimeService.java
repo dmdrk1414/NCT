@@ -71,4 +71,8 @@ public class AttendanceTimeService {
         AttendanceTime attendanceTime = attendanceTimeRepository.findByUserId(id);
         return attendanceTime.isExceptonAttendance();
     }
+
+    public AttendanceTime save(AttendanceTime attendanceTime) {
+        return attendanceTimeRepository.save(attendanceTime);
+    }
 }

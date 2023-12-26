@@ -25,7 +25,7 @@ public class TestDatabases {
     private UserRepository userRepository;
     @Autowired
     private UserUtilRepository userUtilRepository;
-
+    
     public void deleteAllOnDatabase() {
         attendanceStatusRepository.deleteAll();
         attendanceTimeRepository.deleteAll();
