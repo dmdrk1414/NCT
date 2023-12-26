@@ -22,6 +22,7 @@ public class ApiExceptionHandler {
         ApiException apiException = new ApiException(
                 ExceptionMessage.USER_NOT_EXIST_MESSAGE.get(),
                 httpStatus,
+                httpStatus.value(),
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
@@ -42,6 +43,7 @@ public class ApiExceptionHandler {
 //                ExceptionMessage.USER_NOT_EXIST_MESSAGE.get(),
                 errorMessage,
                 httpStatus,
+                httpStatus.value(),
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 

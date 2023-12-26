@@ -11,5 +11,6 @@ import java.time.ZonedDateTime;
 public class ApiException {
     private final String message;
     private final HttpStatus httpStatus;
+    private final Integer stateCode;
     private final ZonedDateTime timestamp;
 }
