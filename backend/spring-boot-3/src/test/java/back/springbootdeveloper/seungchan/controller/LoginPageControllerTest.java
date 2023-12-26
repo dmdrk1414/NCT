@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@TestPropertySource(locations = "classpath:/messages/validation.properties")
+@TestPropertySource(locations = "classpath:/messages/validation/validation.properties")
 @SpringBootTest()
 @AutoConfigureMockMvc
 class LoginPageControllerTest {
@@ -39,7 +39,8 @@ class LoginPageControllerTest {
     private UserInfo kingUser;
     @Value("${email.notnull}")
     private String MESSAGE_EMAIL_NOT_NULL;
-
+    @Value("${password.notnull}")
+    private String MESSAGE_PASSWORD_NOT_NULL;
 
     @BeforeEach
     public void setUp() {
@@ -75,6 +76,37 @@ class LoginPageControllerTest {
         HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
 
         assertThat(message).isEqualTo(MESSAGE_EMAIL_NOT_NULL);
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @ParameterizedTest
+    @NullSource
+    void 유저_로그인_테스트_예외_테스트_password_값이_없는_경우(String password) throws Exception {
+        String email = kingUser.getEmail();
+
+        // given
+        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
+                .email(email)
+                .password(password)
+                .build();
+
+        final String url = "/login";
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(userLoginRequest);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody))
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+
+        assertThat(message).isEqualTo(MESSAGE_PASSWORD_NOT_NULL);
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }
