@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.dto.request;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -9,10 +10,10 @@ import lombok.*;
 @Data
 @Builder
 public class UserLoginRequest {
-    @NotNull(message = "{email.notnull}")
+    @NotBlank(message = "{email.notnull}")
     @Email(message = "{email.invalid}")
     private String email;
 
-    @NotNull(message = "{password.notnull}")
+    @NotBlank(message = "{password.notnull}")
     private String password;
 }
