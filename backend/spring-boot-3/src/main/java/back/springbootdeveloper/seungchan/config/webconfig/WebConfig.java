@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
     public MessageSource validationMessageSource() {
         // MessageSource를 정의하는 곳에 추가적으로 validationMessageSource
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:/messages/validation");
+        messageSource.setBasename("classpath:/messages/validation/validation");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
