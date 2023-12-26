@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.Constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.UserLoginRequest;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
+import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
@@ -22,6 +23,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,6 +41,8 @@ class LoginPageControllerTest {
     private DatabaseService databaseService;
     @Autowired
     private TestSetUp testSetUp;
+    @Autowired
+    private UserRepository userRepository;
     private UserInfo kingUser;
     @Value("${email.notnull}")
     private String MESSAGE_EMAIL_NOT_NULL;
@@ -52,6 +56,34 @@ class LoginPageControllerTest {
         databaseService.deleteAllDatabase();
         this.kingUser = testSetUp.setUpKingUser();
     }
+
+    @Test
+    void 유저_로그인_테스트() throws Exception {
+        // when
+        String email = kingUser.getEmail();
+        String password = "1234";
+
+        // given
+        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
+                .email(email)
+                .password(password)
+                .build();
+
+        final String url = "/login";
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(userLoginRequest);
+
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody));
+
+        result
+                .andExpect(jsonPath("$.name").value(kingUser.getName()))
+                .andExpect(jsonPath("$.userId").value(kingUser.getId()))
+                .andExpect(jsonPath("$.nuriKing").value(true));
+    }
+
 
     @ParameterizedTest
     @NullSource
