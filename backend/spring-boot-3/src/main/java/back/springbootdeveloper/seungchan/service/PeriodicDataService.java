@@ -78,4 +78,8 @@ public class PeriodicDataService {
         String resetPreviousMonth = "";
         periodicDataRepository.resetPreviousMonth(resetPreviousMonth);
     }
+
+    public PeriodicData save(PeriodicData periodicData) {
+        return periodicDataRepository.save(periodicData);
+    }
 }

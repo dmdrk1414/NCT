@@ -303,4 +303,8 @@ public class AttendanceService {
         }
         return false;
     }
+
+    public AttendanceStatus save(AttendanceStatus attendanceStatus) {
+        return attendanceStatusRepository.save(attendanceStatus);
+    }
 }
