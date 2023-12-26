@@ -4,8 +4,7 @@ import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.dto.request.UserLoginRequest;
 import back.springbootdeveloper.seungchan.dto.response.UserLoginResponse;
-import back.springbootdeveloper.seungchan.exception.common.EmptyValueExistException;
-import back.springbootdeveloper.seungchan.exception.user.UserNotExistException;
+import back.springbootdeveloper.seungchan.filter.exception.user.UserNotExistException;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,8 +23,8 @@ public class LoginService {
     private final TokenService tokenService;
 
     public UserLoginResponse login(UserLoginRequest userLoginRequest, HttpServletRequest request, HttpServletResponse response) {
-        String email = Optional.ofNullable(userLoginRequest.getEmail()).orElseThrow(EmptyValueExistException::new);
-        String password = Optional.ofNullable(userLoginRequest.getPassword()).orElseThrow(EmptyValueExistException::new);
+        String email = userLoginRequest.getEmail();
+        String password = userLoginRequest.getPassword();
 
         Optional<UserInfo> user = userRepository.findByEmail(email);
         if (!user.isPresent()) {

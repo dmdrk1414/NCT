@@ -2,7 +2,6 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.dto.request.TempUserFormRequest;
 import back.springbootdeveloper.seungchan.dto.request.UserLoginRequest;
-import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.SignNewUserResponse;
 import back.springbootdeveloper.seungchan.dto.response.UserLoginResponse;
 import back.springbootdeveloper.seungchan.service.LoginService;
@@ -13,8 +12,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,9 +45,9 @@ public class LoginPageController {
 
     @Operation(summary = "로그인", description = "기존 회원들의 로그인이다")
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<UserLoginResponse> userLogin(@RequestBody @Valid UserLoginRequest userLoginRequest, HttpServletRequest request, HttpServletResponse response) {
         UserLoginResponse userLoginResponse = loginService.login(userLoginRequest, request, response);
-        
+
         return ResponseEntity.ok().body(userLoginResponse);
     }
 }

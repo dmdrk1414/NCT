@@ -140,7 +140,7 @@ public class ApiTest {
         String weeklyData = "[0,0,0,0,0]";
         attendanceStatus = attendanceStatusRepository.save(TestMakeObject.makeAttendanceStatus(user, vacationDates, absenceDates, weeklyData));
 
-        String url = "/logn";
+        String url = "/login";
         HttpServletRequest request = mockMvc.perform(
                 post(url).param("email", user.getEmail()).param("password", user.getPassword())
         ).andReturn().getRequest();

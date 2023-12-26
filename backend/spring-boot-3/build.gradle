@@ -65,6 +65,10 @@ dependencies {
 
     // 임메모리 데이터배이스, 로컬과 테스트 환경에서 사용
     runtimeOnly 'com.h2database:h2'
+
+    // 추가하면 @Valid가 작동해야 합니다.
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 test {
