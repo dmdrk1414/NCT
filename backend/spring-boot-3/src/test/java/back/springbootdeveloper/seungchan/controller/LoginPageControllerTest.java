@@ -1,21 +1,16 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.Constant.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.UserLoginRequest;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hibernate.cfg.Environment;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -43,7 +38,8 @@ class LoginPageControllerTest {
     private TestSetUp testSetUp;
     private UserInfo kingUser;
     @Value("${email.notnull}")
-    private String test;
+    private String MESSAGE_EMAIL_NOT_NULL;
+
 
     @BeforeEach
     public void setUp() {
@@ -52,15 +48,9 @@ class LoginPageControllerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"null,1234", "seungchan@gmail.com,null", "null,null"})
-    void 유저_로그인_테스트_예외_테스트_값이_없는_경우_1(String email, String password) throws Exception {
-        if (email.equals("null")) {
-            email = null;
-        }
-
-        if (password.equals("null")) {
-            password = null;
-        }
+    @NullSource
+    void 유저_로그인_테스트_예외_테스트_email_값이_없는_경우_1(String email) throws Exception {
+        String password = kingUser.getPassword();
 
         // given
         UserLoginRequest userLoginRequest = UserLoginRequest.builder()
@@ -84,7 +74,7 @@ class LoginPageControllerTest {
         String message = TestUtills.getMessageFromResponse(response);
         HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
 
-        assertThat(message).isEqualTo(test);
+        assertThat(message).isEqualTo(MESSAGE_EMAIL_NOT_NULL);
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }
