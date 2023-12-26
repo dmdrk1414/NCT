@@ -1,4 +1,4 @@
-package back.springbootdeveloper.seungchan.Constant.exception;
+package back.springbootdeveloper.seungchan.Constant.filter.exception;
 
 import lombok.Getter;
 

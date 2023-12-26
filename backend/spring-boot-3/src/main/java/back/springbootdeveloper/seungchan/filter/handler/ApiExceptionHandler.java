@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.filter.handler;
 
-import back.springbootdeveloper.seungchan.Constant.exception.ExceptionMessage;
+import back.springbootdeveloper.seungchan.Constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.filter.exception.ApiException;
 import back.springbootdeveloper.seungchan.filter.exception.user.UserNotExistException;
 import org.springframework.http.HttpStatus;
