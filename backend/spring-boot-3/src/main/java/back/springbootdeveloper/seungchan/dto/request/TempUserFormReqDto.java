@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Setter
 @AllArgsConstructor
 @ToString
-public class TempUserFormRequest {
+public class TempUserFormReqDto {
     private String name;
     private String phoneNum;
     private String major;

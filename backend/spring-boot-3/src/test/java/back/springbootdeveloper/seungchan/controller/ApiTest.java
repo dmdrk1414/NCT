@@ -595,7 +595,7 @@ public class ApiTest {
         String name = "새로운 유저";
         TempUser newUser = TestMakeObject.makeNewUserOb(email, name);
 
-        TempUserFormRequest requestUserForm = new TempUserFormRequest(
+        TempUserFormReqDto requestUserForm = new TempUserFormReqDto(
                 newUser.getName(),
                 newUser.getPhoneNum(),
                 newUser.getMajor(),

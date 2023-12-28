@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.entity.TempUser;
-import back.springbootdeveloper.seungchan.dto.request.TempUserFormRequest;
+import back.springbootdeveloper.seungchan.dto.request.TempUserFormReqDto;
 import back.springbootdeveloper.seungchan.dto.response.NewUsersResponse;
 import back.springbootdeveloper.seungchan.repository.TempUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.List;
 public class TempUserService {
     private final TempUserRepository tempUserRepository;
 
-    public void save(TempUserFormRequest requestUserForm) {
+    public void save(TempUserFormReqDto requestUserForm) {
         TempUser newTempUser = requestUserForm.toEntity();
         tempUserRepository.save(newTempUser);
     }
