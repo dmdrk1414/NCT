@@ -3,8 +3,10 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
-import back.springbootdeveloper.seungchan.service.DatabaseService;
-import back.springbootdeveloper.seungchan.service.NumOfTodayAttendenceService;
+import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
+import back.springbootdeveloper.seungchan.repository.AttendanceTimeRepository;
+import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import back.springbootdeveloper.seungchan.util.DayUtill;
@@ -46,6 +48,8 @@ class AttendanceControllerTest {
     private String token;
     @Autowired
     private NumOfTodayAttendenceService numOfTodayAttendenceService;
+    @Autowired
+    private AttendanceService attendanceService;
 
     @BeforeEach
     void setUp() {
@@ -78,7 +82,7 @@ class AttendanceControllerTest {
 
             // than
             result
-                    .andExpect(jsonPath("$.passAtNow").isBoolean());
+                    .andExpect(jsonPath("$.passAtNow").value(true));
         }
     }
 
@@ -221,6 +225,35 @@ class AttendanceControllerTest {
         HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
 
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void 개인별_출석번호_입력_요청_확인_예외_테스트_이미_휴가를_사용했다면() throws Exception {
+        if (DayUtill.isWeekendDay()) {
+            // given
+            final String url = "/attendance/number";
+            Integer attendanceNumber = 1234;
+            Long userId = testSetUp.getKingUserId();
+            attendanceService.updateVacationDate2PassAttendance(userId);
+
+            AttendanceNumberReqDto attendanceNumberReqDto = AttendanceNumberReqDto.builder()
+                    .numOfAttendance(String.valueOf(attendanceNumber))
+                    .build();
+
+            // when
+            final String requestBody = objectMapper.writeValueAsString(attendanceNumberReqDto);
+
+            ResultActions result = mockMvc.perform(post(url)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(requestBody)
+                    .header("authorization", "Bearer " + token) // token header에 담기
+            );
+
+            // than
+            result
+                    .andExpect(jsonPath("$.passAtNow").value(false));
+        }
     }
 
     private String getTodayString() {
