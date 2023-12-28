@@ -1,9 +1,7 @@
 package back.springbootdeveloper.seungchan.dto.request;
 
 import back.springbootdeveloper.seungchan.entity.TempUser;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,12 +45,15 @@ public class TempUserFormReqDto {
     private String birthDate;
 
     @NotBlank(message = "{validation.advantages.notblank}")
+    @Size(min = 100, message = "{validation.advantages.size.min.100}")
     private String advantages;
 
     @NotBlank(message = "{validation.disadvantage.notblank}")
+    @Size(min = 100, message = "{validation.disadvantage.size.min.100}")
     private String disadvantage;
 
     @NotBlank(message = "{validation.selfintroduction.notblank}")
+    @Size(min = 200, message = "{validation.selfintroduction.size.min.200}")
     private String selfIntroduction;
 
     @NotBlank(message = "{validation.photo.notblank}")
