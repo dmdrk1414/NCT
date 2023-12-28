@@ -33,9 +33,8 @@ public class LoginPageController {
     @PostMapping("/sign")
     public ResponseEntity<SignNewUserResDto> userSignFrom(@RequestBody @Valid TempUserFormReqDto requestUserForm) {
         tempUserService.save(requestUserForm);
-        String name = requestUserForm.getName();
         String email = requestUserForm.getEmail();
-        Boolean existNewUser = tempUserService.exist(name, email);
+        Boolean existNewUser = tempUserService.exist(email);
 
         // 등록 완료 되었다는 boolean 리턴
         return ResponseEntity.ok().body(SignNewUserResDto.builder()

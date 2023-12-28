@@ -54,8 +54,8 @@ public class TempUserService {
         return tempUser;
     }
 
-    public Boolean exist(String name, String email) {
-        return tempUserRepository.existsByNameAndEmail(name, email);
+    public Boolean exist(String email) {
+        return tempUserRepository.existsByEmail(email);
     }
 
     /**
