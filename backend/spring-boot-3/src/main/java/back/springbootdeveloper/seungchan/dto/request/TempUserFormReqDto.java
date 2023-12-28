@@ -2,16 +2,13 @@ package back.springbootdeveloper.seungchan.dto.request;
 
 import back.springbootdeveloper.seungchan.entity.TempUser;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@Getter
-@Setter
 @AllArgsConstructor
-@ToString
+@NoArgsConstructor
+@Data
+@Builder
 public class TempUserFormReqDto {
     @NotBlank(message = "{validation.name.notblank}")
     private String name;
