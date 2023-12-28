@@ -15,55 +15,55 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @AllArgsConstructor
 @ToString
 public class TempUserFormReqDto {
-    @NotBlank(message = "이름은 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.name.notblank}")
     private String name;
 
-    @NotBlank(message = "전화번호는 비어 있을 수 없습니다.")
-    @Pattern(regexp = "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$", message = "유효하지 않은 전화번호 형식입니다.")
+    @NotBlank(message = "{validation.phonenum.notblank}")
+    @Pattern(regexp = "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$", message = "{validation.phonenum.invalid}")
     private String phoneNum;
 
-    @NotBlank(message = "전공은 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.major.notblank}")
     private String major;
 
-    @NotBlank(message = "GPA는 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.gpa.notblank}")
     private String gpa;
 
-    @NotBlank(message = "주소는 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.address.notblank}")
     private String address;
 
-    @NotBlank(message = "전문 기술은 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.specialtyskill.notblank}")
     private String specialtySkill;
 
-    @NotBlank(message = "취미는 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.hobby.notblank}")
     private String hobby;
 
-    @NotBlank(message = "MBTI는 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.mbti.notblank}")
     private String mbti;
 
-    @NotBlank(message = "학생 ID는 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.studentid.notblank}")
     private String studentId;
 
-    @NotBlank(message = "생년월일은 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.birthdate.notblank}")
     private String birthDate;
 
-    @NotBlank(message = "장점은 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.advantages.notblank}")
     private String advantages;
 
-    @NotBlank(message = "단점은 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.disadvantage.notblank}")
     private String disadvantage;
 
-    @NotBlank(message = "자기소개는 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.selfintroduction.notblank}")
     private String selfIntroduction;
 
-    @NotBlank(message = "사진은 비어 있을 수 없습니다.")
+    @NotBlank(message = "{validation.photo.notblank}")
     private String photo;
 
-    @Email(message = "유효하지 않은 이메일 형식입니다.")
-    @NotBlank(message = "이메일은 비어 있을 수 없습니다.")
+    @Email(message = "{validation.email.invalid}")
+    @NotBlank(message = "{validation.email.notblank}")
     private String email;
 
-    @NotBlank(message = "비밀번호는 비어 있을 수 없습니다.")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$", message = "비밀번호는 최소 8자 이상이며, 문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다.")
+    @NotBlank(message = "{validation.password.notblank}")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$", message = "{validation.password.invalid}")
     private String password;
 
     public TempUser toEntity() {
