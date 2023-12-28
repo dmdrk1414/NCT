@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.service;
 import back.springbootdeveloper.seungchan.entity.TempUser;
 import back.springbootdeveloper.seungchan.dto.request.TempUserFormReqDto;
 import back.springbootdeveloper.seungchan.dto.response.NewUsersResponse;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.repository.TempUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,12 @@ public class TempUserService {
 
     public Boolean existNewUserByNameAndEmail(String name, String email) {
         return tempUserRepository.existsByNameAndEmail(name, email);
+    }
+
+    /**
+     * 새로운 임시 회원의 정보를 저장한다.가
+     */
+    public TempUser save(TempUser tempUser) {
+        return tempUserRepository.save(tempUser);
     }
 }
