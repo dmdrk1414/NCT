@@ -1,12 +1,17 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.Constant.filter.exception.ExceptionMessage;
+import back.springbootdeveloper.seungchan.dto.request.TempUserFormReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UserLoginRequest;
+import back.springbootdeveloper.seungchan.entity.TempUser;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
+import back.springbootdeveloper.seungchan.repository.TempUserRepository;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
+import back.springbootdeveloper.seungchan.testutills.TestMakeObject;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -42,13 +48,13 @@ class LoginPageControllerTest {
     @Autowired
     private TestSetUp testSetUp;
     @Autowired
-    private UserRepository userRepository;
+    private TempUserRepository tempUserRepository;
     private UserInfo kingUser;
-    @Value("${email.notnull}")
+    @Value("${validation.email.notblank}")
     private String MESSAGE_EMAIL_NOT_NULL;
-    @Value("${password.notnull}")
+    @Value("${validation.password.notblank}")
     private String MESSAGE_PASSWORD_NOT_NULL;
-    @Value("${email.invalid}")
+    @Value("${validation.email.invalid}")
     private String MESSAGE_EMAIL_INVALID;
 
     @BeforeEach
@@ -225,5 +231,47 @@ class LoginPageControllerTest {
 
         assertThat(message).isEqualTo(ExceptionMessage.USER_NOT_EXIST_MESSAGE.get());
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void 신입유저를_등록을_확인_하는_테스트() throws Exception {
+        // given
+        String name = "신입_1";
+        String email = "test1@test.com";
+        String password = "testuser1!";
+        TempUser tempUser = TestMakeObject.makeNewUserOb(email, name);
+        final String url = "/sign";
+
+        TempUserFormReqDto request = new TempUserFormReqDto(
+                tempUser.getName(),
+                tempUser.getPhoneNum(),
+                tempUser.getMajor(),
+                tempUser.getGpa(),
+                tempUser.getAddress(),
+                tempUser.getSpecialtySkill(),
+                tempUser.getHobby(),
+                tempUser.getMbti(),
+                tempUser.getStudentId(),
+                tempUser.getBirthDate(),
+                tempUser.getAdvantages(),
+                tempUser.getDisadvantage(),
+                tempUser.getSelfIntroduction(),
+                tempUser.getPhoto(),
+                tempUser.getEmail(),
+                password
+        );
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody));
+
+        TempUser tempUserOfDb = tempUserRepository.findByEmail(email).get();
+
+        // then
+        assertThat(tempUser.getEmail()).isEqualTo(email);
+        assertThat(tempUser.getName()).isEqualTo(tempUserOfDb.getName());
     }
 }
