@@ -35,7 +35,7 @@ public class LoginPageController {
         tempUserService.save(requestUserForm);
         String name = requestUserForm.getName();
         String email = requestUserForm.getEmail();
-        Boolean existNewUser = tempUserService.existNewUserByNameAndEmail(name, email);
+        Boolean existNewUser = tempUserService.exist(name, email);
 
         // 등록 완료 되었다는 boolean 리턴
         return ResponseEntity.ok().body(SignNewUserResDto.builder()

@@ -3,7 +3,6 @@ package back.springbootdeveloper.seungchan.service;
 import back.springbootdeveloper.seungchan.entity.TempUser;
 import back.springbootdeveloper.seungchan.dto.request.TempUserFormReqDto;
 import back.springbootdeveloper.seungchan.dto.response.NewUsersResponse;
-import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.repository.TempUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,7 @@ public class TempUserService {
         return tempUser;
     }
 
-    public Boolean existNewUserByNameAndEmail(String name, String email) {
+    public Boolean exist(String name, String email) {
         return tempUserRepository.existsByNameAndEmail(name, email);
     }
 
