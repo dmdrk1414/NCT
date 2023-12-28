@@ -306,4 +306,8 @@ public class AttendanceService {
     public AttendanceStatus save(AttendanceStatus attendanceStatus) {
         return attendanceStatusRepository.save(attendanceStatus);
     }
+
+    public AttendanceStatus findById(Long userId) {
+        return attendanceStatusRepository.findByUserId(userId);
+    }
 }
