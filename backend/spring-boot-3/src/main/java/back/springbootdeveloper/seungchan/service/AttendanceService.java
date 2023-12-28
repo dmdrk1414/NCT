@@ -235,7 +235,7 @@ public class AttendanceService {
      *
      * @param userId
      */
-    public void updateVacationDate2PassAttendance(Long userId) {
+    public void updateVacationDate2PassVacation(Long userId) {
         AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(userId);
         String weeklyData = attendanceStatus.getWeeklyData();
         int indexDay = DayUtill.getIndexDayOfWeek();

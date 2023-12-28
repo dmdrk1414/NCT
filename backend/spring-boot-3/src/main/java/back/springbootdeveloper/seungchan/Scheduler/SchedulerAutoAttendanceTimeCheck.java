@@ -228,7 +228,7 @@ public class SchedulerAutoAttendanceTimeCheck {
             Long userId = attendanceTime.getUserId();
             // 장기 휴가를 사용하는 인원
             if (attendanceTime.isExceptonAttendance()) {
-                attendanceService.updateVacationDate2PassAttendance(userId);
+                attendanceService.updateVacationDate2PassVacation(userId);
             }
         }
     }

@@ -3,9 +3,6 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
-import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
-import back.springbootdeveloper.seungchan.entity.UserInfo;
-import back.springbootdeveloper.seungchan.repository.AttendanceTimeRepository;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
@@ -234,7 +231,7 @@ class AttendanceControllerTest {
             final String url = "/attendance/number";
             Integer attendanceNumber = 1234;
             Long userId = testSetUp.getKingUserId();
-            attendanceService.updateVacationDate2PassAttendance(userId);
+            attendanceService.updateVacationDate2PassVacation(userId);
 
             AttendanceNumberReqDto attendanceNumberReqDto = AttendanceNumberReqDto.builder()
                     .numOfAttendance(String.valueOf(attendanceNumber))
