@@ -1,12 +1,10 @@
 package back.springbootdeveloper.seungchan.testutills;
 
 import back.springbootdeveloper.seungchan.entity.*;
-import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,6 +19,8 @@ public class TestSetUp {
     private final PeriodicDataService periodicDataService;
     @Autowired
     private TokenService tokenService;
+    private Long kingUserId;
+    private Long userId_1;
 
 
     @Autowired
@@ -38,6 +38,7 @@ public class TestSetUp {
     public UserInfo setUpKingUser() {
         // userID 1
         UserInfo user = userService.save(TestMakeObject.makeUser("실장 유저", "seungchan141414@gmail.com"));
+        kingUserId = user.getId();
 
 
         userUtillService.save(TestMakeObject.makeUserUtill(user, 0, true));
@@ -71,6 +72,7 @@ public class TestSetUp {
     public UserInfo setUpUser() {
         // userID 1
         UserInfo user = userService.save(TestMakeObject.makeUser("일반 유저", "seungchan141414@gmail.com"));
+        userId_1 = user.getId();
 
         userUtillService.save(TestMakeObject.makeUserUtill(user, 5, false));
 
@@ -130,4 +132,13 @@ public class TestSetUp {
 
         return tokenService.createAccessAndRefreshToken(request, response, kingUser.getEmail());
     }
+
+    public Long getKingUserId() {
+        return this.kingUserId;
+    }
+
+    public Long getUserId_1() {
+        return this.userId_1;
+    }
+
 }
