@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AttendanceNumberRequest {
+public class AttendanceNumberReqDto {
     private String numOfAttendance;
 }

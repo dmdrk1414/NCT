@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberRequest;
+import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
 import back.springbootdeveloper.seungchan.dto.response.AttendanceIsPassResponse;
 import back.springbootdeveloper.seungchan.dto.response.AttendanceNumberResponse;
 import back.springbootdeveloper.seungchan.entity.NumOfTodayAttendence;
@@ -25,7 +25,7 @@ public class AttendanceController {
 
     @Operation(summary = "main page 5. 출석 번호 입력 API ", description = "출석 번호를 입력을 하면 출석하였다는 결과를 얻는다.")
     @PostMapping("/number")
-    public ResponseEntity<AttendanceIsPassResponse> AttendanceIsPassController(@RequestBody AttendanceNumberRequest attendanceNumberRequest, HttpServletRequest request) {
+    public ResponseEntity<AttendanceIsPassResponse> AttendanceIsPassController(@RequestBody AttendanceNumberReqDto attendanceNumberRequest, HttpServletRequest request) {
         String numOfAttendance = attendanceNumberRequest.getNumOfAttendance();
         Long id = tokenService.getUserIdFromToken(request);
 
