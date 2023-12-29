@@ -468,7 +468,7 @@ class LoginPageControllerTest {
         TempUserFormReqDto request = getTempUserFormReqDto(tempUser);
 
         // when
-        request.setDisadvantage("200이하의 단점");
+        request.setDisadvantage("100이하의 단점");
         MockHttpServletResponse response = getTempUserFormReqResponseOfPost(request);
 
         // JSON 응답을 Map으로 변환
@@ -486,7 +486,7 @@ class LoginPageControllerTest {
         TempUserFormReqDto request = getTempUserFormReqDto(tempUser);
 
         // when
-        request.setAdvantages("200이하의 장점");
+        request.setAdvantages("100이하의 장점");
         MockHttpServletResponse response = getTempUserFormReqResponseOfPost(request);
 
         // JSON 응답을 Map으로 변환
