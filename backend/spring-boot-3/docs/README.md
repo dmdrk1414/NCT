@@ -34,7 +34,35 @@
 - [ ] api url 상수로 관리하기
 - [ ] 이름 변경시 모든 디비 이름 수정 (업데이트)(졍규화 이후 삭제)
 
+### 2023-12-28
 
+#### 메모 (예외 사항)
+
+- [ ] https://hello-judy-world.tistory.com/213
+
+#### Back
+
+- [ ] AttendanceController#AttendanceIsPassController 예외처리
+  - [x] 검증
+- [ ] AttendanceController#AttendanceIsPassController 테스트 코드 작성
+  - [x] 기본 테스트
+  - [ ] 예외 사항 테스트
+    - [ ] 이미 휴가를 사용했다면
+      - [ ] 휴가를 사용할수 없다
+      - [ ] 중복으로 사용할 수 없다.
+      - [ ] 결석, 출석을 할수 없다.
+      - [x] 주말 여부
+    - [ ] 이미 출석을 하였다면 휴가를 사용할 수 없다.
+  - [x] 검증의 테스트
+- [ ] 비밀번호 찾기
+- [ ] 아이디 찾기
+
+#### Front
+
+- [ ] 비밀번호 찾기
+- [ ] 아이디 찾기
+
+---
 
 ### 2023-12-28
 
