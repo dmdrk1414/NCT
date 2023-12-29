@@ -341,6 +341,91 @@ class LoginPageControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "name",
+            "phoneNum",
+            "major",
+            "gpa",
+            "address",
+            "specialtySkill",
+            "hobby",
+            "mbti",
+            "studentId",
+            "birthDate",
+            "advantages",
+            "disadvantage",
+            "selfIntroduction",
+            "photo",
+            "email",
+            "password",
+    })
+    void 신입유저를_등록을_확인_예외_테스트_Not_Blank(String check) throws Exception {
+        // given
+        final String url = "/sign";
+
+        TempUser tempUser = getTempUser();
+        TempUserFormReqDto request = getTempUserFormReqDto(tempUser);
+
+        switch (check) {
+            case "name":
+                request.setName("");
+                break;
+            case "phoneNum":
+                request.setPhoneNum("");
+                break;
+            case "major":
+                request.setMajor("");
+                break;
+            case "gpa":
+                request.setGpa("");
+                break;
+            case "address":
+                request.setAddress("");
+                break;
+            case "specialtySkill":
+                request.setSpecialtySkill("");
+                break;
+            case "hobby":
+                request.setHobby("");
+                break;
+            case "mbti":
+                request.setMbti("");
+                break;
+            case "studentId":
+                request.setStudentId("");
+                break;
+            case "birthDate":
+                request.setBirthDate("");
+                break;
+            case "advantages":
+                request.setAdvantages("");
+                break;
+            case "disadvantage":
+                request.setDisadvantage("");
+                break;
+            case "selfIntroduction":
+                request.setSelfIntroduction("");
+                break;
+            case "photo":
+                request.setPhoto("");
+                break;
+            case "email":
+                request.setEmail("");
+                break;
+            case "password":
+                request.setPassword("");
+                break;
+        }
+        MockHttpServletResponse response = getTempUserFormReqResponseOfPost(request);
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+
     private MockHttpServletResponse getTempUserFormReqResponseOfPost(TempUserFormReqDto request) throws Exception {
         final String requestBody = objectMapper.writeValueAsString(request);
         final String url = "/sign";
