@@ -226,10 +226,12 @@ class AttendanceControllerTest {
 
     @Test
     void 개인별_출석번호_입력_요청_확인_예외_테스트_이미_휴가를_사용했다면() throws Exception {
-        if (DayUtill.isWeekendDay()) {
+        if (!DayUtill.isWeekendDay()) {
             // given
             final String url = "/attendance/number";
             Integer attendanceNumber = 1234;
+            String day = getTodayString();
+            numOfTodayAttendenceService.save(day, Integer.parseInt(String.valueOf(attendanceNumber)));
             Long userId = testSetUp.getKingUserId();
             attendanceService.updateVacationDate2PassVacation(userId);
 
