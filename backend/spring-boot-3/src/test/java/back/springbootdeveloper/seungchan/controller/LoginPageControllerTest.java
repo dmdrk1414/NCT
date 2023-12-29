@@ -550,6 +550,35 @@ class LoginPageControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "P@ss1",       // 8자 미만
+            "P",           // 8자 미만
+            "p",           // 8자 미만
+            "123",         // 8자 미만
+            "Password1",   // 특수 문자 누락
+            "P@ssword",    // 숫자 누락
+            "longpasswordwithoutspecialcharacters1234567890", // 특수 문자 누락
+            "P@ssword@@@@"   // 연속된 특수 문자
+            // 추가 테스트 데이터 추가 가능
+    })
+    void 신입유저를_등록을_확인_예외_테스트_password_검증(String badPassword) throws Exception {
+        // given
+        final String url = "/sign";
+
+        TempUser tempUser = getTempUser();
+        TempUserFormReqDto request = getTempUserFormReqDto(tempUser);
+
+        // when
+        request.setPassword(badPassword);
+        MockHttpServletResponse response = getTempUserFormReqResponseOfPost(request);
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
     private MockHttpServletResponse getTempUserFormReqResponseOfPost(TempUserFormReqDto request) throws Exception {
         final String requestBody = objectMapper.writeValueAsString(request);
         final String url = "/sign";
