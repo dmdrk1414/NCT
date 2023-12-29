@@ -259,6 +259,34 @@ public class AttendanceService {
     }
 
     /**
+     * 해당 유저을 금일 출석 상태로 변경한다.
+     *
+     * @param userId
+     */
+    public void updateAttendanceToday(Long userId) {
+        AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(userId);
+        String weeklyData = attendanceStatus.getWeeklyData();
+        int indexDay = DayUtill.getIndexDayOfWeek();
+
+        // 문자열 json으로 변경 "[ 0, 0, 0, 0, 0 ]"
+        JSONArray jsonArray = new JSONArray(weeklyData);
+        int[] intArray = new int[jsonArray.length()];
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            intArray[i] = jsonArray.getInt(i);
+        }
+
+        // indexDay의 index에 출석으로 변경
+        intArray[indexDay] = AttendanceStateConstant.ATTENDANCE.getState();
+
+        // [ 0, 0, 0, 0, 2 ]
+        JSONArray resultJsonArray = arrayToJSONArray(intArray);
+        String updateWeeklyData = resultJsonArray.toString();
+
+        attendanceStatusRepository.updateWeeklyDataByUserId(userId, updateWeeklyData);
+    }
+
+    /**
      * 출석이 가능한 상태인지 확인한다.
      *
      * @param userId
