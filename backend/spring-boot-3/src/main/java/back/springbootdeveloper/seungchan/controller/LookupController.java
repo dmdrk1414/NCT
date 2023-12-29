@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "회원들의 정보를 찾는 컨트롤러", description = "회원들의 정보를 입력하고, 정보를 찾는 기능들의 모임")
@@ -28,10 +29,9 @@ public class LookupController {
     public ResponseEntity<BaseResponseBody> findPasswordController(@RequestBody @Valid FindPasswordReqDto findPasswordReqDto) {
         String email = findPasswordReqDto.getEmail();
 
-        // 1. 원하는 정보로 유저가 없으면
         userService.existByEmailAndName(email, findPasswordReqDto.getName());
-        // 1.1  예외처리
         String tempPassword = authenticationEmailService.sendSimpleMessage(findPasswordReqDto.getAuthenticationEmail(), email);
+        userService.updateUserPassword(email, tempPassword);
 
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
