@@ -39,6 +39,8 @@ class AttendanceControllerTest {
     @Autowired
     private TestSetUp testSetUp;
     private String token;
+    @Autowired
+    private NumOfTodayAttendenceService numOfTodayAttendenceService;
 
     @BeforeEach
     void setUp() {
@@ -46,5 +48,39 @@ class AttendanceControllerTest {
         token = testSetUp.getToken(mockMvc);
     }
 
+    @Test
+    void 개인별_출석번호_입력_요청_확인_테스트() throws Exception {
+        // given
+        final String url = "/attendance/number";
+        Integer attendanceNumber = 1234;
+        String day = getTodayString();
+        numOfTodayAttendenceService.save(day, attendanceNumber);
 
+        AttendanceNumberReqDto attendanceNumberReqDto = AttendanceNumberReqDto.builder()
+                .numOfAttendance(String.valueOf(attendanceNumber))
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(attendanceNumberReqDto);
+
+        ResultActions result = mockMvc.perform(post(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // than
+        result
+                .andExpect(jsonPath("$.passAtNow").isBoolean());
+    }
+
+    private String getTodayString() {
+        // 현재 날짜를 가져오기
+        LocalDate currentDate = LocalDate.now();
+
+        // DateTimeFormatter를 사용하여 원하는 포맷으로 날짜를 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return currentDate.format(formatter);
+    }
 }
