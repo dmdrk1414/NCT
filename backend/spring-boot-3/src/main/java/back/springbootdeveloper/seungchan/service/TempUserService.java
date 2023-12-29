@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.service;
 import back.springbootdeveloper.seungchan.entity.TempUser;
 import back.springbootdeveloper.seungchan.dto.request.TempUserFormReqDto;
 import back.springbootdeveloper.seungchan.dto.response.NewUsersResponse;
+import back.springbootdeveloper.seungchan.filter.exception.user.NewUserRegistrationException;
 import back.springbootdeveloper.seungchan.repository.TempUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,11 @@ public class TempUserService {
 
     public void save(TempUserFormReqDto requestUserForm) {
         TempUser newTempUser = requestUserForm.toEntity();
-        tempUserRepository.save(newTempUser);
+        TempUser tempUser = tempUserRepository.save(newTempUser);
+
+        if (tempUser == null) {
+            throw new NewUserRegistrationException();
+        }
     }
 
     public List<NewUsersResponse> findAllNewUsers() {
