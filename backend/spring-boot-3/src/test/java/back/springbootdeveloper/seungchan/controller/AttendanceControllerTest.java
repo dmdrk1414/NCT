@@ -115,6 +115,40 @@ class AttendanceControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {
+            "1",
+            "12",
+            "123",
+    })
+    void 개인별_출석번호_입력_요청_확인_예외_테스트_출석번호_최소길이_4(String inputValue) throws Exception {
+        // given
+        final String url = "/attendance/number";
+        String day = getTodayString();
+        Integer attendanceNumber = 1234;
+        numOfTodayAttendenceService.save(day, Integer.parseInt(String.valueOf(attendanceNumber)));
+
+        AttendanceNumberReqDto attendanceNumberReqDto = AttendanceNumberReqDto.builder()
+                .numOfAttendance(inputValue)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(attendanceNumberReqDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody))
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
     private String getTodayString() {
         // 현재 날짜를 가져오기
         LocalDate currentDate = LocalDate.now();
