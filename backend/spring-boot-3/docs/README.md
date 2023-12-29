@@ -13,10 +13,20 @@
 - [ ] 로그인 한명만사용하기(실장제외)
 - [ ] 배포 방법론 공부하기
 - [ ] 토큰 검증이후 리다이렉트 사용
-- [ ] 예외처리 및 테스트 코드작성
+- [x] 예외처리 및 테스트 코드작성
 
   - [ ] https://velog.io/@wooryung/Spring-Boot-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0
-
+  - [ ] Attendance Controller
+  - [ ] ExampleSwaggerController
+  - [x] Login PageController
+  - [ ] MainController
+  - [ ] MypageController
+  - [ ] NewUserController
+  - [ ] SuggestionsController
+  - [ ] SwaggerController
+  - [ ] TestController
+  - [ ] TokenApiController
+  - [ ] Vacation Page Controller
 - [ ] 토큰 시간지나면 로그아웃 하는 방법
 
 프런트
@@ -28,6 +38,8 @@
 
 ### 2023-12-28
 
+# 아직 머지안함
+
 #### 메모
 
 - [x] 종빈이 스프링 부트 공부
@@ -35,6 +47,16 @@
 
 #### Back
 
+- [x] LoginPageController#userSignFrom 예외 처리
+  - [x] requestDto 검증
+  - [x] 서비스에서의 예외 처리
+    - [x] 특정 유저가 저장이 되었는지
+- [x] LoginPageController#userSignFrom 테스트 코드
+  - [x] 신입유저가 등록후 존제하는가?
+  - [x] 기본 확인 테스트 코드
+    - [x] Null 검증
+    - [x] NotBlank 검증
+    - [x] 패턴 검증
 - [ ] 비밀번호 찾기
 - [ ] 아이디 찾기
 

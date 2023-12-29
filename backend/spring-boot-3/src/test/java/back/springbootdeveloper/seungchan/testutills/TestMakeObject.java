@@ -19,7 +19,7 @@ public class TestMakeObject {
     private static final String TEST_SELF_INTRODUCTION = "테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 ";
     private static final String TEST_PHOTO = "테스트 사진";
     private static final Boolean TEST_NOT_OB = false;
-    private static final String TEST_PASSWORD = "1234";
+    private static final String TEST_PASSWORD = "testuser1!";
     private static final Boolean TEST_REGULAR_MEMBER = true;
     private static final Boolean TEST_OB = true;
 
