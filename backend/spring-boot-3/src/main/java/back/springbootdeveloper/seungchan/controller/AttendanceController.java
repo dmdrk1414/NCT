@@ -9,6 +9,7 @@ import back.springbootdeveloper.seungchan.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class AttendanceController {
 
     @Operation(summary = "main page 5. 출석 번호 입력 API ", description = "출석 번호를 입력을 하면 출석하였다는 결과를 얻는다.")
     @PostMapping("/number")
-    public ResponseEntity<AttendanceIsPassResponse> AttendanceIsPassController(@RequestBody AttendanceNumberReqDto attendanceNumberRequest, HttpServletRequest request) {
+    public ResponseEntity<AttendanceIsPassResponse> AttendanceIsPassController(@RequestBody @Valid AttendanceNumberReqDto attendanceNumberRequest, HttpServletRequest request) {
         String numOfAttendance = attendanceNumberRequest.getNumOfAttendance();
         Long id = tokenService.getUserIdFromToken(request);
 
