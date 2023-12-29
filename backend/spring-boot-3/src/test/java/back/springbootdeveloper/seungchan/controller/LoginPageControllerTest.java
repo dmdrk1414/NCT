@@ -459,6 +459,24 @@ class LoginPageControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    @Test
+    void 신입유저를_등록을_확인_예외_테스트_disadvantage() throws Exception {
+        // given
+        final String url = "/sign";
+
+        TempUser tempUser = getTempUser();
+        TempUserFormReqDto request = getTempUserFormReqDto(tempUser);
+
+        // when
+        request.setDisadvantage("200이하의 단점");
+        MockHttpServletResponse response = getTempUserFormReqResponseOfPost(request);
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
     private MockHttpServletResponse getTempUserFormReqResponseOfPost(TempUserFormReqDto request) throws Exception {
         final String requestBody = objectMapper.writeValueAsString(request);
         final String url = "/sign";
