@@ -11,6 +11,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 public class TestUtills {
     private static final String HTTP_STATUS = "httpStatus";
+    private static final String HTTP_STATUS_CODE = "stateCode";
     private static final String MESSAGE = "message";
 
     /**
@@ -23,6 +24,19 @@ public class TestUtills {
         Map<String, String> responseMap = responseToMap(response);
 
         return HttpStatus.valueOf(responseMap.get(HTTP_STATUS));
+    }
+
+    /**
+     * Custom Https Status을 사용할시
+     * 실패를 한 response에서 HttpStatus Code을 얻는다.
+     *
+     * @param response
+     * @return
+     */
+    public static Integer getCustomHttpStatusCodeFromResponse(MockHttpServletResponse response) {
+        Map<String, String> responseMap = responseToMap(response);
+
+        return Integer.valueOf(responseMap.get(HTTP_STATUS_CODE));
     }
 
     /**
