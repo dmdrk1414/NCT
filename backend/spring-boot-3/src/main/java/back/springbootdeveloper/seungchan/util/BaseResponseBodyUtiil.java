@@ -13,6 +13,7 @@ public class BaseResponseBodyUtiil {
         return new ResponseEntity<>(
                 BaseResponseBody.builder()
                         .message("SUCCESS")
+                        .httpStatus(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
                         .build(),
@@ -24,6 +25,7 @@ public class BaseResponseBodyUtiil {
         return new ResponseEntity<>(
                 BaseResponseBody.builder()
                         .message("Access denied")
+                        .httpStatus(HttpStatus.FORBIDDEN)
                         .statusCode(HttpStatus.FORBIDDEN.value())
                         .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
                         .build(),

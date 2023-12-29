@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
 import lombok.*;
+import org.springframework.http.HttpStatus;
 
 import java.time.ZonedDateTime;
 
@@ -10,6 +11,7 @@ import java.time.ZonedDateTime;
 @Builder
 public class BaseResponseBody {
     private final String message;
+    private final HttpStatus httpStatus;
     private final Integer statusCode;
     private final ZonedDateTime timestamp;
 }
