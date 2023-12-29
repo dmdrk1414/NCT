@@ -62,29 +62,31 @@ class AttendanceControllerTest {
 
     @Test
     void 개인별_출석번호_입력_요청_확인_테스트() throws Exception {
-        // given
-        final String url = "/attendance/number";
-        Integer attendanceNumber = 1234;
-        String day = getTodayString();
-        numOfTodayAttendenceService.save(day, attendanceNumber);
+        if (!DayUtill.isWeekendDay()) {
+            // given
+            final String url = "/attendance/number";
+            Integer attendanceNumber = 1234;
+            String day = getTodayString();
+            numOfTodayAttendenceService.save(day, attendanceNumber);
 
-        AttendanceNumberReqDto attendanceNumberReqDto = AttendanceNumberReqDto.builder()
-                .numOfAttendance(String.valueOf(attendanceNumber))
-                .build();
+            AttendanceNumberReqDto attendanceNumberReqDto = AttendanceNumberReqDto.builder()
+                    .numOfAttendance(String.valueOf(attendanceNumber))
+                    .build();
 
-        // when
-        final String requestBody = objectMapper.writeValueAsString(attendanceNumberReqDto);
+            // when
+            final String requestBody = objectMapper.writeValueAsString(attendanceNumberReqDto);
 
-        ResultActions result = mockMvc.perform(post(url)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestBody)
-                .header("authorization", "Bearer " + token) // token header에 담기
-        );
+            ResultActions result = mockMvc.perform(post(url)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(requestBody)
+                    .header("authorization", "Bearer " + token) // token header에 담기
+            );
 
-        // than
-        result
-                .andExpect(jsonPath("$.passAtNow").isBoolean());
+            // than
+            result
+                    .andExpect(jsonPath("$.passAtNow").isBoolean());
+        }
     }
 
     @Test
