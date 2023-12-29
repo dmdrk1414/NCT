@@ -69,7 +69,7 @@ class LoginPageControllerTest {
     void 유저_로그인_테스트() throws Exception {
         // when
         String email = kingUser.getEmail();
-        String password = "1234";
+        String password = "testuser1!";
 
         // given
         UserLoginRequest userLoginRequest = UserLoginRequest.builder()
