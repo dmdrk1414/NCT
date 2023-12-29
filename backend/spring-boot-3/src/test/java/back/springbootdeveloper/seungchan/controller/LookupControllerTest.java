@@ -223,4 +223,75 @@ class LookupControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "name",
+            "email",
+            "authenticationEmail",
+            "name_2",
+            "email_2",
+            "authenticationEmail_2",
+            "name_3",
+            "email_3",
+            "authenticationEmail_3",
+    })
+    void 임시_이메일_반환_예외_NOT_BLANK_테스트(String check) throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/find/password";
+        FindPasswordReqDto requestDto = FindPasswordReqDto.builder()
+                .email(kingUser.getEmail())
+                .name(kingUser.getName())
+                .authenticationEmail(kingUser.getEmail())
+                .build();
+
+        switch (check) {
+            case "name":
+                requestDto.setName("");
+                break;
+            case "email":
+                requestDto.setEmail("");
+                break;
+            case "authenticationEmail":
+                requestDto.setAuthenticationEmail("");
+                break;
+            case "name_2":
+                requestDto.setName(" ");
+                break;
+            case "email_2":
+                requestDto.setEmail(" ");
+                break;
+            case "authenticationEmail_2":
+                requestDto.setAuthenticationEmail(" ");
+                break;
+            case "name_3":
+                requestDto.setName(null);
+                break;
+            case "email_3":
+                requestDto.setEmail(null);
+                break;
+            case "authenticationEmail_3":
+                requestDto.setAuthenticationEmail(null);
+                break;
+        }
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
 }
