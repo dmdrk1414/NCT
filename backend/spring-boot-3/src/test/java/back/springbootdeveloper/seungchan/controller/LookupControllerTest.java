@@ -15,6 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -124,4 +125,54 @@ class LookupControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(stateCode).isEqualTo(CustomHttpStatus.USER_NOT_EXIST.value());
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "asdf",
+            "12  aea3",
+            "asdf sadf asdfdsa",
+            "sadf@sdaf@sdf",
+            "23!saf",
+            "invalid_email",
+            "user@.com",
+            "@example.com",
+            "user@.com.",
+            "user@example..com",
+            "user@exa mple.com",
+            "user@example.com.",
+            "user@.example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "user@example.com-",
+            "user@exam@ple.com"
+    })
+    void 임시_이메일_반환_예외_형식에_맞지_않는_이메일_테스트(String input) throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/find/password";
+        FindPasswordReqDto requestDto = FindPasswordReqDto.builder()
+                .email(input)
+                .name(kingUser.getName())
+                .authenticationEmail(kingUser.getEmail())
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
 }
