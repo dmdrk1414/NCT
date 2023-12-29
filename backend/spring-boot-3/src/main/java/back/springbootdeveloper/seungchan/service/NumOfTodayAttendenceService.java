@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.entity.NumOfTodayAttendence;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.WeekendException;
 import back.springbootdeveloper.seungchan.repository.NumOfTodayAttendenceRepository;
 import back.springbootdeveloper.seungchan.util.DayUtill;
 import back.springbootdeveloper.seungchan.util.Utill;
@@ -25,6 +26,11 @@ public class NumOfTodayAttendenceService {
      * @return
      */
     public boolean checkAttendanceNumber(String numOfAttendance, Long userId) {
+        // 주말 여부
+        if (DayUtill.isWeekendDay()) {
+            throw new WeekendException();
+        }
+
         List<NumOfTodayAttendence> numAttendencelist = numOfTodayAttendenceRepository.findAll();
         int sizeOfList = numAttendencelist.size();
         NumOfTodayAttendence numOfTodayAttendenceAtNow = numAttendencelist.get(sizeOfList - 1);
