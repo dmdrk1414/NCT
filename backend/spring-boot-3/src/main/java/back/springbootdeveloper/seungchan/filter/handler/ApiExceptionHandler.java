@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.filter.handler;
 
-import back.springbootdeveloper.seungchan.Constant.filter.CustomHttpStatus;
-import back.springbootdeveloper.seungchan.Constant.filter.exception.ExceptionMessage;
+import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
+import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.filter.exception.ApiException;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.WeekendException;
 import back.springbootdeveloper.seungchan.filter.exception.user.NewUserRegistrationException;

@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.Scheduler;
 
-import back.springbootdeveloper.seungchan.Constant.AttendanceTimeConstant;
+import back.springbootdeveloper.seungchan.constant.AttendanceTimeConstant;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;

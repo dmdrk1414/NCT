@@ -1,4 +1,4 @@
-package back.springbootdeveloper.seungchan.Constant;
+package back.springbootdeveloper.seungchan.constant;
 
 import lombok.Getter;
 

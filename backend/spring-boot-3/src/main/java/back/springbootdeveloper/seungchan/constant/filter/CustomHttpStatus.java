@@ -1,6 +1,4 @@
-package back.springbootdeveloper.seungchan.Constant.filter;
-
-import org.springframework.http.HttpStatus;
+package back.springbootdeveloper.seungchan.constant.filter;
 
 public enum CustomHttpStatus {
     WEEKEND(-480, "Weekend");
