@@ -3,9 +3,14 @@ package back.springbootdeveloper.seungchan.testutills;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Component;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @Component
 public class TestSetUp {
@@ -14,6 +19,9 @@ public class TestSetUp {
     private final AttendanceService attendanceService;
     private final AttendanceTimeService attendanceTimeService;
     private final PeriodicDataService periodicDataService;
+    @Autowired
+    private TokenService tokenService;
+
 
     @Autowired
     public TestSetUp(UserService userService, UserUtillService userUtillService, AttendanceService attendanceService, AttendanceTimeService attendanceTimeService, PeriodicDataService periodicDataService) {
@@ -94,5 +102,32 @@ public class TestSetUp {
         UserInfo userOb = userService.save(TestMakeObject.makeUserOb("졸업 유저", "2@gmail.com"));
 
         return userOb;
+    }
+
+    /**
+     * 테스트를 위한 임시 토큰을 생성한다.
+     *
+     * @return
+     */
+    public String getToken(MockMvc mockMvc) {
+        UserInfo kingUser = userService.save(this.setUpKingUser());
+
+        String url = "/login";
+        HttpServletRequest request = null;
+        HttpServletResponse response = null;
+        try {
+            request = mockMvc.perform(
+                    post(url).param("email", kingUser.getEmail()).param("password", kingUser.getPassword())
+            ).andReturn().getRequest();
+
+            response = mockMvc.perform(
+                    post(url).param("email", kingUser.getEmail()).param("password", kingUser.getPassword())
+            ).andReturn().getResponse();
+
+        } catch (Exception e) {
+            System.out.println("AttendanceControllerTest : 토큰 생성과정 throw new RuntimeException(e);");
+        }
+
+        return tokenService.createAccessAndRefreshToken(request, response, kingUser.getEmail());
     }
 }
