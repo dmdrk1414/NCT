@@ -495,6 +495,43 @@ class LoginPageControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "asdf",
+            "12  aea3",
+            "asdf sadf asdfdsa",
+            "sadf@sdaf@sdf",
+            "23!saf",
+            "invalid_email",
+            "user@.com",
+            "@example.com",
+            "user@.com.",
+            "user@example..com",
+            "user@exa mple.com",
+            "user@example.com.",
+            "user@.example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "user@example.com-",
+            "user@exam@ple.com"
+    })
+    void 신입유저를_등록을_확인_예외_테스트_email_검증(String badEmail) throws Exception {
+        // given
+        final String url = "/sign";
+
+        TempUser tempUser = getTempUser();
+        TempUserFormReqDto request = getTempUserFormReqDto(tempUser);
+
+        // when
+        request.setEmail(badEmail);
+        MockHttpServletResponse response = getTempUserFormReqResponseOfPost(request);
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
     @Test
     void 신입유저를_등록을_확인_예외_테스트_selfIntroduction() throws Exception {
         // given
