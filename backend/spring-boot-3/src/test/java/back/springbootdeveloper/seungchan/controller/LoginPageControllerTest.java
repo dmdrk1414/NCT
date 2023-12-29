@@ -242,6 +242,8 @@ class LoginPageControllerTest {
         TempUser tempUser = TestMakeObject.makeNewUserOb(email, name);
         final String url = "/sign";
 
+        assertThat(tempUserRepository.count()).isEqualTo(0);
+
         TempUserFormReqDto request = new TempUserFormReqDto(
                 tempUser.getName(),
                 tempUser.getPhoneNum(),
@@ -271,6 +273,7 @@ class LoginPageControllerTest {
         TempUser tempUserOfDb = tempUserRepository.findByEmail(email).get();
 
         // then
+        assertThat(tempUserRepository.count()).isEqualTo(1);
         assertThat(tempUser.getEmail()).isEqualTo(email);
         assertThat(tempUser.getName()).isEqualTo(tempUserOfDb.getName());
     }
