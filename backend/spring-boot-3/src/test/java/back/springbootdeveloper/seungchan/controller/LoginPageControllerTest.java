@@ -236,15 +236,30 @@ class LoginPageControllerTest {
     @Test
     void 신입유저를_등록을_확인_하는_테스트() throws Exception {
         // given
-        String name = "신입_1";
-        String email = "test1@test.com";
-        String password = "testuser1!";
-        TempUser tempUser = TestMakeObject.makeNewUserOb(email, name);
         final String url = "/sign";
 
-        assertThat(tempUserRepository.count()).isEqualTo(0);
+        TempUser tempUser = getTempUser();
+        TempUserFormReqDto request = getTempUserFormReqDto(tempUser);
 
-        TempUserFormReqDto request = new TempUserFormReqDto(
+        // when
+        final String requestBody = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody));
+
+        TempUser result = tempUserRepository.findByEmail(request.getEmail()).get();
+
+        // then
+        assertThat(tempUserRepository.count()).isEqualTo(1);
+        assertThat(result.getEmail()).isEqualTo(request.getEmail());
+        assertThat(result.getName()).isEqualTo(result.getName());
+    }
+
+    private TempUserFormReqDto getTempUserFormReqDto(TempUser tempUser) {
+        String password = "testuser1!";
+
+        return new TempUserFormReqDto(
                 tempUser.getName(),
                 tempUser.getPhoneNum(),
                 tempUser.getMajor(),
@@ -262,19 +277,12 @@ class LoginPageControllerTest {
                 tempUser.getEmail(),
                 password
         );
+    }
 
-        // when
-        final String requestBody = objectMapper.writeValueAsString(request);
+    private TempUser getTempUser() {
+        String name = "신입_1";
+        String email = "test1@test.com";
 
-        mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestBody));
-
-        TempUser tempUserOfDb = tempUserRepository.findByEmail(email).get();
-
-        // then
-        assertThat(tempUserRepository.count()).isEqualTo(1);
-        assertThat(tempUser.getEmail()).isEqualTo(email);
-        assertThat(tempUser.getName()).isEqualTo(tempUserOfDb.getName());
+        return TestMakeObject.makeNewUserOb(email, name);
     }
 }
