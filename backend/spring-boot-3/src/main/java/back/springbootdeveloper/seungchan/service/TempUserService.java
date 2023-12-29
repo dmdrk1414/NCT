@@ -1,8 +1,9 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.entity.TempUser;
-import back.springbootdeveloper.seungchan.dto.request.TempUserFormRequest;
+import back.springbootdeveloper.seungchan.dto.request.TempUserFormReqDto;
 import back.springbootdeveloper.seungchan.dto.response.NewUsersResponse;
+import back.springbootdeveloper.seungchan.filter.exception.user.NewUserRegistrationException;
 import back.springbootdeveloper.seungchan.repository.TempUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,13 @@ import java.util.List;
 public class TempUserService {
     private final TempUserRepository tempUserRepository;
 
-    public void save(TempUserFormRequest requestUserForm) {
+    public void save(TempUserFormReqDto requestUserForm) {
         TempUser newTempUser = requestUserForm.toEntity();
-        tempUserRepository.save(newTempUser);
+        TempUser tempUser = tempUserRepository.save(newTempUser);
+
+        if (tempUser == null) {
+            throw new NewUserRegistrationException();
+        }
     }
 
     public List<NewUsersResponse> findAllNewUsers() {
@@ -54,7 +59,14 @@ public class TempUserService {
         return tempUser;
     }
 
-    public Boolean existNewUserByNameAndEmail(String name, String email) {
-        return tempUserRepository.existsByNameAndEmail(name, email);
+    public Boolean exist(String email) {
+        return tempUserRepository.existsByEmail(email);
+    }
+
+    /**
+     * 새로운 임시 회원의 정보를 저장한다.가
+     */
+    public TempUser save(TempUser tempUser) {
+        return tempUserRepository.save(tempUser);
     }
 }
