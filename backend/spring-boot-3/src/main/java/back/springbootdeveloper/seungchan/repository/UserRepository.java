@@ -22,4 +22,6 @@ public interface UserRepository extends JpaRepository<UserInfo, Long> {
     @Modifying
     @Query("UPDATE UserInfo u SET  u.id = :#{#id} WHERE u.id = :userId")
     void updateId(Long userId, Long id);
+
+    Boolean existsByEmailAndName(String email, String name);
 }

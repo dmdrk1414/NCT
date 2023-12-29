@@ -2,6 +2,7 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.dto.request.RequestUserForm;
+import back.springbootdeveloper.seungchan.filter.exception.user.UserNotExistException;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,14 @@ public class UserService {
 
     public UserInfo saveNewUser(UserInfo newUser) {
         return userRepository.save(newUser);
+    }
+
+    public void existByEmailAndName(String email, String name) {
+        Boolean exist = userRepository.existsByEmailAndName(email, name);
+
+        if (!exist) {
+            throw new UserNotExistException();
+        }
     }
 }
 
