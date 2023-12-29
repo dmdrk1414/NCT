@@ -19,19 +19,22 @@ public class NumOfTodayAttendenceService {
     @Autowired
     private NumOfTodayAttendenceRepository numOfTodayAttendenceRepository;
 
+    /**
+     * 데이터 베이스에서 임시 번호를 저장한후에 맞는지 아닌지 확인한다.
+     *
+     * @return
+     */
     public boolean checkAttendanceNumber(String numOfAttendance, Long userId) {
-        // 데이터 베이스에서 임시 번호를 저장한후에
-        // 맞는지 아닌지 확인한다.
         List<NumOfTodayAttendence> numAttendencelist = numOfTodayAttendenceRepository.findAll();
         int sizeOfList = numAttendencelist.size();
         NumOfTodayAttendence numOfTodayAttendenceAtNow = numAttendencelist.get(sizeOfList - 1);
         String checkNum = numOfTodayAttendenceAtNow.getCheckNum();
         String dayStr = numOfTodayAttendenceAtNow.getDay();
 
-//        - [ ] 이미 휴가를 사용했다면 휴가를 사용할 수 없다
-//        - [ ] 이미 출석을 하였다면 휴가을 사용할수 없다.
-//        - [ ] 이미 휴가를 사용했다면 중복으로 사용할 수 없다.
-//        - [ ] 이미 휴가를 사용했다면 결석, 출석을 할수없다.
+//        이미 휴가를 사용했다면 휴가를 사용할 수 없다
+//        이미 출석을 하였다면 휴가을 사용할수 없다.
+//        이미 휴가를 사용했다면 중복으로 사용할 수 없다.
+//        이미 휴가를 사용했다면 결석, 출석을 할수없다.
         if (Utill.isEqualStr(numOfAttendance, checkNum) && availableAttendance(userId)) {
             DayOfWeek dayOfWeekAtNow = DayUtill.getDayOfWeekAtNow(dayStr);
             int indexDayOfWeekAtNow = dayOfWeekAtNow.getValue() - 1; // - 1을 해야한다. MONDAY = 1 이기때문에
