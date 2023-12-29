@@ -1,12 +1,11 @@
 package back.springbootdeveloper.seungchan.dto.request;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Data
+@Builder
 public class AttendanceNumberReqDto {
     private String numOfAttendance;
 }
