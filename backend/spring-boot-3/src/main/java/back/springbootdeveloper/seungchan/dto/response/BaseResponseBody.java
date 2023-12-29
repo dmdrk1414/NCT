@@ -1,15 +1,15 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.ZonedDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class BaseResponseBody {
-    String message;
-    Integer statusCode;
+    private final String message;
+    private final Integer statusCode;
+    private final ZonedDateTime timestamp;
 }
