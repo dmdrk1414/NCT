@@ -21,6 +21,18 @@ public class BaseResponseBodyUtiil {
         );
     }
 
+    public static ResponseEntity<BaseResponseBody> BaseResponseBodySuccess(String message) {
+        return new ResponseEntity<>(
+                BaseResponseBody.builder()
+                        .message(message)
+                        .httpStatus(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
+                        .build(),
+                HttpStatus.OK
+        );
+    }
+
     public static ResponseEntity<BaseResponseBody> BaseResponseBodyForbidden() {
         return new ResponseEntity<>(
                 BaseResponseBody.builder()
