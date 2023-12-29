@@ -32,8 +32,9 @@ public class LoginPageController {
     @Operation(summary = "신입 가입 신청", description = "신입 가입 신청을 하지만 회원 가입이 아님을 인지하자. TempUser에 저장")
     @PostMapping("/sign")
     public ResponseEntity<SignNewUserResDto> userSignFrom(@RequestBody @Valid TempUserFormReqDto requestUserForm) {
-        tempUserService.save(requestUserForm);
         String email = requestUserForm.getEmail();
+
+        tempUserService.save(requestUserForm);
         Boolean existNewUser = tempUserService.exist(email);
 
         // 등록 완료 되었다는 boolean 리턴
