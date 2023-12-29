@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.Constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.Constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
 import back.springbootdeveloper.seungchan.entity.NumOfTodayAttendence;
@@ -8,6 +9,7 @@ import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.service.NumOfTodayAttendenceService;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
+import back.springbootdeveloper.seungchan.util.DayUtill;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -83,6 +85,42 @@ class AttendanceControllerTest {
         // than
         result
                 .andExpect(jsonPath("$.passAtNow").isBoolean());
+    }
+
+    @Test
+    void 개인별_출석번호_입력_요청_확인_주말_출석_예외_테스트() throws Exception {
+        if (DayUtill.isWeekendDay()) {
+            // given
+            final String url = "/attendance/number";
+            Integer attendanceNumber = 1234;
+            String day = getTodayString();
+            numOfTodayAttendenceService.save(day, attendanceNumber);
+
+            AttendanceNumberReqDto attendanceNumberReqDto = AttendanceNumberReqDto.builder()
+                    .numOfAttendance(String.valueOf(attendanceNumber))
+                    .build();
+
+            // when
+            final String requestBody = objectMapper.writeValueAsString(attendanceNumberReqDto);
+
+            MvcResult result = mockMvc.perform(post(url)
+                            .contentType(MediaType.APPLICATION_JSON_VALUE)
+                            .content(requestBody)
+                            .header("authorization", "Bearer " + token) // token header에 담기
+                    )
+                    .andReturn();
+
+            MockHttpServletResponse response = result.getResponse();
+
+            // JSON 응답을 Map으로 변환
+            String message = TestUtills.getMessageFromResponse(response);
+            HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+            Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+            assertThat(message).isEqualTo(ExceptionMessage.WEEKEND_MESSAGE.get());
+            assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+            assertThat(stateCode).isEqualTo(CustomHttpStatus.WEEKEND.value());
+        }
     }
 
     @ParameterizedTest
