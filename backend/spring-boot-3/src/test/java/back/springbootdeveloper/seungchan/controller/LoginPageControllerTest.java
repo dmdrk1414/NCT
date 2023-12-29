@@ -425,6 +425,39 @@ class LoginPageControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "010",
+            "02-123-456",
+            "032-9876-5432",
+            "1234-5678",
+            "010-12345-6789",
+            "010-12-3456",
+            "010-1234-56789",
+            "010-1234-567",
+            "010-1!@#234-@#$567",
+            "010-1234-@#$567",
+            "010-12a4-5678",
+            "010-1234-5678-123",
+            "01012345678123",
+            "0101!@#2345678123",
+    })
+    void 신입유저를_등록을_확인_예외_테스트_Phone_Num_패턴_검증(String badPhoneNumber) throws Exception {
+        // given
+        final String url = "/sign";
+
+        TempUser tempUser = getTempUser();
+        TempUserFormReqDto request = getTempUserFormReqDto(tempUser);
+
+        // when
+        request.setPhoneNum(badPhoneNumber);
+        MockHttpServletResponse response = getTempUserFormReqResponseOfPost(request);
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
 
     private MockHttpServletResponse getTempUserFormReqResponseOfPost(TempUserFormReqDto request) throws Exception {
         final String requestBody = objectMapper.writeValueAsString(request);
