@@ -26,13 +26,13 @@ public class LookupController {
     @Operation(summary = "admin page 비밀 번호 찾기 api ", description = "이메일 인증을 통해 해당 이메일로 비밀번호를 보낸다.")
     @PostMapping("/find/password")
     public ResponseEntity<BaseResponseBody> findPasswordController(@RequestBody @Valid FindPasswordReqDto findPasswordReqDto) {
-        // 1. 원하는 정보로 유저가 없으면
-        userService.existByEmailAndName(findPasswordReqDto.getEmail(), findPasswordReqDto.getName());
-        // 1.1  예외처리
-        // 2. authenticationEmail을 이용해 찾은 비밀번호을 보낸다.
-        
+        String email = findPasswordReqDto.getEmail();
 
-//        return ResponseEntity.ok().body()
+        // 1. 원하는 정보로 유저가 없으면
+        userService.existByEmailAndName(email, findPasswordReqDto.getName());
+        // 1.1  예외처리
+        String tempPassword = authenticationEmailService.sendSimpleMessage(findPasswordReqDto.getAuthenticationEmail(), email);
+
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 }
