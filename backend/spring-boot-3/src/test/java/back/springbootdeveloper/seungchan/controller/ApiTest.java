@@ -350,7 +350,7 @@ public class ApiTest {
         String num = numOfTodayAttendence.getCheckNum();
 
 
-        AttendanceNumberRequest attendanceNumberRequest = new AttendanceNumberRequest();
+        AttendanceNumberReqDto attendanceNumberRequest = new AttendanceNumberReqDto();
         attendanceNumberRequest.setNumOfAttendance(num);
         // when
         ResultActions result = mockMvc.perform(post(url)
@@ -374,7 +374,7 @@ public class ApiTest {
         String num = numOfTodayAttendence.getCheckNum();
 
 
-        AttendanceNumberRequest attendanceNumberRequest = new AttendanceNumberRequest();
+        AttendanceNumberReqDto attendanceNumberRequest = new AttendanceNumberReqDto();
         attendanceNumberRequest.setNumOfAttendance(num);
         // when
         ResultActions result = mockMvc.perform(post(url)

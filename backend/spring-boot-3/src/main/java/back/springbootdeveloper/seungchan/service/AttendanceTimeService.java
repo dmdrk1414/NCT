@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.Constant.DateConstants;
+import back.springbootdeveloper.seungchan.constant.DateConstants;
 import back.springbootdeveloper.seungchan.dto.request.UserEachAttendanceControlReqDto;
 import back.springbootdeveloper.seungchan.dto.response.UserControlResDto;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;

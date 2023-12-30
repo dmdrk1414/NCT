@@ -1,11 +1,14 @@
 package back.springbootdeveloper.seungchan.testutills;
 
 import back.springbootdeveloper.seungchan.entity.*;
-import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Component;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @Component
 public class TestSetUp {
@@ -14,6 +17,11 @@ public class TestSetUp {
     private final AttendanceService attendanceService;
     private final AttendanceTimeService attendanceTimeService;
     private final PeriodicDataService periodicDataService;
+    @Autowired
+    private TokenService tokenService;
+    private Long kingUserId;
+    private Long userId_1;
+
 
     @Autowired
     public TestSetUp(UserService userService, UserUtillService userUtillService, AttendanceService attendanceService, AttendanceTimeService attendanceTimeService, PeriodicDataService periodicDataService) {
@@ -30,6 +38,7 @@ public class TestSetUp {
     public UserInfo setUpKingUser() {
         // userID 1
         UserInfo user = userService.save(TestMakeObject.makeUser("실장 유저", "seungchan141414@gmail.com"));
+        kingUserId = user.getId();
 
 
         userUtillService.save(TestMakeObject.makeUserUtill(user, 0, true));
@@ -63,6 +72,7 @@ public class TestSetUp {
     public UserInfo setUpUser() {
         // userID 1
         UserInfo user = userService.save(TestMakeObject.makeUser("일반 유저", "seungchan141414@gmail.com"));
+        userId_1 = user.getId();
 
         userUtillService.save(TestMakeObject.makeUserUtill(user, 5, false));
 
@@ -95,4 +105,40 @@ public class TestSetUp {
 
         return userOb;
     }
+
+    /**
+     * 테스트를 위한 임시 토큰을 생성한다.
+     *
+     * @return
+     */
+    public String getToken(MockMvc mockMvc) {
+        UserInfo kingUser = userService.save(this.setUpKingUser());
+
+        String url = "/login";
+        HttpServletRequest request = null;
+        HttpServletResponse response = null;
+        try {
+            request = mockMvc.perform(
+                    post(url).param("email", kingUser.getEmail()).param("password", kingUser.getPassword())
+            ).andReturn().getRequest();
+
+            response = mockMvc.perform(
+                    post(url).param("email", kingUser.getEmail()).param("password", kingUser.getPassword())
+            ).andReturn().getResponse();
+
+        } catch (Exception e) {
+            System.out.println("AttendanceControllerTest : 토큰 생성과정 throw new RuntimeException(e);");
+        }
+
+        return tokenService.createAccessAndRefreshToken(request, response, kingUser.getEmail());
+    }
+
+    public Long getKingUserId() {
+        return this.kingUserId;
+    }
+
+    public Long getUserId_1() {
+        return this.userId_1;
+    }
+
 }
