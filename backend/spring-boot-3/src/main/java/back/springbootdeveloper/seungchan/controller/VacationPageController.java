@@ -83,7 +83,7 @@ public class VacationPageController {
 
         if (attendanceService.availableApplyVacation(userId)) {
             // 현재 접속 유저의 휴가 사용
-            attendanceService.updateVacationDate2PassAttendance(userId);
+            attendanceService.updateVacationDate2PassVacation(userId);
 
             // 현재 접속 유저의 휴가 사용 갯수를 -1 을한다.
             userUtillService.subVacationCount(userId);

@@ -1,17 +1,15 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.Constant.filter.exception.ExceptionMessage;
+import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.TempUserFormReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UserLoginRequest;
 import back.springbootdeveloper.seungchan.entity.TempUser;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.repository.TempUserRepository;
-import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.testutills.TestMakeObject;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,13 +23,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

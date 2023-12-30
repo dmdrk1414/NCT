@@ -1,7 +1,9 @@
 package back.springbootdeveloper.seungchan.filter.handler;
 
-import back.springbootdeveloper.seungchan.Constant.filter.exception.ExceptionMessage;
+import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
+import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.filter.exception.ApiException;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.WeekendException;
 import back.springbootdeveloper.seungchan.filter.exception.user.NewUserRegistrationException;
 import back.springbootdeveloper.seungchan.filter.exception.user.UserNotExistException;
 import org.springframework.http.HttpStatus;
@@ -59,6 +61,21 @@ public class ApiExceptionHandler {
                 ExceptionMessage.NEW_USER_REGISTRATION_MESSAGE.get(),
                 httpStatus,
                 httpStatus.value(),
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
+
+    @ExceptionHandler(value = {WeekendException.class})
+    public ResponseEntity<Object> handleWeekendException(WeekendException e) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        CustomHttpStatus customHttpStatus = CustomHttpStatus.WEEKEND;
+
+        ApiException apiException = new ApiException(
+                ExceptionMessage.WEEKEND_MESSAGE.get(),
+                httpStatus,
+                customHttpStatus.value(),
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
