@@ -1,7 +1,9 @@
 package back.springbootdeveloper.seungchan.constant.filter;
 
 public enum CustomHttpStatus {
-    WEEKEND(-480, "Weekend");
+    WEEKEND(-480, "Weekend"),
+    USER_NOT_EXIST(-481, "User Not Exist"),
+    DATA_VALID(-482, "Data Valid");
 
     private final int value;
 

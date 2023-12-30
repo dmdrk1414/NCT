@@ -17,16 +17,19 @@
 
   - [ ] https://velog.io/@wooryung/Spring-Boot-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0
   - [ ] Attendance Controller
+    - [x] AttendanceIsPassController
+    - [ ] attendanceNumberController
   - [ ] ExampleSwaggerController
   - [x] Login PageController
   - [ ] MainController
   - [ ] MypageController
   - [ ] NewUserController
   - [ ] SuggestionsController
-  - [ ] SwaggerController
   - [ ] TestController
   - [ ] TokenApiController
   - [ ] Vacation Page Controller
+  - [ ] LookupController
+    - [x] getTempPasswordController
 - [ ] 토큰 시간지나면 로그아웃 하는 방법
 
 프런트
@@ -34,26 +37,64 @@
 - [ ] api url 상수로 관리하기
 - [ ] 이름 변경시 모든 디비 이름 수정 (업데이트)(졍규화 이후 삭제)
 
-### 2023-12-28
+### 2023-12-29
 
 #### 메모 (예외 사항)
 
-- [ ] https://hello-judy-world.tistory.com/213
+#### Back
+
+- [x] 비밀번호 찾기
+  - [x] 이메일 입력하면
+    - [x] request
+      - [x] 이름
+      - [x] 아이디을 입력
+      - [x] 이메일을 입력하면
+        - [x] 테스트	
+          - [x] 유저가 존제하는가
+            - [x] 이메일
+            - [x] 이름 다를시
+              - [x] UserNotExistException();
+          - [x] 검증
+            - [x] 이름
+            - [x] 아이디
+            - [x] 이메일
+          - [x] 임시 비밀번호를 저장
+    - [x] 임시 비밀번호를 알려주는 메일을 보낸다.
+    - [x] 임시 비밀번호를 저장
+  - [x] 찾을수 없다면?
+    - [x] 메세지를 응답
+- [ ] 아이디 찾기
+  - [ ] 이메일을 입력하면
+    - [ ] 아이디를 찾는 메일을 보낸다.
+- [ ] 시간표 등록
+
+#### Front
+
+- [ ] 비밀번호 찾기
+- [ ] 아이디 찾기
+- [ ] 건의 게시판
+- [ ] 시간표 등록
+
+### 2023-12-28 ~ 29
+
+#### 메모 (예외 사항)
+
+- [x] https://hello-judy-world.tistory.com/213
 
 #### Back
 
-- [ ] AttendanceController#AttendanceIsPassController 예외처리
+- [x] AttendanceController#AttendanceIsPassController 예외처리
   - [x] 검증
-- [ ] AttendanceController#AttendanceIsPassController 테스트 코드 작성
+- [x] AttendanceController#AttendanceIsPassController 테스트 코드 작성
   - [x] 기본 테스트
-  - [ ] 예외 사항 테스트
+  - [x] 예외 사항 테스트
     - [x] 주말 여부
     - [x] 이미 휴가를 사용했다면
-      - [ ] 휴가를 사용할수 없다
-      - [ ] 중복으로 사용할 수 없다.
-      - [ ] 결석, 출석을 할수 없다.
-    - [ ] 이미 출석을 하였다면 휴가를 사용할 수 없다.
-    - [ ] 이미 결석을 하였다면 휴가를 사용할 수 없다.
+      - [x] 휴가를 사용할수 없다
+      - [x] 중복으로 사용할 수 없다.
+      - [x] 결석, 출석을 할수 없다.
+    - [x] 이미 출석을 하였다면 휴가를 사용할 수 없다.
+    - [x] 이미 결석을 하였다면 휴가를 사용할 수 없다.
   - [x] 검증의 테스트
 - [ ] 비밀번호 찾기
 - [ ] 아이디 찾기
