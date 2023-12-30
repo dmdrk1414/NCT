@@ -21,6 +21,7 @@ type data = {
   specialtySkill: string;
   mbti: string;
   nuriKing: boolean;
+  email: string;
 };
 
 export default function MemberInformationModal({ userId, setIsMemberInfoOpen, isKing, type }: props) {
@@ -88,7 +89,10 @@ export default function MemberInformationModal({ userId, setIsMemberInfoOpen, is
               <span className="font-semibold text-base mr-5">특기: {userInfo.specialtySkill}</span>
             </div>
             <div className="border border-light-grey mt-[0.3rem]"></div>
-            <span className={`font-semibold text-base ${isKing && type == 0 ? null : 'mb-[1rem]'}`}>MBTI: {userInfo.mbti}</span>
+            <div className="flex place-content-between">
+              <span className={`font-semibold text-base ${isKing && type == 0 ? null : 'mb-[1rem]'}`}>MBTI: {userInfo.mbti}</span>
+              <span className={`font-semibold text-base ${isKing && type == 0 ? null : 'mb-[1rem]'}`}>email : {userInfo.email}</span>
+            </div>
             {isKing && type == 0 ? (
               <>
                 <div className="border border-light-grey my-[0.3rem]"></div>

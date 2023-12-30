@@ -119,6 +119,9 @@ dependencies {
     // 추가하면 @Valid가 작동해야 합니다.
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // 이메일 체크를 위한 의존성 주입
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 test {

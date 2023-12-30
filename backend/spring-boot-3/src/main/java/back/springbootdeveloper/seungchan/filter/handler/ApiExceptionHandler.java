@@ -21,11 +21,12 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleUserNotExistException(UserNotExistException e) {
 
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        CustomHttpStatus customHttpStatus = CustomHttpStatus.USER_NOT_EXIST;
 
         ApiException apiException = new ApiException(
                 ExceptionMessage.USER_NOT_EXIST_MESSAGE.get(),
                 httpStatus,
-                httpStatus.value(),
+                customHttpStatus.value(),
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
@@ -41,12 +42,13 @@ public class ApiExceptionHandler {
                 .getDefaultMessage();
 
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        CustomHttpStatus customHttpStatus = CustomHttpStatus.DATA_VALID;
 
         ApiException apiException = new ApiException(
 //                ExceptionMessage.USER_NOT_EXIST_MESSAGE.get(),
                 errorMessage,
                 httpStatus,
-                httpStatus.value(),
+                customHttpStatus.value(),
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
