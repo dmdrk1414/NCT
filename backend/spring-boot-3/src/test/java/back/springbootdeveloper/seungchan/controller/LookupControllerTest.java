@@ -58,9 +58,9 @@ class LookupControllerTest {
     }
 
 
-    @DisplayName("임시_이메일_반환_테스트 : 반환 메세지, PW변경 확인")
+    @DisplayName("임시_비밀번호_반환_테스트 : 반환 메세지, PW변경 확인")
     @Test
-    void 임시_이메일_반환_테스트() throws Exception {
+    void 임시_비밀번호_반환_테스트() throws Exception {
         // given
         UserInfo kingUser = userService.findUserById(kingUserId);
         final String url = "/admin/find/password";
