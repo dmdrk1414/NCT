@@ -60,6 +60,6 @@ public class LookupController {
 
         lookupService.updateEmail(updateEmail, request);
 
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.UPDATE_PASSWORD_MESSAGE.get());
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.UPDATE_Email_MESSAGE.get());
     }
 }
