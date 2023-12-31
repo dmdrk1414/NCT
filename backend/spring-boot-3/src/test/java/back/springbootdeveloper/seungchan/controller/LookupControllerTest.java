@@ -361,4 +361,48 @@ class LookupControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(stateCode).isEqualTo(CustomHttpStatus.PASSWORD_CONFIRMATION.value());
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "P@ss1",       // 8자 미만
+            "P",           // 8자 미만
+            "p",           // 8자 미만
+            "123",         // 8자 미만
+            "Password1",   // 특수 문자 누락
+            "P@ssword",    // 숫자 누락
+            "longpasswordwithoutspecialcharacters1234567890", // 특수 문자 누락
+            "P@ssword@@@@"   // 연속된 특수 문자
+            // 추가 테스트 데이터 추가 가능
+    })
+    void 비밀번호_변경_예외_Update_PW_검증_테스트(String badPassword) throws Exception {
+        // given
+        String updatePassword = badPassword;
+        String checkPassword = badPassword;
+        final String url = "/admin/update/password";
+        UpdatePasswordReqDto requestDto = UpdatePasswordReqDto.builder()
+                .updatePassword(updatePassword)
+                .checkUpdatePassword(checkPassword)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+
+    }
 }
