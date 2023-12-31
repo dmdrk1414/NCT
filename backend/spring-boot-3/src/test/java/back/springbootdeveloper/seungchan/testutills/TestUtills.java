@@ -8,6 +8,7 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class TestUtills {
     private static final String HTTP_STATUS = "httpStatus";
@@ -49,6 +50,17 @@ public class TestUtills {
         Map<String, String> responseMap = responseToMap(response);
 
         return responseMap.get(MESSAGE);
+    }
+
+    /**
+     * BCryptPasswordEncoder을 한 password와 rawPassword을 비교한다.
+     *
+     * @param rawPassword     Encoder하기전 PW
+     * @param encodedPassword Encoder한후 PW
+     * @return
+     */
+    public static Boolean checkPassword(String rawPassword, String encodedPassword) {
+        return new BCryptPasswordEncoder().matches(rawPassword, encodedPassword);
     }
 
     /**
