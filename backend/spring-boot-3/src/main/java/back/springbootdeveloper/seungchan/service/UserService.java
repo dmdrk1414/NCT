@@ -55,11 +55,11 @@ public class UserService {
     /**
      * email로 찾은 유저의 비밀번호를 업데이트를 한다.
      *
-     * @param email        찾고자 하는 email
-     * @param tempPassword 새로운 비밀번호
+     * @param email          찾고자 하는 유저의 email
+     * @param updatePassword 새로운 비밀번호
      */
-    public void updateUserPassword(String email, String tempPassword) {
-        String tempPasswordEncoder = new BCryptPasswordEncoder().encode(tempPassword);
+    public void updateUserPassword(String email, String updatePassword) {
+        String tempPasswordEncoder = new BCryptPasswordEncoder().encode(updatePassword);
         Integer OK = 1;
 
         if (!userRepository.updatePasswordByEmail(email, tempPasswordEncoder).equals(OK)) {
