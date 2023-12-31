@@ -4,7 +4,9 @@ public enum CustomHttpStatus {
     WEEKEND(-480, "Weekend"),
     USER_NOT_EXIST(-481, "User Not Exist"),
     DATA_VALID(-482, "Data Valid"),
-    PASSWORD_CONFIRMATION(-483, "Password Confirmation");
+    PASSWORD_CONFIRMATION(-483, "Password Confirmation"),
+    UPDATE_FAILED(-484, "Update Failed"),
+    EMAIL_SAME_MATCH(-485, "Email Same Match");
 
     private final int value;
 
