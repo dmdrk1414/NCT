@@ -328,4 +328,37 @@ class LookupControllerTest {
 
         assertThat(resultUpdatePassword).isTrue();
     }
+
+    @Test
+    void 비밀번호_변경_예외_Update_PW_와_확인_PW_가_다른_테스트() throws Exception {
+        // given
+        String updatePassword = "updatePassword1!";
+        String checkPassword = "differentPassword1!";
+        final String url = "/admin/update/password";
+        UpdatePasswordReqDto requestDto = UpdatePasswordReqDto.builder()
+                .updatePassword(updatePassword)
+                .checkUpdatePassword(checkPassword)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(message).isEqualTo(ExceptionMessage.PASSWORD_CONFIRMATION.get());
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.PASSWORD_CONFIRMATION.value());
+    }
 }
