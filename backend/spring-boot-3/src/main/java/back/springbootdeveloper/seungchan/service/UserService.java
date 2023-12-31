@@ -69,6 +69,12 @@ public class UserService {
         }
     }
 
+    /**
+     * 이메일 요청을 위한 DTO을 이용한 업데이트
+     *
+     * @param userId
+     * @param updateEmailReqDto
+     */
     public void updateEmail(Long userId, UpdateEmailReqDto updateEmailReqDto) {
         Integer OK = 1;
 

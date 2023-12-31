@@ -33,11 +33,18 @@ public class LookupService {
         throw new PasswordConfirmationException();
     }
 
+    /**
+     * 이메일을 업데이트한다. 현제 유저의 이메일과 변경을 원하는 이메일이 다르면
+     * 이메일을 변경한다.
+     *
+     * @param updateEmailReqDto 이메일 변경 요청을 위한 DTO
+     * @param request
+     */
     public void updateEmail(UpdateEmailReqDto updateEmailReqDto, HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
         String email = updateEmailReqDto.getEmail();
         String updateEmail = updateEmailReqDto.getUpdateEmail();
-        
+
         if (email.equals(updateEmail)) {
             throw new EmailSameMatchException();
         }
