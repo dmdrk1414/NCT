@@ -4,6 +4,7 @@ import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.FindPasswordReqDto;
+import back.springbootdeveloper.seungchan.dto.request.UpdateEmailReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UpdatePasswordReqDto;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
@@ -404,5 +405,40 @@ class LookupControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
 
+    }
+
+    @DisplayName("이메일_변경_테스트 : 이메일과 업데이트 이메일을 이용한 업데이트")
+    @Test
+    void 이메일_변경_테스트() throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        String updateEmail = "update@Email.com";
+        final String url = "/admin/update/email";
+        String beforeEmail = kingUser.getEmail();
+
+        UpdateEmailReqDto reqestDto = UpdateEmailReqDto.builder()
+                .email(kingUser.getEmail())
+                .updateEmail(updateEmail)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(reqestDto);
+
+        ResultActions result = mockMvc.perform(post(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+        String afterEmail = userService.findUserById(kingUserId).getEmail();
+
+        // than
+        result
+                .andExpect(jsonPath("$.message").value(ResponseMessage.UPDATE_Email_MESSAGE.get()))
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+
+        assertThat(beforeEmail).doesNotContain(afterEmail);
+        assertThat(updateEmail).contains(afterEmail);
     }
 }
