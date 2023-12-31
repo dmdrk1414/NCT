@@ -441,4 +441,38 @@ class LookupControllerTest {
         assertThat(beforeEmail).doesNotContain(afterEmail);
         assertThat(updateEmail).contains(afterEmail);
     }
+
+    @Test
+    void 이메일_변경_예외_이메일_변경_이메일_같은지_확인_테스트() throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        String updateEmail = kingUser.getEmail();
+        final String url = "/admin/update/email";
+
+        UpdateEmailReqDto requestDto = UpdateEmailReqDto.builder()
+                .email(kingUser.getEmail())
+                .updateEmail(updateEmail)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(message).isEqualTo(ExceptionMessage.EMAIL_SAME_MATCH.get());
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.EMAIL_SAME_MATCH.value());
+    }
 }
