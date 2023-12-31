@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.filter.handler;
 import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.filter.exception.ApiException;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.PasswordConfirmationException;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.WeekendException;
 import back.springbootdeveloper.seungchan.filter.exception.user.NewUserRegistrationException;
 import back.springbootdeveloper.seungchan.filter.exception.user.UserNotExistException;
@@ -76,6 +77,21 @@ public class ApiExceptionHandler {
 
         ApiException apiException = new ApiException(
                 ExceptionMessage.WEEKEND_MESSAGE.get(),
+                httpStatus,
+                customHttpStatus.value(),
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
+
+    @ExceptionHandler(value = {PasswordConfirmationException.class})
+    public ResponseEntity<Object> handlePasswordConfirmationException(PasswordConfirmationException e) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        CustomHttpStatus customHttpStatus = CustomHttpStatus.PASSWORD_CONFIRMATION;
+
+        ApiException apiException = new ApiException(
+                ExceptionMessage.PASSWORD_CONFIRMATION.get(),
                 httpStatus,
                 customHttpStatus.value(),
                 ZonedDateTime.now(ZoneId.of("Z"))
