@@ -4,11 +4,14 @@ import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.FindPasswordReqDto;
+import back.springbootdeveloper.seungchan.dto.request.UpdateEmailReqDto;
+import back.springbootdeveloper.seungchan.dto.request.UpdatePasswordReqDto;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -56,9 +59,9 @@ class LookupControllerTest {
     }
 
 
-    @DisplayName("임시_이메일_반환_테스트 : 반환 메세지, PW변경 확인")
+    @DisplayName("임시_비밀번호_반환_테스트 : 반환 메세지, PW변경 확인")
     @Test
-    void 임시_이메일_반환_테스트() throws Exception {
+    void 임시_비밀번호_반환_테스트() throws Exception {
         // given
         UserInfo kingUser = userService.findUserById(kingUserId);
         final String url = "/admin/find/password";
@@ -282,6 +285,285 @@ class LookupControllerTest {
         MvcResult result = mockMvc.perform(post(url)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(requestBody)
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @Test
+    void 비밀번호_변경_테스트() throws Exception {
+        // given
+        String updatePassword = "updatePassword1!";
+        String checkPassword = updatePassword;
+        final String url = "/admin/update/password";
+        UpdatePasswordReqDto reqestDto = UpdatePasswordReqDto.builder()
+                .updatePassword(updatePassword)
+                .checkUpdatePassword(checkPassword)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(reqestDto);
+
+        ResultActions result = mockMvc.perform(post(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        Boolean resultUpdatePassword = TestUtills.checkPassword(updatePassword, kingUser.getPassword());
+
+        // than
+        result
+                .andExpect(jsonPath("$.message").value(ResponseMessage.UPDATE_PASSWORD_MESSAGE.get()))
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+
+        assertThat(resultUpdatePassword).isTrue();
+    }
+
+    @Test
+    void 비밀번호_변경_예외_Update_PW_와_확인_PW_가_다른_테스트() throws Exception {
+        // given
+        String updatePassword = "updatePassword1!";
+        String checkPassword = "differentPassword1!";
+        final String url = "/admin/update/password";
+        UpdatePasswordReqDto requestDto = UpdatePasswordReqDto.builder()
+                .updatePassword(updatePassword)
+                .checkUpdatePassword(checkPassword)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(message).isEqualTo(ExceptionMessage.PASSWORD_CONFIRMATION.get());
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.PASSWORD_CONFIRMATION.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "P@ss1",       // 8자 미만
+            "P",           // 8자 미만
+            "p",           // 8자 미만
+            "123",         // 8자 미만
+            "Password1",   // 특수 문자 누락
+            "P@ssword",    // 숫자 누락
+            "longpasswordwithoutspecialcharacters1234567890", // 특수 문자 누락
+            "P@ssword@@@@"   // 연속된 특수 문자
+            // 추가 테스트 데이터 추가 가능
+    })
+    void 비밀번호_변경_예외_Update_PW_검증_테스트(String badPassword) throws Exception {
+        // given
+        String updatePassword = badPassword;
+        String checkPassword = badPassword;
+        final String url = "/admin/update/password";
+        UpdatePasswordReqDto requestDto = UpdatePasswordReqDto.builder()
+                .updatePassword(updatePassword)
+                .checkUpdatePassword(checkPassword)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+
+    }
+
+    @DisplayName("이메일_변경_테스트 : 이메일과 업데이트 이메일을 이용한 업데이트")
+    @Test
+    void 이메일_변경_테스트() throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        String updateEmail = "update@Email.com";
+        final String url = "/admin/update/email";
+        String beforeEmail = kingUser.getEmail();
+
+        UpdateEmailReqDto reqestDto = UpdateEmailReqDto.builder()
+                .email(kingUser.getEmail())
+                .updateEmail(updateEmail)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(reqestDto);
+
+        ResultActions result = mockMvc.perform(post(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+        String afterEmail = userService.findUserById(kingUserId).getEmail();
+
+        // than
+        result
+                .andExpect(jsonPath("$.message").value(ResponseMessage.UPDATE_Email_MESSAGE.get()))
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+
+        assertThat(beforeEmail).doesNotContain(afterEmail);
+        assertThat(updateEmail).contains(afterEmail);
+    }
+
+    @Test
+    void 이메일_변경_예외_이메일_변경_이메일_같은지_확인_테스트() throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        String updateEmail = kingUser.getEmail();
+        final String url = "/admin/update/email";
+
+        UpdateEmailReqDto requestDto = UpdateEmailReqDto.builder()
+                .email(kingUser.getEmail())
+                .updateEmail(updateEmail)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(message).isEqualTo(ExceptionMessage.EMAIL_SAME_MATCH.get());
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.EMAIL_SAME_MATCH.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "asdf",
+            "12  aea3",
+            "asdf sadf asdfdsa",
+            "sadf@sdaf@sdf",
+            "23!saf",
+            "invalid_email",
+            "user@.com",
+            "@example.com",
+            "user@.com.",
+            "user@example..com",
+            "user@exa mple.com",
+            "user@example.com.",
+            "user@.example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "user@example.com-",
+            "user@exam@ple.com"
+    })
+    void 이메일_변경_예외_이메일_검증(String checkEmail) throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        String updateEmail = kingUser.getEmail();
+        final String url = "/admin/update/email";
+
+        UpdateEmailReqDto requestDto = UpdateEmailReqDto.builder()
+                .email(checkEmail)
+                .updateEmail(updateEmail)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "asdf",
+            "12  aea3",
+            "asdf sadf asdfdsa",
+            "sadf@sdaf@sdf",
+            "23!saf",
+            "invalid_email",
+            "user@.com",
+            "@example.com",
+            "user@.com.",
+            "user@example..com",
+            "user@exa mple.com",
+            "user@example.com.",
+            "user@.example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "user@example.com-",
+            "user@exam@ple.com"
+    })
+    void 이메일_변경_예외_update_이메일_검증(String checkEmail) throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/update/email";
+
+        UpdateEmailReqDto requestDto = UpdateEmailReqDto.builder()
+                .email(kingUser.getEmail())
+                .updateEmail(checkEmail)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
                 )
                 .andReturn();
 
