@@ -102,6 +102,20 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, httpStatus);
     }
 
+    @ExceptionHandler(value = {UpdateFailedException.class})
+    public ResponseEntity<Object> handleUpdateFailedException(UpdateFailedException e) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        CustomHttpStatus customHttpStatus = CustomHttpStatus.UPDATE_FAILED; // add
+
+        ApiException apiException = new ApiException(
+                ExceptionMessage.UPDATE_FAILED.get(), // add
+                httpStatus,
+                customHttpStatus.value(),
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
 
     @ExceptionHandler(value = {EmailSameMatchException.class})
     public ResponseEntity<Object> handleEmailsMatchException(EmailSameMatchException e) {
