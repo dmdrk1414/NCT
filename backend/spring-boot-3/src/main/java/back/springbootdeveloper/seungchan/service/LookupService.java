@@ -1,7 +1,9 @@
 package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.dto.request.UpdateEmailReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UpdatePasswordReqDto;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
+import back.springbootdeveloper.seungchan.filter.exception.EmailSameMatchException;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.PasswordConfirmationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +31,17 @@ public class LookupService {
             return true;
         }
         throw new PasswordConfirmationException();
+    }
+
+    public void updateEmail(UpdateEmailReqDto updateEmailReqDto, HttpServletRequest request) {
+        Long userId = tokenService.getUserIdFromToken(request);
+        String email = updateEmailReqDto.getEmail();
+        String updateEmail = updateEmailReqDto.getUpdateEmail();
+        
+        if (email.equals(updateEmail)) {
+            throw new EmailSameMatchException();
+        }
+
+        userService.updateEmail(userId, updateEmailReqDto);
     }
 }

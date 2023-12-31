@@ -2,6 +2,7 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.dto.request.FindPasswordReqDto;
+import back.springbootdeveloper.seungchan.dto.request.UpdateEmailReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UpdatePasswordReqDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.service.AuthenticationEmailService;
@@ -42,6 +43,14 @@ public class LookupController {
     @PostMapping("/update/password")
     public ResponseEntity<BaseResponseBody> updatePasswordController(@RequestBody @Valid UpdatePasswordReqDto updatePasswordReqDto, HttpServletRequest request) {
         lookupService.updatePassword(updatePasswordReqDto, request);
+
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.UPDATE_PASSWORD_MESSAGE.get());
+    }
+
+    @Operation(summary = "admin page 이메일 변경하기 api", description = "해당 유저가 비밀번호를 변경한다.")
+    @PostMapping("/update/email")
+    public ResponseEntity<BaseResponseBody> updateEmailController(@RequestBody @Valid UpdateEmailReqDto updateEmailReqDto, HttpServletRequest request) {
+        lookupService.updateEmail(updateEmailReqDto, request);
 
         return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.UPDATE_PASSWORD_MESSAGE.get());
     }

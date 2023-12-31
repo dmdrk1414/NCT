@@ -1,7 +1,9 @@
 package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.dto.request.UpdateEmailReqDto;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.dto.request.RequestUserForm;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.UpdateFailedException;
 import back.springbootdeveloper.seungchan.filter.exception.user.UserNotExistException;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -63,7 +65,15 @@ public class UserService {
         Integer OK = 1;
 
         if (!userRepository.updatePasswordByEmail(email, tempPasswordEncoder).equals(OK)) {
-            throw new UserNotExistException();
+            throw new UpdateFailedException();
+        }
+    }
+
+    public void updateEmail(Long userId, UpdateEmailReqDto updateEmailReqDto) {
+        Integer OK = 1;
+
+        if (!userRepository.updateEmailById(userId, updateEmailReqDto.getUpdateEmail()).equals(OK)) {
+            throw new UpdateFailedException();
         }
     }
 }
