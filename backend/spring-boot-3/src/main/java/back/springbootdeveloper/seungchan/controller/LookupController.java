@@ -5,6 +5,7 @@ import back.springbootdeveloper.seungchan.dto.request.FindPasswordReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UpdateEmailReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UpdatePasswordReqDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
+import back.springbootdeveloper.seungchan.filter.exception.EmailSameMatchException;
 import back.springbootdeveloper.seungchan.service.AuthenticationEmailService;
 import back.springbootdeveloper.seungchan.service.LookupService;
 import back.springbootdeveloper.seungchan.service.UserService;
@@ -50,7 +51,14 @@ public class LookupController {
     @Operation(summary = "admin page 이메일 변경하기 api", description = "해당 유저가 이메일를 변경한다.")
     @PostMapping("/update/email")
     public ResponseEntity<BaseResponseBody> updateEmailController(@RequestBody @Valid UpdateEmailReqDto updateEmailReqDto, HttpServletRequest request) {
-        lookupService.updateEmail(updateEmailReqDto, request);
+        String email = updateEmailReqDto.getEmail();
+        String updateEmail = updateEmailReqDto.getUpdateEmail();
+
+        if (email.equals(updateEmail)) {
+            throw new EmailSameMatchException();
+        }
+
+        lookupService.updateEmail(updateEmail, request);
 
         return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.UPDATE_PASSWORD_MESSAGE.get());
     }

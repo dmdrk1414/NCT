@@ -70,15 +70,15 @@ public class UserService {
     }
 
     /**
-     * 이메일 요청을 위한 DTO을 이용한 업데이트
+     * 이메일  업데이트
      *
      * @param userId
-     * @param updateEmailReqDto
+     * @param updateEmail
      */
-    public void updateEmail(Long userId, UpdateEmailReqDto updateEmailReqDto) {
+    public void updateEmail(Long userId, String updateEmail) {
         Integer OK = 1;
 
-        if (!userRepository.updateEmailById(userId, updateEmailReqDto.getUpdateEmail()).equals(OK)) {
+        if (!userRepository.updateEmailById(userId, updateEmail).equals(OK)) {
             throw new UpdateFailedException();
         }
     }
