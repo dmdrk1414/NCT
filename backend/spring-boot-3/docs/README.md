@@ -54,10 +54,10 @@
   - [x] 검증
 - [x] 테스트
   - [x] 일반 테스트
-  - [ ] 예외처리
-    - [ ] PW, 검증 PW가 다르다.
-      - [ ] PasswordConfirmationException
-  - [ ] 검증
+  - [x] 예외처리
+    - [x] PW, 검증 PW가 다르다.
+      - [x] PasswordConfirmationException
+  - [x] 검증
 - [ ] 이메일 변경
 - [ ] 시간표 등록
 
