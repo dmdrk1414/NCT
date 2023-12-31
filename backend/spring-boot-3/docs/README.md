@@ -59,10 +59,16 @@
       - [x] PasswordConfirmationException
   - [x] 검증
 - [x] 이메일 변경
-  - [x] EmailSameMatchException
-  - [x] UpdateFailedException
-  - [x] 검증
-
+  - [x] 기능
+    - [x] EmailSameMatchException
+    - [x] UpdateFailedException
+    - [x] 검증
+  
+  - [x] 테스트
+    - [x] EmailSameMatchException
+    - [x] UpdateFailedException
+    - [x] 검증
+  
 - [ ] 시간표 등록
 
 #### Front
