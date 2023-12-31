@@ -47,7 +47,7 @@ public class LookupController {
         return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.UPDATE_PASSWORD_MESSAGE.get());
     }
 
-    @Operation(summary = "admin page 이메일 변경하기 api", description = "해당 유저가 비밀번호를 변경한다.")
+    @Operation(summary = "admin page 이메일 변경하기 api", description = "해당 유저가 이메일를 변경한다.")
     @PostMapping("/update/email")
     public ResponseEntity<BaseResponseBody> updateEmailController(@RequestBody @Valid UpdateEmailReqDto updateEmailReqDto, HttpServletRequest request) {
         lookupService.updateEmail(updateEmailReqDto, request);
