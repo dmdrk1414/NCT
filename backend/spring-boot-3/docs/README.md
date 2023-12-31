@@ -47,7 +47,7 @@
 
 #### Back
 
-- [ ] 비밀번호 변경 
+- [x] 비밀번호 변경 
   - [x] 예외처리
     - [x] PW, 검증 PW가 다르다.
       - [x] PasswordConfirmationException
@@ -58,7 +58,11 @@
     - [x] PW, 검증 PW가 다르다.
       - [x] PasswordConfirmationException
   - [x] 검증
-- [ ] 이메일 변경
+- [x] 이메일 변경
+  - [x] EmailSameMatchException
+  - [x] UpdateFailedException
+  - [x] 검증
+
 - [ ] 시간표 등록
 
 #### Front
