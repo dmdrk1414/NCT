@@ -21,6 +21,5 @@ public class FindEmailReqDto {
     private String authenticationEmail;
 
     @NotBlank(message = "{validation.phonenum.notblank}")
-    @Pattern(regexp = "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$", message = "{validation.phonenum.invalid}")
     private String phoneNum;
 }
