@@ -697,4 +697,53 @@ class LookupControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "010",
+            "02-123-456",
+            "032-9876-5432",
+            "1234-5678",
+            "010-12345-6789",
+            "010-12-3456",
+            "010-1234-56789",
+            "010-1234-567",
+            "010-1!@#234-@#$567",
+            "010-1234-@#$567",
+            "010-12a4-5678",
+            "010-1234-5678-123",
+            "01012345678123",
+            "0101!@#2345678123",
+    })
+    void 이메일_찾기_예외_해당_핸드폰_검증_테스트(String input) throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/find/email";
+
+        FindEmailReqDto requestDto = FindEmailReqDto.builder()
+                .name(kingUser.getName())
+                .authenticationEmail(kingUser.getEmail())
+                .phoneNum(input)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
 }
