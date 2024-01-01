@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
+import back.springbootdeveloper.seungchan.dto.request.FindEmailReqDto;
 import back.springbootdeveloper.seungchan.dto.request.FindPasswordReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UpdateEmailReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UpdatePasswordReqDto;
@@ -572,5 +573,35 @@ class LookupControllerTest {
 
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @DisplayName("유저의 이메일을 찾아서 인증 이메일로 보낸다.")
+    @Test
+    void 이메일_찾기_테스트() throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/find/email";
+
+        FindEmailReqDto requestDto = FindEmailReqDto.builder()
+                .name(kingUser.getName())
+                .authenticationEmail(kingUser.getEmail())
+                .phoneNum(kingUser.getPhoneNum())
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        ResultActions result = mockMvc.perform(post(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // than
+        result
+                .andExpect(jsonPath("$.message").value(ResponseMessage.FIND_EMAIL_OK.get()))
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
     }
 }
