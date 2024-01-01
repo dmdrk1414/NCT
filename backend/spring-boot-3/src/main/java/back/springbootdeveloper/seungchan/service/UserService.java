@@ -1,6 +1,5 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.dto.request.UpdateEmailReqDto;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.dto.request.RequestUserForm;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.UpdateFailedException;
@@ -81,6 +80,28 @@ public class UserService {
         if (!userRepository.updateEmailById(userId, updateEmail).equals(OK)) {
             throw new UpdateFailedException();
         }
+    }
+
+    /**
+     * 유저의 이름을 통해 유저가 있는지 확인한다.
+     *
+     * @param name
+     * @return
+     */
+    public Boolean existByNameAndPhoneNum(String name, String phoneNum) {
+        if (userRepository.existsByNameAndPhoneNum(name, phoneNum)) {
+            return true;
+        }
+        throw new UserNotExistException();
+    }
+
+    public UserInfo findByNameAndPhoneNum(String name, String phoneNum) {
+        UserInfo user = userRepository.findByNameAndPhoneNum(name, phoneNum);
+
+        if (user == null) {
+            throw new UserNotExistException();
+        }
+        return user;
     }
 }
 

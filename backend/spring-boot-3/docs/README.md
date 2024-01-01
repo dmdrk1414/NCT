@@ -39,45 +39,35 @@
 
 
 
-### 2023-12-31
+### 2024-01-01
 
 #### 메모 (예외 사항)
 
-- [x] 2023-12-30 request 완성
-
 #### Back
 
-- [x] 비밀번호 변경 
-  - [x] 예외처리
-    - [x] PW, 검증 PW가 다르다.
-      - [x] PasswordConfirmationException
-  - [x] 검증
-- [x] 테스트
-  - [x] 일반 테스트
-  - [x] 예외처리
-    - [x] PW, 검증 PW가 다르다.
-      - [x] PasswordConfirmationException
-  - [x] 검증
-- [x] 이메일 변경
-  - [x] 기능
-    - [x] EmailSameMatchException
-    - [x] UpdateFailedException
+- [x] 아이디 찾기
+  - [x] 기능 
+    - [x] 이메일을 입력하면
+      - [x] 이메일, 번호로 찾기
+      - [x] 아이디를 찾는 메일을 보낸다.
+      - [x] existByNameAndPhoneNum 회원이 있는지 확인
     - [x] 검증
-  
   - [x] 테스트
-    - [x] EmailSameMatchException
-    - [x] UpdateFailedException
+    - [x] 이메일을 입력하면
+      - [x] 이메일, 번호로 찾기
+      - [x] 아이디를 찾는 메일을 보낸다.
+      - [x] existByNameAndPhoneNum 회원이 있는지 확인
     - [x] 검증
-  
 - [ ] 시간표 등록
 
 #### Front
 
 - [ ] 비밀번호 찾기
-- [ ] 비밀번호 변경
-- [ ] 이메일 변경
+- [ ] 아이디 찾기
 - [ ] 건의 게시판
 - [ ] 시간표 등록
+
+
 
 ### 2023-12-29
 

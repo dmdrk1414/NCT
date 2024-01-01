@@ -35,4 +35,8 @@ public interface UserRepository extends JpaRepository<UserInfo, Long> {
     @Transactional
     @Query("UPDATE UserInfo u SET u.email = :updateEmail WHERE u.id = :id")
     Integer updateEmailById(@Param("id") Long id, @Param("updateEmail") String updateEmail);
+
+    boolean existsByNameAndPhoneNum(String name, String phoneNum);
+
+    UserInfo findByNameAndPhoneNum(String name, String phoneNum);
 }

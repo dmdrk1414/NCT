@@ -55,4 +55,18 @@ public class AuthenticationEmailService {
     }
 
 
+    /**
+     * 고객의 이메일에 찾고자하는 고객의 이메일을 보낸다.
+     *
+     * @param email
+     */
+    public void sendUserEmailMessage(String authenticationEmail, String email) {
+        String subjectOfEmail = AuthenticationEmailMessageConstant.SUBJECT_OF_FIND_USER_EMAIL();
+        String contentOfEmail = AuthenticationEmailMessageConstant.CONTENT_OF_FIND_USER_EMAIL(email);
+
+        //메세지를 생성하고 보낼 메일 설정 저장
+        SimpleMailMessage messageFormOfEmail = getMessageFormOfEmail(authenticationEmail, senderOfDeveloper, contentOfEmail, subjectOfEmail);
+
+        mailSender.send(messageFormOfEmail);
+    }
 }

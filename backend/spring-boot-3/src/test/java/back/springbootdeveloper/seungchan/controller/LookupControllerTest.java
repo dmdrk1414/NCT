@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
+import back.springbootdeveloper.seungchan.dto.request.FindEmailReqDto;
 import back.springbootdeveloper.seungchan.dto.request.FindPasswordReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UpdateEmailReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UpdatePasswordReqDto;
@@ -11,7 +12,6 @@ import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,13 +25,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -434,7 +432,7 @@ class LookupControllerTest {
 
         // than
         result
-                .andExpect(jsonPath("$.message").value(ResponseMessage.UPDATE_Email_MESSAGE.get()))
+                .andExpect(jsonPath("$.message").value(ResponseMessage.UPDATE_EMAIL_MESSAGE.get()))
                 .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
                 .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
 
@@ -570,6 +568,252 @@ class LookupControllerTest {
         MockHttpServletResponse response = result.getResponse();
 
         // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @DisplayName("유저의 이메일을 찾아서 인증 이메일로 보낸다.")
+    @Test
+    void 이메일_찾기_테스트() throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/find/email";
+
+        FindEmailReqDto requestDto = FindEmailReqDto.builder()
+                .name(kingUser.getName())
+                .authenticationEmail(kingUser.getEmail())
+                .phoneNum(kingUser.getPhoneNum())
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        ResultActions result = mockMvc.perform(post(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // than
+        result
+                .andExpect(jsonPath("$.message").value(ResponseMessage.FIND_EMAIL_OK.get()))
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "박승찬, 010-1234-1234",
+            "이상한, 010-2383-6578",
+            "이상한, 010-1234-1234"
+    })
+    void 이메일_찾기_예외_해당_유저을_못찾는_테스트(String badName, String badPoneNum) throws Exception {
+        System.out.println("badName = " + badName);
+        System.out.println("badPoneNum = " + badPoneNum);
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/find/email";
+
+        FindEmailReqDto requestDto = FindEmailReqDto.builder()
+                .name(badName)
+                .authenticationEmail(kingUser.getEmail())
+                .phoneNum(badPoneNum)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(message).isEqualTo(ExceptionMessage.USER_NOT_EXIST_MESSAGE.get());
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.USER_NOT_EXIST.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "asdf",
+            "12  aea3",
+            "asdf sadf asdfdsa",
+            "sadf@sdaf@sdf",
+            "23!saf",
+            "invalid_email",
+            "user@.com",
+            "@example.com",
+            "user@.com.",
+            "user@example..com",
+            "user@exa mple.com",
+            "user@example.com.",
+            "user@.example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "user@example.com-",
+            "user@exam@ple.com"
+    })
+    void 이메일_찾기_예외_해당_이메일_검증_테스트(String input) throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/find/email";
+
+        FindEmailReqDto requestDto = FindEmailReqDto.builder()
+                .name(kingUser.getName())
+                .authenticationEmail(input)
+                .phoneNum(kingUser.getPhoneNum())
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "010",
+            "02-123-456",
+            "032-9876-5432",
+            "1234-5678",
+            "010-12345-6789",
+            "010-12-3456",
+            "010-1234-56789",
+            "010-1234-567",
+            "010-1!@#234-@#$567",
+            "010-1234-@#$567",
+            "010-12a4-5678",
+            "010-1234-5678-123",
+            "01012345678123",
+            "0101!@#2345678123",
+    })
+    void 이메일_찾기_예외_해당_핸드폰_검증_테스트(String input) throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/find/email";
+
+        FindEmailReqDto requestDto = FindEmailReqDto.builder()
+                .name(kingUser.getName())
+                .authenticationEmail(kingUser.getEmail())
+                .phoneNum(input)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "name",
+            "phoneNum",
+            "authenticationEmail",
+            "name_1",
+            "phoneNum_1",
+            "authenticationEmail_1",
+            "name_2",
+            "phoneNum_2",
+            "authenticationEmail_2",
+    })
+    void 이메일_찾기_예외_Not_Blank_검증_테스트(String input) throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/find/email";
+
+        FindEmailReqDto requestDto = FindEmailReqDto.builder()
+                .name(kingUser.getName())
+                .authenticationEmail(kingUser.getEmail())
+                .phoneNum(input)
+                .build();
+
+        switch (input) {
+            case "name":
+                requestDto.setName("");
+                break;
+            case "phoneNum":
+                requestDto.setPhoneNum("");
+                break;
+            case "authenticationEmail":
+                requestDto.setAuthenticationEmail("");
+                break;
+            case "name_1":
+                requestDto.setName(" ");
+                break;
+            case "phoneNum_1":
+                requestDto.setPhoneNum(" ");
+                break;
+            case "authenticationEmail_1":
+                requestDto.setAuthenticationEmail(" ");
+                break;
+            case "name_2":
+                requestDto.setName(null);
+                break;
+            case "phoneNum_2":
+                requestDto.setPhoneNum(null);
+                break;
+            case "authenticationEmail_2":
+                requestDto.setAuthenticationEmail(null);
+                break;
+        }
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
         HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
         Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
 
