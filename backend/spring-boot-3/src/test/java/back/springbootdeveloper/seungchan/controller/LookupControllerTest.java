@@ -604,4 +604,45 @@ class LookupControllerTest {
                 .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
                 .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "박승찬, 010-1234-1234",
+            "이상한, 010-2383-6578",
+            "이상한, 010-1234-1234"
+    })
+    void 이메일_찾기_예외_해당_유저을_못찾는_테스트(String badName, String badPoneNum) throws Exception {
+        System.out.println("badName = " + badName);
+        System.out.println("badPoneNum = " + badPoneNum);
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/find/email";
+
+        FindEmailReqDto requestDto = FindEmailReqDto.builder()
+                .name(badName)
+                .authenticationEmail(kingUser.getEmail())
+                .phoneNum(badPoneNum)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(message).isEqualTo(ExceptionMessage.USER_NOT_EXIST_MESSAGE.get());
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.USER_NOT_EXIST.value());
+    }
 }
