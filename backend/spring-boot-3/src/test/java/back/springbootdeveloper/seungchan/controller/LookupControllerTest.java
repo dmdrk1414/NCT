@@ -746,4 +746,78 @@ class LookupControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "name",
+            "phoneNum",
+            "authenticationEmail",
+            "name_1",
+            "phoneNum_1",
+            "authenticationEmail_1",
+            "name_2",
+            "phoneNum_2",
+            "authenticationEmail_2",
+    })
+    void 이메일_찾기_예외_Not_Blank_검증_테스트(String input) throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/find/email";
+
+        FindEmailReqDto requestDto = FindEmailReqDto.builder()
+                .name(kingUser.getName())
+                .authenticationEmail(kingUser.getEmail())
+                .phoneNum(input)
+                .build();
+
+        switch (input) {
+            case "name":
+                requestDto.setName("");
+                break;
+            case "phoneNum":
+                requestDto.setPhoneNum("");
+                break;
+            case "authenticationEmail":
+                requestDto.setAuthenticationEmail("");
+                break;
+            case "name_1":
+                requestDto.setName(" ");
+                break;
+            case "phoneNum_1":
+                requestDto.setPhoneNum(" ");
+                break;
+            case "authenticationEmail_1":
+                requestDto.setAuthenticationEmail(" ");
+                break;
+            case "name_2":
+                requestDto.setName(null);
+                break;
+            case "phoneNum_2":
+                requestDto.setPhoneNum(null);
+                break;
+            case "authenticationEmail_2":
+                requestDto.setAuthenticationEmail(null);
+                break;
+        }
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
 }
