@@ -645,4 +645,56 @@ class LookupControllerTest {
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(stateCode).isEqualTo(CustomHttpStatus.USER_NOT_EXIST.value());
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "asdf",
+            "12  aea3",
+            "asdf sadf asdfdsa",
+            "sadf@sdaf@sdf",
+            "23!saf",
+            "invalid_email",
+            "user@.com",
+            "@example.com",
+            "user@.com.",
+            "user@example..com",
+            "user@exa mple.com",
+            "user@example.com.",
+            "user@.example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "user@example.com-",
+            "user@exam@ple.com"
+    })
+    void 이메일_찾기_예외_해당_이메일_검증_테스트(String input) throws Exception {
+        // given
+        UserInfo kingUser = userService.findUserById(kingUserId);
+        final String url = "/admin/find/email";
+
+        FindEmailReqDto requestDto = FindEmailReqDto.builder()
+                .name(kingUser.getName())
+                .authenticationEmail(input)
+                .phoneNum(kingUser.getPhoneNum())
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
 }
