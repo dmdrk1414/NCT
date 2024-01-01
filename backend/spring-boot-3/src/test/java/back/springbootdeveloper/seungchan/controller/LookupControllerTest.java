@@ -11,7 +11,6 @@ import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,13 +24,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -434,7 +431,7 @@ class LookupControllerTest {
 
         // than
         result
-                .andExpect(jsonPath("$.message").value(ResponseMessage.UPDATE_Email_MESSAGE.get()))
+                .andExpect(jsonPath("$.message").value(ResponseMessage.UPDATE_EMAIL_MESSAGE.get()))
                 .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
                 .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
 
