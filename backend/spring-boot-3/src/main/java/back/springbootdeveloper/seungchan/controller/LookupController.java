@@ -1,10 +1,12 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
+import back.springbootdeveloper.seungchan.dto.request.FindEmailReqDto;
 import back.springbootdeveloper.seungchan.dto.request.FindPasswordReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UpdateEmailReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UpdatePasswordReqDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.filter.exception.EmailSameMatchException;
 import back.springbootdeveloper.seungchan.service.AuthenticationEmailService;
 import back.springbootdeveloper.seungchan.service.LookupService;
@@ -60,6 +62,21 @@ public class LookupController {
 
         lookupService.updateEmail(updateEmail, request);
 
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.UPDATE_Email_MESSAGE.get());
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.UPDATE_EMAIL_MESSAGE.get());
+    }
+
+    @Operation(summary = "admin page 이메일 찾기 api", description = "해당 유저의 이메일을 찾는다.")
+    @PostMapping("/find/email")
+    public ResponseEntity<BaseResponseBody> findEmailController(@RequestBody @Valid FindEmailReqDto findEmailReqDto) {
+        String name = findEmailReqDto.getName();
+        String authenticationEmail = findEmailReqDto.getAuthenticationEmail();
+        String phoneNum = findEmailReqDto.getPhoneNum();
+
+        if (userService.existByNameAndPhoneNum(name, phoneNum)) {
+            UserInfo user = userService.findByNameAndPhoneNum(name, phoneNum);
+            authenticationEmailService.sendUserEmailMessage(authenticationEmail, user.getEmail());
+        }
+
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.FIND_EMAIL_OK.get());
     }
 }
