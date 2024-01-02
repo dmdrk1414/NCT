@@ -5,7 +5,7 @@ import Button from '../../../../atoms/atom/middle-button';
 import Modal from '../../../../atoms/atom/allert-modal';
 import { axBase } from '../../../../apis/axiosinstance';
 import CommonAltertModal from '@/atoms/atom/common-allert-modal';
-import { HTTP_STATUS_OK } from '@/utils/constans/httpStatus';
+import { HTTP_STATUS_OK } from '@/utils/constans/httpStatusEnum';
 import { MODAL_TITLE_DANGER, MODAL_TITLE_SUCCESS } from '@/utils/constans/modalTitle';
 import { checkHttpStatus } from '@/utils/validate/httpStatusChecker';
 
@@ -67,7 +67,6 @@ export default function Login() {
       </header>
       <article className="flex flex-col items-center">
         <p className="font-bold text-5xl my-[4rem]">이메일 찾기</p>
-        {/* name, phone, authenticationEmail */}
         <input className="border-b-2 w-[85%] mb-[3rem]" type="text" name="name" placeholder="NAME(등록된 이름)" onChange={inputUserName} />
         <input className="border-b-2 w-[85%] mb-[3rem]" type="text" name="phoneNum" placeholder="PHONE_NUMBER" onChange={inputPhoneNum} />
         <input className="border-b-2 w-[85%] mb-[5rem]" type="text" name="authenticationEmail" placeholder="E_MAIL(이메일 발급 원하는 이메일)" onChange={inputAuthenticationEmail} />
