@@ -1,4 +1,4 @@
-import { HTTP_STATUS_OK } from '@/utils/constans/httpStatus';
+import { HTTP_STATUS_OK } from '@/utils/constans/httpStatusEnum';
 import { MODAL_TITLE_DANGER, MODAL_TITLE_SUCCESS } from '@/utils/constans/modalTitle';
 
 /**
