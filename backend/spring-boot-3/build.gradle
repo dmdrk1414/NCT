@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.2' // 스프링 부트 플러그인
     id 'io.spring.dependency-management' version '1.1.0'  // 의존성 관리, 스프링의 의존성 관리 플러그임
+    id 'jacoco'
 }
 
 group = 'back.springbootdeveloper'
@@ -16,6 +17,55 @@ bootJar {
 
 repositories {
     mavenCentral()
+}
+
+jacocoTestCoverageVerification {
+//     ./gradlew clean test
+//    file:///Users/seungchan/program_project/NCT/backend/spring-boot-3/build/reports/tests/test/index.html
+    violationRules {
+        rule {
+            // 'element'가 없으면 프로젝트의 전체 파일을 합친 값을 기준으로 한다.
+            limit {
+                // 'counter'를 지정하지 않으면 default는 'INSTRUCTION'
+                // 'value'를 지정하지 않으면 default는 'COVEREDRATIO'
+                minimum = 0.30
+            }
+        }
+
+        rule {
+            // 룰을 간단히 켜고 끌 수 있다.
+            enabled = true
+
+            // 룰을 체크할 단위는 클래스 단위
+            element = 'CLASS'
+
+            // 브랜치 커버리지를 최소한 90% 만족시켜야 한다.
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.90
+            }
+
+            // 라인 커버리지를 최소한 80% 만족시켜야 한다.
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.80
+            }
+
+            // 빈 줄을 제외한 코드의 라인수를 최대 200라인으로 제한한다.
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 200
+            }
+
+            // 커버리지 체크를 제외할 클래스들
+            excludes = [
+//                    '*.test.*',
+            ]
+        }
+    }
 }
 
 dependencies {
@@ -65,6 +115,13 @@ dependencies {
 
     // 임메모리 데이터배이스, 로컬과 테스트 환경에서 사용
     runtimeOnly 'com.h2database:h2'
+
+    // 추가하면 @Valid가 작동해야 합니다.
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // 이메일 체크를 위한 의존성 주입
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 test {

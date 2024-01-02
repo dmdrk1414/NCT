@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.Constant.AttendanceStateConstant;
+import back.springbootdeveloper.seungchan.constant.AttendanceStateConstant;
 import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
@@ -8,7 +8,6 @@ import back.springbootdeveloper.seungchan.dto.response.VacationsResponce;
 import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
 import back.springbootdeveloper.seungchan.util.DayUtill;
 import back.springbootdeveloper.seungchan.util.Utill;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -236,7 +235,7 @@ public class AttendanceService {
      *
      * @param userId
      */
-    public void updateVacationDate2PassAttendance(Long userId) {
+    public void updateVacationDate2PassVacation(Long userId) {
         AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(userId);
         String weeklyData = attendanceStatus.getWeeklyData();
         int indexDay = DayUtill.getIndexDayOfWeek();
@@ -251,6 +250,34 @@ public class AttendanceService {
 
         // indexDay의 index에 3으로 변경 (휴가 표시)
         intArray[indexDay] = VACATION_TODAY;
+
+        // [ 0, 0, 0, 0, 2 ]
+        JSONArray resultJsonArray = arrayToJSONArray(intArray);
+        String updateWeeklyData = resultJsonArray.toString();
+
+        attendanceStatusRepository.updateWeeklyDataByUserId(userId, updateWeeklyData);
+    }
+
+    /**
+     * 해당 유저을 금일 출석 상태로 변경한다.
+     *
+     * @param userId
+     */
+    public void updateAttendanceToday(Long userId) {
+        AttendanceStatus attendanceStatus = attendanceStatusRepository.findByUserId(userId);
+        String weeklyData = attendanceStatus.getWeeklyData();
+        int indexDay = DayUtill.getIndexDayOfWeek();
+
+        // 문자열 json으로 변경 "[ 0, 0, 0, 0, 0 ]"
+        JSONArray jsonArray = new JSONArray(weeklyData);
+        int[] intArray = new int[jsonArray.length()];
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            intArray[i] = jsonArray.getInt(i);
+        }
+
+        // indexDay의 index에 출석으로 변경
+        intArray[indexDay] = AttendanceStateConstant.ATTENDANCE.getState();
 
         // [ 0, 0, 0, 0, 2 ]
         JSONArray resultJsonArray = arrayToJSONArray(intArray);
@@ -302,5 +329,13 @@ public class AttendanceService {
             return true;
         }
         return false;
+    }
+
+    public AttendanceStatus save(AttendanceStatus attendanceStatus) {
+        return attendanceStatusRepository.save(attendanceStatus);
+    }
+
+    public AttendanceStatus findById(Long userId) {
+        return attendanceStatusRepository.findByUserId(userId);
     }
 }

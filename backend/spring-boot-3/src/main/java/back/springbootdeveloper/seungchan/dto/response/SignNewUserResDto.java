@@ -7,6 +7,6 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class SignNewUserResponse {
+public class SignNewUserResDto {
     private Boolean isApply;
 }

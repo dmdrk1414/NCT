@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.Scheduler;
 
-import back.springbootdeveloper.seungchan.Constant.AttendanceTimeConstant;
+import back.springbootdeveloper.seungchan.constant.AttendanceTimeConstant;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
@@ -228,7 +228,7 @@ public class SchedulerAutoAttendanceTimeCheck {
             Long userId = attendanceTime.getUserId();
             // 장기 휴가를 사용하는 인원
             if (attendanceTime.isExceptonAttendance()) {
-                attendanceService.updateVacationDate2PassAttendance(userId);
+                attendanceService.updateVacationDate2PassVacation(userId);
             }
         }
     }

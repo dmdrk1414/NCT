@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.Constant.DateConstants;
+import back.springbootdeveloper.seungchan.constant.DateConstants;
 import back.springbootdeveloper.seungchan.dto.request.UserEachAttendanceControlReqDto;
 import back.springbootdeveloper.seungchan.dto.response.UserControlResDto;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
@@ -70,5 +70,9 @@ public class AttendanceTimeService {
     public boolean findExceptionAttendance(long id) {
         AttendanceTime attendanceTime = attendanceTimeRepository.findByUserId(id);
         return attendanceTime.isExceptonAttendance();
+    }
+
+    public AttendanceTime save(AttendanceTime attendanceTime) {
+        return attendanceTimeRepository.save(attendanceTime);
     }
 }

@@ -1,9 +1,8 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.dto.request.TempUserFormRequest;
+import back.springbootdeveloper.seungchan.dto.request.TempUserFormReqDto;
 import back.springbootdeveloper.seungchan.dto.request.UserLoginRequest;
-import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
-import back.springbootdeveloper.seungchan.dto.response.SignNewUserResponse;
+import back.springbootdeveloper.seungchan.dto.response.SignNewUserResDto;
 import back.springbootdeveloper.seungchan.dto.response.UserLoginResponse;
 import back.springbootdeveloper.seungchan.service.LoginService;
 import back.springbootdeveloper.seungchan.service.TempUserService;
@@ -13,8 +12,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,22 +31,23 @@ public class LoginPageController {
 
     @Operation(summary = "신입 가입 신청", description = "신입 가입 신청을 하지만 회원 가입이 아님을 인지하자. TempUser에 저장")
     @PostMapping("/sign")
-    public ResponseEntity<SignNewUserResponse> userSignFrom(@RequestBody TempUserFormRequest requestUserForm) {
-        tempUserService.save(requestUserForm);
-        String name = requestUserForm.getName();
+    public ResponseEntity<SignNewUserResDto> userSignFrom(@RequestBody @Valid TempUserFormReqDto requestUserForm) {
         String email = requestUserForm.getEmail();
-        Boolean existNewUser = tempUserService.existNewUserByNameAndEmail(name, email);
+
+        tempUserService.save(requestUserForm);
+        Boolean existNewUser = tempUserService.exist(email);
 
         // 등록 완료 되었다는 boolean 리턴
-        return ResponseEntity.ok().body(SignNewUserResponse.builder()
+        return ResponseEntity.ok().body(SignNewUserResDto.builder()
                 .isApply(existNewUser)
                 .build());
     }
 
     @Operation(summary = "로그인", description = "기존 회원들의 로그인이다")
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<UserLoginResponse> userLogin(@RequestBody @Valid UserLoginRequest userLoginRequest, HttpServletRequest request, HttpServletResponse response) {
         UserLoginResponse userLoginResponse = loginService.login(userLoginRequest, request, response);
+
         return ResponseEntity.ok().body(userLoginResponse);
     }
 }

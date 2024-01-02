@@ -8,6 +8,7 @@ import back.springbootdeveloper.seungchan.dto.response.SuggestionsResultResponse
 import back.springbootdeveloper.seungchan.service.SuggestionService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
+import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class SuggestionsController {
     @PostMapping("/write")
     public ResponseEntity<BaseResponseBody> writeSuggestion(@RequestBody SuggestionWriteRequest suggestionWriteRequest) {
         Suggestions suggestions = suggestionService.save(suggestionWriteRequest);
-        return new ResponseEntity<>(new BaseResponseBody("SUCCESS", 200), HttpStatus.OK);
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 
     @Operation(summary = "건의 게시판 조회", description = "건의 게시판의 조회를 한다. 비밀 게시판은 실장 만의 조회가 가능하다.")

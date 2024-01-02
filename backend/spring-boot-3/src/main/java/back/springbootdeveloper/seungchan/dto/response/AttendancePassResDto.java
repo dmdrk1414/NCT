@@ -8,11 +8,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AttendanceIsPassResponse {
+public class AttendancePassResDto {
     private boolean isPassAtNow;
 
     @Builder
-    public AttendanceIsPassResponse(boolean isPassAtNow) {
+    public AttendancePassResDto(boolean isPassAtNow) {
         this.isPassAtNow = isPassAtNow;
     }
 }
