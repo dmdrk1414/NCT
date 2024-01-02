@@ -24,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @ResponseBody
-@RequestMapping("/suggestions")
+@RequestMapping("/suggestion")
 public class SuggestionsController {
     private final SuggestionService suggestionService;
     private final TokenService tokenService;
