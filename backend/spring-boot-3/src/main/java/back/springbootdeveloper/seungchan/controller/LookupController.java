@@ -12,6 +12,7 @@ import back.springbootdeveloper.seungchan.service.AuthenticationEmailService;
 import back.springbootdeveloper.seungchan.service.LookupService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
+import back.springbootdeveloper.seungchan.util.Utill;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -70,7 +71,7 @@ public class LookupController {
     public ResponseEntity<BaseResponseBody> findEmailController(@RequestBody @Valid FindEmailReqDto findEmailReqDto) {
         String name = findEmailReqDto.getName();
         String authenticationEmail = findEmailReqDto.getAuthenticationEmail();
-        String phoneNum = findEmailReqDto.getPhoneNum();
+        String phoneNum = Utill.formatPhoneNumber(findEmailReqDto.getPhoneNum());
 
         if (userService.existByNameAndPhoneNum(name, phoneNum)) {
             UserInfo user = userService.findByNameAndPhoneNum(name, phoneNum);

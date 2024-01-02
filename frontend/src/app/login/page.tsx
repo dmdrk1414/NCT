@@ -9,7 +9,7 @@ import { userToken, isNuriKing } from '../../states/index';
 import { useRouter } from 'next/navigation';
 import Modal from '../../atoms/atom/allert-modal';
 import { hasToken } from '@/utils/validate/ExistenceChecker';
-import { replaceRouterMain } from '@/utils/RouteHandling';
+import { replaceRouterFindEmail, replaceRouterFindPassword, replaceRouterMain } from '@/utils/RouteHandling';
 
 export default function Login() {
   const [token, setToken] = useRecoilState(userToken);
@@ -81,10 +81,15 @@ export default function Login() {
           <Button text={'지원서 작성'} addClass="text-2xl" />
         </Link>
       </article>
-      <footer className="flex justify-center">
-        <a href="" onClick={() => alert('멍청한ㅅㄲ')}>
-          비밀번호를 잊어버리셨나요?
-        </a>
+      <footer className="flex justify-center mt-[.5rem] mb-[1rem]">
+        <div>
+          <div>
+            <a onClick={() => replaceRouterFindEmail(router)}>이메일을 잊어버리셨나요?</a>
+          </div>
+          <div>
+            <a onClick={() => replaceRouterFindPassword(router)}>비밀번호를 잊어버리셨나요?</a>
+          </div>
+        </div>
       </footer>
     </main>
   );
