@@ -1,7 +1,9 @@
 package back.springbootdeveloper.seungchan.util;
 
+import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,5 +64,19 @@ public class Utill {
             System.out.println(index + ": " + objectList.get(index));
         }
         System.out.println();
+    }
+
+    /**
+     * 휴대폰 숫자가 번호 "01012341234"을 "010-1234-1234"으로 변경한다.
+     *
+     * @param number
+     * @return
+     */
+    public static String formatPhoneNumber(String number) {
+        if (number == null || number.length() != 11) {
+            return "";
+        }
+
+        return number.substring(0, 3) + "-" + number.substring(3, 7) + "-" + number.substring(7, 11);
     }
 }
