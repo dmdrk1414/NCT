@@ -27,7 +27,9 @@ export default function SuggestionArticle(data: Data) {
         suggestionId: id,
       },
     })
-      .then(res => {})
+      .then(res => {
+        res.data;
+      })
       .catch(err => {
         console.log(err);
       });
