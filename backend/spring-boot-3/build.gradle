@@ -2,19 +2,77 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.2' // 스프링 부트 플러그인
     id 'io.spring.dependency-management' version '1.1.0'  // 의존성 관리, 스프링의 의존성 관리 플러그임
+    id 'jacoco'
 }
 
 group = 'back.springbootdeveloper'
 version = '1.0-SNAPSHOT'
 sourceCompatibility = '17' //  자바 소스를 컴파일할 때 사용할 자바 버전을 입력
 
+bootJar {
+    archivesBaseName = 'app'
+    archiveFileName = 'app.jar'
+    archiveVersion = "0.0.0"
+}
+
 repositories {
     mavenCentral()
+}
+
+jacocoTestCoverageVerification {
+//     ./gradlew clean test
+//    file:///Users/seungchan/program_project/NCT/backend/spring-boot-3/build/reports/tests/test/index.html
+    violationRules {
+        rule {
+            // 'element'가 없으면 프로젝트의 전체 파일을 합친 값을 기준으로 한다.
+            limit {
+                // 'counter'를 지정하지 않으면 default는 'INSTRUCTION'
+                // 'value'를 지정하지 않으면 default는 'COVEREDRATIO'
+                minimum = 0.30
+            }
+        }
+
+        rule {
+            // 룰을 간단히 켜고 끌 수 있다.
+            enabled = true
+
+            // 룰을 체크할 단위는 클래스 단위
+            element = 'CLASS'
+
+            // 브랜치 커버리지를 최소한 90% 만족시켜야 한다.
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.90
+            }
+
+            // 라인 커버리지를 최소한 80% 만족시켜야 한다.
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.80
+            }
+
+            // 빈 줄을 제외한 코드의 라인수를 최대 200라인으로 제한한다.
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 200
+            }
+
+            // 커버리지 체크를 제외할 클래스들
+            excludes = [
+//                    '*.test.*',
+            ]
+        }
+    }
 }
 
 dependencies {
     // Spring MVC를 사용해서 RESTful 웹 서비스를 개발할때 필요한 의존성 모음
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // 스프링 애플리케이션을 테스트하기 위해 필요한 의존성 모음
     testImplementation 'org.springframework.boot:spring-boot-starter-test' // 테스트 기능
@@ -27,6 +85,43 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     implementation 'mysql:mysql-connector-java:8.0.27'
+
+    // str <==> json parsing method
+    implementation 'org.json:json:20200518'
+
+    // 8장 추가 스프링 시큐리티를 사용하기 위한 추가
+    // 스프링 시큐리티를 사용하기 위한 스타터 추가
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.0.2'
+
+    // 스프링 시큐리티를 테스트하기 위한 의존성 추가
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // test용 lombok 의존성 추가
+    testImplementation 'org.projectlombok:lombok'
+
+
+    //프로젝트에 jwt 라이브러리를 추가하여 JSON Web Token(JWT)을 생성하고
+    // 처리하는 기능을 사용할 수 있도록 해줍니다.
+    // JWT는 인증 및 인가를 위한 토큰 기반 인증 방식으로 자주 사용되며,
+    // jjwt는 JWT를 쉽게 생성하고 구문 분석하고 검증할 수 있는 Java 라이브러리입니다
+    implementation 'io.jsonwebtoken:jjwt:0.9.1' // // 자바 JWT 라이브러리
+    implementation 'javax.xml.bind:jaxb-api:2.3.1' // XML 문서와 Java 객체 간 매핑을 자동화
+
+    // swagger 설정
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+    // Jackson을 이용해서 Java 객체를 JSON으로 직렬화하거나 JSON을 Java 객체로 역직렬화
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+
+    // 임메모리 데이터배이스, 로컬과 테스트 환경에서 사용
+    runtimeOnly 'com.h2database:h2'
+
+    // 추가하면 @Valid가 작동해야 합니다.
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // 이메일 체크를 위한 의존성 주입
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 test {

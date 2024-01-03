@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
-import back.springbootdeveloper.seungchan.domain.User;
-import back.springbootdeveloper.seungchan.domain.UserUtill;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
+import back.springbootdeveloper.seungchan.entity.UserUtill;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,17 +26,23 @@ public class UserOfDetail2MainResponse {
     private String phoneNum;
     private String hobby;
     private String specialtySkill;
-    private String MBTI;
+    private String mbti;
     private boolean isNuriKing;
+    private boolean isOb;
+    private String email;
+    private Long userId;
 
-    public UserOfDetail2MainResponse(UserUtill userUtill, User user) {
+    public UserOfDetail2MainResponse(UserUtill userUtill, UserInfo user) {
         this.name = user.getName();
         this.major = user.getMajor();
         this.studentId = user.getStudentId();
         this.phoneNum = user.getPhoneNum();
         this.hobby = user.getHobby();
         this.specialtySkill = user.getSpecialtySkill();
-        this.MBTI = user.getMBTI();
+        this.mbti = user.getMbti();
         this.isNuriKing = userUtill.isNuriKing();
+        this.isOb = user.isOb();
+        this.email = user.getEmail();
+        this.userId = user.getId();
     }
 }
