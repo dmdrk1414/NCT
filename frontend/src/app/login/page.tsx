@@ -52,7 +52,6 @@ export default function Login() {
       },
     })
       .then(response => {
-        console.log(response.data);
         setToken(response.data.accessToken);
         setIsNuriKing(response.data.nuriKing);
         router.replace('/main');
