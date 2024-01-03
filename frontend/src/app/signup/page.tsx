@@ -56,7 +56,7 @@ export default function SignUp() {
     advantages: '',
     disadvantage: '',
     selfIntroduction: '',
-    photo: '',
+    photo: '사진',
     email: '',
     password: '',
     passwordConfirm: '',
