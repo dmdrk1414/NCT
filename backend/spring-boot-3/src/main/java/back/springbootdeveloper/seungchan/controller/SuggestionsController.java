@@ -1,5 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.dto.request.SuggestionReqDto;
+import back.springbootdeveloper.seungchan.dto.response.SuggestionCheckResDto;
 import back.springbootdeveloper.seungchan.entity.Suggestions;
 import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
@@ -13,7 +15,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @ResponseBody
-@RequestMapping("/suggestions")
+@RequestMapping("/suggestion")
 public class SuggestionsController {
     private final SuggestionService suggestionService;
     private final TokenService tokenService;
@@ -51,5 +52,18 @@ public class SuggestionsController {
         SuggestionsResultResponse suggestionsResultResponse = new SuggestionsResultResponse(suggestionLists, isNuriKing);
 
         return ResponseEntity.ok().body(suggestionsResultResponse);
+    }
+
+    @Operation(summary = "건의 게시판 확인 버튼", description = "건의 게시판 확인 버튼을 생성한다.")
+    @PostMapping("/check")
+    public ResponseEntity<SuggestionCheckResDto> checkSuggestions(@RequestBody SuggestionReqDto suggestionReqDto, HttpServletRequest request) {
+        Long userId = tokenService.getUserIdFromToken(request);
+        Long suggestionId = suggestionReqDto.getSuggestionId();
+        System.out.println("suggestionId = " + suggestionId);
+        Boolean check = suggestionService.checkToggle(suggestionId);
+
+        return ResponseEntity.ok().body(SuggestionCheckResDto.builder()
+                .check(check)
+                .build());
     }
 }

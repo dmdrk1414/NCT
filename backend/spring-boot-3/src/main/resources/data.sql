@@ -101,7 +101,19 @@ INSERT INTO suggestions (id, classification, check_content, title, holiday_perio
 VALUES (1, '건의', TRUE, '건의 제목 1', ''),
        (2, '휴가', FALSE, '휴가 제목 1', '2023-08-01 ~ 2023-08-07'),
        (3, '자유', TRUE, '자유 제목 1', ''),
-       (4, '비밀', FALSE, '비밀 제목 1', '');
+       (4, '비밀', FALSE, '비밀 제목 1', ''),
+       (5, '자유', TRUE, '자유 제목 1', ''),
+       (6, '비밀', FALSE, '비밀 제목 1', ''),
+       (7, '자유', TRUE, '자유 제목 1', ''),
+       (8, '비밀', FALSE, '비밀 제목 1', ''),
+       (9, '자유', TRUE, '자유 제목 1', ''),
+       (10, '비밀', FALSE, '비밀 제목 1', ''),
+       (11, '자유', TRUE, '자유 제목 1', ''),
+       (12, '비밀', FALSE, '비밀 제목 1', ''),
+       (13, '자유', TRUE, '자유 제목 1', ''),
+       (14, '비밀', FALSE, '비밀 제목 1', ''),
+       (15, '자유', TRUE, '자유 제목 1', ''),
+       (16, '비밀', FALSE, '비밀 제목 1', '');
 
 INSERT INTO attendance_status (id, absence_dates, name, user_id, vacation_dates, weekly_data)
 VALUES (1, '2023-08-15', '박승찬', 1, '2023-08-01, 2023-08-07, 2023-08-14', '[0,0,0,0,-1]'),
