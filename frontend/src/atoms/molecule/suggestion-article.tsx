@@ -40,7 +40,7 @@ export default function SuggestionArticle(data: Data) {
       <div className={`${numberCss}`}>{data.id}</div>
       <div className={`${classificationCss}`}>{data.classification}</div>
       <div className={`${titleCss} flex justify-between ml-[0.2rem]`}>
-        {data.title}
+        {data.title.length <= 15 ? data.title : data.title.substring(0, 15) + '...'}
         <input className="w-[1.1rem] mr-[0.2rem]" type="checkbox" checked={data.check} onChange={() => pushCheck(data.id)} id="myCheckbox" />
       </div>
     </>
