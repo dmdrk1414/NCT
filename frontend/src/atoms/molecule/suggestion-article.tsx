@@ -1,5 +1,5 @@
 import { useRecoilState } from 'recoil';
-import { userToken } from '../../states/index';
+import { userToken, isNuriKing } from '../../states/index';
 import { axAuth } from '@/apis/axiosinstance';
 import { useEffect, useState } from 'react';
 
@@ -12,6 +12,7 @@ type Data = {
 
 export default function SuggestionArticle(data: Data) {
   const [token, setToken] = useRecoilState(userToken);
+  const [isKing, setIsKing] = useRecoilState(isNuriKing);
 
   const font = `text-white font-bold`;
   const justify = `flex justify-center`;
@@ -20,19 +21,21 @@ export default function SuggestionArticle(data: Data) {
   const titleCss = `w-[72%] ${justify} `;
 
   const pushCheck = (id: number) => {
-    axAuth(token)({
-      method: 'post',
-      url: '/suggestion/check',
-      data: {
-        suggestionId: id,
-      },
-    })
-      .then(res => {
-        res.data;
+    if (isKing) {
+      axAuth(token)({
+        method: 'post',
+        url: '/suggestion/check',
+        data: {
+          suggestionId: id,
+        },
       })
-      .catch(err => {
-        console.log(err);
-      });
+        .then(res => {
+          res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   };
 
   return (
