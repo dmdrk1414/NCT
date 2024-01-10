@@ -2,6 +2,8 @@ import { useRecoilState } from 'recoil';
 import { userToken, isNuriKing } from '../../states/index';
 import { axAuth } from '@/apis/axiosinstance';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { replaceRouterEachSuggestion } from '@/utils/RouteHandling';
 
 type Data = {
   id: number;
@@ -13,6 +15,7 @@ type Data = {
 export default function SuggestionArticle(data: Data) {
   const [token, setToken] = useRecoilState(userToken);
   const [isKing, setIsKing] = useRecoilState(isNuriKing);
+  const router = useRouter();
 
   const font = `text-white font-bold`;
   const justify = `flex justify-center`;
@@ -42,7 +45,7 @@ export default function SuggestionArticle(data: Data) {
     <>
       <div className={`${numberCss}`}>{data.id}</div>
       <div className={`${classificationCss}`}>{data.classification}</div>
-      <div className={`${titleCss} flex justify-between ml-[0.2rem]`}>
+      <div className={`${titleCss} flex justify-between ml-[0.2rem]`} onClick={() => replaceRouterEachSuggestion(router, data.id)}>
         {data.title.length <= 15 ? data.title : data.title.substring(0, 15) + '...'}
         <input className="w-[1.1rem] mr-[0.2rem]" type="checkbox" checked={data.check} onChange={() => pushCheck(data.id)} id="myCheckbox" />
       </div>
