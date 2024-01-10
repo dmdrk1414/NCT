@@ -65,7 +65,6 @@ public class SuggestionsController {
     public ResponseEntity<SuggestionCheckResDto> checkSuggestions(@RequestBody SuggestionReqDto suggestionReqDto, HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
         Long suggestionId = suggestionReqDto.getSuggestionId();
-        System.out.println("suggestionId = " + suggestionId);
         Boolean check = suggestionService.checkToggle(suggestionId);
 
         return ResponseEntity.ok().body(SuggestionCheckResDto.builder()
