@@ -23,7 +23,7 @@ export default function SuggestionArticle(data: Data) {
   const numberCss = `w-[20%] flex ${justify} `;
   const classificationCss = `w-[18%] ${justify} `;
   const titleCss = `w-[72%] ${justify} `;
-  const titleLen = 10;
+  const titleLen = 13;
 
   const pushCheck = (id: number) => {
     if (isKing) {
