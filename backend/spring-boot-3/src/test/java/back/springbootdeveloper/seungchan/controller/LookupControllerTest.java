@@ -299,10 +299,12 @@ class LookupControllerTest {
     @Test
     void 비밀번호_변경_테스트() throws Exception {
         // given
+        String password = testSetUp.getKingUserPassword();
         String updatePassword = "updatePassword1!";
         String checkPassword = updatePassword;
         final String url = "/admin/update/password";
         UpdatePasswordReqDto reqestDto = UpdatePasswordReqDto.builder()
+                .password(password)
                 .updatePassword(updatePassword)
                 .checkUpdatePassword(checkPassword)
                 .build();
@@ -331,10 +333,12 @@ class LookupControllerTest {
     @Test
     void 비밀번호_변경_예외_Update_PW_와_확인_PW_가_다른_테스트() throws Exception {
         // given
+        String password = testSetUp.getKingUserPassword();
         String updatePassword = "updatePassword1!";
         String checkPassword = "differentPassword1!";
         final String url = "/admin/update/password";
         UpdatePasswordReqDto requestDto = UpdatePasswordReqDto.builder()
+                .password(password)
                 .updatePassword(updatePassword)
                 .checkUpdatePassword(checkPassword)
                 .build();
