@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import Navigation from '../../atoms/template/navigation';
 import { hasNotToken } from '@/utils/validate/ExistenceChecker';
-import { replaceRouterInitialize } from '@/utils/RouteHandling';
+import { replaceRouterInitialize, replaceRouterPassword } from '@/utils/RouteHandling';
 import NavigationFooter from '@/atoms/molecule/navigation-footer';
 
 export default function SignUp() {
@@ -90,6 +90,9 @@ export default function SignUp() {
 
             <a onClick={() => router.push('/mypage/update')}>
               <SubmitButton text={'나의 페이지 수정하기'} addClass="text-2xl mt-5" />
+            </a>
+            <a onClick={() => replaceRouterPassword(router)}>
+              <SubmitButton text={'비밀번호 수정하기'} addClass="text-2xl mt-5" />
             </a>
           </div>
         </article>

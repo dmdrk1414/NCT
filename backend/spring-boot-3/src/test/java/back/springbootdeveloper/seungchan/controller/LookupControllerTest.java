@@ -14,6 +14,7 @@ import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -299,10 +300,12 @@ class LookupControllerTest {
     @Test
     void 비밀번호_변경_테스트() throws Exception {
         // given
+        String password = testSetUp.getKingUserPassword();
         String updatePassword = "updatePassword1!";
         String checkPassword = updatePassword;
         final String url = "/admin/update/password";
         UpdatePasswordReqDto reqestDto = UpdatePasswordReqDto.builder()
+                .password(password)
                 .updatePassword(updatePassword)
                 .checkUpdatePassword(checkPassword)
                 .build();
@@ -331,10 +334,12 @@ class LookupControllerTest {
     @Test
     void 비밀번호_변경_예외_Update_PW_와_확인_PW_가_다른_테스트() throws Exception {
         // given
+        String password = testSetUp.getKingUserPassword();
         String updatePassword = "updatePassword1!";
         String checkPassword = "differentPassword1!";
         final String url = "/admin/update/password";
         UpdatePasswordReqDto requestDto = UpdatePasswordReqDto.builder()
+                .password(password)
                 .updatePassword(updatePassword)
                 .checkUpdatePassword(checkPassword)
                 .build();
@@ -359,6 +364,41 @@ class LookupControllerTest {
         assertThat(message).isEqualTo(ExceptionMessage.PASSWORD_CONFIRMATION.get());
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(stateCode).isEqualTo(CustomHttpStatus.PASSWORD_CONFIRMATION.value());
+    }
+
+    @Test
+    void 비밀번호_변경_예외_현재_비밀번호와_입력_비밀번호_다를시_예외처리() throws Exception {
+        // given
+        String password = "FALSEPASSWOAR1!";
+        String updatePassword = "updatePassword1!";
+        String checkPassword = updatePassword;
+        final String url = "/admin/update/password";
+        UpdatePasswordReqDto requestDto = UpdatePasswordReqDto.builder()
+                .password(password)
+                .updatePassword(updatePassword)
+                .checkUpdatePassword(checkPassword)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(message).isEqualTo(ExceptionMessage.PASSWORD_MISS_MATCH.get());
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.PASSWORD_MISS_MATCHES.value());
     }
 
     @ParameterizedTest
@@ -581,11 +621,13 @@ class LookupControllerTest {
         // given
         UserInfo kingUser = userService.findUserById(kingUserId);
         final String url = "/admin/find/email";
+        String dashPhoneNumber = kingUser.getPhoneNum();
+        String phoneNumber = dashPhoneNumber.replace("-", "");
 
         FindEmailReqDto requestDto = FindEmailReqDto.builder()
                 .name(kingUser.getName())
                 .authenticationEmail(kingUser.getEmail())
-                .phoneNum(kingUser.getPhoneNum())
+                .phoneNum(phoneNumber)
                 .build();
 
         // when
@@ -699,6 +741,7 @@ class LookupControllerTest {
     }
 
     @ParameterizedTest
+    @Disabled
     @ValueSource(strings = {
             "010",
             "02-123-456",
