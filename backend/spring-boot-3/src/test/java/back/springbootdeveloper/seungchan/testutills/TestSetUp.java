@@ -72,7 +72,7 @@ public class TestSetUp {
      */
     public UserInfo setUpUser() {
         // userID 1
-        UserInfo user = userService.save(TestMakeObject.makeUser("일반 유저", "seungchan141414@gmail.com"));
+        UserInfo user = userService.save(TestMakeObject.makeUser("일반 유저", "nomal@gmail.com"));
         userId_1 = user.getId();
 
         userUtillService.save(TestMakeObject.makeUserUtill(user, 5, false));
