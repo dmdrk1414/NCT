@@ -109,4 +109,55 @@ class MainControllerTest {
                 .andExpect(jsonPath("$[0].obUserList[0].phoneNum").value(obUser.getPhoneNum()))
                 .andExpect(jsonPath("$[0].obUserList[0].userId").value(obUser.getId()));
     }
+
+    @Test
+    public void 메인페이지_각_유저별_상세_조회_테스트_1() throws Exception {
+        // given
+        final String url = "/main/detail/{id}";
+
+        // when
+        final ResultActions resultActions = mockMvc.perform(get(url, kingUser.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+
+        // then
+        resultActions
+                .andExpect(jsonPath("$.name").value(kingUser.getName()))
+                .andExpect(jsonPath("$.major").value(kingUser.getMajor()))
+                .andExpect(jsonPath("$.studentId").value(kingUser.getStudentId()))
+                .andExpect(jsonPath("$.phoneNum").value(kingUser.getPhoneNum()))
+                .andExpect(jsonPath("$.hobby").value(kingUser.getHobby()))
+                .andExpect(jsonPath("$.specialtySkill").value(kingUser.getSpecialtySkill()))
+                .andExpect(jsonPath("$.mbti").value(kingUser.getMbti()))
+                .andExpect(jsonPath("$.userId").value(kingUser.getId()))
+                .andExpect(jsonPath("$.ob").value(kingUser.isOb()))
+                .andExpect(jsonPath("$.nuriKing").value(true));
+    }
+
+    @Test
+    public void 메인페이지_각_유저별_상세_조회_테스트_2() throws Exception {
+        // given
+        final String url = "/main/detail/{id}";
+
+        // when
+        final ResultActions resultActions = mockMvc.perform(get(url, nomalUser.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        resultActions
+                .andExpect(jsonPath("$.name").value(nomalUser.getName()))
+                .andExpect(jsonPath("$.major").value(nomalUser.getMajor()))
+                .andExpect(jsonPath("$.studentId").value(nomalUser.getStudentId()))
+                .andExpect(jsonPath("$.phoneNum").value(nomalUser.getPhoneNum()))
+                .andExpect(jsonPath("$.hobby").value(nomalUser.getHobby()))
+                .andExpect(jsonPath("$.specialtySkill").value(nomalUser.getSpecialtySkill()))
+                .andExpect(jsonPath("$.mbti").value(nomalUser.getMbti()))
+                .andExpect(jsonPath("$.userId").value(nomalUser.getId()))
+                .andExpect(jsonPath("$.ob").value(nomalUser.isOb()))
+                .andExpect(jsonPath("$.nuriKing").value(true));
+    }
 }
