@@ -4,6 +4,7 @@ import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.filter.exception.ApiException;
 import back.springbootdeveloper.seungchan.filter.exception.EmailSameMatchException;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.MissMatchesPasswordException;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.PasswordConfirmationException;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.UpdateFailedException;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.WeekendException;
@@ -124,6 +125,21 @@ public class ApiExceptionHandler {
 
         ApiException apiException = new ApiException(
                 ExceptionMessage.EMAIL_SAME_MATCH.get(), // add
+                httpStatus,
+                customHttpStatus.value(),
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
+
+    @ExceptionHandler(value = {MissMatchesPasswordException.class})
+    public ResponseEntity<Object> handleMissMatchesPasswordException(MissMatchesPasswordException e) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        CustomHttpStatus customHttpStatus = CustomHttpStatus.PASSWORD_MISS_MATCHES; // add
+
+        ApiException apiException = new ApiException(
+                ExceptionMessage.PASSWORD_MISS_MATCH.get(), // add
                 httpStatus,
                 customHttpStatus.value(),
                 ZonedDateTime.now(ZoneId.of("Z"))

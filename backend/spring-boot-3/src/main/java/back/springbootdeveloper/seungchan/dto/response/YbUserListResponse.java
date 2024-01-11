@@ -5,10 +5,9 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Builder
 public class YbUserListResponse {
     private List<YbUserInfomation> ybUserInfomationList;

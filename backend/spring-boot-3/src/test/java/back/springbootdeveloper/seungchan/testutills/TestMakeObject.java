@@ -4,6 +4,7 @@ import back.springbootdeveloper.seungchan.controller.config.BCryptPasswordEncode
 import back.springbootdeveloper.seungchan.entity.*;
 
 public class TestMakeObject {
+    public static final String TEST_PASSWORD = "testuser1!";
     private static final String NAME_TEST = "현재실원_이름";
     private static final String TEST_PHONE_NUM = "010-1234-1234";
     private static final String TEST_MAJOR = "테스트 학과";
@@ -19,7 +20,6 @@ public class TestMakeObject {
     private static final String TEST_SELF_INTRODUCTION = "테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 테스트 자기소개 ";
     private static final String TEST_PHOTO = "테스트 사진";
     private static final Boolean TEST_NOT_OB = false;
-    private static final String TEST_PASSWORD = "testuser1!";
     private static final Boolean TEST_REGULAR_MEMBER = true;
     private static final Boolean TEST_OB = true;
 
