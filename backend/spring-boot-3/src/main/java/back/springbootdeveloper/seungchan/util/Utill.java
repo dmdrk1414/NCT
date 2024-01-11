@@ -1,8 +1,10 @@
 package back.springbootdeveloper.seungchan.util;
 
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
@@ -78,5 +80,16 @@ public class Utill {
         }
 
         return number.substring(0, 3) + "-" + number.substring(3, 7) + "-" + number.substring(7, 11);
+    }
+
+    /**
+     * 입력한 패스워드와 현제 유저의 패스워드가 같은지 확인한다
+     *
+     * @param password
+     * @param user
+     * @return
+     */
+    public static boolean isLoginMatches(String password, UserInfo user) {
+        return new BCryptPasswordEncoder().matches(password, user.getPassword());
     }
 }
