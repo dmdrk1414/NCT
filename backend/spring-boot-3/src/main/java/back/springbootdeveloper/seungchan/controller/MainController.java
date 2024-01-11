@@ -36,14 +36,15 @@ public class MainController {
 
     @Operation(summary = "main page 현재 회원 인원들의 정보들을 찾는다.", description = "현재 회원 인원들의 정보들을 위한 api 찾는다.")
     @GetMapping("/ybs")
-    public ResponseEntity<YbUserListResponse> findAllYbUser(HttpServletRequest request) {
-        Long UserIdOfSearch = tokenService.getUserIdFromToken(request);
-        boolean isPassAttendanceOfSearchUser = attendanceService.isPassAttendanceAtToday(UserIdOfSearch);
+    public ResponseEntity<YbUserListResponse> findAllYbUsers(HttpServletRequest request) {
+        Long userId = tokenService.getUserIdFromToken(request);
+        boolean isPassAttendance = attendanceService.isPassAttendanceAtToday(userId);
         boolean isObUser = false;
         List<YbUserInfomation> ybUserInfomationList = userOfMainService.findAllByIsOb(isObUser);
+
         return ResponseEntity.ok().body(YbUserListResponse.builder()
                 .ybUserInfomationList(ybUserInfomationList)
-                .isPassAttendanceOfSearchUse(isPassAttendanceOfSearchUser)
+                .isPassAttendanceOfSearchUse(isPassAttendance)
                 .build());
     }
 
