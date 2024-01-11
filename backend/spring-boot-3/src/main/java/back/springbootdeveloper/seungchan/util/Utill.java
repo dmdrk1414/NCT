@@ -85,11 +85,9 @@ public class Utill {
     /**
      * 입력한 패스워드와 현제 유저의 패스워드가 같은지 확인한다
      *
-     * @param password
-     * @param user
      * @return
      */
-    public static boolean isLoginMatches(String password, UserInfo user) {
-        return new BCryptPasswordEncoder().matches(password, user.getPassword());
+    public static boolean isLoginMatches(String password, String hashPassword) {
+        return new BCryptPasswordEncoder().matches(password, hashPassword);
     }
 }

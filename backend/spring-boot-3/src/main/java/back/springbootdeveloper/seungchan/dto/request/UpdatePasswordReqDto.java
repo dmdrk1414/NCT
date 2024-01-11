@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdatePasswordReqDto {
     @NotBlank(message = "{validation.name.notblank}")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$", message = "{validation.password.invalid}")
+//    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$", message = "{validation.password.invalid}")
     private String password;
 
 
