@@ -64,7 +64,6 @@ public class MainController {
         Long userIdOfSearch = tokenService.getUserIdFromToken(request);
         UserInfo user = userServiceImp.findUserById(id);
 
-        Long userId = user.getId();
         UserUtill userUtill = userUtilRepository.findByUserId(userIdOfSearch);
 
         UserOfDetail2MainResponse response = new UserOfDetail2MainResponse(userUtill, user);
