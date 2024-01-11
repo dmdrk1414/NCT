@@ -84,6 +84,8 @@ class MainControllerTest {
                 .andExpect(jsonPath("$.ybUserInfomationList[0].weeklyData").value(TestUtills.StringToListFromAttendanceStateWeeklyDate(attendanceStatusOfKingUser.getWeeklyData())))
                 .andExpect(jsonPath("$.ybUserInfomationList[1].name").value(nomalUser.getName()))
                 .andExpect(jsonPath("$.ybUserInfomationList[1].cntVacation").value(userUtillOfNomalUser.getCntVacation()))
-                .andExpect(jsonPath("$.ybUserInfomationList[1].weeklyData").value(TestUtills.StringToListFromAttendanceStateWeeklyDate(attendanceStatusOfNomalUser.getWeeklyData())));
+                .andExpect(jsonPath("$.ybUserInfomationList[1].weeklyData").value(TestUtills.StringToListFromAttendanceStateWeeklyDate(attendanceStatusOfNomalUser.getWeeklyData())))
+                .andExpect(jsonPath("$.passAttendanceOfSearchUse").value(false));
+
     }
 }

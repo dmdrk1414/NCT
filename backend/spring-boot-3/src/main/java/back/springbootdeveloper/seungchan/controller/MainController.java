@@ -34,7 +34,7 @@ public class MainController {
     private final AttendanceService attendanceService;
     private final AttendanceTimeService attendanceTimeService;
 
-    @Operation(summary = "main page 현재 인원들의 정보", description = "main page 현재 재학 인원들의 정보들을 나열")
+    @Operation(summary = "main page 현재 회원 인원들의 정보들을 찾는다.", description = "현재 회원 인원들의 정보들을 위한 api 찾는다.")
     @GetMapping("/ybs")
     public ResponseEntity<YbUserListResponse> findAllYbUser(HttpServletRequest request) {
         Long UserIdOfSearch = tokenService.getUserIdFromToken(request);
