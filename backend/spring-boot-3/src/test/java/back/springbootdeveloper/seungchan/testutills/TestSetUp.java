@@ -21,6 +21,7 @@ public class TestSetUp {
     private TokenService tokenService;
     private Long kingUserId;
     private Long userId_1;
+    private String passwordOfKingUser;
 
 
     @Autowired
@@ -131,6 +132,10 @@ public class TestSetUp {
         }
 
         return tokenService.createAccessAndRefreshToken(request, response, kingUser.getEmail());
+    }
+
+    public String getKingUserPassword() {
+        return TestMakeObject.TEST_PASSWORD;
     }
 
     public Long getKingUserId() {
