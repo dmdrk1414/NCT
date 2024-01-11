@@ -1,12 +1,9 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.dto.request.SuggestionReqDto;
-import back.springbootdeveloper.seungchan.dto.response.SuggestionCheckResDto;
+import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.Suggestions;
 import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteRequest;
-import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
-import back.springbootdeveloper.seungchan.dto.response.SuggestionList;
-import back.springbootdeveloper.seungchan.dto.response.SuggestionsResultResponse;
 import back.springbootdeveloper.seungchan.service.SuggestionService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
@@ -54,12 +51,20 @@ public class SuggestionsController {
         return ResponseEntity.ok().body(suggestionsResultResponse);
     }
 
+    @Operation(summary = "각각의 건의 게시판 조회", description = "각각의 건의 게시판의 조회를 한다.")
+    @GetMapping("{id}")
+    public ResponseEntity<EachSuggestionsResDto> fetchSuggestions(HttpServletRequest request, @PathVariable(value = "id") Long id) {
+        Suggestions suggestions = suggestionService.findById(id);
+        EachSuggestionsResDto eachSuggestionsResDto = new EachSuggestionsResDto(suggestions);
+
+        return ResponseEntity.ok().body(eachSuggestionsResDto);
+    }
+
     @Operation(summary = "건의 게시판 확인 버튼", description = "건의 게시판 확인 버튼을 생성한다.")
     @PostMapping("/check")
     public ResponseEntity<SuggestionCheckResDto> checkSuggestions(@RequestBody SuggestionReqDto suggestionReqDto, HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
         Long suggestionId = suggestionReqDto.getSuggestionId();
-        System.out.println("suggestionId = " + suggestionId);
         Boolean check = suggestionService.checkToggle(suggestionId);
 
         return ResponseEntity.ok().body(SuggestionCheckResDto.builder()

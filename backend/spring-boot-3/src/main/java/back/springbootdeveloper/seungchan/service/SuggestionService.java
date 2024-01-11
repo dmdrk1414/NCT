@@ -42,4 +42,8 @@ public class SuggestionService {
         suggestionRepository.updateByIdCheck(id, TRUE_CHECK);
         return suggestionRepository.findById(id).get().isCheck();
     }
+
+    public Suggestions findById(Long id) {
+        return suggestionRepository.findById(id).get();
+    }
 }
