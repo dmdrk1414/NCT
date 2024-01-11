@@ -365,6 +365,41 @@ class LookupControllerTest {
         assertThat(stateCode).isEqualTo(CustomHttpStatus.PASSWORD_CONFIRMATION.value());
     }
 
+    @Test
+    void 비밀번호_변경_예외_현재_비밀번호와_입력_비밀번호_다를시_예외처리() throws Exception {
+        // given
+        String password = "FALSEPASSWOAR1!";
+        String updatePassword = "updatePassword1!";
+        String checkPassword = updatePassword;
+        final String url = "/admin/update/password";
+        UpdatePasswordReqDto requestDto = UpdatePasswordReqDto.builder()
+                .password(password)
+                .updatePassword(updatePassword)
+                .checkUpdatePassword(checkPassword)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(message).isEqualTo(ExceptionMessage.PASSWORD_MISS_MATCH.get());
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.PASSWORD_MISS_MATCHES.value());
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {
             "P@ss1",       // 8자 미만
