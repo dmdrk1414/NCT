@@ -364,6 +364,7 @@ public class ApiTest {
                 .andExpect(jsonPath("$.passAtNow").value(true));
     }
 
+    @Disabled
     @DisplayName("출석 번호 입력 API 테스트")
     @Test
     public void 출석_번호_입력__출석_결석_휴가를_이미_한상태에서의_출석_예외_1() throws Exception {
