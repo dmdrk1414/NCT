@@ -25,6 +25,13 @@ public class UserOfMainService {
     @Autowired
     private UserUtilRepository userUtilRepository;
 
+    /**
+     * isOb을 이용해 현재 인원들의 정보를 찾는다.
+     * 향후 수정
+     *
+     * @param isOb
+     * @return
+     */
     public List<YbUserInfomation> findAllByIsOb(boolean isOb) {
         List<YbUserInfomation> responseList = new ArrayList<>();
         List<UserInfo> users = userRepository.findAll();
