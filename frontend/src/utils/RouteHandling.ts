@@ -32,3 +32,11 @@ export function replaceRouterFindEmail(router: AppRouterInstance): void {
 export function replaceRouterFindPassword(router: AppRouterInstance): void {
   router.replace(RouteUrl.ROUTE_FIND_PASSWORD);
 }
+
+/**
+ * 각각의 게시물 페이지로 replace을 한다.
+ * @param router
+ */
+export function replaceRouterEachSuggestion(router: AppRouterInstance, id: number): void {
+  router.replace(RouteUrl.ROUTE_EACH_SUGGESTION + id);
+}

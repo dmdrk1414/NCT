@@ -13,6 +13,7 @@ export const interceptors = (instance: AxiosInstance, token: string | null) => {
 
 const BASE_URL = 'https://www.nuri777.kro.kr/api';
 // const BASE_URL = 'http://localhost:8080';
+// const BASE_URL = 'http://192.168.0.244:8080';
 
 const axiosApi = (url: string, options?: object) => {
   const instance = axios.create({ baseURL: url, ...options });

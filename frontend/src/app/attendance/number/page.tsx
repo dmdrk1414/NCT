@@ -13,9 +13,9 @@ export default function AttendanceNumber() {
   const router = useRouter();
 
   useEffect(() => {
-    if (hasNotToken(token)) {
-      replaceRouterInitialize(router);
-    }
+    // if (hasNotToken(token)) {
+    //   replaceRouterInitialize(router);
+    // }
 
     axAuth(token)({
       method: 'get',

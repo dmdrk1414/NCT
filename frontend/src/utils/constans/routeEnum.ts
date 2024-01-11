@@ -8,4 +8,5 @@ export enum RouteUrl {
   ROUTE_JOIN_APPLICATION_LIST = '/join/application/list',
   ROUTE_FIND_EMAIL = '/login/find/email',
   ROUTE_FIND_PASSWORD = '/login/find/password',
+  ROUTE_EACH_SUGGESTION = '/suggestion/',
 }
