@@ -58,7 +58,7 @@ public class MainController {
         return ResponseEntity.ok().body(Collections.singletonList(new ObUserOfMainResponse(obUserList, isNuriKing)));
     }
 
-    @Operation(summary = "main page의 회원들의 정보를 자세하게 조회", description = "main page의 회원들의 정보를 실장과 일반 회원들의 권한 별로 볼수 있는 정보가 다르다.")
+    @Operation(summary = "main page 개인 회원 정보 상세 조회", description = "회원 정보 실장과 일반 회원 권한에 따른 조회 정보가 다르다.")
     @GetMapping("/detail/{id}")
     public ResponseEntity<UserOfDetail2MainResponse> fetchUserOfDetail2Main(HttpServletRequest request, @PathVariable long id) {
         Long userIdOfSearch = tokenService.getUserIdFromToken(request);
