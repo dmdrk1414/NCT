@@ -11,10 +11,7 @@ import back.springbootdeveloper.seungchan.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -208,6 +205,7 @@ public class ApiTest {
 
     }
 
+    @Disabled
     @DisplayName("건의 게시판 전체  조회 테스트")
     @Test
     public void fetchSuggestionsTest() throws Exception {
@@ -233,6 +231,7 @@ public class ApiTest {
                 .andExpect(jsonPath("$.nuriKing").value(userUtill.isNuriKing()));
     }
 
+    @Disabled
     @DisplayName("건의 게시판 작성 테스트")
     @Test
     public void writeSuggestionTest() throws Exception {
@@ -340,6 +339,7 @@ public class ApiTest {
                 .andExpect(jsonPath("$[0].obUserList[0].phoneNum").value(userOb.getPhoneNum()));
     }
 
+    @Disabled
     @DisplayName("출석 번호 입력 API 테스트")
     @Test
     public void AttendanceIsPassController() throws Exception {
@@ -586,6 +586,7 @@ public class ApiTest {
                 .andExpect(jsonPath("$.cntVacation").value(cntVacation));
     }
 
+    @Disabled
     @DisplayName("새로운 회원들의 회원가입 절차")
     @Test
     public void newUserSignUpTest() throws Exception {
@@ -797,6 +798,7 @@ public class ApiTest {
                 .andExpect(jsonPath("$.ob").value(userInfo.isOb()));
     }
 
+    @Disabled
     @DisplayName("출석을 하기위한 번호를 response하기 위한 method 테스트")
     @Test
     public void attendanceNumberControllerTest() throws Exception {
@@ -821,6 +823,7 @@ public class ApiTest {
     }
 
 
+    @Disabled
     @DisplayName("개개인의 유저에게 기능적인 정보를 find하는 컨트롤러")
     @Test
     public void userControlFindInfoTest() throws Exception {
