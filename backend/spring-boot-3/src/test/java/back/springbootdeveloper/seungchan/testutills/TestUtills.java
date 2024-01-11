@@ -3,7 +3,11 @@ package back.springbootdeveloper.seungchan.testutills;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -61,6 +65,20 @@ public class TestUtills {
      */
     public static Boolean checkPassword(String rawPassword, String encodedPassword) {
         return new BCryptPasswordEncoder().matches(rawPassword, encodedPassword);
+    }
+
+    public static List<Integer> StringToListFromAttendanceStateWeeklyDate(String stringWeeklyData) {
+        List<Integer> weeklyDataList = new ArrayList<>();
+
+        // 정규 표현식을 사용하여 숫자 추출
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(stringWeeklyData);
+
+        while (matcher.find()) {
+            // 추출된 문자열을 Integer로 변환하여 리스트에 추가
+            weeklyDataList.add(Integer.parseInt(matcher.group()));
+        }
+        return weeklyDataList;
     }
 
     /**

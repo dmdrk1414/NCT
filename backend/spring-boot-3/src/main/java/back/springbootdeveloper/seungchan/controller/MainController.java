@@ -34,16 +34,17 @@ public class MainController {
     private final AttendanceService attendanceService;
     private final AttendanceTimeService attendanceTimeService;
 
-    @Operation(summary = "main page 현재 인원들의 정보", description = "main page 현재 재학 인원들의 정보들을 나열")
+    @Operation(summary = "main page 현재 회원 인원들의 정보들을 찾는다.", description = "현재 회원 인원들의 정보들을 위한 api 찾는다.")
     @GetMapping("/ybs")
-    public ResponseEntity<YbUserListResponse> findAllYbUser(HttpServletRequest request) {
-        Long UserIdOfSearch = tokenService.getUserIdFromToken(request);
-        boolean isPassAttendanceOfSearchUser = attendanceService.isPassAttendanceAtToday(UserIdOfSearch);
+    public ResponseEntity<YbUserListResponse> findAllYbUsers(HttpServletRequest request) {
+        Long userId = tokenService.getUserIdFromToken(request);
+        boolean isPassAttendance = attendanceService.isPassAttendanceAtToday(userId);
         boolean isObUser = false;
         List<YbUserInfomation> ybUserInfomationList = userOfMainService.findAllByIsOb(isObUser);
+
         return ResponseEntity.ok().body(YbUserListResponse.builder()
                 .ybUserInfomationList(ybUserInfomationList)
-                .isPassAttendanceOfSearchUse(isPassAttendanceOfSearchUser)
+                .isPassAttendanceOfSearchUse(isPassAttendance)
                 .build());
     }
 
@@ -57,13 +58,12 @@ public class MainController {
         return ResponseEntity.ok().body(Collections.singletonList(new ObUserOfMainResponse(obUserList, isNuriKing)));
     }
 
-    @Operation(summary = "main page의 회원들의 정보를 자세하게 조회", description = "main page의 회원들의 정보를 실장과 일반 회원들의 권한 별로 볼수 있는 정보가 다르다.")
+    @Operation(summary = "main page 개인 회원 정보 상세 조회", description = "회원 정보 실장과 일반 회원 권한에 따른 조회 정보가 다르다.")
     @GetMapping("/detail/{id}")
     public ResponseEntity<UserOfDetail2MainResponse> fetchUserOfDetail2Main(HttpServletRequest request, @PathVariable long id) {
         Long userIdOfSearch = tokenService.getUserIdFromToken(request);
         UserInfo user = userServiceImp.findUserById(id);
 
-        Long userId = user.getId();
         UserUtill userUtill = userUtilRepository.findByUserId(userIdOfSearch);
 
         UserOfDetail2MainResponse response = new UserOfDetail2MainResponse(userUtill, user);

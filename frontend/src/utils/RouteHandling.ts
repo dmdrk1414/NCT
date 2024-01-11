@@ -40,3 +40,11 @@ export function replaceRouterFindPassword(router: AppRouterInstance): void {
 export function replaceRouterEachSuggestion(router: AppRouterInstance, id: number): void {
   router.replace(RouteUrl.ROUTE_EACH_SUGGESTION + id);
 }
+
+/**
+ * 비밀번호 변경 페이지로 replace을 한다.
+ * @param router
+ */
+export function replaceRouterPassword(router: AppRouterInstance): void {
+  router.replace(RouteUrl.ROUTE_UPDATE_PASSWORD);
+}

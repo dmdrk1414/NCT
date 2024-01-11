@@ -21,6 +21,7 @@ public class TestSetUp {
     private TokenService tokenService;
     private Long kingUserId;
     private Long userId_1;
+    private String passwordOfKingUser;
 
 
     @Autowired
@@ -71,7 +72,7 @@ public class TestSetUp {
      */
     public UserInfo setUpUser() {
         // userID 1
-        UserInfo user = userService.save(TestMakeObject.makeUser("일반 유저", "seungchan141414@gmail.com"));
+        UserInfo user = userService.save(TestMakeObject.makeUser("일반 유저", "nomal@gmail.com"));
         userId_1 = user.getId();
 
         userUtillService.save(TestMakeObject.makeUserUtill(user, 5, false));
@@ -131,6 +132,10 @@ public class TestSetUp {
         }
 
         return tokenService.createAccessAndRefreshToken(request, response, kingUser.getEmail());
+    }
+
+    public String getKingUserPassword() {
+        return TestMakeObject.TEST_PASSWORD;
     }
 
     public Long getKingUserId() {
