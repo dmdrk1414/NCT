@@ -74,9 +74,9 @@ public class MainController {
     @Operation(summary = "회원들의 개인 각각의 출석시간 Find", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
     @GetMapping("/detail/{id}/control")
     public ResponseEntity<UserControlResDto> userControlFindInfo(HttpServletRequest request, @PathVariable long id) {
-        UserControlResDto userControlResponse = attendanceTimeService.findUserControlResById(id);
+        UserControlResDto userControlResDto = attendanceTimeService.findUserControlResById(id);
 
-        return ResponseEntity.ok().body(userControlResponse);
+        return ResponseEntity.ok().body(userControlResDto);
     }
 
     @Operation(summary = "유저의 개인적인 커스텀을 위한 컨트롤러 post", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
