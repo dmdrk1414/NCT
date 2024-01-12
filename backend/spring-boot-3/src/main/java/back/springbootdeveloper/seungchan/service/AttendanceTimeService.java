@@ -75,4 +75,8 @@ public class AttendanceTimeService {
     public AttendanceTime save(AttendanceTime attendanceTime) {
         return attendanceTimeRepository.save(attendanceTime);
     }
+
+    public AttendanceTime findByUserId(Long userId) {
+        return attendanceTimeRepository.findByUserId(userId);
+    }
 }
