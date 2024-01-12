@@ -1,12 +1,10 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
+import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
-import back.springbootdeveloper.seungchan.service.AttendanceService;
-import back.springbootdeveloper.seungchan.service.DatabaseService;
-import back.springbootdeveloper.seungchan.service.UserService;
-import back.springbootdeveloper.seungchan.service.UserUtillService;
+import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,6 +39,8 @@ class MainControllerTest {
     private UserService userService;
     @Autowired
     private AttendanceService attendanceStateService;
+    @Autowired
+    private AttendanceTimeService attendanceTimeService;
     private String token;
     private Long kingUserId;
     private UserInfo kingUser;
@@ -160,4 +160,26 @@ class MainControllerTest {
                 .andExpect(jsonPath("$.ob").value(nomalUser.isOb()))
                 .andExpect(jsonPath("$.nuriKing").value(true));
     }
+
+    @Test
+    void 회원_개인_각각_출석시간_찾기_테스트() throws Exception {
+        final String url = "/main/detail/{id}/control";
+        AttendanceTime attendanceTime = attendanceTimeService.findByUserId(kingUser.getId());
+
+        // when
+        final ResultActions resultActions = mockMvc.perform(get(url, kingUser.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+        // then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(attendanceTime.getName()))
+                .andExpect(jsonPath("$.mondayAttendanceTime").value(attendanceTime.getMonday()))
+                .andExpect(jsonPath("$.tuesdayAttendanceTime").value(attendanceTime.getTuesday()))
+                .andExpect(jsonPath("$.wednesdayAttendanceTime").value(attendanceTime.getWednesday()))
+                .andExpect(jsonPath("$.thursdayAttendanceTime").value(attendanceTime.getThursday()))
+                .andExpect(jsonPath("$.fridayAttendanceTime").value(attendanceTime.getFriday()));
+    }
 }
+
