@@ -611,5 +611,40 @@ class MainControllerTest {
                 .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
                 .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
     }
+
+    @Test
+    public void 개인_장기_휴가_신청_확인_테스트_1() throws Exception {
+        // given
+        final String url = "/main/detail/{id}/control/exception/attendance";
+        Boolean isExceptionAttendance = attendanceTimeService.findByUserId(kingUserId).isExceptonAttendance();
+
+        // when
+        ResultActions resultActions = mockMvc.perform(get(url, kingUserId)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        resultActions
+                .andExpect(jsonPath("$.exceptionAttendance").value(isExceptionAttendance));
+    }
+
+    @Test
+    public void 개인_장기_휴가_신청_확인_테스트_2() throws Exception {
+        // given
+        final String url = "/main/detail/{id}/control/exception/attendance";
+        Boolean isExceptionAttendance = attendanceTimeService.findByUserId(nomalUser.getId()).isExceptonAttendance();
+
+        // when
+        ResultActions resultActions = mockMvc.perform(get(url, nomalUser.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        resultActions
+                .andExpect(jsonPath("$.exceptionAttendance").value(isExceptionAttendance));
+    }
+
 }
 
