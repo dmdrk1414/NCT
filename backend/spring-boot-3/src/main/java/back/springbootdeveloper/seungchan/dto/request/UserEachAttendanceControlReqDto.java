@@ -1,5 +1,7 @@
 package back.springbootdeveloper.seungchan.dto.request;
 
+import back.springbootdeveloper.seungchan.entity.AttendanceTime;
+import back.springbootdeveloper.seungchan.entity.UserInfo;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -17,8 +19,4 @@ public class UserEachAttendanceControlReqDto {
     private String thursdayAttendanceTime;
     private String fridayAttendanceTime;
 
-    public List<String> getAttendanceTimes() {
-        return List.of(mondayAttendanceTime, tuesdayAttendanceTime,
-                wednesdayAttendanceTime, thursdayAttendanceTime, fridayAttendanceTime);
-    }
 }

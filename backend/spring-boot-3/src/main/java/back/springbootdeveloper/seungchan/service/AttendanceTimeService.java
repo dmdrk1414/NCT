@@ -30,22 +30,16 @@ public class AttendanceTimeService {
 
     /**
      * attendance time DB에 요일별 개인 시간을 업데이트 한다.
-     *
-     * @param userEachAttendanceControlReqDto
-     * @param userId
      */
-    public void updateAttendanceTime(UserEachAttendanceControlReqDto userEachAttendanceControlReqDto, Long userId) {
-        List<String> attendanceTimes = userEachAttendanceControlReqDto.getAttendanceTimes();
-        if (attendanceTimes.size() >= 5) {
-            attendanceTimeRepository.updateAttendanceTime(
-                    attendanceTimes.get(DateConstants.MONDAY.getIndex()), // Monday
-                    attendanceTimes.get(DateConstants.TUESDAY.getIndex()), // Tuesday
-                    attendanceTimes.get(DateConstants.WEDNESDAY.getIndex()), // Wednesday
-                    attendanceTimes.get(DateConstants.THURSDAY.getIndex()), // Thursday
-                    attendanceTimes.get(DateConstants.FRIDAY.getIndex()), // Friday
-                    userId
-            );
-        }
+    public void updateAttendanceTime(UserEachAttendanceControlReqDto reqDto, Long userId) {
+        attendanceTimeRepository.updateAttendanceTime(
+                reqDto.getMondayAttendanceTime(),
+                reqDto.getTuesdayAttendanceTime(),
+                reqDto.getWednesdayAttendanceTime(),
+                reqDto.getThursdayAttendanceTime(),
+                reqDto.getFridayAttendanceTime(),
+                userId
+        );
     }
 
 
