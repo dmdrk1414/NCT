@@ -32,6 +32,7 @@ public class AttendanceTimeService {
     /**
      * attendance time DB에 요일별 개인 시간을 업데이트 한다.
      */
+    @Transactional
     public void updateAttendanceTime(UserEachAttendanceControlReqDto reqDto, Long userId) {
         attendanceTimeRepository.updateAttendanceTime(
                 reqDto.getMondayAttendanceTime(),
