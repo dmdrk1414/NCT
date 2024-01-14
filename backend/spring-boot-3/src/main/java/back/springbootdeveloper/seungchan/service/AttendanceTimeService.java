@@ -16,6 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor // final이 붙거나  @NotNull이 붙는 필드의 생성자 추가
 @Service
 public class AttendanceTimeService {
+    private static final Boolean FALSE_EXCEPTION = false;
+    private static final Boolean TRUE_EXCEPTION = true;
     @Autowired
     private AttendanceTimeRepository attendanceTimeRepository;
 
@@ -44,24 +46,20 @@ public class AttendanceTimeService {
         );
     }
 
-
     public List<AttendanceTime> findAll() {
         return attendanceTimeRepository.findAll();
     }
 
     @Transactional
-    public void updateExceptionAttendance(long id) {
-        AttendanceTime attendanceTime = attendanceTimeRepository.findByUserId(id);
+    public void updateExceptionAttendance(long userId) {
+        AttendanceTime attendanceTime = attendanceTimeRepository.findByUserId(userId);
         boolean isException = attendanceTime.isExceptonAttendance();
-        boolean isFalseException = false;
-        boolean isTrueException = true;
-        Long userId = id;
 
         if (isException) {
-            attendanceTimeRepository.updateException(userId, isFalseException);
-        } else {
-            attendanceTimeRepository.updateException(userId, isTrueException);
+            attendanceTimeRepository.updateException(userId, FALSE_EXCEPTION);
+            return;
         }
+        attendanceTimeRepository.updateException(userId, TRUE_EXCEPTION);
     }
 
     public boolean findExceptionAttendance(long id) {
