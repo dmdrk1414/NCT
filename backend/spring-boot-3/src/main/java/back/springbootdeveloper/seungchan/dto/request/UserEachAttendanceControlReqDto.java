@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
+@Builder
 public class UserEachAttendanceControlReqDto {
     private String mondayAttendanceTime;
     private String tuesdayAttendanceTime;
