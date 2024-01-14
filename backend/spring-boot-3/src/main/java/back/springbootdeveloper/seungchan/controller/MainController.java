@@ -79,10 +79,11 @@ public class MainController {
         return ResponseEntity.ok().body(userControlResDto);
     }
 
-    @Operation(summary = "유저의 개인적인 커스텀을 위한 컨트롤러 post", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
+    @Operation(summary = "유저의 개인적 출석 시간 변경", description = "유저의 개인적 출석 시간 월, 화, 수, 목, 금 요일을 개별적으로 변경한다.")
     @PostMapping("/detail/{id}/control")
     public ResponseEntity<BaseResponseBody> userControlPostInfo(@RequestBody UserEachAttendanceControlReqDto userEachAttendanceControlRequest, @PathVariable long id) {
         attendanceTimeService.updateAttendanceTime(userEachAttendanceControlRequest, id);
+
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 
