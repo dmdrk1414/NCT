@@ -5,6 +5,7 @@ import back.springbootdeveloper.seungchan.dto.request.UserEachAttendanceControlR
 import back.springbootdeveloper.seungchan.dto.response.UserControlResDto;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.AttendanceTimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,10 @@ public class AttendanceTimeService {
 
     public boolean findExceptionAttendance(long id) {
         AttendanceTime attendanceTime = attendanceTimeRepository.findByUserId(id);
+        if (attendanceTime == null) {
+            throw new EntityNotFoundException();
+        }
+
         return attendanceTime.isExceptonAttendance();
     }
 
