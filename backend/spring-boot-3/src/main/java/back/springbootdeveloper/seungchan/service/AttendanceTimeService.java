@@ -9,6 +9,7 @@ import back.springbootdeveloper.seungchan.repository.AttendanceTimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class AttendanceTimeService {
         return attendanceTimeRepository.findAll();
     }
 
+    @Transactional
     public void updateExceptionAttendance(long id) {
         AttendanceTime attendanceTime = attendanceTimeRepository.findByUserId(id);
         boolean isException = attendanceTime.isExceptonAttendance();
