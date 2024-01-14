@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.dto.request.UserEachAttendanceControlReqDto;
 import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
@@ -13,12 +14,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -180,6 +184,43 @@ class MainControllerTest {
                 .andExpect(jsonPath("$.wednesdayAttendanceTime").value(attendanceTime.getWednesday()))
                 .andExpect(jsonPath("$.thursdayAttendanceTime").value(attendanceTime.getThursday()))
                 .andExpect(jsonPath("$.fridayAttendanceTime").value(attendanceTime.getFriday()));
+    }
+
+    @Test
+    void 유저_개인_출석_시간_변경() throws Exception {
+        final String url = "/main/detail/{id}/control";
+        String UPDATE_NUMBER = "12";
+        UserEachAttendanceControlReqDto requestDto = UserEachAttendanceControlReqDto.builder()
+                .mondayAttendanceTime(UPDATE_NUMBER)
+                .tuesdayAttendanceTime(UPDATE_NUMBER)
+                .wednesdayAttendanceTime(UPDATE_NUMBER)
+                .thursdayAttendanceTime(UPDATE_NUMBER)
+                .fridayAttendanceTime(UPDATE_NUMBER)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        ResultActions result = mockMvc.perform(post(url, kingUser.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        AttendanceTime result_attend = attendanceTimeService.findByUserId(kingUserId);
+
+        // than
+        result
+                .andExpect(jsonPath("$.message").value("SUCCESS"))
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+
+        assertThat(result_attend.getMonday()).isEqualTo(UPDATE_NUMBER);
+        assertThat(result_attend.getTuesday()).isEqualTo(UPDATE_NUMBER);
+        assertThat(result_attend.getWednesday()).isEqualTo(UPDATE_NUMBER);
+        assertThat(result_attend.getThursday()).isEqualTo(UPDATE_NUMBER);
+        assertThat(result_attend.getFriday()).isEqualTo(UPDATE_NUMBER);
     }
 }
 
