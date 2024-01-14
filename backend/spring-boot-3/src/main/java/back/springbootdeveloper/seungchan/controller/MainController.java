@@ -88,7 +88,7 @@ public class MainController {
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 
-    @Operation(summary = "장기휴가 신청을 위한 버튼api", description = "버튼을 누르면 장기 휴가 신청을 의미하는 Attendance_time 테이블의 exception의 값이 true/false가 된다.")
+    @Operation(summary = "개별 장기 휴가 신청", description = "장기 휴가 신청을 할시 장기 휴가 신청이 완료가 된다.")
     @PostMapping("/detail/{id}/control/exception/attendance")
     public ResponseEntity<BaseResponseBody> userExceptionAttendanceControl(@PathVariable long id) {
         attendanceTimeService.updateExceptionAttendance(id);
