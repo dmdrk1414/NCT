@@ -12,6 +12,7 @@ import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -562,6 +563,55 @@ class MainControllerTest {
 
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @Test
+    public void 개인_장기_휴가_신청_테스트() throws Exception {
+        // given
+        final String url = "/main/detail/{id}/control/exception/attendance";
+        Boolean isExceptionAttendance = attendanceTimeService.findByUserId(kingUserId).isExceptonAttendance();
+
+        // when
+        ResultActions result = mockMvc.perform(post(url, kingUser.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        boolean result_exception = attendanceTimeService.findByUserId(kingUserId).isExceptonAttendance();
+        // then
+        if (isExceptionAttendance) {
+            assertThat(result_exception).isFalse();
+        } else {
+            assertThat(result_exception).isTrue();
+        }
+
+        result
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+        // post 요청을 2번하여 toggle 테스트
+        Boolean isExceptionAttendance_2 = attendanceTimeService.findByUserId(kingUserId).isExceptonAttendance();
+
+        // when
+        ResultActions result_2 = mockMvc.perform(post(url, kingUser.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        boolean result_exception_2 = attendanceTimeService.findByUserId(kingUserId).isExceptonAttendance();
+        // then
+        if (isExceptionAttendance_2) {
+            assertThat(result_exception_2).isFalse();
+        } else {
+            assertThat(result_exception_2).isTrue();
+        }
+
+        result_2
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+
+
     }
 }
 
