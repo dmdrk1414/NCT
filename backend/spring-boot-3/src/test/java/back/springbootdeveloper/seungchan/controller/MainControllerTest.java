@@ -610,8 +610,6 @@ class MainControllerTest {
         result_2
                 .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
                 .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
-
-
     }
 }
 
