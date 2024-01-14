@@ -13,6 +13,8 @@ import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -369,6 +371,176 @@ class MainControllerTest {
                 .wednesdayAttendanceTime(UPDATE_NUMBER)
                 .thursdayAttendanceTime(UPDATE_NUMBER)
                 .fridayAttendanceTime("")
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url, kingUserId)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"00", "24", "abc", "123", "9", "25", "-1", "50", "99", "100", "!@#", "$%^"})
+    void 유저_개인_출석_시간_변경_잘못된_출석시간_입력_1__예외_테스트(String input) throws Exception {
+        final String url = "/main/detail/{id}/control";
+        String UPDATE_NUMBER = "12";
+        UserEachAttendanceControlReqDto requestDto = UserEachAttendanceControlReqDto.builder()
+                .mondayAttendanceTime(input)
+                .tuesdayAttendanceTime(UPDATE_NUMBER)
+                .wednesdayAttendanceTime(UPDATE_NUMBER)
+                .thursdayAttendanceTime(UPDATE_NUMBER)
+                .fridayAttendanceTime(UPDATE_NUMBER)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url, kingUserId)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"00", "24", "abc", "123", "9", "25", "-1", "50", "99", "100", "!@#", "$%^"})
+    void 유저_개인_출석_시간_변경_잘못된_출석시간_입력_2__예외_테스트(String input) throws Exception {
+        final String url = "/main/detail/{id}/control";
+        String UPDATE_NUMBER = "12";
+        UserEachAttendanceControlReqDto requestDto = UserEachAttendanceControlReqDto.builder()
+                .mondayAttendanceTime(UPDATE_NUMBER)
+                .tuesdayAttendanceTime(input)
+                .wednesdayAttendanceTime(UPDATE_NUMBER)
+                .thursdayAttendanceTime(UPDATE_NUMBER)
+                .fridayAttendanceTime(UPDATE_NUMBER)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url, kingUserId)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"00", "24", "abc", "123", "9", "25", "-1", "50", "99", "100", "!@#", "$%^"})
+    void 유저_개인_출석_시간_변경_잘못된_출석시간_입력_3__예외_테스트(String input) throws Exception {
+        final String url = "/main/detail/{id}/control";
+        String UPDATE_NUMBER = "12";
+        UserEachAttendanceControlReqDto requestDto = UserEachAttendanceControlReqDto.builder()
+                .mondayAttendanceTime(UPDATE_NUMBER)
+                .tuesdayAttendanceTime(UPDATE_NUMBER)
+                .wednesdayAttendanceTime(input)
+                .thursdayAttendanceTime(UPDATE_NUMBER)
+                .fridayAttendanceTime(UPDATE_NUMBER)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url, kingUserId)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"00", "24", "abc", "123", "9", "25", "-1", "50", "99", "100", "!@#", "$%^"})
+    void 유저_개인_출석_시간_변경_잘못된_출석시간_입력_4__예외_테스트(String input) throws Exception {
+        final String url = "/main/detail/{id}/control";
+        String UPDATE_NUMBER = "12";
+        UserEachAttendanceControlReqDto requestDto = UserEachAttendanceControlReqDto.builder()
+                .mondayAttendanceTime(UPDATE_NUMBER)
+                .tuesdayAttendanceTime(UPDATE_NUMBER)
+                .wednesdayAttendanceTime(UPDATE_NUMBER)
+                .thursdayAttendanceTime(input)
+                .fridayAttendanceTime(UPDATE_NUMBER)
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        MvcResult result = mockMvc.perform(post(url, kingUserId)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                        .header("authorization", "Bearer " + token) // token header에 담기
+                )
+                .andReturn();
+
+        MockHttpServletResponse response = result.getResponse();
+
+        // JSON 응답을 Map으로 변환
+        String message = TestUtills.getMessageFromResponse(response);
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"00", "24", "abc", "123", "9", "25", "-1", "50", "99", "100", "!@#", "$%^"})
+    void 유저_개인_출석_시간_변경_잘못된_출석시간_입력_5__예외_테스트(String input) throws Exception {
+        final String url = "/main/detail/{id}/control";
+        String UPDATE_NUMBER = "12";
+        UserEachAttendanceControlReqDto requestDto = UserEachAttendanceControlReqDto.builder()
+                .mondayAttendanceTime(UPDATE_NUMBER)
+                .tuesdayAttendanceTime(UPDATE_NUMBER)
+                .wednesdayAttendanceTime(UPDATE_NUMBER)
+                .thursdayAttendanceTime(UPDATE_NUMBER)
+                .fridayAttendanceTime(input)
                 .build();
 
         // when
