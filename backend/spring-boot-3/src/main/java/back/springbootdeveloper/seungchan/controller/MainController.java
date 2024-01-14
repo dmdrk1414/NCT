@@ -12,6 +12,7 @@ import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -81,7 +82,7 @@ public class MainController {
 
     @Operation(summary = "유저의 개인적 출석 시간 변경", description = "유저의 개인적 출석 시간 월, 화, 수, 목, 금 요일을 개별적으로 변경한다.")
     @PostMapping("/detail/{id}/control")
-    public ResponseEntity<BaseResponseBody> userControlPostInfo(@RequestBody UserEachAttendanceControlReqDto userEachAttendanceControlRequest, @PathVariable("id") long id) {
+    public ResponseEntity<BaseResponseBody> userControlPostInfo(@Valid @RequestBody UserEachAttendanceControlReqDto userEachAttendanceControlRequest, @PathVariable("id") long id) {
         attendanceTimeService.updateAttendanceTime(userEachAttendanceControlRequest, id);
 
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
