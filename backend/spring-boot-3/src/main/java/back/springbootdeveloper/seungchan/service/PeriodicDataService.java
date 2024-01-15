@@ -82,4 +82,8 @@ public class PeriodicDataService {
     public PeriodicData save(PeriodicData periodicData) {
         return periodicDataRepository.save(periodicData);
     }
+
+    public PeriodicData finByUserId(Long userId) {
+        return periodicDataRepository.findByUserId(userId);
+    }
 }

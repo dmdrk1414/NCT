@@ -1,15 +1,12 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class NewUsersResponse {
+@NoArgsConstructor
+@Data
+@Builder
+public class NewUsersResDto {
     private Long id;
     private String email;
     private String name;

@@ -1,11 +1,10 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.entity.TempUser;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
-import back.springbootdeveloper.seungchan.dto.response.NewUserEachResponse;
-import back.springbootdeveloper.seungchan.dto.response.NewUsersResponse;
+import back.springbootdeveloper.seungchan.dto.response.NewUserEachResDto;
+import back.springbootdeveloper.seungchan.dto.response.NewUsersResDto;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,25 +31,27 @@ public class NewUserController {
     private final PeriodicDataService periodicDataService;
     private final AttendanceTimeService attendanceTimeService;
 
-    @Operation(summary = "모든 신청 유저들의 정보 보기", description = "3명이 신청을 하면 3명의 정보를 모두 확인가능하다.")
+    @Operation(summary = "신청한 모든 유저 정보 반환", description = "신청한 모든 유저 정보 반환 ")
     @GetMapping("")
-    public ResponseEntity<List<NewUsersResponse>> findAllNewUsers() {
-        List<NewUsersResponse> newUserList = tempUserService.findAllNewUsers();
+    public ResponseEntity<List<NewUsersResDto>> findAllNewUsers() {
+        List<NewUsersResDto> newUserList = tempUserService.findAllNewUsers();
+
         return ResponseEntity.ok().body(newUserList);
     }
 
-    @Operation(summary = "신청 개별 유저들의 정보 보기", description = "신청을 한 유저의 정보를 확인가능하다.")
+    @Operation(summary = "개별 신청 유저 정보 반환", description = "개별 신청 유저의 상세 정보 확인")
     @GetMapping("/{id}")
-    public ResponseEntity<NewUserEachResponse> findNewUsers(@PathVariable long id, HttpServletRequest request) {
+    public ResponseEntity<NewUserEachResDto> findNewUsers(@PathVariable("id") long id, HttpServletRequest request) {
         TempUser tempUser = tempUserService.findNewUsers(id);
         boolean isNuriKingOfToken = tokenService.getNuriKingFromToken(request);
-        return ResponseEntity.ok().body(NewUserEachResponse.builder()
+
+        return ResponseEntity.ok().body(NewUserEachResDto.builder()
                 .tempUser(tempUser)
                 .isNuriKing(isNuriKingOfToken)
                 .build());
     }
 
-    @Operation(summary = "실장의 추가 실원 승락 API", description = "실장이 신청 인원의 개별 페이지에서 승락 버튼구현")
+    @Operation(summary = "실장의 신청 인원 승락 API", description = "실장의 신청 인원 개별 페이지 승락 버튼 구현")
     @PostMapping("/{id}/acceptance")
     public ResponseEntity<BaseResponseBody> acceptNewUserOfKing(@PathVariable long id, HttpServletRequest request) {
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
@@ -64,6 +65,7 @@ public class NewUserController {
             periodicDataService.saveNewUser(newUser);
             attendanceTimeService.saveNewUser(newUser);
         }
+        
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 

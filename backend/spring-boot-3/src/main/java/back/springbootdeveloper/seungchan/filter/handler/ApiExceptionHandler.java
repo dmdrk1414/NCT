@@ -4,10 +4,7 @@ import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.filter.exception.ApiException;
 import back.springbootdeveloper.seungchan.filter.exception.EmailSameMatchException;
-import back.springbootdeveloper.seungchan.filter.exception.judgment.MissMatchesPasswordException;
-import back.springbootdeveloper.seungchan.filter.exception.judgment.PasswordConfirmationException;
-import back.springbootdeveloper.seungchan.filter.exception.judgment.UpdateFailedException;
-import back.springbootdeveloper.seungchan.filter.exception.judgment.WeekendException;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.*;
 import back.springbootdeveloper.seungchan.filter.exception.user.NewUserRegistrationException;
 import back.springbootdeveloper.seungchan.filter.exception.user.UserNotExistException;
 import org.springframework.http.HttpStatus;
@@ -140,6 +137,21 @@ public class ApiExceptionHandler {
 
         ApiException apiException = new ApiException(
                 ExceptionMessage.PASSWORD_MISS_MATCH.get(), // add
+                httpStatus,
+                customHttpStatus.value(),
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
+
+    @ExceptionHandler(value = {EntityNotFoundException.class})
+    public ResponseEntity<Object> handleEntityNotFoundException(MissMatchesPasswordException e) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        CustomHttpStatus customHttpStatus = CustomHttpStatus.ENTITY_NOT_FOUND; // add
+
+        ApiException apiException = new ApiException(
+                ExceptionMessage.ENTITY_NOT_FOUND.get(), // add
                 httpStatus,
                 customHttpStatus.value(),
                 ZonedDateTime.now(ZoneId.of("Z"))

@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @Component
@@ -19,6 +22,8 @@ public class TestSetUp {
     private final PeriodicDataService periodicDataService;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private TempUserService tempUserService;
     private Long kingUserId;
     private Long userId_1;
     private String passwordOfKingUser;
@@ -146,4 +151,18 @@ public class TestSetUp {
         return this.userId_1;
     }
 
+    public List<TempUser> getTempUsers() {
+        List<TempUser> tempUserList = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++) {
+            String email = "new" + i + "@gmail.com";
+            String name = "새로운신입_" + i;
+
+            TempUser tempUser = TestMakeObject.makeNewUserOb(email, name);
+            tempUserList.add(tempUser);
+            tempUserService.save(tempUser);
+        }
+
+        return tempUserList;
+    }
 }
