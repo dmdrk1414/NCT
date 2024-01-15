@@ -39,11 +39,12 @@ public class NewUserController {
         return ResponseEntity.ok().body(newUserList);
     }
 
-    @Operation(summary = "신청 개별 유저들의 정보 보기", description = "신청을 한 유저의 정보를 확인가능하다.")
+    @Operation(summary = "개별 신청 유저 정보 반환", description = "개별 신청 유저의 상세 정보 확인")
     @GetMapping("/{id}")
     public ResponseEntity<NewUserEachResponse> findNewUsers(@PathVariable long id, HttpServletRequest request) {
         TempUser tempUser = tempUserService.findNewUsers(id);
         boolean isNuriKingOfToken = tokenService.getNuriKingFromToken(request);
+
         return ResponseEntity.ok().body(NewUserEachResponse.builder()
                 .tempUser(tempUser)
                 .isNuriKing(isNuriKingOfToken)
