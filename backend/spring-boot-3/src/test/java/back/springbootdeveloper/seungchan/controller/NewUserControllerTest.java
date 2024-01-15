@@ -1,10 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.entity.TempUser;
-import back.springbootdeveloper.seungchan.entity.UserInfo;
-import back.springbootdeveloper.seungchan.service.DatabaseService;
-import back.springbootdeveloper.seungchan.service.TempUserService;
-import back.springbootdeveloper.seungchan.service.UserService;
+import back.springbootdeveloper.seungchan.entity.*;
+import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,15 +9,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,6 +37,14 @@ class NewUserControllerTest {
     private UserService userService;
     @Autowired
     private TempUserService tempUserService;
+    @Autowired
+    private UserUtillService userUtillService;
+    @Autowired
+    private AttendanceService attendanceService;
+    @Autowired
+    private PeriodicDataService periodicDataService;
+    @Autowired
+    private AttendanceTimeService attendanceTimeService;
     private String token;
     private Long kingUserId;
     private UserInfo kingUser;
@@ -116,5 +122,77 @@ class NewUserControllerTest {
                 .andExpect(jsonPath("$.tempUser.major").value(tempUser.getMajor()))
                 .andExpect(jsonPath("$.tempUser.gpa").value(tempUser.getGpa()))
                 .andExpect(jsonPath("$.tempUser.email").value(tempUser.getEmail()));
+    }
+
+    @Test
+    void 실장_신청_인원_승락_테스트_1() throws Exception {
+        final String url = "/new-users/{id}/acceptance";
+        List<TempUser> tempUsers = tempUserService.findAll();
+        TempUser tempUser = tempUsers.get(0);
+
+        // when
+        ResultActions result = mockMvc.perform(post(url, tempUser.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        UserInfo userInfo = userService.findByEmail(tempUser.getEmail());
+        UserUtill userUtill = userUtillService.findUserByUserId(userInfo.getId());
+        AttendanceStatus attendanceStatus = attendanceService.findById(userInfo.getId());
+        PeriodicData periodicData = periodicDataService.finByUserId(userInfo.getId());
+        AttendanceTime attendanceTime = attendanceTimeService.findByUserId(userInfo.getId());
+
+        // than
+        result
+                .andExpect(jsonPath("$.message").value("SUCCESS"))
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+
+        assertThat(userInfo).isNotNull();
+        assertThat(userUtill).isNotNull();
+        assertThat(attendanceStatus).isNotNull();
+        assertThat(periodicData).isNotNull();
+        assertThat(attendanceTime).isNotNull();
+
+        assertThat(userInfo.getEmail()).isEqualTo(tempUser.getEmail());
+        assertThat(userInfo.getName()).isEqualTo(tempUser.getName());
+        assertThat(userInfo.getPhoneNum()).isEqualTo(tempUser.getPhoneNum());
+    }
+
+    @Test
+    void 실장_신청_인원_승락_테스트_2() throws Exception {
+        final String url = "/new-users/{id}/acceptance";
+        List<TempUser> tempUsers = tempUserService.findAll();
+        TempUser tempUser = tempUsers.get(1);
+
+        // when
+        ResultActions result = mockMvc.perform(post(url, tempUser.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        UserInfo userInfo = userService.findByEmail(tempUser.getEmail());
+        UserUtill userUtill = userUtillService.findUserByUserId(userInfo.getId());
+        AttendanceStatus attendanceStatus = attendanceService.findById(userInfo.getId());
+        PeriodicData periodicData = periodicDataService.finByUserId(userInfo.getId());
+        AttendanceTime attendanceTime = attendanceTimeService.findByUserId(userInfo.getId());
+
+        // than
+        result
+                .andExpect(jsonPath("$.message").value("SUCCESS"))
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+
+        assertThat(userInfo).isNotNull();
+        assertThat(userUtill).isNotNull();
+        assertThat(attendanceStatus).isNotNull();
+        assertThat(periodicData).isNotNull();
+        assertThat(attendanceTime).isNotNull();
+
+        assertThat(userInfo.getEmail()).isEqualTo(tempUser.getEmail());
+        assertThat(userInfo.getName()).isEqualTo(tempUser.getName());
+        assertThat(userInfo.getPhoneNum()).isEqualTo(tempUser.getPhoneNum());
     }
 }
