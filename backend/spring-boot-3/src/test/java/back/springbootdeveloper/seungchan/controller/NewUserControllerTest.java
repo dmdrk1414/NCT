@@ -72,4 +72,49 @@ class NewUserControllerTest {
                 .andExpect(jsonPath("$[2].email").value(tempUserList.get(2).getEmail()))
                 .andExpect(jsonPath("$[2].name").value(tempUserList.get(2).getName()));
     }
+
+
+    @Test
+    void 개별_신청_유저_정보_반환_테스트_1() throws Exception {
+        final String url = "/new-users/{id}";
+        List<TempUser> tempUsers = tempUserService.findAll();
+        TempUser tempUser = tempUsers.get(0);
+
+        // when
+        ResultActions resultActions = mockMvc.perform(get(url, tempUser.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tempUser.name").value(tempUser.getName()))
+                .andExpect(jsonPath("$.tempUser.phoneNum").value(tempUser.getPhoneNum()))
+                .andExpect(jsonPath("$.tempUser.major").value(tempUser.getMajor()))
+                .andExpect(jsonPath("$.tempUser.gpa").value(tempUser.getGpa()))
+                .andExpect(jsonPath("$.tempUser.email").value(tempUser.getEmail()));
+    }
+
+    @Test
+    void 개별_신청_유저_정보_반환_테스트_2() throws Exception {
+        final String url = "/new-users/{id}";
+        List<TempUser> tempUsers = tempUserService.findAll();
+        TempUser tempUser = tempUsers.get(1);
+
+        // when
+        ResultActions resultActions = mockMvc.perform(get(url, tempUser.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tempUser.name").value(tempUser.getName()))
+                .andExpect(jsonPath("$.tempUser.phoneNum").value(tempUser.getPhoneNum()))
+                .andExpect(jsonPath("$.tempUser.major").value(tempUser.getMajor()))
+                .andExpect(jsonPath("$.tempUser.gpa").value(tempUser.getGpa()))
+                .andExpect(jsonPath("$.tempUser.email").value(tempUser.getEmail()));
+    }
 }
