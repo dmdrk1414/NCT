@@ -26,6 +26,11 @@ public class TempUserService {
         }
     }
 
+    /**
+     * 임시 유저를 찾아서 response으로 변환하여 반환
+     *
+     * @return
+     */
     public List<NewUsersResDto> findAllNewUsers() {
         List<TempUser> newUsersResponses = tempUserRepository.findAll();
 
