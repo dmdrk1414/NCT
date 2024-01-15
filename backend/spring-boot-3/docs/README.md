@@ -30,6 +30,10 @@
     - [x] userExceptionAttendanceControl
   - [ ] MypageController
   - [ ] NewUserController
+    - [x] findAllNewUsers
+    - [x] findNewUsers
+    - [x] acceptNewUserOfKing
+    - [ ] rejectNewUserOfKing
   - [ ] SuggestionsController
   - [ ] TestController
   - [ ] TokenApiController
@@ -48,14 +52,16 @@
 #### 메모 (예외 사항)
 
 - [ ] 건의 게시판 댓글 추가.
-- [x] MainController (예외 확인)
-  - [x] userControlFindInfo
-  - [x] userControlPostInfo
-  - [x] userExceptionAttendanceControl
 
 #### Back
 
 - [ ] 시간표 등록
+- [x] MainController (예외 확인)
+  - [x] userControlFindInfo
+  - [x] userControlPostInfo
+  - [x] userExceptionAttendanceControl
+  - [x] findNewUsers
+  - [x] acceptNewUserOfKing
 
 
 #### Front
