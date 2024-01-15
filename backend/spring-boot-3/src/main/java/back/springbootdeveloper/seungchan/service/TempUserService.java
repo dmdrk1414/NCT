@@ -2,7 +2,7 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.entity.TempUser;
 import back.springbootdeveloper.seungchan.dto.request.TempUserFormReqDto;
-import back.springbootdeveloper.seungchan.dto.response.NewUsersResponse;
+import back.springbootdeveloper.seungchan.dto.response.NewUsersResDto;
 import back.springbootdeveloper.seungchan.filter.exception.user.NewUserRegistrationException;
 import back.springbootdeveloper.seungchan.repository.TempUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,16 +25,17 @@ public class TempUserService {
         }
     }
 
-    public List<NewUsersResponse> findAllNewUsers() {
-        List<NewUsersResponse> newUsersResponseList = new ArrayList<>();
+    public List<NewUsersResDto> findAllNewUsers() {
+        List<NewUsersResDto> newUsersResponseList = new ArrayList<>();
         List<TempUser> tempUserList = tempUserRepository.findAll();
         for (TempUser tempUser : tempUserList) {
             Long id = tempUser.getId();
             String email = tempUser.getEmail();
             String name = tempUser.getName();
             String applicationDate = tempUser.getApplicationDate();
-            newUsersResponseList.add(new NewUsersResponse(id, email, name, applicationDate));
+            newUsersResponseList.add(new NewUsersResDto(id, email, name, applicationDate));
         }
+
         return newUsersResponseList;
     }
 

@@ -1,11 +1,10 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.entity.TempUser;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.NewUserEachResponse;
-import back.springbootdeveloper.seungchan.dto.response.NewUsersResponse;
+import back.springbootdeveloper.seungchan.dto.response.NewUsersResDto;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,8 +33,8 @@ public class NewUserController {
 
     @Operation(summary = "신청한 모든 유저 정보 반환", description = "신청한 모든 유저 정보 반환 ")
     @GetMapping("")
-    public ResponseEntity<List<NewUsersResponse>> findAllNewUsers() {
-        List<NewUsersResponse> newUserList = tempUserService.findAllNewUsers();
+    public ResponseEntity<List<NewUsersResDto>> findAllNewUsers() {
+        List<NewUsersResDto> newUserList = tempUserService.findAllNewUsers();
 
         return ResponseEntity.ok().body(newUserList);
     }
