@@ -33,5 +33,7 @@ public interface PeriodicDataRepository extends JpaRepository<PeriodicData, Long
     @Modifying
     @Query("UPDATE PeriodicData u SET u.previousMonth = :resetPreviousMonth")
     void resetPreviousMonth(String resetPreviousMonth);
+
+    PeriodicData findByUserId(Long userId);
 }
 
