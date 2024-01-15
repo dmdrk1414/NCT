@@ -3,7 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.entity.TempUser;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
-import back.springbootdeveloper.seungchan.dto.response.NewUserEachResponse;
+import back.springbootdeveloper.seungchan.dto.response.NewUserEachResDto;
 import back.springbootdeveloper.seungchan.dto.response.NewUsersResDto;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
@@ -41,11 +41,11 @@ public class NewUserController {
 
     @Operation(summary = "개별 신청 유저 정보 반환", description = "개별 신청 유저의 상세 정보 확인")
     @GetMapping("/{id}")
-    public ResponseEntity<NewUserEachResponse> findNewUsers(@PathVariable long id, HttpServletRequest request) {
+    public ResponseEntity<NewUserEachResDto> findNewUsers(@PathVariable long id, HttpServletRequest request) {
         TempUser tempUser = tempUserService.findNewUsers(id);
         boolean isNuriKingOfToken = tokenService.getNuriKingFromToken(request);
 
-        return ResponseEntity.ok().body(NewUserEachResponse.builder()
+        return ResponseEntity.ok().body(NewUserEachResDto.builder()
                 .tempUser(tempUser)
                 .isNuriKing(isNuriKingOfToken)
                 .build());
