@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -26,17 +27,16 @@ public class TempUserService {
     }
 
     public List<NewUsersResDto> findAllNewUsers() {
-        List<NewUsersResDto> newUsersResponseList = new ArrayList<>();
-        List<TempUser> tempUserList = tempUserRepository.findAll();
-        for (TempUser tempUser : tempUserList) {
-            Long id = tempUser.getId();
-            String email = tempUser.getEmail();
-            String name = tempUser.getName();
-            String applicationDate = tempUser.getApplicationDate();
-            newUsersResponseList.add(new NewUsersResDto(id, email, name, applicationDate));
-        }
+        List<TempUser> newUsersResponses = tempUserRepository.findAll();
 
-        return newUsersResponseList;
+        return newUsersResponses.stream()
+                .map(tempUser -> NewUsersResDto.builder()
+                        .id(tempUser.getId())
+                        .email(tempUser.getEmail())
+                        .name(tempUser.getName())
+                        .applicationDate(tempUser.getApplicationDate())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     public TempUser findNewUsers(long id) {
