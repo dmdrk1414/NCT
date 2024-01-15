@@ -51,7 +51,7 @@ public class NewUserController {
                 .build());
     }
 
-    @Operation(summary = "실장의 추가 실원 승락 API", description = "실장이 신청 인원의 개별 페이지에서 승락 버튼구현")
+    @Operation(summary = "실장의 신청 인원 승락 API", description = "실장의 신청 인원 개별 페이지 승락 버튼 구현")
     @PostMapping("/{id}/acceptance")
     public ResponseEntity<BaseResponseBody> acceptNewUserOfKing(@PathVariable long id, HttpServletRequest request) {
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
@@ -65,6 +65,7 @@ public class NewUserController {
             periodicDataService.saveNewUser(newUser);
             attendanceTimeService.saveNewUser(newUser);
         }
+        
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 
