@@ -32,11 +32,11 @@ public class NewUserController {
     private final PeriodicDataService periodicDataService;
     private final AttendanceTimeService attendanceTimeService;
 
-    @Operation(summary = "모든 신청 유저들의 정보 보기", description = "3명이 신청을 하면 3명의 정보를 모두 확인가능하다.")
+    @Operation(summary = "신청한 모든 유저 정보 반환", description = "신청한 모든 유저 정보 반환 ")
     @GetMapping("")
     public ResponseEntity<List<NewUsersResponse>> findAllNewUsers() {
         List<NewUsersResponse> newUserList = tempUserService.findAllNewUsers();
-        
+
         return ResponseEntity.ok().body(newUserList);
     }
 
