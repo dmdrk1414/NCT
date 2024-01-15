@@ -21,9 +21,19 @@
     - [ ] attendanceNumberController
   - [ ] ExampleSwaggerController
   - [x] Login PageController
-  - [ ] MainController
+  - [x] MainController (예외 확인)
+    - [x] findAllYbUser
+    - [x] findAllObUser
+    - [x] fetchUserOfDetail2Main
+    - [x] userControlFindInfo
+    - [x] userControlPostInfo
+    - [x] userExceptionAttendanceControl
   - [ ] MypageController
   - [ ] NewUserController
+    - [x] findAllNewUsers
+    - [x] findNewUsers
+    - [x] acceptNewUserOfKing
+    - [ ] rejectNewUserOfKing
   - [ ] SuggestionsController
   - [ ] TestController
   - [ ] TokenApiController
@@ -36,6 +46,29 @@
 
 - [ ] api url 상수로 관리하기
 - [ ] 이름 변경시 모든 디비 이름 수정 (업데이트)(졍규화 이후 삭제)
+
+### 2023-01-12
+
+#### 메모 (예외 사항)
+
+- [ ] 건의 게시판 댓글 추가.
+
+#### Back
+
+- [ ] 시간표 등록
+- [x] MainController (예외 확인)
+  - [x] userControlFindInfo
+  - [x] userControlPostInfo
+  - [x] userExceptionAttendanceControl
+  - [x] findNewUsers
+  - [x] acceptNewUserOfKing
+
+
+#### Front
+
+- [ ] 시간표 등록
+
+
 
 
 

@@ -7,7 +7,8 @@ public enum CustomHttpStatus {
     PASSWORD_CONFIRMATION(-483, "Password Confirmation"),
     UPDATE_FAILED(-484, "Update Failed"),
     EMAIL_SAME_MATCH(-485, "Email Same Match"),
-    PASSWORD_MISS_MATCHES(-486, "Password Miss Matches");
+    PASSWORD_MISS_MATCHES(-486, "Password Miss Matches"),
+    ENTITY_NOT_FOUND(-487, "Not Found Entity");
 
     private final int value;
 

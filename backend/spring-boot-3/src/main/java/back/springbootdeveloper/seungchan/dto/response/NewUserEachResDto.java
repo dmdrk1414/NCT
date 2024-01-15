@@ -3,12 +3,11 @@ package back.springbootdeveloper.seungchan.dto.response;
 import back.springbootdeveloper.seungchan.entity.TempUser;
 import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Builder
-public class NewUserEachResponse {
+public class NewUserEachResDto {
     private TempUser tempUser;
     private boolean isNuriKing;
 }

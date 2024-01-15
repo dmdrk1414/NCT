@@ -12,6 +12,7 @@ import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -71,21 +72,23 @@ public class MainController {
         return ResponseEntity.ok().body(response);
     }
 
-    @Operation(summary = "유저의 개인적인 커스텀을 위한 컨트롤러 get", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
+    @Operation(summary = "회원들의 개인 각각의 출석시간 Find", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
     @GetMapping("/detail/{id}/control")
     public ResponseEntity<UserControlResDto> userControlFindInfo(HttpServletRequest request, @PathVariable long id) {
-        UserControlResDto userControlResponse = attendanceTimeService.findUserControlResById(id);
-        return ResponseEntity.ok().body(userControlResponse);
+        UserControlResDto userControlResDto = attendanceTimeService.findUserControlResById(id);
+
+        return ResponseEntity.ok().body(userControlResDto);
     }
 
-    @Operation(summary = "유저의 개인적인 커스텀을 위한 컨트롤러 post", description = "유저의 출석시간을 변경하기위한 컨트롤러 기본 09시에서 임의대로 설정가능하다.")
+    @Operation(summary = "유저의 개인적 출석 시간 변경", description = "유저의 개인적 출석 시간 월, 화, 수, 목, 금 요일을 개별적으로 변경한다.")
     @PostMapping("/detail/{id}/control")
-    public ResponseEntity<BaseResponseBody> userControlPostInfo(@RequestBody UserEachAttendanceControlReqDto userEachAttendanceControlRequest, @PathVariable long id) {
+    public ResponseEntity<BaseResponseBody> userControlPostInfo(@Valid @RequestBody UserEachAttendanceControlReqDto userEachAttendanceControlRequest, @PathVariable("id") long id) {
         attendanceTimeService.updateAttendanceTime(userEachAttendanceControlRequest, id);
+
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 
-    @Operation(summary = "장기휴가 신청을 위한 버튼api", description = "버튼을 누르면 장기 휴가 신청을 의미하는 Attendance_time 테이블의 exception의 값이 true/false가 된다.")
+    @Operation(summary = "개별 장기 휴가 신청", description = "장기 휴가 신청을 할시 장기 휴가 신청이 완료가 된다.")
     @PostMapping("/detail/{id}/control/exception/attendance")
     public ResponseEntity<BaseResponseBody> userExceptionAttendanceControl(@PathVariable long id) {
         attendanceTimeService.updateExceptionAttendance(id);
@@ -93,11 +96,10 @@ public class MainController {
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 
-    @Operation(summary = "장기휴가 신청을 위한 버튼api", description = "버튼을 누르면 장기 휴가 신청을 의미하는 Attendance_time 테이블의 exception의 값이 true/false가 반환된다.")
+    @Operation(summary = "개별 장기 휴가 신청 확인", description = "장기 휴가 신청을 할시 장기 휴가 신청 여부를 확인 한다.")
     @GetMapping("/detail/{id}/control/exception/attendance")
     public ResponseEntity<AttendanceTimeExceptionAttendanceResponse> userFindExceptionAttendanceControl(@PathVariable long id) {
-        boolean isExceptionAttendance = true;
-        isExceptionAttendance = attendanceTimeService.findExceptionAttendance(id);
+        boolean isExceptionAttendance = attendanceTimeService.findExceptionAttendance(id);
 
         return ResponseEntity.ok().body(AttendanceTimeExceptionAttendanceResponse.builder()
                 .isExceptionAttendance(isExceptionAttendance)
