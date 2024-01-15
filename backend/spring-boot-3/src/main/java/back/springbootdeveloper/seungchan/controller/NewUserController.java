@@ -41,7 +41,7 @@ public class NewUserController {
 
     @Operation(summary = "개별 신청 유저 정보 반환", description = "개별 신청 유저의 상세 정보 확인")
     @GetMapping("/{id}")
-    public ResponseEntity<NewUserEachResDto> findNewUsers(@PathVariable long id, HttpServletRequest request) {
+    public ResponseEntity<NewUserEachResDto> findNewUsers(@PathVariable("id") long id, HttpServletRequest request) {
         TempUser tempUser = tempUserService.findNewUsers(id);
         boolean isNuriKingOfToken = tokenService.getNuriKingFromToken(request);
 
