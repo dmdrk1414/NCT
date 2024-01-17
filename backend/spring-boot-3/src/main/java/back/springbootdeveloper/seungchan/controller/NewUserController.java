@@ -77,6 +77,7 @@ public class NewUserController {
         if (isNuriKing) {
             tempUserService.removeTempUserById(idOfNewUser);
         }
+        
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 }
