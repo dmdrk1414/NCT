@@ -33,11 +33,15 @@
     - [x] findAllNewUsers
     - [x] findNewUsers
     - [x] acceptNewUserOfKing
-    - [ ] rejectNewUserOfKing
+    - [x] rejectNewUserOfKing
   - [ ] SuggestionsController
+    - [ ] writeSuggestion
+    - [ ] fetchSuggestions
+    - [ ] fetchSuggestions
+    - [ ] checkSuggestions
   - [ ] TestController
   - [ ] TokenApiController
-  - [ ] Vacation Page Controller
+  - [ ] Vacation Page Controller (종빈)
   - [ ] LookupController
     - [x] getTempPasswordController
 - [ ] 토큰 시간지나면 로그아웃 하는 방법
@@ -46,6 +50,14 @@
 
 - [ ] api url 상수로 관리하기
 - [ ] 이름 변경시 모든 디비 이름 수정 (업데이트)(졍규화 이후 삭제)
+
+[Refactor : back] 
+
+[Feat : back] 
+
+[Style : back] 
+
+[Docs : back]
 
 ### 2023-01-12
 
@@ -56,12 +68,17 @@
 #### Back
 
 - [ ] 시간표 등록
+- [ ] @Transactional 추가. (공부)
+  - [ ] import org.springframework.transaction.annotation.Transactional;
+
 - [x] MainController (예외 확인)
-  - [x] userControlFindInfo
-  - [x] userControlPostInfo
-  - [x] userExceptionAttendanceControl
-  - [x] findNewUsers
-  - [x] acceptNewUserOfKing
+  - [x] rejectNewUserOfKing
+- [ ] SuggestionsController
+  - [x] writeSuggestion
+    - [ ] 검증 테스트 진행
+  - [ ] fetchSuggestions
+  - [ ] fetchSuggestions
+  - [ ] checkSuggestions
 
 
 #### Front
