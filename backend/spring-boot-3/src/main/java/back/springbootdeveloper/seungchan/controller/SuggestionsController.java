@@ -32,6 +32,7 @@ public class SuggestionsController {
     @PostMapping("/write")
     public ResponseEntity<BaseResponseBody> writeSuggestion(@RequestBody SuggestionWriteRequest suggestionWriteRequest) {
         Suggestions suggestions = suggestionService.save(suggestionWriteRequest);
+        
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 
