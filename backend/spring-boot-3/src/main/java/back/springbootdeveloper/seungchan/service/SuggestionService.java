@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.entity.Suggestions;
 import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.SuggestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,12 @@ public class SuggestionService {
 
     @Transactional
     public Suggestions save(SuggestionWriteReqDto suggestionWriteRequest) {
-        return suggestionRepository.save(suggestionWriteRequest.toEntity());
+        Suggestions suggestions = suggestionRepository.save(suggestionWriteRequest.toEntity());
+        if (suggestions == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return suggestions;
     }
 
     /**
