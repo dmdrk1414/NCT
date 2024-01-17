@@ -2,7 +2,7 @@ package back.springbootdeveloper.seungchan.service;
 
 
 import back.springbootdeveloper.seungchan.entity.Suggestions;
-import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteRequest;
+import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
 import back.springbootdeveloper.seungchan.repository.SuggestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class SuggestionService {
         return suggestionRepository.findAll();
     }
 
-    public Suggestions save(SuggestionWriteRequest suggestionWriteRequest) {
+    public Suggestions save(SuggestionWriteReqDto suggestionWriteRequest) {
         return suggestionRepository.save(suggestionWriteRequest.toEntity());
     }
 

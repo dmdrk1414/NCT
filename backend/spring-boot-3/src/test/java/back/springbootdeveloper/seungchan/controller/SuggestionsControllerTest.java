@@ -1,14 +1,13 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.constant.SuggestionConstant;
-import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteRequest;
+import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
 import back.springbootdeveloper.seungchan.entity.Suggestions;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.service.SuggestionService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -63,7 +61,7 @@ class SuggestionsControllerTest {
         String classification = SuggestionConstant.SUGGESTION.getClassification();
         String holidayPeriod = "";
 
-        SuggestionWriteRequest requestDto = SuggestionWriteRequest.builder()
+        SuggestionWriteReqDto requestDto = SuggestionWriteReqDto.builder()
                 .title(title)
                 .classification(classification)
                 .holidayPeriod(holidayPeriod)

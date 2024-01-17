@@ -3,7 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.dto.request.SuggestionReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.Suggestions;
-import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteRequest;
+import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
 import back.springbootdeveloper.seungchan.service.SuggestionService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
@@ -30,9 +30,9 @@ public class SuggestionsController {
 
     @Operation(summary = "건의 게시판 작성", description = "개인 회원이 건의 게시판을 작성을 한다.")
     @PostMapping("/write")
-    public ResponseEntity<BaseResponseBody> writeSuggestion(@RequestBody SuggestionWriteRequest suggestionWriteRequest) {
+    public ResponseEntity<BaseResponseBody> writeSuggestion(@RequestBody SuggestionWriteReqDto suggestionWriteRequest) {
         Suggestions suggestions = suggestionService.save(suggestionWriteRequest);
-        
+
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 

@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 @Builder
-public class SuggestionWriteRequest {
+public class SuggestionWriteReqDto {
     private String classification;
     private String title;
     private String holidayPeriod;
