@@ -1,11 +1,12 @@
 package back.springbootdeveloper.seungchan.dto.request;
 
 import back.springbootdeveloper.seungchan.entity.Suggestions;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
 public class SuggestionWriteRequest {
     private String classification;
     private String title;
