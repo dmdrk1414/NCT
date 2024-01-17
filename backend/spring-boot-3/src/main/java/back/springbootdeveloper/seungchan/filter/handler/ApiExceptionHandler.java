@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.filter.handler;
 
+import back.springbootdeveloper.seungchan.constant.SuggestionConstant;
 import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.filter.exception.ApiException;
@@ -152,6 +153,20 @@ public class ApiExceptionHandler {
 
         ApiException apiException = new ApiException(
                 ExceptionMessage.ENTITY_NOT_FOUND.get(), // add
+                httpStatus,
+                customHttpStatus.value(),
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
+
+    @ExceptionHandler(value = {InvalidSelectionClassificationException.class}) // add
+    public ResponseEntity<Object> handleInvalidSelectionClassificationException(InvalidSelectionClassificationException e) { // add
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        CustomHttpStatus customHttpStatus = CustomHttpStatus.INVALID_SELECTION_CLASSIFICATION; // add
+        ApiException apiException = new ApiException(
+                ExceptionMessage.INVALID_SELECTION_CLASSIFICATION.get(), // add
                 httpStatus,
                 customHttpStatus.value(),
                 ZonedDateTime.now(ZoneId.of("Z"))

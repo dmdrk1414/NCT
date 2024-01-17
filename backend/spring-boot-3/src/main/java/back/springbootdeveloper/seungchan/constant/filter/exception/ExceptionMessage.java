@@ -8,7 +8,8 @@ public enum ExceptionMessage {
     UPDATE_FAILED("업데이트를 완료할 수 없습니다. 다시 시도해 주세요."),
     EMAIL_SAME_MATCH("입력하신 이메일 주소가 서로 일치합니다. 다시 확인해 주세요."),
     PASSWORD_MISS_MATCH("입력하신 비밀번호와 기존 비밀번호가 일치하지 않습니다."),
-    ENTITY_NOT_FOUND("데이터를 찾지 못했습니다.");
+    ENTITY_NOT_FOUND("데이터를 찾지 못했습니다."),
+    INVALID_SELECTION_CLASSIFICATION("적절한 분류를 선택해주세요");
 
 
     private final String message;

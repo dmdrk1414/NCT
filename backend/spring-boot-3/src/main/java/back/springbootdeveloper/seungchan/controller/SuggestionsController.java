@@ -1,9 +1,12 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.constant.SuggestionConstant;
+import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.SuggestionReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.Suggestions;
 import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.InvalidSelectionClassificationException;
 import back.springbootdeveloper.seungchan.service.SuggestionService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
@@ -11,6 +14,7 @@ import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +34,10 @@ public class SuggestionsController {
 
     @Operation(summary = "건의 게시판 작성", description = "개인 회원이 건의 게시판을 작성을 한다.")
     @PostMapping("/write")
-    public ResponseEntity<BaseResponseBody> writeSuggestion(@RequestBody SuggestionWriteReqDto suggestionWriteRequest) {
+    public ResponseEntity<BaseResponseBody> writeSuggestion(@Valid @RequestBody SuggestionWriteReqDto suggestionWriteRequest) {
+        if (SuggestionConstant.contain(suggestionWriteRequest.getClassification())) {
+            throw new InvalidSelectionClassificationException();
+        }
         suggestionService.save(suggestionWriteRequest);
 
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
