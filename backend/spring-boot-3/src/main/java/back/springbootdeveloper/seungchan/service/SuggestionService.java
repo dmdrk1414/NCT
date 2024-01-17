@@ -6,6 +6,7 @@ import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
 import back.springbootdeveloper.seungchan.repository.SuggestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class SuggestionService {
         return suggestionRepository.findAll();
     }
 
+    @Transactional
     public Suggestions save(SuggestionWriteReqDto suggestionWriteRequest) {
         return suggestionRepository.save(suggestionWriteRequest.toEntity());
     }
