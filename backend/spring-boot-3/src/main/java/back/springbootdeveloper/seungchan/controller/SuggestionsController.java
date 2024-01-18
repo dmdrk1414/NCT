@@ -43,7 +43,7 @@ public class SuggestionsController {
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 
-    @Operation(summary = "건의 게시판 조회", description = "건의 게시판의 조회를 한다. 비밀 게시판은 실장 만의 조회가 가능하다.")
+    @Operation(summary = "건의 게시판 조회", description = "건의 게시판 조회. 비밀 게시판 실장만 조회 가능")
     @GetMapping("")
     public ResponseEntity<SuggestionsResultResponse> fetchSuggestions(HttpServletRequest request) {
         Long userIdOfSearch = tokenService.getUserIdFromToken(request);
