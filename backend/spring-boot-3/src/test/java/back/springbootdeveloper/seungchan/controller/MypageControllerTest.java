@@ -1,26 +1,32 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.dto.request.UpdateUserFormRequest;
+import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
+import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
+import back.springbootdeveloper.seungchan.dto.request.TempUserFormReqDto;
+import back.springbootdeveloper.seungchan.dto.request.UpdateUserFormReqDto;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
+import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -82,13 +88,13 @@ class MypageControllerTest {
     }
 
     @Test
-    public void 현제_회원_본인_정보_업데이트() throws Exception {
+    public void 현제_회원_본인_정보_업데이트_테스트() throws Exception {
         // given
         final String url = "/mypage/update";
         String nameBefore = kingUser.getName();
-        kingUser.setName(nameBefore);
+        kingUser.setName("변경_이름");
 
-        UpdateUserFormRequest request = new UpdateUserFormRequest(
+        UpdateUserFormReqDto request = new UpdateUserFormReqDto(
                 kingUser.getName(),
                 kingUser.getPhoneNum(),
                 kingUser.getMajor(),
@@ -121,7 +127,10 @@ class MypageControllerTest {
         // then
         result
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(kingUser.getName()));
-        assertThat(kingUser.getName()).isNotEqualTo(nameBefore);
+                .andExpect(jsonPath("$.message").value("SUCCESS"))
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+        assertThat(target.getName()).isEqualTo(kingUser.getName());
+        assertThat(target.getName()).isNotEqualTo(nameBefore);
     }
 }
