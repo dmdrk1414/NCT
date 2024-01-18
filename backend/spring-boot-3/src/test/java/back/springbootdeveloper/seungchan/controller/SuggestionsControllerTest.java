@@ -216,4 +216,25 @@ class SuggestionsControllerTest {
                 .andExpect(jsonPath("$.suggestionLists[0].holidayPeriod").value(saveSuggestions.getHolidayPeriod()))
                 .andExpect(jsonPath("$.suggestionLists[0].check").value(false));
     }
+
+    @Test
+    void 각각_건의_게시판_조회_테스트() throws Exception {
+        // given
+        final String url = "/suggestion/{id}";
+        Suggestion target = testSetUp.saveSuggestion();
+        // when
+        ResultActions result = mockMvc.perform(get(url, target.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(target.getId()))
+                .andExpect(jsonPath("$.classification").value(target.getClassification()))
+                .andExpect(jsonPath("$.title").value(target.getTitle()))
+                .andExpect(jsonPath("$.holidayPeriod").value(target.getHolidayPeriod()))
+                .andExpect(jsonPath("$.check").value(false));
+    }
 }
