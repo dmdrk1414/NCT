@@ -133,4 +133,116 @@ class MypageControllerTest {
         assertThat(target.getName()).isEqualTo(kingUser.getName());
         assertThat(target.getName()).isNotEqualTo(nameBefore);
     }
+
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "name",
+            "phoneNum",
+            "major",
+            "gpa",
+            "address",
+            "specialtySkill",
+            "hobby",
+            "mbti",
+            "studentId",
+            "birthDate",
+            "advantages",
+            "disadvantage",
+            "selfIntroduction",
+            "email",
+    })
+    public void 현제_회원_본인_정보_업데이트_null_예외_테스트(String check) throws Exception {
+        // given
+        final String url = "/mypage/update";
+        String nameBefore = kingUser.getName();
+        kingUser.setName(nameBefore);
+
+        UpdateUserFormReqDto request = getUpdateUserFormReqDto();
+        switch (check) {
+            case "name":
+                request.setName(null);
+                break;
+            case "phoneNum":
+                request.setPhoneNum(null);
+                break;
+            case "major":
+                request.setMajor(null);
+                break;
+            case "gpa":
+                request.setGpa(null);
+                break;
+            case "address":
+                request.setAddress(null);
+                break;
+            case "specialtySkill":
+                request.setSpecialtySkill(null);
+                break;
+            case "hobby":
+                request.setHobby(null);
+                break;
+            case "mbti":
+                request.setMbti(null);
+                break;
+            case "studentId":
+                request.setStudentId(null);
+                break;
+            case "birthDate":
+                request.setBirthDate(null);
+                break;
+            case "advantages":
+                request.setAdvantages(null);
+                break;
+            case "disadvantage":
+                request.setDisadvantage(null);
+                break;
+            case "selfIntroduction":
+                request.setSelfIntroduction(null);
+                break;
+            case "email":
+                request.setEmail(null);
+                break;
+        }
+        MockHttpServletResponse response = getResponse(request);
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    private MockHttpServletResponse getResponse(UpdateUserFormReqDto request) throws Exception {
+        final String requestBody = objectMapper.writeValueAsString(request);
+        final String url = "/mypage/update";
+
+        MvcResult result = mockMvc.perform(put(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andReturn();
+
+        return result.getResponse();
+    }
+
+    private UpdateUserFormReqDto getUpdateUserFormReqDto() {
+        return new UpdateUserFormReqDto(
+                kingUser.getName(),
+                kingUser.getPhoneNum(),
+                kingUser.getMajor(),
+                kingUser.getGpa(),
+                kingUser.getAddress(),
+                kingUser.getSpecialtySkill(),
+                kingUser.getHobby(),
+                kingUser.getMbti(),
+                kingUser.getStudentId(),
+                kingUser.getBirthDate(),
+                kingUser.getAdvantages(),
+                kingUser.getDisadvantage(),
+                kingUser.getSelfIntroduction(),
+                kingUser.getPhoto(),
+                kingUser.getEmail()
+        );
+    }
 }
