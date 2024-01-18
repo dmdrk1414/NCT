@@ -1,15 +1,12 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
 import back.springbootdeveloper.seungchan.entity.UserInfo;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
 public class MyPageResDto {
     private String name;
     private String phoneNum;
