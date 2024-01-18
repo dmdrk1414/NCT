@@ -35,7 +35,7 @@ public class MypageController {
 
     @Operation(summary = "현제 회원 정보을 업데이트", description = "현제 회원 상세 정보을 업데이트")
     @PutMapping("/update")
-    public ResponseEntity<BaseResponseBody> updateMypage(@RequestBody UpdateUserFormRequest updateUserFormRequest, HttpServletRequest request) {
+    public ResponseEntity<BaseResponseBody> updateMyInformation(@RequestBody UpdateUserFormRequest updateUserFormRequest, HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
         userServiceImp.updateUser(updateUserFormRequest.toEntity(), userId);
 
