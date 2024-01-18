@@ -45,7 +45,7 @@ public class MypageController {
 
     @Operation(summary = "업데이트 페이지 현제 회원 본인 정보 조회.", description = "업데이트 페이지 현제 본인 회원 상세 정보 업데이트")
     @GetMapping("/update")
-    public ResponseEntity<MyPageResDto> findMypageToUpdate(HttpServletRequest request) {
+    public ResponseEntity<MyPageResDto> findMyUpdatePage(HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
         UserInfo userInfo = userServiceImp.findUserById(userId);
 
