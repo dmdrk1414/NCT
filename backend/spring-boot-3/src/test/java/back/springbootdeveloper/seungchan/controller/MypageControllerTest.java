@@ -154,10 +154,6 @@ class MypageControllerTest {
     })
     public void 현제_회원_본인_정보_업데이트_null_예외_테스트(String check) throws Exception {
         // given
-        final String url = "/mypage/update";
-        String nameBefore = kingUser.getName();
-        kingUser.setName(nameBefore);
-
         UpdateUserFormReqDto request = getUpdateUserFormReqDto();
         switch (check) {
             case "name":
@@ -213,38 +209,6 @@ class MypageControllerTest {
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
     }
 
-    private MockHttpServletResponse getResponse(UpdateUserFormReqDto request) throws Exception {
-        final String requestBody = objectMapper.writeValueAsString(request);
-        final String url = "/mypage/update";
-
-        MvcResult result = mockMvc.perform(put(url)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andReturn();
-
-        return result.getResponse();
-    }
-
-    private UpdateUserFormReqDto getUpdateUserFormReqDto() {
-        return new UpdateUserFormReqDto(
-                kingUser.getName(),
-                kingUser.getPhoneNum(),
-                kingUser.getMajor(),
-                kingUser.getGpa(),
-                kingUser.getAddress(),
-                kingUser.getSpecialtySkill(),
-                kingUser.getHobby(),
-                kingUser.getMbti(),
-                kingUser.getStudentId(),
-                kingUser.getBirthDate(),
-                kingUser.getAdvantages(),
-                kingUser.getDisadvantage(),
-                kingUser.getSelfIntroduction(),
-                kingUser.getPhoto(),
-                kingUser.getEmail()
-        );
-    }
 
     @ParameterizedTest
     @ValueSource(strings = {
@@ -265,10 +229,6 @@ class MypageControllerTest {
     })
     public void 현제_회원_본인_정보_업데이트_공백_예외_테스트(String check) throws Exception {
         // given
-        final String url = "/mypage/update";
-        String nameBefore = kingUser.getName();
-        kingUser.setName(nameBefore);
-
         UpdateUserFormReqDto request = getUpdateUserFormReqDto();
         switch (check) {
             case "name":
@@ -322,5 +282,71 @@ class MypageControllerTest {
 
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "010",
+            "02-123-456",
+            "032-9876-5432",
+            "1234-5678",
+            "010-12345-6789",
+            "010-12-3456",
+            "010-1234-56789",
+            "010-1234-567",
+            "010-1!@#234-@#$567",
+            "010-1234-@#$567",
+            "010-12a4-5678",
+            "010-1234-5678-123",
+            "01012345678123",
+            "0101!@#2345678123",
+    })
+    public void 현제_회원_본인_정보_업데이트_Phone_Num_패턴_검증_테스트(String check) throws Exception {
+        // given
+        UpdateUserFormReqDto request = getUpdateUserFormReqDto();
+        request.setPhoneNum(check);
+
+        MockHttpServletResponse response = getResponse(request);
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+
+    private MockHttpServletResponse getResponse(UpdateUserFormReqDto request) throws Exception {
+        final String requestBody = objectMapper.writeValueAsString(request);
+        final String url = "/mypage/update";
+
+        MvcResult result = mockMvc.perform(put(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andReturn();
+
+        return result.getResponse();
+    }
+
+    private UpdateUserFormReqDto getUpdateUserFormReqDto() {
+        return new UpdateUserFormReqDto(
+                kingUser.getName(),
+                kingUser.getPhoneNum(),
+                kingUser.getMajor(),
+                kingUser.getGpa(),
+                kingUser.getAddress(),
+                kingUser.getSpecialtySkill(),
+                kingUser.getHobby(),
+                kingUser.getMbti(),
+                kingUser.getStudentId(),
+                kingUser.getBirthDate(),
+                kingUser.getAdvantages(),
+                kingUser.getDisadvantage(),
+                kingUser.getSelfIntroduction(),
+                kingUser.getPhoto(),
+                kingUser.getEmail()
+        );
     }
 }
