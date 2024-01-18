@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "suggestions")
 @AllArgsConstructor
-public class Suggestions {
+public class Suggestion {
     // classification
     // title
     // check
@@ -31,7 +31,7 @@ public class Suggestions {
 
     // 휴가 기간 포함 건의 사항
     @Builder
-    public Suggestions(String classification, String title, String holidayPeriod) {
+    public Suggestion(String classification, String title, String holidayPeriod) {
         this.classification = classification;
         this.title = title;
         this.isCheck = false;
@@ -40,7 +40,7 @@ public class Suggestions {
 
     // 전체적인 건의 사항
     @Builder
-    public Suggestions(String classification, String title, boolean isCheck, String holidayPeriod) {
+    public Suggestion(String classification, String title, boolean isCheck, String holidayPeriod) {
         this.classification = classification;
         this.title = title;
         this.isCheck = isCheck;
@@ -48,7 +48,7 @@ public class Suggestions {
     }
 
 
-    public Suggestions(Suggestions suggestions) {
+    public Suggestion(Suggestion suggestions) {
         this.id = suggestions.getId();
         this.classification = suggestions.getClassification();
         this.title = suggestions.getTitle();

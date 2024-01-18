@@ -4,16 +4,14 @@ import back.springbootdeveloper.seungchan.constant.SuggestionConstant;
 import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
-import back.springbootdeveloper.seungchan.entity.Suggestions;
+import back.springbootdeveloper.seungchan.entity.Suggestion;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.service.SuggestionService;
 import back.springbootdeveloper.seungchan.service.UserService;
-import back.springbootdeveloper.seungchan.testutills.TestMakeObject;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -88,7 +86,7 @@ class SuggestionsControllerTest {
                 .header("authorization", "Bearer " + token) // token header에 담기
         );
 
-        List<Suggestions> suggestions = suggestionService.findAll();
+        List<Suggestion> suggestions = suggestionService.findAll();
 
         assertThat(suggestions).extracting("classification").contains(classification);
         assertThat(suggestions).extracting("title").contains(title);
@@ -202,7 +200,7 @@ class SuggestionsControllerTest {
     void 건의_게시판_조회_테스트() throws Exception {
         // given
         final String url = "/suggestion";
-        Suggestions saveSuggestions = testSetUp.saveSuggestion();
+        Suggestion saveSuggestions = testSetUp.saveSuggestion();
         // when
         ResultActions resultActions = mockMvc.perform(get(url)
                 .accept(MediaType.APPLICATION_JSON)

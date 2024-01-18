@@ -170,7 +170,7 @@ public class TestSetUp {
         return tempUserList;
     }
 
-    public Suggestions saveSuggestion() {
+    public Suggestion saveSuggestion() {
         SuggestionWriteReqDto requestDto = SuggestionWriteReqDto.builder()
                 .title("test title")
                 .classification(SuggestionConstant.SUGGESTION.getClassification())

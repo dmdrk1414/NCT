@@ -1,8 +1,7 @@
 package back.springbootdeveloper.seungchan.dto.request;
 
-import back.springbootdeveloper.seungchan.entity.Suggestions;
+import back.springbootdeveloper.seungchan.entity.Suggestion;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @AllArgsConstructor
@@ -19,8 +18,8 @@ public class SuggestionWriteReqDto {
 
     private String holidayPeriod;
 
-    public Suggestions toEntity() {
-        return Suggestions.builder()
+    public Suggestion toEntity() {
+        return Suggestion.builder()
                 .classification(classification)
                 .title(title)
                 .holidayPeriod(holidayPeriod)

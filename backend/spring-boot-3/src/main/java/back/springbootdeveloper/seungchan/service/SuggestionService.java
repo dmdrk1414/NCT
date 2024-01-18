@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.service;
 
 
-import back.springbootdeveloper.seungchan.entity.Suggestions;
+import back.springbootdeveloper.seungchan.entity.Suggestion;
 import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.SuggestionRepository;
@@ -19,13 +19,13 @@ public class SuggestionService {
     private final SuggestionRepository suggestionRepository;
 
 
-    public List<Suggestions> findAll() {
+    public List<Suggestion> findAll() {
         return suggestionRepository.findAll();
     }
 
     @Transactional
-    public Suggestions save(SuggestionWriteReqDto suggestionWriteRequest) {
-        Suggestions suggestions = suggestionRepository.save(suggestionWriteRequest.toEntity());
+    public Suggestion save(SuggestionWriteReqDto suggestionWriteRequest) {
+        Suggestion suggestions = suggestionRepository.save(suggestionWriteRequest.toEntity());
         if (suggestions == null) {
             throw new EntityNotFoundException();
         }
@@ -40,7 +40,7 @@ public class SuggestionService {
      * @return
      */
     public Boolean checkToggle(Long id) {
-        Suggestions suggestions = suggestionRepository.findById(id).get();
+        Suggestion suggestions = suggestionRepository.findById(id).get();
         Boolean check = suggestions.isCheck();
 
         if (check) {
@@ -51,7 +51,7 @@ public class SuggestionService {
         return suggestionRepository.findById(id).get().isCheck();
     }
 
-    public Suggestions findById(Long id) {
+    public Suggestion findById(Long id) {
         return suggestionRepository.findById(id).get();
     }
 }

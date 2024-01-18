@@ -3,7 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.constant.SuggestionConstantGroup;
 import back.springbootdeveloper.seungchan.dto.request.SuggestionReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
-import back.springbootdeveloper.seungchan.entity.Suggestions;
+import back.springbootdeveloper.seungchan.entity.Suggestion;
 import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.InvalidSelectionClassificationException;
 import back.springbootdeveloper.seungchan.service.SuggestionService;
@@ -48,10 +48,10 @@ public class SuggestionsController {
     public ResponseEntity<SuggestionsResultResponse> fetchSuggestions(HttpServletRequest request) {
         Long userIdOfSearch = tokenService.getUserIdFromToken(request);
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
-        List<Suggestions> suggestions = suggestionService.findAll()
+        List<Suggestion> suggestions = suggestionService.findAll()
                 .stream()
                 // blogService에서 찾아온 Article의 하나하나가 파라미터로 넘어간다.
-                .map(Suggestions::new)
+                .map(Suggestion::new)
                 .toList();
         SuggestionsResultResponse suggestionsResultResponse = new SuggestionsResultResponse(suggestions, isNuriKing);
 
@@ -61,7 +61,7 @@ public class SuggestionsController {
     @Operation(summary = "각각의 건의 게시판 조회", description = "각각의 건의 게시판의 조회를 한다.")
     @GetMapping("{id}")
     public ResponseEntity<EachSuggestionsResDto> fetchSuggestions(HttpServletRequest request, @PathVariable(value = "id") Long id) {
-        Suggestions suggestions = suggestionService.findById(id);
+        Suggestion suggestions = suggestionService.findById(id);
         EachSuggestionsResDto eachSuggestionsResDto = new EachSuggestionsResDto(suggestions);
 
         return ResponseEntity.ok().body(eachSuggestionsResDto);

@@ -214,7 +214,7 @@ public class ApiTest {
 
         final String url = "/suggestions";
 
-        Suggestions saveSuggestions = suggestionRepository.save(TestMakeObject.makeSuggestions());
+        Suggestion saveSuggestions = suggestionRepository.save(TestMakeObject.makeSuggestions());
         // when
         final ResultActions resultActions = mockMvc.perform(get(url)
                 .accept(MediaType.APPLICATION_JSON)
@@ -238,7 +238,7 @@ public class ApiTest {
         // given
         this.suggestionRepository.deleteAll();
         final String url = "/suggestions/write";
-        Suggestions suggestionsRequest = TestMakeObject.makeSuggestions();
+        Suggestion suggestionsRequest = TestMakeObject.makeSuggestions();
 
         // 객체 suggestionsRequest을 Json으로 직렬화
         final String requestBody = objectMapper.writeValueAsString(suggestionsRequest);
@@ -251,7 +251,7 @@ public class ApiTest {
         // then
         result.andExpect(status().isOk());
 
-        List<Suggestions> suggestionsList = suggestionRepository.findAll();
+        List<Suggestion> suggestionsList = suggestionRepository.findAll();
         assertThat(suggestionsList.size()).isEqualTo(1);
         assertThat(suggestionsList.get(0).getClassification()).isEqualTo(suggestionsRequest.getClassification());
         assertThat(suggestionsList.get(0).getTitle()).isEqualTo(suggestionsRequest.getTitle());
