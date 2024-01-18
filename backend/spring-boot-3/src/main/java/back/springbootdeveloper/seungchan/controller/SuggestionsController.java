@@ -34,8 +34,8 @@ public class SuggestionsController {
     @Operation(summary = "건의 게시판 작성", description = "개인 회원이 건의 게시판을 작성을 한다.")
     @PostMapping("/write")
     public ResponseEntity<BaseResponseBody> writeSuggestion(@Valid @RequestBody SuggestionWriteReqDto suggestionWriteRequest) {
-        Boolean validClassification = SuggestionConstantGroup.classification.contain(suggestionWriteRequest.getClassification());
-        if (validClassification) {
+        Boolean isValidClassification = SuggestionConstantGroup.classification.contain(suggestionWriteRequest.getClassification());
+        if (isValidClassification == false) {
             throw new InvalidSelectionClassificationException();
         }
         suggestionService.save(suggestionWriteRequest);
