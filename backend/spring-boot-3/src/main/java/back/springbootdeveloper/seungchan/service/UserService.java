@@ -29,7 +29,7 @@ public class UserService {
 
     public UserInfo findUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotExistException()); // 찾아서 없으면 예외처리.;
+                .orElseThrow(UserNotExistException::new); // 찾아서 없으면 예외처리.;
     }
 
     public void updateUser(UserInfo userUpdate, Long userId) {
