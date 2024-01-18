@@ -34,9 +34,9 @@ public class AttendanceController {
         return ResponseEntity.ok().body(new AttendancePassResDto(passAttendance));
     }
 
-    @Operation(summary = "출석을 위한 번호를 보여준다.", description = "출석을 위한 랜덤의 4자리번호가 생성되어 응답한다.")
+    @Operation(summary = "출석 번호 조회", description = "출석 번호: 랜덤의 4자리 번호 조회")
     @GetMapping("/find/number")
-    public ResponseEntity<AttendanceNumberResponse> attendanceNumberController() {
+    public ResponseEntity<AttendanceNumberResponse> findAttendanceNumber() {
         NumOfTodayAttendence numOfTodayAttendence = numOfTodayAttendenceService.findNumOfTodayAttendenceAtNow();
         String attendanceNum = numOfTodayAttendence.getCheckNum();
         String dayAtNow = numOfTodayAttendence.getDay();
