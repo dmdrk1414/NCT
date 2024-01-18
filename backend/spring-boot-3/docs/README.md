@@ -13,6 +13,11 @@
 - [ ] 로그인 한명만사용하기(실장제외)
 - [ ] 배포 방법론 공부하기
 - [ ] 토큰 검증이후 리다이렉트 사용
+- [ ] get -> null
+- [ ] Update, save => 
+  - [ ] @Transactional 추가. (공부)
+    - [ ] import org.springframework.transaction.annotation.Transactional;
+
 - [x] 예외처리 및 테스트 코드작성
 
   - [ ] https://velog.io/@wooryung/Spring-Boot-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0
@@ -35,8 +40,8 @@
     - [x] acceptNewUserOfKing
     - [x] rejectNewUserOfKing
   - [ ] SuggestionsController
-    - [ ] writeSuggestion
-    - [ ] fetchSuggestions
+    - [x] writeSuggestion
+    - [x] fetchSuggestions
     - [ ] fetchSuggestions
     - [ ] checkSuggestions
   - [ ] TestController
@@ -75,8 +80,8 @@
   - [x] rejectNewUserOfKing
 - [ ] SuggestionsController
   - [x] writeSuggestion
-    - [ ] 검증 테스트 진행
-  - [ ] fetchSuggestions
+    - [x] 검증 테스트 진행
+  - [x] fetchSuggestions
   - [ ] fetchSuggestions
   - [ ] checkSuggestions
 
