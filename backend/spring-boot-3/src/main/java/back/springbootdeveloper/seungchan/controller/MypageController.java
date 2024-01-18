@@ -23,14 +23,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/mypage")
 public class MypageController {
     private final UserService userServiceImp;
-    // TODO: 8/7/23 삭제
-    private final TokenProvider tokenProvider;
     private final TokenService tokenService;
 
-    @Operation(summary = "내 정보를 조회 한다.", description = "토크를 이용해 사용자를 식별한후 현제 user테이블에 있는 정보들을 조회할 수 있다.")
+    @Operation(summary = "현제 회원 자신의 정보 조회", description = "현제 회원 자신의 상제 정보 조회")
     @GetMapping("")
     public ResponseEntity<MyPageResponse> findMypage(HttpServletRequest request) {
-        // TODO: 토큰을 이용해 유저의 id 찾기
         Long id = tokenService.getUserIdFromToken(request);
         UserInfo user = userServiceImp.findUserById(id);
         return ResponseEntity.ok().body(new MyPageResponse(user));
