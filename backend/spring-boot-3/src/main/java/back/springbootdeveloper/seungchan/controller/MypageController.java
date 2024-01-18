@@ -1,7 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.entity.UserInfo;
-import back.springbootdeveloper.seungchan.dto.request.UpdateUserFormRequest;
+import back.springbootdeveloper.seungchan.dto.request.UpdateUserFormReqDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.MyPageResDto;
 import back.springbootdeveloper.seungchan.service.TokenService;
@@ -10,6 +10,7 @@ import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class MypageController {
 
     @Operation(summary = "현제 회원 본인 정보 업데이트", description = "현제 본인 회원 상세 정보 업데이트")
     @PutMapping("/update")
-    public ResponseEntity<BaseResponseBody> updateMyInformation(@RequestBody UpdateUserFormRequest updateUserFormRequest, HttpServletRequest request) {
+    public ResponseEntity<BaseResponseBody> updateMyInformation(@Valid @RequestBody UpdateUserFormReqDto updateUserFormRequest, HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
         userServiceImp.updateUser(updateUserFormRequest.toEntity(), userId);
 

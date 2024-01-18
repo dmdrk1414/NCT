@@ -435,7 +435,7 @@ public class ApiTest {
         final String nameUpdate = "업데이트한_이름";
         UserInfo updateUser = user;
         updateUser.setName(nameUpdate);
-        UpdateUserFormRequest requestUserForm = new UpdateUserFormRequest(
+        UpdateUserFormReqDto requestUserForm = new UpdateUserFormReqDto(
                 user.getName(),
                 user.getPhoneNum(),
                 user.getMajor(),
