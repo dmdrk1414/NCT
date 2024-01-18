@@ -372,6 +372,22 @@ class MypageControllerTest {
         // given
         UpdateUserFormReqDto request = getUpdateUserFormReqDto();
         request.setEmail(badEmail);
+
+        MockHttpServletResponse response = getResponse(request);
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @Test
+    public void 현제_회원_본인_정보_업데이트_selfIntroduction_패턴_검증_테스트() throws Exception {
+        // given
+        UpdateUserFormReqDto request = getUpdateUserFormReqDto();
+        request.setSelfIntroduction("200이하의 자기소개");
         
         MockHttpServletResponse response = getResponse(request);
 
