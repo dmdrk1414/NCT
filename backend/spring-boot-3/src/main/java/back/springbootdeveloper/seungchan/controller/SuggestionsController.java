@@ -56,9 +56,9 @@ public class SuggestionsController {
         return ResponseEntity.ok().body(suggestionsResultResponse);
     }
 
-    @Operation(summary = "각각의 건의 게시판 조회", description = "각각의 건의 게시판의 조회를 한다.")
+    @Operation(summary = "하나의 건의 게시물 조회", description = "하나의 건의 게시물 조회")
     @GetMapping("{id}")
-    public ResponseEntity<EachSuggestionsResDto> fetchSuggestions(HttpServletRequest request, @PathVariable(value = "id") Long id) {
+    public ResponseEntity<EachSuggestionsResDto> findEachSuggestion(HttpServletRequest request, @PathVariable("id") Long id) {
         Suggestion suggestions = suggestionService.findById(id);
         EachSuggestionsResDto eachSuggestionsResDto = new EachSuggestionsResDto(suggestions);
 
