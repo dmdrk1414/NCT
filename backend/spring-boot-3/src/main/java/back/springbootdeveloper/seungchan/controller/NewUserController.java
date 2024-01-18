@@ -53,7 +53,7 @@ public class NewUserController {
 
     @Operation(summary = "실장의 신청 인원 승락 API", description = "실장의 신청 인원 개별 페이지 승락 버튼 구현")
     @PostMapping("/{id}/acceptance")
-    public ResponseEntity<BaseResponseBody> acceptNewUserOfKing(@PathVariable long id, HttpServletRequest request) {
+    public ResponseEntity<BaseResponseBody> acceptNewUserOfKing(@PathVariable("id") long id, HttpServletRequest request) {
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
         Long idOfNewUser = id;
         if (isNuriKing) {
@@ -65,18 +65,19 @@ public class NewUserController {
             periodicDataService.saveNewUser(newUser);
             attendanceTimeService.saveNewUser(newUser);
         }
-        
+
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 
-    @Operation(summary = "실장의 추가 실원 거절 API", description = "실장이 신청 인원의 개별 페이지에서 거절 버튼구현")
+    @Operation(summary = "신청 실원 거절 API", description = "실장의 신청 인원의 개별 신청 거절 API")
     @PostMapping("/{id}/reject")
-    public ResponseEntity<BaseResponseBody> rejectNewUserOfKing(@PathVariable long id, HttpServletRequest request) {
+    public ResponseEntity<BaseResponseBody> rejectNewUserOfKing(@PathVariable("id") long id, HttpServletRequest request) {
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
         Long idOfNewUser = id;
         if (isNuriKing) {
             tempUserService.removeTempUserById(idOfNewUser);
         }
+
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 }
