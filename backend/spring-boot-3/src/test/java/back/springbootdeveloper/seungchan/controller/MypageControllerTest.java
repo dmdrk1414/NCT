@@ -316,7 +316,23 @@ class MypageControllerTest {
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
     }
 
+    @Test
+    public void 현제_회원_본인_정보_업데이트_disadvantage_패턴_검증_테스트() throws Exception {
+        // given
+        UpdateUserFormReqDto request = getUpdateUserFormReqDto();
+        request.setDisadvantage("100이하의 단점");
 
+        MockHttpServletResponse response = getResponse(request);
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    //
     private MockHttpServletResponse getResponse(UpdateUserFormReqDto request) throws Exception {
         final String requestBody = objectMapper.writeValueAsString(request);
         final String url = "/mypage/update";
