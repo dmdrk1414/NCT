@@ -2,7 +2,7 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
 import back.springbootdeveloper.seungchan.dto.response.AttendancePassResDto;
-import back.springbootdeveloper.seungchan.dto.response.AttendanceNumberResponse;
+import back.springbootdeveloper.seungchan.dto.response.AttendanceNumberResDto;
 import back.springbootdeveloper.seungchan.entity.NumOfTodayAttendence;
 import back.springbootdeveloper.seungchan.service.NumOfTodayAttendenceService;
 import back.springbootdeveloper.seungchan.service.TokenService;
@@ -36,11 +36,12 @@ public class AttendanceController {
 
     @Operation(summary = "출석 번호 조회", description = "출석 번호: 랜덤의 4자리 번호 조회")
     @GetMapping("/find/number")
-    public ResponseEntity<AttendanceNumberResponse> findAttendanceNumber() {
+    public ResponseEntity<AttendanceNumberResDto> findAttendanceNumber() {
         NumOfTodayAttendence numOfTodayAttendence = numOfTodayAttendenceService.findNumOfTodayAttendenceAtNow();
         String attendanceNum = numOfTodayAttendence.getCheckNum();
         String dayAtNow = numOfTodayAttendence.getDay();
-        return ResponseEntity.ok().body(AttendanceNumberResponse.builder()
+        
+        return ResponseEntity.ok().body(AttendanceNumberResDto.builder()
                 .attendanceNum(attendanceNum)
                 .dayAtNow(dayAtNow)
                 .build());
