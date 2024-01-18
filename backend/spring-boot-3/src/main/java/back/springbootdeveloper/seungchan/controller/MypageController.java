@@ -43,7 +43,7 @@ public class MypageController {
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 
-    @Operation(summary = "내 정보을 찾는다.", description = "토큰을 이용해 정보를 조회한후 user 테이블을 find한다.")
+    @Operation(summary = "업데이트 페이지 현제 회원 본인 정보 조회.", description = "업데이트 페이지 현제 본인 회원 상세 정보 업데이트")
     @GetMapping("/update")
     public ResponseEntity<MyPageResDto> findMypageToUpdate(HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
