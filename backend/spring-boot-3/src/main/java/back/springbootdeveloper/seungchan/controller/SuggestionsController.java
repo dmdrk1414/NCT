@@ -46,7 +46,6 @@ public class SuggestionsController {
     @Operation(summary = "건의 게시판 조회", description = "건의 게시판 조회. 비밀 게시판 실장만 조회 가능")
     @GetMapping("")
     public ResponseEntity<SuggestionsResultResponse> fetchSuggestions(HttpServletRequest request) {
-        Long userIdOfSearch = tokenService.getUserIdFromToken(request);
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
         List<Suggestion> suggestions = suggestionService.findAll()
                 .stream()
