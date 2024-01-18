@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.constant.filter.exception.ExceptionMessage;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
+import back.springbootdeveloper.seungchan.entity.NumOfTodayAttendence;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
@@ -30,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest()
 @AutoConfigureMockMvc
@@ -325,5 +327,27 @@ class AttendanceControllerTest {
         // DateTimeFormatter를 사용하여 원하는 포맷으로 날짜를 변환
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return currentDate.format(formatter);
+    }
+
+    @Test
+    void 출석_번호_조회_테스트() throws Exception {
+        if (DayUtill.isWeekDay()) {
+            final String url = "/attendance/find/number";
+            NumOfTodayAttendence numOfTodayAttendence = testSetUp.getNumOfTodayAttendence();
+            String attendanceNum = numOfTodayAttendence.getCheckNum();
+            String dayAtNow = numOfTodayAttendence.getDay();
+
+            // when
+            ResultActions result = mockMvc.perform(get(url)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .header("authorization", "Bearer " + token) // token header에 담기
+            );
+
+            // then
+            result
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.attendanceNum").value(attendanceNum))
+                    .andExpect(jsonPath("$.dayAtNow").value(dayAtNow));
+        }
     }
 }
