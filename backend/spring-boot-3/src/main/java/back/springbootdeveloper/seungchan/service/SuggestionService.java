@@ -20,7 +20,12 @@ public class SuggestionService {
 
 
     public List<Suggestion> findAll() {
-        return suggestionRepository.findAll();
+        List<Suggestion> suggestions = suggestionRepository.findAll();
+        if (suggestions == null) {
+            throw new EntityNotFoundException();
+        }
+        
+        return suggestions;
     }
 
     @Transactional
