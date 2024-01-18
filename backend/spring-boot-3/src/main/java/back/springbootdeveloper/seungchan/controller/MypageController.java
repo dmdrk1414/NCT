@@ -33,7 +33,7 @@ public class MypageController {
         return ResponseEntity.ok().body(new MyPageResDto(user));
     }
 
-    @Operation(summary = "내 정보을 업데이트 한다.", description = "토큰을 이용해 정보를 조회한후 user 테이블을 update한다.")
+    @Operation(summary = "현제 회원 정보을 업데이트", description = "현제 회원 상세 정보을 업데이트")
     @PutMapping("/update")
     public ResponseEntity<BaseResponseBody> updateMypage(@RequestBody UpdateUserFormRequest updateUserFormRequest, HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
