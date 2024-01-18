@@ -348,6 +348,41 @@ class MypageControllerTest {
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "asdf",
+            "12  aea3",
+            "asdf sadf asdfdsa",
+            "sadf@sdaf@sdf",
+            "23!saf",
+            "invalid_email",
+            "user@.com",
+            "@example.com",
+            "user@.com.",
+            "user@example..com",
+            "user@exa mple.com",
+            "user@example.com.",
+            "user@.example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "user@example.com-",
+            "user@exam@ple.com"
+    })
+    public void 현제_회원_본인_정보_업데이트_email_패턴_검증_테스트(String badEmail) throws Exception {
+        // given
+        UpdateUserFormReqDto request = getUpdateUserFormReqDto();
+        request.setEmail(badEmail);
+        
+        MockHttpServletResponse response = getResponse(request);
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
     //
     private MockHttpServletResponse getResponse(UpdateUserFormReqDto request) throws Exception {
         final String requestBody = objectMapper.writeValueAsString(request);
