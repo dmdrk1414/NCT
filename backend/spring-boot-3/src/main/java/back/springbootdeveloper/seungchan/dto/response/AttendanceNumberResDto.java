@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
-public class AttendanceNumberResponse {
+public class AttendanceNumberResDto {
     private String attendanceNum;
     private String dayAtNow;
 }

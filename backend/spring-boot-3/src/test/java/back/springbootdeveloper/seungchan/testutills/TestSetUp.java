@@ -1,7 +1,10 @@
 package back.springbootdeveloper.seungchan.testutills;
 
+import back.springbootdeveloper.seungchan.constant.SuggestionConstant;
+import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.service.*;
+import back.springbootdeveloper.seungchan.util.DayUtill;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,10 @@ public class TestSetUp {
     private TokenService tokenService;
     @Autowired
     private TempUserService tempUserService;
+    @Autowired
+    private SuggestionService suggestionService;
+    @Autowired
+    private NumOfTodayAttendenceService numOfTodayAttendenceService;
     private Long kingUserId;
     private Long userId_1;
     private String passwordOfKingUser;
@@ -164,5 +171,24 @@ public class TestSetUp {
         }
 
         return tempUserList;
+    }
+
+    public Suggestion saveSuggestion() {
+        SuggestionWriteReqDto requestDto = SuggestionWriteReqDto.builder()
+                .title("test title")
+                .classification(SuggestionConstant.SUGGESTION.getClassification())
+                .holidayPeriod("")
+                .build();
+
+        return suggestionService.save(requestDto);
+    }
+
+    /**
+     * NumOfTodayAttendence 저장후 반환
+     *
+     * @return
+     */
+    public NumOfTodayAttendence getNumOfTodayAttendence() {
+        return numOfTodayAttendenceService.save(DayUtill.getCurrentFormattedDate(), 1234);
     }
 }

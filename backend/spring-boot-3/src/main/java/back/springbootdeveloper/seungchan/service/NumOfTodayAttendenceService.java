@@ -14,9 +14,9 @@ import java.util.List;
 @Service
 public class NumOfTodayAttendenceService {
 
+    private static final Integer LAST_INDEX = 1;
     @Autowired
     private AttendanceService attendanceService;
-
     @Autowired
     private NumOfTodayAttendenceRepository numOfTodayAttendenceRepository;
 
@@ -49,12 +49,12 @@ public class NumOfTodayAttendenceService {
         return false;
     }
 
-    public void save(String day, int randomNum) {
+    public NumOfTodayAttendence save(String day, int randomNum) {
         NumOfTodayAttendence numOfTodayAttendence = NumOfTodayAttendence.builder()
                 .day(day)
                 .checkNum(String.valueOf(randomNum))
                 .build();
-        numOfTodayAttendenceRepository.save(numOfTodayAttendence);
+        return numOfTodayAttendenceRepository.save(numOfTodayAttendence);
     }
 
     private Boolean availableAttendance(Long userId) {
@@ -66,9 +66,15 @@ public class NumOfTodayAttendenceService {
         numOfTodayAttendenceRepository.deleteAll();
     }
 
+    /**
+     * 금일 출석 번호 조회
+     *
+     * @return
+     */
     public NumOfTodayAttendence findNumOfTodayAttendenceAtNow() {
         List<NumOfTodayAttendence> numAttendencelist = numOfTodayAttendenceRepository.findAll();
-        int indexOfLast = numAttendencelist.size() - 1;
+        int indexOfLast = numAttendencelist.size() - LAST_INDEX;
+
         return numAttendencelist.get(indexOfLast);
     }
 }

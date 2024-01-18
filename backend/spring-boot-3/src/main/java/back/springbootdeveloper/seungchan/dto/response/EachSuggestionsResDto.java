@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
-import back.springbootdeveloper.seungchan.entity.Suggestions;
+import back.springbootdeveloper.seungchan.entity.Suggestion;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +17,7 @@ public class EachSuggestionsResDto {
     private boolean isCheck;
     private String holidayPeriod;
 
-    public EachSuggestionsResDto(Suggestions suggestions) {
+    public EachSuggestionsResDto(Suggestion suggestions) {
         this.id = suggestions.getId();
         this.classification = suggestions.getClassification();
         this.title = suggestions.getTitle();

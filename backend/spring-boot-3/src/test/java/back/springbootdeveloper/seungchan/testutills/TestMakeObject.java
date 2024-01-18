@@ -113,12 +113,12 @@ public class TestMakeObject {
                 .build();
     }
 
-    public static Suggestions makeSuggestions() {
+    public static Suggestion makeSuggestions() {
         final String classification = "건의";
         final String title = "Test 건의 제목";
         final String holiday_period = "2023-07-23 ~ 2023-07-30";
 
-        return Suggestions.builder()
+        return Suggestion.builder()
                 .classification(classification)
                 .title(title)
                 .holidayPeriod(holiday_period)
