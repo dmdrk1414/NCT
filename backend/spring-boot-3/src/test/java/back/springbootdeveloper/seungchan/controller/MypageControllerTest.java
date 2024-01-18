@@ -399,6 +399,37 @@ class MypageControllerTest {
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
     }
 
+    @Test
+    void 업데이트_페이지_현제_회원_자신의_정보_조회_테스트() throws Exception {
+        // given
+        final String url = "/mypage/update";
+
+        // when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        result
+                .andExpect(jsonPath("$.name").value(kingUser.getName()))
+                .andExpect(jsonPath("$.phoneNum").value(kingUser.getPhoneNum()))
+                .andExpect(jsonPath("$.major").value(kingUser.getMajor()))
+                .andExpect(jsonPath("$.gpa").value(kingUser.getGpa()))
+                .andExpect(jsonPath("$.address").value(kingUser.getAddress()))
+                .andExpect(jsonPath("$.specialtySkill").value(kingUser.getSpecialtySkill()))
+                .andExpect(jsonPath("$.hobby").value(kingUser.getHobby()))
+                .andExpect(jsonPath("$.mbti").value(kingUser.getMbti()))
+                .andExpect(jsonPath("$.studentId").value(kingUser.getStudentId()))
+                .andExpect(jsonPath("$.birthDate").value(kingUser.getBirthDate()))
+                .andExpect(jsonPath("$.advantages").value(kingUser.getAdvantages()))
+                .andExpect(jsonPath("$.disadvantage").value(kingUser.getDisadvantage()))
+                .andExpect(jsonPath("$.selfIntroduction").value(kingUser.getSelfIntroduction()))
+                .andExpect(jsonPath("$.photo").value(kingUser.getPhoto()))
+                .andExpect(jsonPath("$.yearOfRegistration").value(kingUser.getYearOfRegistration()))
+                .andExpect(jsonPath("$.ob").value(kingUser.isOb()));
+    }
+
     private MockHttpServletResponse getResponse(UpdateUserFormReqDto request) throws Exception {
         final String requestBody = objectMapper.writeValueAsString(request);
         final String url = "/mypage/update";
