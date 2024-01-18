@@ -9,6 +9,7 @@ import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.service.SuggestionService;
 import back.springbootdeveloper.seungchan.service.UserService;
+import back.springbootdeveloper.seungchan.testutills.TestMakeObject;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,8 +31,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest()
 @AutoConfigureMockMvc
@@ -193,5 +196,26 @@ class SuggestionsControllerTest {
 
         assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
+
+    @Test
+    void 건의_게시판_조회_테스트() throws Exception {
+        // given
+        final String url = "/suggestion";
+        Suggestions saveSuggestions = testSetUp.saveSuggestion();
+        // when
+        ResultActions resultActions = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.suggestionLists[0].id").value(saveSuggestions.getId()))
+                .andExpect(jsonPath("$.suggestionLists[0].classification").value(saveSuggestions.getClassification()))
+                .andExpect(jsonPath("$.suggestionLists[0].title").value(saveSuggestions.getTitle()))
+                .andExpect(jsonPath("$.suggestionLists[0].holidayPeriod").value(saveSuggestions.getHolidayPeriod()))
+                .andExpect(jsonPath("$.suggestionLists[0].check").value(false));
     }
 }

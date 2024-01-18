@@ -1,5 +1,7 @@
 package back.springbootdeveloper.seungchan.testutills;
 
+import back.springbootdeveloper.seungchan.constant.SuggestionConstant;
+import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.service.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +26,8 @@ public class TestSetUp {
     private TokenService tokenService;
     @Autowired
     private TempUserService tempUserService;
+    @Autowired
+    private SuggestionService suggestionService;
     private Long kingUserId;
     private Long userId_1;
     private String passwordOfKingUser;
@@ -164,5 +168,15 @@ public class TestSetUp {
         }
 
         return tempUserList;
+    }
+
+    public Suggestions saveSuggestion() {
+        SuggestionWriteReqDto requestDto = SuggestionWriteReqDto.builder()
+                .title("test title")
+                .classification(SuggestionConstant.SUGGESTION.getClassification())
+                .holidayPeriod("")
+                .build();
+
+        return suggestionService.save(requestDto);
     }
 }
