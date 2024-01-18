@@ -7,6 +7,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "suggestions")
+@AllArgsConstructor
 public class Suggestions {
     // classification
     // title
@@ -47,4 +48,11 @@ public class Suggestions {
     }
 
 
+    public Suggestions(Suggestions suggestions) {
+        this.id = suggestions.getId();
+        this.classification = suggestions.getClassification();
+        this.title = suggestions.getTitle();
+        this.isCheck = suggestions.isCheck();
+        this.holidayPeriod = suggestions.getHolidayPeriod();
+    }
 }

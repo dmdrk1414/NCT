@@ -48,13 +48,12 @@ public class SuggestionsController {
     public ResponseEntity<SuggestionsResultResponse> fetchSuggestions(HttpServletRequest request) {
         Long userIdOfSearch = tokenService.getUserIdFromToken(request);
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
-        List<SuggestionList> suggestionLists = suggestionService.findAll()
+        List<Suggestions> suggestions = suggestionService.findAll()
                 .stream()
-
                 // blogService에서 찾아온 Article의 하나하나가 파라미터로 넘어간다.
-                .map(SuggestionList::new)
+                .map(Suggestions::new)
                 .toList();
-        SuggestionsResultResponse suggestionsResultResponse = new SuggestionsResultResponse(suggestionLists, isNuriKing);
+        SuggestionsResultResponse suggestionsResultResponse = new SuggestionsResultResponse(suggestions, isNuriKing);
 
         return ResponseEntity.ok().body(suggestionsResultResponse);
     }
