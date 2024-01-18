@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyPageResponse {
+public class MyPageResDto {
     private String name;
     private String phoneNum;
     private String major;
@@ -29,7 +29,7 @@ public class MyPageResponse {
     private boolean isOb;
     private String yearOfRegistration;
 
-    public MyPageResponse(UserInfo user) {
+    public MyPageResDto(UserInfo user) {
         this.name = user.getName();
         this.phoneNum = user.getPhoneNum();
         this.major = user.getMajor();

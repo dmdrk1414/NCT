@@ -1,10 +1,9 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.dto.request.UpdateUserFormRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
-import back.springbootdeveloper.seungchan.dto.response.MyPageResponse;
+import back.springbootdeveloper.seungchan.dto.response.MyPageResDto;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
@@ -27,10 +26,11 @@ public class MypageController {
 
     @Operation(summary = "현제 회원 자신의 정보 조회", description = "현제 회원 자신의 상제 정보 조회")
     @GetMapping("")
-    public ResponseEntity<MyPageResponse> findMypage(HttpServletRequest request) {
+    public ResponseEntity<MyPageResDto> findMypage(HttpServletRequest request) {
         Long id = tokenService.getUserIdFromToken(request);
         UserInfo user = userServiceImp.findUserById(id);
-        return ResponseEntity.ok().body(new MyPageResponse(user));
+
+        return ResponseEntity.ok().body(new MyPageResDto(user));
     }
 
     @Operation(summary = "내 정보을 업데이트 한다.", description = "토큰을 이용해 정보를 조회한후 user 테이블을 update한다.")
@@ -44,10 +44,10 @@ public class MypageController {
 
     @Operation(summary = "내 정보을 찾는다.", description = "토큰을 이용해 정보를 조회한후 user 테이블을 find한다.")
     @GetMapping("/update")
-    public ResponseEntity<MyPageResponse> findMypageToUpdate(HttpServletRequest request) {
+    public ResponseEntity<MyPageResDto> findMypageToUpdate(HttpServletRequest request) {
         Long userId = tokenService.getUserIdFromToken(request);
         UserInfo userInfo = userServiceImp.findUserById(userId);
 
-        return ResponseEntity.ok().body(new MyPageResponse(userInfo));
+        return ResponseEntity.ok().body(new MyPageResDto(userInfo));
     }
 }
