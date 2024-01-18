@@ -245,4 +245,82 @@ class MypageControllerTest {
                 kingUser.getEmail()
         );
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "name",
+            "phoneNum",
+            "major",
+            "gpa",
+            "address",
+            "specialtySkill",
+            "hobby",
+            "mbti",
+            "studentId",
+            "birthDate",
+            "advantages",
+            "disadvantage",
+            "selfIntroduction",
+            "email",
+    })
+    public void 현제_회원_본인_정보_업데이트_공백_예외_테스트(String check) throws Exception {
+        // given
+        final String url = "/mypage/update";
+        String nameBefore = kingUser.getName();
+        kingUser.setName(nameBefore);
+
+        UpdateUserFormReqDto request = getUpdateUserFormReqDto();
+        switch (check) {
+            case "name":
+                request.setName("");
+                break;
+            case "phoneNum":
+                request.setPhoneNum("");
+                break;
+            case "major":
+                request.setMajor("");
+                break;
+            case "gpa":
+                request.setGpa("");
+                break;
+            case "address":
+                request.setAddress("");
+                break;
+            case "specialtySkill":
+                request.setSpecialtySkill("");
+                break;
+            case "hobby":
+                request.setHobby("");
+                break;
+            case "mbti":
+                request.setMbti("");
+                break;
+            case "studentId":
+                request.setStudentId("");
+                break;
+            case "birthDate":
+                request.setBirthDate("");
+                break;
+            case "advantages":
+                request.setAdvantages("");
+                break;
+            case "disadvantage":
+                request.setDisadvantage("");
+                break;
+            case "selfIntroduction":
+                request.setSelfIntroduction("");
+                break;
+            case "email":
+                request.setEmail("");
+                break;
+        }
+        MockHttpServletResponse response = getResponse(request);
+
+        // JSON 응답을 Map으로 변환
+        HttpStatus httpStatus = TestUtills.getHttpStatusFromResponse(response);
+        Integer stateCode = TestUtills.getCustomHttpStatusCodeFromResponse(response);
+
+        assertThat(httpStatus).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
+    }
 }
