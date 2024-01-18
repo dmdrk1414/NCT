@@ -1,16 +1,13 @@
 package back.springbootdeveloper.seungchan.dto.response;
 
 import back.springbootdeveloper.seungchan.entity.UserInfo;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class MyPageResponse {
+@NoArgsConstructor
+@Data
+@Builder
+public class MyPageResDto {
     private String name;
     private String phoneNum;
     private String major;
@@ -29,7 +26,7 @@ public class MyPageResponse {
     private boolean isOb;
     private String yearOfRegistration;
 
-    public MyPageResponse(UserInfo user) {
+    public MyPageResDto(UserInfo user) {
         this.name = user.getName();
         this.phoneNum = user.getPhoneNum();
         this.major = user.getMajor();

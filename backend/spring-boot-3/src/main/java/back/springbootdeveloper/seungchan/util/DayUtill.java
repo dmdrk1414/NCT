@@ -155,4 +155,19 @@ public class DayUtill {
         // 요일이 토요일(6) 또는 일요일(7)인 경우에만 주말로 간주
         return dayOfWeekAtNow == DayOfWeek.SATURDAY || dayOfWeekAtNow == DayOfWeek.SUNDAY;
     }
+
+    /**
+     * 현재 날짜를 "yyyy-MM-dd" 형식으로 반환
+     *
+     * @return
+     */
+    public static String getCurrentFormattedDate() {
+        LocalDate currentDate = LocalDate.now();
+
+        // 출력 형식을 지정합니다.
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // 현재 날짜를 원하는 형식으로 출력합니다.
+        return currentDate.format(formatter);
+    }
 }

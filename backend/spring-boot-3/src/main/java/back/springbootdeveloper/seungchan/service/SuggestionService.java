@@ -1,11 +1,13 @@
 package back.springbootdeveloper.seungchan.service;
 
 
-import back.springbootdeveloper.seungchan.entity.Suggestions;
-import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteRequest;
+import back.springbootdeveloper.seungchan.entity.Suggestion;
+import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.SuggestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,12 +19,23 @@ public class SuggestionService {
     private final SuggestionRepository suggestionRepository;
 
 
-    public List<Suggestions> findAll() {
-        return suggestionRepository.findAll();
+    public List<Suggestion> findAll() {
+        List<Suggestion> suggestions = suggestionRepository.findAll();
+        if (suggestions == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return suggestions;
     }
 
-    public Suggestions save(SuggestionWriteRequest suggestionWriteRequest) {
-        return suggestionRepository.save(suggestionWriteRequest.toEntity());
+    @Transactional
+    public Suggestion save(SuggestionWriteReqDto suggestionWriteRequest) {
+        Suggestion suggestions = suggestionRepository.save(suggestionWriteRequest.toEntity());
+        if (suggestions == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return suggestions;
     }
 
     /**
@@ -31,19 +44,23 @@ public class SuggestionService {
      * @param id
      * @return
      */
-    public Boolean checkToggle(Long id) {
-        Suggestions suggestions = suggestionRepository.findById(id).get();
+    @Transactional
+    public void checkToggle(Long id) {
+        Suggestion suggestions = suggestionRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         Boolean check = suggestions.isCheck();
-
         if (check) {
             suggestionRepository.updateByIdCheck(id, NOT_CHECK);
-            return suggestionRepository.findById(id).get().isCheck();
+            return;
         }
         suggestionRepository.updateByIdCheck(id, TRUE_CHECK);
-        return suggestionRepository.findById(id).get().isCheck();
     }
 
-    public Suggestions findById(Long id) {
-        return suggestionRepository.findById(id).get();
+    public Suggestion findById(Long id) {
+        Suggestion suggestion = suggestionRepository.findById(id).get();
+        if (suggestion == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return suggestion;
     }
 }

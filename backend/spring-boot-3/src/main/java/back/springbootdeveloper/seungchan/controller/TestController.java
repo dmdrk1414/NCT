@@ -59,7 +59,7 @@ public class TestController {
         );
 
         for (int i = 0; i < 4; i++) {
-            suggestionRepository.save(Suggestions.builder()
+            suggestionRepository.save(Suggestion.builder()
                     .classification(classifications.get(i))
                     .title(titles.get(i))
                     .holidayPeriod(holidayPeriods.get(i))

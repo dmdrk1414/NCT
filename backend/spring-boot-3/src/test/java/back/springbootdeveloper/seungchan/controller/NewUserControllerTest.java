@@ -195,4 +195,28 @@ class NewUserControllerTest {
         assertThat(userInfo.getName()).isEqualTo(tempUser.getName());
         assertThat(userInfo.getPhoneNum()).isEqualTo(tempUser.getPhoneNum());
     }
+
+    @Test
+    void 신청_실원_거절_테스트() throws Exception {
+        // given
+        final String url = "/new-users/{id}/reject";
+        List<TempUser> targets = tempUserService.findAll();
+        TempUser target = targets.get(0);
+
+        // when
+        ResultActions result = mockMvc.perform(post(url, target.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        List<TempUser> results = tempUserService.findAll();
+        assertThat(results.contains(target)).isFalse();
+
+        // than
+        result
+                .andExpect(jsonPath("$.message").value("SUCCESS"))
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+    }
 }
