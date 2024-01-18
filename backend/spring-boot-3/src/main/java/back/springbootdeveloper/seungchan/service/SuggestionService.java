@@ -24,7 +24,7 @@ public class SuggestionService {
         if (suggestions == null) {
             throw new EntityNotFoundException();
         }
-        
+
         return suggestions;
     }
 
@@ -57,6 +57,11 @@ public class SuggestionService {
     }
 
     public Suggestion findById(Long id) {
-        return suggestionRepository.findById(id).get();
+        Suggestion suggestion = suggestionRepository.findById(id).get();
+        if (suggestion == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return suggestion;
     }
 }
