@@ -200,21 +200,37 @@ class SuggestionsControllerTest {
     void 건의_게시판_조회_테스트() throws Exception {
         // given
         final String url = "/suggestion";
-        Suggestion saveSuggestions = testSetUp.saveSuggestion();
+        List<Suggestion> targets = List.of(testSetUp.saveSuggestion(), testSetUp.saveSuggestion(), testSetUp.saveSuggestion());
+
         // when
-        ResultActions resultActions = mockMvc.perform(get(url)
+        ResultActions result = mockMvc.perform(get(url)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("authorization", "Bearer " + token) // token header에 담기
         );
 
         // then
-        resultActions
+        int one = 0;
+        int two = 1;
+        int three = 2;
+        result
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.suggestionLists[0].id").value(saveSuggestions.getId()))
-                .andExpect(jsonPath("$.suggestionLists[0].classification").value(saveSuggestions.getClassification()))
-                .andExpect(jsonPath("$.suggestionLists[0].title").value(saveSuggestions.getTitle()))
-                .andExpect(jsonPath("$.suggestionLists[0].holidayPeriod").value(saveSuggestions.getHolidayPeriod()))
-                .andExpect(jsonPath("$.suggestionLists[0].check").value(false));
+                .andExpect(jsonPath("$.suggestionLists[0].id").value(targets.get(one).getId()))
+                .andExpect(jsonPath("$.suggestionLists[0].classification").value(targets.get(one).getClassification()))
+                .andExpect(jsonPath("$.suggestionLists[0].title").value(targets.get(one).getTitle()))
+                .andExpect(jsonPath("$.suggestionLists[0].holidayPeriod").value(targets.get(one).getHolidayPeriod()))
+                .andExpect(jsonPath("$.suggestionLists[0].check").value(false))
+
+                .andExpect(jsonPath("$.suggestionLists[1].id").value(targets.get(two).getId()))
+                .andExpect(jsonPath("$.suggestionLists[1].classification").value(targets.get(two).getClassification()))
+                .andExpect(jsonPath("$.suggestionLists[1].title").value(targets.get(two).getTitle()))
+                .andExpect(jsonPath("$.suggestionLists[1].holidayPeriod").value(targets.get(two).getHolidayPeriod()))
+                .andExpect(jsonPath("$.suggestionLists[1].check").value(false))
+
+                .andExpect(jsonPath("$.suggestionLists[2].id").value(targets.get(three).getId()))
+                .andExpect(jsonPath("$.suggestionLists[2].classification").value(targets.get(three).getClassification()))
+                .andExpect(jsonPath("$.suggestionLists[2].title").value(targets.get(three).getTitle()))
+                .andExpect(jsonPath("$.suggestionLists[2].holidayPeriod").value(targets.get(three).getHolidayPeriod()))
+                .andExpect(jsonPath("$.suggestionLists[2].check").value(false));
     }
 
     @Test
