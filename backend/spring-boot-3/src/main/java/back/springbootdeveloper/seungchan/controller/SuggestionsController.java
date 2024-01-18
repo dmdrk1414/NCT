@@ -49,7 +49,6 @@ public class SuggestionsController {
         boolean isNuriKing = tokenService.getNuriKingFromToken(request);
         List<Suggestion> suggestions = suggestionService.findAll()
                 .stream()
-                // blogService에서 찾아온 Article의 하나하나가 파라미터로 넘어간다.
                 .map(Suggestion::new)
                 .toList();
         SuggestionsResultResponse suggestionsResultResponse = new SuggestionsResultResponse(suggestions, isNuriKing);
