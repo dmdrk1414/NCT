@@ -388,7 +388,7 @@ class MypageControllerTest {
         // given
         UpdateUserFormReqDto request = getUpdateUserFormReqDto();
         request.setSelfIntroduction("200이하의 자기소개");
-        
+
         MockHttpServletResponse response = getResponse(request);
 
         // JSON 응답을 Map으로 변환
@@ -399,7 +399,6 @@ class MypageControllerTest {
         assertThat(stateCode).isEqualTo(CustomHttpStatus.DATA_VALID.value());
     }
 
-    //
     private MockHttpServletResponse getResponse(UpdateUserFormReqDto request) throws Exception {
         final String requestBody = objectMapper.writeValueAsString(request);
         final String url = "/mypage/update";
