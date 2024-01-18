@@ -14,4 +14,8 @@ public enum SuggestionConstant {
     SuggestionConstant(String classification) {
         this.classification = classification;
     }
+
+    public Boolean is(String target) {
+        return classification.equals(target);
+    }
 }
