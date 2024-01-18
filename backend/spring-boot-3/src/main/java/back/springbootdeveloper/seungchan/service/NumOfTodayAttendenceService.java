@@ -49,12 +49,12 @@ public class NumOfTodayAttendenceService {
         return false;
     }
 
-    public void save(String day, int randomNum) {
+    public NumOfTodayAttendence save(String day, int randomNum) {
         NumOfTodayAttendence numOfTodayAttendence = NumOfTodayAttendence.builder()
                 .day(day)
                 .checkNum(String.valueOf(randomNum))
                 .build();
-        numOfTodayAttendenceRepository.save(numOfTodayAttendence);
+        return numOfTodayAttendenceRepository.save(numOfTodayAttendence);
     }
 
     private Boolean availableAttendance(Long userId) {
