@@ -44,16 +44,15 @@ public class SuggestionService {
      * @param id
      * @return
      */
-    public Boolean checkToggle(Long id) {
-        Suggestion suggestions = suggestionRepository.findById(id).get();
+    @Transactional
+    public void checkToggle(Long id) {
+        Suggestion suggestions = suggestionRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         Boolean check = suggestions.isCheck();
-
         if (check) {
             suggestionRepository.updateByIdCheck(id, NOT_CHECK);
-            return suggestionRepository.findById(id).get().isCheck();
+            return;
         }
         suggestionRepository.updateByIdCheck(id, TRUE_CHECK);
-        return suggestionRepository.findById(id).get().isCheck();
     }
 
     public Suggestion findById(Long id) {

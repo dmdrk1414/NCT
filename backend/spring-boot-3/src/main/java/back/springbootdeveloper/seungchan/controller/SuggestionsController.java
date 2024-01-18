@@ -65,15 +65,12 @@ public class SuggestionsController {
         return ResponseEntity.ok().body(eachSuggestionsResDto);
     }
 
-    @Operation(summary = "건의 게시판 확인 버튼", description = "건의 게시판 확인 버튼을 생성한다.")
+    @Operation(summary = "건의 게시판 확인", description = "건의 게시판 확인 토글")
     @PostMapping("/check")
-    public ResponseEntity<SuggestionCheckResDto> checkSuggestions(@RequestBody SuggestionReqDto suggestionReqDto, HttpServletRequest request) {
-        Long userId = tokenService.getUserIdFromToken(request);
+    public ResponseEntity<BaseResponseBody> checkSuggestions(@RequestBody SuggestionReqDto suggestionReqDto, HttpServletRequest request) {
         Long suggestionId = suggestionReqDto.getSuggestionId();
-        Boolean check = suggestionService.checkToggle(suggestionId);
+        suggestionService.checkToggle(suggestionId);
 
-        return ResponseEntity.ok().body(SuggestionCheckResDto.builder()
-                .check(check)
-                .build());
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 }
