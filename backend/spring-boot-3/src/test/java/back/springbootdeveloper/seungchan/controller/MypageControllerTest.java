@@ -1,11 +1,13 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.dto.request.UpdateUserFormRequest;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,9 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -75,5 +79,49 @@ class MypageControllerTest {
                 .andExpect(jsonPath("$.photo").value(kingUser.getPhoto()))
                 .andExpect(jsonPath("$.yearOfRegistration").value(kingUser.getYearOfRegistration()))
                 .andExpect(jsonPath("$.ob").value(kingUser.isOb()));
+    }
+
+    @Test
+    public void 현제_회원_본인_정보_업데이트() throws Exception {
+        // given
+        final String url = "/mypage/update";
+        String nameBefore = kingUser.getName();
+        kingUser.setName(nameBefore);
+
+        UpdateUserFormRequest request = new UpdateUserFormRequest(
+                kingUser.getName(),
+                kingUser.getPhoneNum(),
+                kingUser.getMajor(),
+                kingUser.getGpa(),
+                kingUser.getAddress(),
+                kingUser.getSpecialtySkill(),
+                kingUser.getHobby(),
+                kingUser.getMbti(),
+                kingUser.getStudentId(),
+                kingUser.getBirthDate(),
+                kingUser.getAdvantages(),
+                kingUser.getDisadvantage(),
+                kingUser.getSelfIntroduction(),
+                kingUser.getPhoto(),
+                kingUser.getEmail()
+        );
+
+        final String requestBody = objectMapper.writeValueAsString(request);
+
+        // when
+        ResultActions result = mockMvc.perform(put(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        UserInfo target = userService.findUserById(kingUser.getId());
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(kingUser.getName()));
+        assertThat(kingUser.getName()).isNotEqualTo(nameBefore);
     }
 }
