@@ -13,6 +13,7 @@
 - [ ] 로그인 한명만사용하기(실장제외)
 - [ ] 배포 방법론 공부하기
 - [ ] 토큰 검증이후 리다이렉트 사용
+- [ ] @CrossOrigin(origins = "*", allowedHeaders = "*") 공부
 - [ ] get -> null
 - [ ] Update, save => 
   - [ ] @Transactional 추가. (공부)
@@ -21,10 +22,9 @@
 - [x] 예외처리 및 테스트 코드작성
 
   - [ ] https://velog.io/@wooryung/Spring-Boot-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0
-  - [ ] Attendance Controller
+  - [x] Attendance Controller
     - [x] AttendanceIsPassController
-    - [ ] attendanceNumberController
-  - [ ] ExampleSwaggerController
+    - [x] findAttendanceNumber
   - [x] Login PageController
   - [x] MainController (예외 확인)
     - [x] findAllYbUser
@@ -33,22 +33,28 @@
     - [x] userControlFindInfo
     - [x] userControlPostInfo
     - [x] userExceptionAttendanceControl
-  - [ ] MypageController
-  - [ ] NewUserController
+  - [x] MypageController
+    - [x] findMypage
+    - [x] updateMyInformation
+    - [x] findMypageToUpdate
+  - [x] NewUserController
     - [x] findAllNewUsers
     - [x] findNewUsers
     - [x] acceptNewUserOfKing
     - [x] rejectNewUserOfKing
-  - [ ] SuggestionsController
+  - [x] SuggestionsController
     - [x] writeSuggestion
     - [x] fetchSuggestions
-    - [ ] fetchSuggestions
-    - [ ] checkSuggestions
+    - [x] findEachSuggestion
+    - [x] checkSuggestions
   - [ ] TestController
   - [ ] TokenApiController
   - [ ] Vacation Page Controller (종빈)
-  - [ ] LookupController
+  - [x] LookupController
     - [x] getTempPasswordController
+    - [x] updatePasswordController
+    - [x] updateEmailController
+    - [x] findEmailController
 - [ ] 토큰 시간지나면 로그아웃 하는 방법
 
 프런트
@@ -63,6 +69,28 @@
 [Style : back] 
 
 [Docs : back]
+
+### 2023-01-12
+
+#### 메모 (예외 사항)
+
+- [ ] 건의 게시판 댓글 추가.
+
+
+
+#### Back
+
+- [ ] 시간표 등록
+- [ ] @Transactional 추가. (공부)
+  - [ ] import org.springframework.transaction.annotation.Transactional;
+- [x] 테스트 메서드 추가
+
+
+#### Front
+
+- [ ] 시간표 등록
+
+
 
 ### 2023-01-12
 
