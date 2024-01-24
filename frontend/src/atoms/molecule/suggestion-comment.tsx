@@ -2,46 +2,68 @@ import { useRecoilState } from 'recoil';
 import { userToken, isNuriKing } from '../../states/index';
 import { axAuth } from '@/apis/axiosinstance';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { replaceRouterEachSuggestion } from '@/utils/RouteHandling';
+import { HTTP_STATUS_OK } from '@/utils/constans/httpStatusEnum';
 
 type Data = {
+  commentId: number;
   name: string;
-  comment: string;
+  content: string;
+  date: string;
+  author: boolean;
+  articleId: number | undefined;
 };
 
 export default function SuggestionComment(data: Data) {
   const [token, setToken] = useRecoilState(userToken);
   const [isKing, setIsKing] = useRecoilState(isNuriKing);
-  const router = useRouter();
-
   const justify = `flex justify-center`;
-  const nameCss = `w-[18%] flex ${justify} `;
-  const commentCss = `w-[82%] ${justify} `;
+  const nameCss = `w-[18%] flex  mt-[0.2rem] ${justify} `;
+  const commentCss = `w-[64%]  mt-[0.2rem] ${justify} `;
+  const deleteCss = `w-[18%] mt-[0.2rem] ${justify} `;
+  const titleLen = 20;
 
-  const deleteComment = (id: number) => {
-    if (isKing) {
-      axAuth(token)({
-        method: 'post',
-        url: '/suggestion/check',
-        data: {
-          suggestionId: id,
-        },
+  // 댓글 삭제
+  const deleteComment = (id: number | undefined) => {
+    axAuth(token)({
+      method: 'post',
+      url: '/suggestion/' + id + '/comment',
+      data: {
+        id: data.articleId,
+        commentId: data.commentId,
+      },
+    })
+      .then(response => {
+        const httpStatus = response.data.httpStatus;
+        if (httpStatus === HTTP_STATUS_OK) {
+          alert('댓글이 삭제되었습니다.');
+        }
       })
-        .then(res => {
-          res.data;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
+      .catch(err => {
+        console.log(err);
+        alert('댓글 삭제에 실패하였습니다.');
+      });
   };
 
   return (
     <>
       <div className={`${nameCss}`}>{data.name}</div>
       <div className={`${commentCss} flex justify-between ml-[0.2rem]`}>
-        <span>{data.comment}</span>
+        <span>{data.content.length <= titleLen ? data.content : data.content.substring(0, titleLen) + '...'}</span>
+      </div>
+      <div className={`${deleteCss}`}>
+        {data.author ? (
+          <div>
+            <button type="button" className="mt-[0.2rem] mb-[0.6rem]" onClick={() => deleteComment(data.articleId)}>
+              삭제
+            </button>
+            <div className="text-xs text-gray">{data.date}</div>
+          </div>
+        ) : (
+          <div>
+            <div className="mt-[3em] text-xs text-gray">{data.date}</div>
+          </div>
+        )}
       </div>
     </>
   );
