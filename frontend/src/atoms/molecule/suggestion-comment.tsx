@@ -1,8 +1,6 @@
 import { useRecoilState } from 'recoil';
 import { userToken, isNuriKing } from '../../states/index';
 import { axAuth } from '@/apis/axiosinstance';
-import { useEffect, useState } from 'react';
-import { replaceRouterEachSuggestion } from '@/utils/RouteHandling';
 import { HTTP_STATUS_OK } from '@/utils/constans/httpStatusEnum';
 
 type Data = {
@@ -21,13 +19,13 @@ export default function SuggestionComment(data: Data) {
   const nameCss = `w-[18%] flex  mt-[0.2rem] ${justify} `;
   const commentCss = `w-[64%]  mt-[0.2rem] ${justify} `;
   const deleteCss = `w-[18%] mt-[0.2rem] ${justify} `;
-  const titleLen = 20;
+  const titleLen = 30;
 
   // 댓글 삭제
   const deleteComment = (id: number | undefined) => {
     axAuth(token)({
       method: 'post',
-      url: '/suggestion/' + id + '/comment',
+      url: '/suggestion/' + id + '/comment', // api 제작시 url 변경 필요
       data: {
         id: data.articleId,
         commentId: data.commentId,
@@ -41,15 +39,23 @@ export default function SuggestionComment(data: Data) {
       })
       .catch(err => {
         console.log(err);
-        alert('댓글 삭제에 실패하였습니다.');
       });
   };
 
+  // 댓글의 글자수를 계산하여 30자를 초과하면 댓글창 크기를 증가 시킨다.
+  const calculateHeight = () => {
+    const additionalHeight = Math.ceil(data.content.length / titleLen) - 1;
+    const totalHeight = 4 + additionalHeight * 3;
+    return `h-[${totalHeight}rem]`;
+  };
+
+  const dynamicHeightClass = calculateHeight();
+
   return (
-    <>
+    <div className={`flex justify-center items-center border border-blue ${dynamicHeightClass}`}>
       <div className={`${nameCss}`}>{data.name}</div>
       <div className={`${commentCss} flex justify-between ml-[0.2rem]`}>
-        <span>{data.content.length <= titleLen ? data.content : data.content.substring(0, titleLen) + '...'}</span>
+        <span>{data.content}</span>
       </div>
       <div className={`${deleteCss}`}>
         {data.author ? (
@@ -57,14 +63,14 @@ export default function SuggestionComment(data: Data) {
             <button type="button" className="mt-[0.2rem] mb-[0.6rem]" onClick={() => deleteComment(data.articleId)}>
               삭제
             </button>
-            <div className="text-xs text-gray">{data.date}</div>
+            <div className="text-xs text-grey">{data.date}</div>
           </div>
         ) : (
           <div>
-            <div className="mt-[3em] text-xs text-gray">{data.date}</div>
+            <div className="mt-[3em] text-xs text-grey">{data.date}</div>
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

@@ -1,5 +1,4 @@
 'use client';
-import Header from '@/atoms/molecule/header';
 import Link from 'next/link';
 import NavigationFooter from '@/atoms/molecule/navigation-footer';
 import { useRecoilState } from 'recoil';
@@ -78,7 +77,7 @@ export default function Main() {
   const writeComment = () => {
     axAuth(token)({
       method: 'post',
-      url: '/suggestion/' + id + '/comment',
+      url: '/suggestion/' + id + '/comment', // api 제작시 url 변경 필요
       data: {
         content: suggestionComment,
       },
@@ -123,7 +122,7 @@ export default function Main() {
   useEffect(() => {
     axAuth(token)({
       method: 'get',
-      url: '/suggestion/' + id + '/comment',
+      url: '/suggestion/' + id + '/comment', // api 제작시 url 변경 필요
     }).then(res => {
       const data = res.data;
       setCommentLists(data.commentLists);
@@ -161,9 +160,7 @@ export default function Main() {
               .slice()
               .reverse()
               .map((item: CommentDataType, idx) => (
-                <div key={idx} className="flex justify-center items-center border border-blue h-[4rem]">
-                  <SuggestionComment commentId={item.commentId} name={item.name} content={item.content} date={item.date} author={item.author} articleId={suggestionData?.id} />
-                </div>
+                <SuggestionComment key={idx} commentId={item.commentId} name={item.name} content={item.content} date={item.date} author={item.author} articleId={suggestionData?.id} />
               ))}
           </div>
           <div className="flex justify-center border border-blue h-[1.5rem] rounded-b-[0.63rem] "></div>
