@@ -7,6 +7,7 @@ import { useState } from 'react';
 interface AttendanceModalProps {
   setIsAttendanceModalOpen: (isOpen: boolean) => void;
   setAllertModalStatus: (status: number) => void;
+  setMessage: (message: string) => void;
 }
 
 export default function AttendanceModal(props: AttendanceModalProps) {
@@ -41,6 +42,7 @@ export default function AttendanceModal(props: AttendanceModalProps) {
       .catch(err => {
         handleModal();
         props.setAllertModalStatus(2);
+        props.setMessage(err.response.data.message);
       });
   };
   return (
