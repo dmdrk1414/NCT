@@ -17,6 +17,10 @@ import { data } from 'autoprefixer';
 import { goToPageTop } from '@/utils/windowScrollUtils';
 import NavigationFooter from '@/atoms/molecule/navigation-footer';
 
+import { MODAL_UPDATE_TITLE_SUCCESS, MODAL_UPDATE_TITLE_DANGER } from '@/utils/constans/modalTitle';
+import { MODAL_UPDATE_CONTEXT_SUCCESS, MODAL_UPDATE_CONTEXT_DANGER } from '@/utils/constans/modalContext';
+import { MODAL_TYPE_SUCCESS, MODAL_TYPE_DANGER } from '@/utils/constans/modalType';
+
 export default function SignUp() {
   const router = useRouter();
   const [token, setToken] = useRecoilState(userToken);
@@ -24,9 +28,8 @@ export default function SignUp() {
   const [isKing, setIsKing] = useRecoilState(isNuriKing);
 
   const textOfAllert = [
-    // 휴가 신청 모달창 텍스트 입력
-    { title: '정보 수정 완료', context: '정보를 확인하세요', type: 'success' },
-    { title: '정보 수정을 할수 없습니다.', context: '인터넷 상태, 로그인 상태를 확인하세요.', type: 'danger' },
+    { title: MODAL_UPDATE_TITLE_SUCCESS, context: MODAL_UPDATE_CONTEXT_SUCCESS, type: MODAL_TYPE_SUCCESS },
+    { title: MODAL_UPDATE_TITLE_DANGER, context: MODAL_UPDATE_CONTEXT_DANGER, type: MODAL_TYPE_DANGER },
   ];
 
   useEffect(() => {
