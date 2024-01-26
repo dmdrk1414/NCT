@@ -13,6 +13,10 @@ import { useRecoilState } from 'recoil';
 import { userToken } from '../../states/index';
 import { goToPageTop } from '@/utils/windowScrollUtils';
 
+import { MODAL_SIGNUP_TITLE_SUCCESS, MODAL_SIGNUP_TITLE_DANGER } from '@/utils/constans/modalTitle';
+import { MODAL_SIGNUP_CONTEXT_SUCCESS, MODAL_SIGNUP_CONTEXT_DANGER } from '@/utils/constans/modalContext';
+import { MODAL_TYPE_SUCCESS, MODAL_TYPE_DANGER } from '@/utils/constans/modalType';
+
 export default function SignUp() {
   const router = useRouter();
   const [AllertModalstatus, setAllertModalStatus] = useState(0);
@@ -37,9 +41,8 @@ export default function SignUp() {
   }, [AllertModalstatus]);
 
   const textOfAllert = [
-    // 휴가 신청 모달창 텍스트 입력
-    { title: '지원 완료', context: '누리 고시원 실장분께 연락 주세요, 5초후에 메이페이지로 이동합니다.', type: 'success' },
-    { title: '지원 할수 없습니다.', context: '누리 고시원 실장분께 연락 주세요', type: 'danger' },
+    { title: MODAL_SIGNUP_TITLE_SUCCESS, context: MODAL_SIGNUP_CONTEXT_SUCCESS, type: MODAL_TYPE_SUCCESS },
+    { title: MODAL_SIGNUP_TITLE_DANGER, context: MODAL_SIGNUP_CONTEXT_DANGER, type: MODAL_TYPE_DANGER },
   ];
 
   const [userData, setUserData] = useState({
