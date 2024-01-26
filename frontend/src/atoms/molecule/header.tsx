@@ -5,6 +5,9 @@ import { userToken } from '../../states/index';
 import { axAuth } from '@/apis/axiosinstance';
 import AllertModal from '../../atoms/atom/allert-modal';
 import { useState, useEffect } from 'react';
+import { MODAL_VACATION_TITLE_SUCCESS, MODAL_VACATION_TITLE_DANGER } from '@/utils/constans/modalTitle';
+import { MODAL_VACATION_CONTEXT_SUCCESS, MODAL_VACATION_CONTEXT_DANGER } from '@/utils/constans/modalContext';
+import { MODAL_TYPE_SUCCESS, MODAL_TYPE_DANGER } from '@/utils/constans/modalType';
 
 type Data = {
   isVisible: boolean;
@@ -33,8 +36,8 @@ export default function Header(Data: Data) {
 
   const textOfAllert = [
     // 휴가 신청 모달창 텍스트 입력
-    { title: '휴가 신청 완료', context: '카톡으로 실장에게 말씀하세요.', type: 'success' },
-    { title: '휴가 신청을 할수 없습니다.', context: '이미 휴가, 결석, 출석을 하였습니다.', type: 'danger' },
+    { title: MODAL_VACATION_TITLE_SUCCESS, context: MODAL_VACATION_CONTEXT_SUCCESS, type: MODAL_TYPE_SUCCESS },
+    { title: MODAL_VACATION_TITLE_DANGER, context: MODAL_VACATION_CONTEXT_DANGER, type: MODAL_TYPE_DANGER },
   ];
 
   const useVacation = () => {

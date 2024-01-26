@@ -9,3 +9,6 @@ export const MODAL_UPDATE_TITLE_DANGER = '정보 수정을 할수 없습니다.'
 
 export const MODAL_SIGNUP_TITLE_SUCCESS = '지원 완료';
 export const MODAL_SIGNUP_TITLE_DANGER = '지원 할수 없습니다.';
+
+export const MODAL_VACATION_TITLE_SUCCESS = '지원 완료';
+export const MODAL_VACATION_TITLE_DANGER = '지원 할수 없습니다.';
