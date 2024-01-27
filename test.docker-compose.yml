@@ -41,7 +41,7 @@ services:
       - "8081:8080"
     # mysql서비스가 먼저 시작하고 그 뒤에 spring-boot-3 가 시작된다.
     depends_on:
-      - database-mysql
+      - test-mysql
     # mysql 컨테이너(서비스)와 spring-boot-3 컨테이너(서비스)와의 연결을 하기위한 환경설정
     # spring-boot-3의 db 설정보다 우선순위가 높다
     environment:
@@ -72,8 +72,8 @@ services:
       - ./nginx/test.nginx.conf:/etc/nginx/conf.d
     # depends_on은 설정 서비스 명이 nextjs, pring-boot-3 이 먼저 실행되고 nginx의 서비스가 먼저 실행된다.
     depends_on:
-      - frontend-nextjs
-      - backend-spring-boot-3
+      - test-nextjs
+      - test-spring-boot-3
     environment:
       # To set the time zone to Seoul.
       TZ: "Asia/Seoul"
