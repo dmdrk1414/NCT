@@ -2,7 +2,7 @@
 version: "3"
 services:
   # nextjs의 서비스 정의
-  frontend-nextjs:
+  test-nextjs:
     container_name: test-frontend-nextjs
     build: ./frontend
     #컨테이너 다운 시 재시작하라는 명령어
@@ -22,7 +22,7 @@ services:
       # To set the time zone to Seoul.
       TZ: "Asia/Seoul"
 
-  backend-spring-boot-3:
+  test-spring-boot-3:
     container_name: test-spring-3
     # Dockerfile이 있는 위치
     build: ./backend/spring-boot-3
@@ -38,7 +38,7 @@ services:
       test-nct-network:
         ipv4_address: 172.25.0.2
     ports:
-      - "8080:8080"
+      - "8081:8080"
     # mysql서비스가 먼저 시작하고 그 뒤에 spring-boot-3 가 시작된다.
     depends_on:
       - database-mysql
@@ -47,13 +47,13 @@ services:
     environment:
       # 만약 다른 컨테이너(서비스)와의 db을 연결하고 싶으면 원하는 컨테이너의 이름을 적어라
       # SPRING_DATASOURCE_URL: jdbc:mysql://원하는db컨테이너이름:3306/nct-db?useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_URL: jdbc:mysql://test-mysql:3306/nct_db?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&useUnicode=true&serverTimezone=Asia/Seoul
+      SPRING_DATASOURCE_URL: jdbc:mysql://test-mysql:3307/nct_db?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&useUnicode=true&serverTimezone=Asia/Seoul
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "nuri777!"
       # To set the time zone to Seoul.
       TZ: "Asia/Seoul"
 
-  server-nginx:
+  test-nginx:
     container_name: test-nginx
     # Dockerfile이 있는 위치
     build: ./nginx
@@ -65,8 +65,8 @@ services:
       test-nct-network:
         ipv4_address: 172.25.0.3
     ports:
-      - "80:80"
-      - "443:443" # https
+      - "81:80"
+      # - "443:443" # https
     # 현재 nginx 폴더와 도커의 /etc/nginx/conf.d 와 마운트
     volumes:
       - ./nginx/test.nginx.conf:/etc/nginx/conf.d
@@ -78,7 +78,7 @@ services:
       # To set the time zone to Seoul.
       TZ: "Asia/Seoul"
 
-  database-mysql:
+  test-mysql:
     container_name: test-mysql
     # Dockerfile이 있는 위치
     build: ./database/mysql
@@ -90,7 +90,7 @@ services:
       test-nct-network:
         ipv4_address: 172.25.0.4
     ports:
-      - "3306:3306"
+      - "3307:3306"
     # 테이블 이름 소문자로 맞춘다.
     volumes:
       - ./database/mysql/scripts:/docker-entrypoint-initdb.d
