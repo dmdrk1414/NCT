@@ -112,7 +112,6 @@ services:
 
 networks:
   test-nct-network:
-    name: test-nct-network
     driver: bridge
     ipam:
       config:
