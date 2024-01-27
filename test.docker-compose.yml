@@ -101,7 +101,7 @@ services:
 
   registry:
     image: registry:latest
-    container_name: registry
+    container_name: docker-registry
     volumes:
       - ./registry_data:/var/lib/registry/docker/registry/v2 # image 저장
     networks:
