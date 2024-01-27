@@ -17,7 +17,7 @@ services:
       - "3001:3000"
     networks:
       test-nct-network:
-        ipv4_address: 172.25.0.1
+        ipv4_address: 172.25.0.6
     environment:
       # To set the time zone to Seoul.
       TZ: "Asia/Seoul"
