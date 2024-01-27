@@ -16,6 +16,9 @@ import { hasNotToken } from '@/utils/validate/ExistenceChecker';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 import { replaceRouterInitialize } from '@/utils/RouteHandling';
 import NavigationFooter from '@/atoms/molecule/navigation-footer';
+import { MODAL_MAIN_TITLE_SUCCESS, MODAL_MAIN_TITLE_DANGER, MODAL_MAIN_TITLE_ERROR } from '@/utils/constans/modalTitle';
+import { MODAL_MAIN_CONTEXT_SUCCESS, MODAL_MAIN_CONTEXT_DANGER } from '@/utils/constans/modalContext';
+import { MODAL_TYPE_SUCCESS, MODAL_TYPE_DANGER } from '@/utils/constans/modalType';
 
 interface userDataPropsTypeZero {
   cntVacation: number;
@@ -41,11 +44,12 @@ export default function Main() {
   const [AllertModalstatus, setAllertModalStatus] = useState(0);
   const [isTodayAttendance, setIsTodayAttendance] = useState(false);
   const [isMemberInfoOpen, setIsMemberInfoOpen] = useState(0);
+  const [message, setMessage] = useState('');
 
   const textOfAllert = [
-    { title: '틀렸습니다!', context: '결석, 휴가 완료 또는 번호를 다시 확인해주세요', type: 'danger' },
-    { title: '오류!', context: '인터넷 연결을 확인해주세요', type: 'danger' },
-    { title: '출석이 완료되었습니다.', context: '', type: 'success' },
+    { title: MODAL_MAIN_TITLE_DANGER, context: MODAL_MAIN_CONTEXT_DANGER, type: MODAL_TYPE_DANGER },
+    { title: MODAL_MAIN_TITLE_ERROR, context: message, type: MODAL_TYPE_DANGER },
+    { title: MODAL_MAIN_TITLE_SUCCESS, context: MODAL_MAIN_CONTEXT_SUCCESS, type: MODAL_TYPE_SUCCESS },
   ];
 
   useEffect(() => {
@@ -95,7 +99,7 @@ export default function Main() {
 
   return (
     <main>
-      {isAttendanceModalOpen ? <AttendanceModal setIsAttendanceModalOpen={setIsAttendanceModalOpen} setAllertModalStatus={setAllertModalStatus} /> : null}
+      {isAttendanceModalOpen ? <AttendanceModal setIsAttendanceModalOpen={setIsAttendanceModalOpen} setAllertModalStatus={setAllertModalStatus} setMessage={setMessage} /> : null}
       {AllertModalstatus !== 0 ? (
         <AllertModal title={textOfAllert[AllertModalstatus - 1].title} context={textOfAllert[AllertModalstatus - 1].context} type={textOfAllert[AllertModalstatus - 1].type} />
       ) : null}

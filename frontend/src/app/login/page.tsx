@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation';
 import Modal from '../../atoms/atom/allert-modal';
 import { hasToken } from '@/utils/validate/ExistenceChecker';
 import { replaceRouterFindEmail, replaceRouterFindPassword, replaceRouterMain } from '@/utils/RouteHandling';
+import { MODAL_TITLE_DANGER } from '@/utils/constans/modalTitle';
+import { MODAL_TYPE_DANGER } from '@/utils/constans/modalType';
 
 export default function Login() {
   const [token, setToken] = useRecoilState(userToken);
@@ -18,6 +20,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [httpStatusMessage, setHttpStatusMessage] = useState('');
+  const [message, setMessage] = useState('');
 
   const inputUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value);
@@ -58,13 +62,14 @@ export default function Login() {
       })
       .catch(err => {
         setIsModalOpen(true);
-        console.log(err);
+        setMessage(err.response.data.message);
+        setHttpStatusMessage(err.response.data.httpStatus);
       });
   };
 
   return (
     <main>
-      {isModalOpen ? <Modal title={'틀렸습니다'} context={'아이디/비밀번호를 확인해주세요'} type={'danger'} /> : null}
+      {isModalOpen ? <Modal title={MODAL_TITLE_DANGER} context={message} type={MODAL_TYPE_DANGER} /> : null}
       <header>
         <Header isVisible={false} />
       </header>
