@@ -15,14 +15,16 @@ class entityMappingTest {
     private final ClubRepository clubRepository;
     private final ClubIntroduceImageRepository clubIntroduceImageRepository;
     private final ClubGradeRepository clubGradeRepository;
+    private final ClubArticleRepository clubArticleRepository;
 
     @Autowired
-    entityMappingTest(MemberRepository memberRepository, ClubMemberRepository clubMemberRepository, ClubRepository clubRepository, ClubIntroduceImageRepository clubIntroduceImageRepository, ClubGradeRepository clubGradeRepository) {
+    entityMappingTest(MemberRepository memberRepository, ClubMemberRepository clubMemberRepository, ClubRepository clubRepository, ClubIntroduceImageRepository clubIntroduceImageRepository, ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository) {
         this.memberRepository = memberRepository;
         this.clubMemberRepository = clubMemberRepository;
         this.clubRepository = clubRepository;
         this.clubIntroduceImageRepository = clubIntroduceImageRepository;
         this.clubGradeRepository = clubGradeRepository;
+        this.clubArticleRepository = clubArticleRepository;
     }
 
     @BeforeEach
@@ -45,6 +47,10 @@ class entityMappingTest {
         // ============================================ ClubGrade 찾기 시작 ============================
         ClubGrade clubGradeLeader = clubGradeRepository.findByClubGrade(CLUB_GRADE.LEADER);
         // ============================================ ClubGrade 찾기 완료 ============================
+
+        // ========================================= ClubArticle 등록 시작 ========================
+
+        // ========================================= ClubArticle 등록 완료 ========================
 
         // ========================================= Member와 Club의 관계 설정 시작 ========================
         ClubMember entityClubMember = Mapping_Member_Club(entityClub_0, entityMember_0, clubGradeLeader);
@@ -93,4 +99,27 @@ class entityMappingTest {
     @Test
     void sdf() throws Exception {
     }
+//
+//    void asd() {
+//        // TeamArticle - TeamArticleClassfication
+//        //             \- TeamArticleComment
+//        String title = "test title";
+//        String content = "test content";
+//
+//
+//        // 2.TeamArticleComment
+//        ClubArticleComment clubArticleComment_0 = TestMakeEntity.createSampleClubArticleComment(0);
+//        ClubArticleComment clubArticleComment_1 = TestMakeEntity.createSampleClubArticleComment(1);
+//        ClubArticleComment clubArticleComment_2 = TestMakeEntity.createSampleClubArticleComment(2);
+//
+//
+//        ClubArticle clubArticle_0 = TestMakeEntity.createSampleClubArticle(0);
+//
+//
+//        clubArticle_0.addClubArticleComment(clubArticleComment_0);
+//        clubArticle_0.addClubArticleComment(clubArticleComment_1);
+//        clubArticle_0.addClubArticleComment(clubArticleComment_2);
+//
+//        clubArticleRepository.save(clubArticle_0);
+//    }
 }
