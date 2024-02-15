@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -26,6 +29,11 @@ public class Club extends BaseEntity {
 
     @OneToOne(mappedBy = "club")
     private ClubMember clubMember;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "club_id")
+    private List<ClubIntroduceImage> clubIntroduceImages = new ArrayList<>();
+
 
     @Builder
     public Club(String clubName, String clubIntroduce, String clubProfileImage) {
@@ -52,5 +60,9 @@ public class Club extends BaseEntity {
         if (clubMember.getClub() != this) { // null 체크 추가
             clubMember.setClub(this);
         }
+    }
+
+    public void addClubIntroduceImage(final ClubIntroduceImage clubIntroduceImage) {
+        this.clubIntroduceImages.add(clubIntroduceImage);
     }
 }
