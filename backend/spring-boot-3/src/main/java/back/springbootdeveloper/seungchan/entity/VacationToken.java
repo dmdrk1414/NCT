@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -18,17 +15,14 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @Entity
 @Table(name = "vacation_token")
-@DynamicInsert // insert할시 Null 배제
-@DynamicUpdate // update할시 Null 배재
 public class VacationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vacation_token_id")
     private Long vacationTokenId;
 
-    @ColumnDefault(value = "5")
     @Column(name = "vacation_token")
-    private Integer vacationToken;
+    private Integer vacationToken = 5;
 
     @Column(name = "vacation_token_date", length = 15, nullable = false)
     private String vacationTokenDate;
