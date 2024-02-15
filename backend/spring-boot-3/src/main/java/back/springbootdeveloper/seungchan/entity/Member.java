@@ -91,7 +91,7 @@ public class Member extends BaseEntity {
     public void addClubMembers(final ClubMember clubMember) {
         this.clubMembers.add(clubMember);
 
-        if (clubMember != null && clubMember.getMember() != this) { // 무한루프에 빠지지 않도록 체크
+        if (clubMember.getMember() != this) { // 무한루프에 빠지지 않도록 체크
             clubMember.setMember(this);
         }
     }

@@ -24,6 +24,9 @@ public class Club extends BaseEntity {
     @Column(name = "club_profile_image", length = 200, nullable = false)
     private String clubProfileImage;
 
+    @OneToOne(mappedBy = "club")
+    private ClubMember clubMember;
+
     @Builder
     public Club(String clubName, String clubIntroduce, String clubProfileImage) {
         this.clubName = clubName;
@@ -41,5 +44,13 @@ public class Club extends BaseEntity {
 
     public void updateClubProfileImage(String clubProfileImage) {
         this.clubProfileImage = clubProfileImage;
+    }
+
+    public void setClubMember(final ClubMember clubMember) {
+        this.clubMember = clubMember;
+
+        if (clubMember.getClub() != this) { // null 체크 추가
+            clubMember.setClub(this);
+        }
     }
 }
