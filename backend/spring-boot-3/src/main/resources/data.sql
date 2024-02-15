@@ -1,3 +1,27 @@
+INSERT INTO member (first_name, last_name, nick_name, email, major, student_id, registration)
+VALUES ('길동', '홍', '홍길동', 'hong.gildong@example.com', '컴퓨터 공학', '1234567890', '2024'),
+       ('영희', '김', '영영', 'younghee.kim@example.com', '전기 공학', '0987654321', '2023'),
+       ('철수', '이', '철이', 'chulsoo.lee@example.com', '기계 공학', '1357924680', '2025'),
+       ('영수', '박', '수영', 'youngsoo.park@example.com', '화학 공학', '2468013579', '2022'),
+       ('미영', '최', '미미', 'miyoung.choi@example.com', '생명 공학', '9876543210', '2023'),
+       ('민수', '정', '민민', 'minsoo.jung@example.com', '건축 공학', '0123456789', '2024'),
+       ('지원', '장', '지지', 'jiwon.jang@example.com', '소프트웨어 공학', '5678901234', '2025'),
+       ('지훈', '서', '훈훈', 'jihun.seo@example.com', '전자 공학', '7890123456', '2022'),
+       ('미정', '임', '미미', 'mijung.lim@example.com', '산업 공학', '2345678901', '2024'),
+       ('민영', '한', '영영', 'minyoung.han@example.com', '화학 공학', '6789012345', '2023'),
+       ('예진', '유', '진예', 'yejin.yu@example.com', '컴퓨터 공학', '8901234567', '2022'),
+       ('지연', '고', '연지', 'jiyeon.go@example.com', '전자 공학', '3456789012', '2025'),
+       ('현우', '윤', '우우', 'hyunwoo.yoon@example.com', '기계 공학', '9012345678', '2024'),
+       ('성민', '김', '민민', 'sungmin.kim@example.com', '소프트웨어 공학', '4567890123', '2023'),
+       ('진우', '백', '백백', 'jinwoo.baek@example.com', '건축 공학', '0123456789', '2022'),
+       ('지은', '양', '은지', 'jieun.yang@example.com', '전기 공학', '7890123456', '2025'),
+       ('서연', '오', '연서', 'seoyeon.oh@example.com', '산업 공학', '2345678901', '2024'),
+       ('민기', '진', '기기', 'minki.jin@example.com', '생명 공학', '6789012345', '2023'),
+       ('지민', '구', '민민', 'jimin.goo@example.com', '화학 공학', '8901234567', '2022');
+
+
+
+
 INSERT INTO USER_INFO (gpa,
                        mbti,
                        address,
