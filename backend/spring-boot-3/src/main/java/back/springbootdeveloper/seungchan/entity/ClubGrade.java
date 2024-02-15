@@ -22,7 +22,7 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "club_grade")
-public class ClubGrade {
+public class ClubGrade extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "club_grade_id")

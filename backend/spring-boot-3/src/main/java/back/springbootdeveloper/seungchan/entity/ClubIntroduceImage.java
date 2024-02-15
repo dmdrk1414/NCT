@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "club_introduce_image")
-public class ClubIntroduceImage {
+public class ClubIntroduceImage extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "club_introduce_image_id")

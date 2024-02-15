@@ -13,15 +13,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @MappedSuperclass
-@SuperBuilder
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class) // 추가
 public class BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "base_entity_id")
-    private Long baseEntityId;
-
     @Column(name = "update_date", nullable = false)
     @LastModifiedDate
     private LocalDateTime updateDate;
@@ -29,5 +23,4 @@ public class BaseEntity {
     @Column(name = "create_date", nullable = false)
     @CreationTimestamp
     private LocalDateTime createDate;
-
 }

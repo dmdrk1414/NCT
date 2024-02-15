@@ -15,7 +15,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "article")
-public class Article {
+public class Article extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_id")

@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @Entity
 @Table(name = "attendance_number")
-public class AttendanceNumber {
+public class AttendanceNumber extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attendance_number_id")

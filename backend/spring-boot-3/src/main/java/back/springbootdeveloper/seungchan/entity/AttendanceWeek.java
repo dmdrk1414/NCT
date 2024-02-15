@@ -14,7 +14,7 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "attendance_week")
-public class AttendanceWeek {
+public class AttendanceWeek extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attendance_week_id")
@@ -26,27 +26,33 @@ public class AttendanceWeek {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tuesday", length = 15, nullable = false)
-    private POSSIBLE_STATUS tuesday = POSSIBLE_STATUS.POSSIBLE;;
+    private POSSIBLE_STATUS tuesday = POSSIBLE_STATUS.POSSIBLE;
+    ;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "wednesday", length = 15, nullable = false)
-    private POSSIBLE_STATUS wednesday = POSSIBLE_STATUS.POSSIBLE;;
+    private POSSIBLE_STATUS wednesday = POSSIBLE_STATUS.POSSIBLE;
+    ;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "thursday", length = 15, nullable = false)
-    private POSSIBLE_STATUS thursday = POSSIBLE_STATUS.POSSIBLE;;
+    private POSSIBLE_STATUS thursday = POSSIBLE_STATUS.POSSIBLE;
+    ;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "friday", length = 15, nullable = false)
-    private POSSIBLE_STATUS friday = POSSIBLE_STATUS.POSSIBLE;;
+    private POSSIBLE_STATUS friday = POSSIBLE_STATUS.POSSIBLE;
+    ;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "saturday", length = 15, nullable = false)
-    private POSSIBLE_STATUS saturday = POSSIBLE_STATUS.POSSIBLE;;
+    private POSSIBLE_STATUS saturday = POSSIBLE_STATUS.POSSIBLE;
+    ;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "sunday", length = 15, nullable = false)
-    private POSSIBLE_STATUS sunday = POSSIBLE_STATUS.POSSIBLE;;
+    private POSSIBLE_STATUS sunday = POSSIBLE_STATUS.POSSIBLE;
+    ;
 
     public void updateMonday(POSSIBLE_STATUS monday) {
         this.monday = monday;

@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @Entity
 @Table(name = "vacation_token")
-public class VacationToken {
+public class VacationToken extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vacation_token_id")

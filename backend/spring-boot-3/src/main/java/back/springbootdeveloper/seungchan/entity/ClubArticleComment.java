@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @Entity
 @Table(name = "club_article_comment")
-public class ClubArticleComment {
+public class ClubArticleComment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "club_article_comment_id")
