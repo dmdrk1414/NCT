@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.repository;
 
+import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.testutills.TestMakeEntity;
@@ -32,6 +33,7 @@ class entityMappingTest {
         this.clubMemberRepository.deleteAll();
         this.memberRepository.deleteAll();
         this.clubRepository.deleteAll();
+        this.clubArticleRepository.deleteAll();
     }
 
     @Test
@@ -48,15 +50,31 @@ class entityMappingTest {
         ClubGrade clubGradeLeader = clubGradeRepository.findByClubGrade(CLUB_GRADE.LEADER);
         // ============================================ ClubGrade 찾기 완료 ============================
 
-        // ========================================= ClubArticle 등록 시작 ========================
-
-        // ========================================= ClubArticle 등록 완료 ========================
 
         // ========================================= Member와 Club의 관계 설정 시작 ========================
         ClubMember entityClubMember = Mapping_Member_Club(entityClub_0, entityMember_0, clubGradeLeader);
         // ========================================= Member와 Club의 관계 설정 완료 ========================
 
+        // ========================================= ClubArticle 등록 시작 ========================
+        ClubArticle entityClubArticle_suggestion = applyClubArticle(CLUB_ARTICLE_CLASSIFICATION.SUGGESTION, 0);
+        // ========================================= ClubArticle 등록 완료 ========================
 
+
+        // ========================================= ClubArticleComment 등록 시작 ========================
+        entityClubArticle_suggestion = applyClubArticleCommentToClubArticle(entityClubArticle_suggestion, 0);
+        entityClubArticle_suggestion = applyClubArticleCommentToClubArticle(entityClubArticle_suggestion, 1);
+        entityClubArticle_suggestion = applyClubArticleCommentToClubArticle(entityClubArticle_suggestion, 2);
+        // ========================================= ClubArticleComment 등록 완료 ========================
+
+        // ========================================= Member와 Club와 ClubArticle의 관계 설정 시작 ========================
+        entityClubMember = Mapping_Member_Club(entityClubMember, entityClubArticle_suggestion);
+        // ========================================= Member와 Club와 ClubArticle의 관계 설정 완료 ========================
+    }
+
+    private ClubMember Mapping_Member_Club(ClubMember entityClubMember, ClubArticle entityClubArticleSuggestion) {
+        entityClubMember.setClubArticle(entityClubArticleSuggestion);
+        clubArticleRepository.save(entityClubArticleSuggestion);
+        return clubMemberRepository.save(entityClubMember);
     }
 
     private ClubMember Mapping_Member_Club(Club entityClub_0, Member entityMember_0, ClubGrade clubGrade) {
@@ -99,27 +117,21 @@ class entityMappingTest {
     @Test
     void sdf() throws Exception {
     }
-//
-//    void asd() {
-//        // TeamArticle - TeamArticleClassfication
-//        //             \- TeamArticleComment
-//        String title = "test title";
-//        String content = "test content";
-//
-//
-//        // 2.TeamArticleComment
-//        ClubArticleComment clubArticleComment_0 = TestMakeEntity.createSampleClubArticleComment(0);
-//        ClubArticleComment clubArticleComment_1 = TestMakeEntity.createSampleClubArticleComment(1);
-//        ClubArticleComment clubArticleComment_2 = TestMakeEntity.createSampleClubArticleComment(2);
-//
-//
-//        ClubArticle clubArticle_0 = TestMakeEntity.createSampleClubArticle(0);
-//
-//
-//        clubArticle_0.addClubArticleComment(clubArticleComment_0);
-//        clubArticle_0.addClubArticleComment(clubArticleComment_1);
-//        clubArticle_0.addClubArticleComment(clubArticleComment_2);
-//
-//        clubArticleRepository.save(clubArticle_0);
-//    }
+
+    private ClubArticle applyClubArticle(CLUB_ARTICLE_CLASSIFICATION clubArticleClassification, Integer number) {
+        // ClubArticle
+        ClubArticle clubArticle = TestMakeEntity.createSampleClubArticle(clubArticleClassification, number);
+
+        return clubArticleRepository.save(clubArticle);
+    }
+
+    private ClubArticle applyClubArticleCommentToClubArticle(ClubArticle entityClubArticle, Integer number) {
+        // ClubArticleComment
+        ClubArticleComment clubArticleComment = TestMakeEntity.createSampleClubArticleComment(number);
+
+        // ClubArticle - ClubArticleComment
+        entityClubArticle.addClubArticleComment(clubArticleComment);
+        return clubArticleRepository.save(entityClubArticle);
+    }
+
 }

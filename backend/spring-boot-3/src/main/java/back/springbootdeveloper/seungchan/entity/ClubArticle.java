@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.entity;
 
+import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_SUGGESTION_CHECK;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -41,6 +42,10 @@ public class ClubArticle extends BaseEntity {
     @Column(name = "suggestion_answer", length = 1000, nullable = false)
     private String suggestionAnswer = "";
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "classification", length = 15, nullable = false)
+    private CLUB_ARTICLE_CLASSIFICATION classification;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "club_article_date", nullable = false)
     private LocalDate ClubArticleDate;
@@ -48,14 +53,15 @@ public class ClubArticle extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "clubArticle")
     private List<ClubArticleComment> clubArticleComments = new ArrayList<>();
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "club_article_classification_id")
-//    private ClubArticleClassification clubArticleClassification;
+    @OneToOne()
+    @JoinColumn(name = "club_member_id")
+    private ClubMember clubMember;
 
     @Builder
-    public ClubArticle(String title, String content) {
+    public ClubArticle(String title, String content, CLUB_ARTICLE_CLASSIFICATION classification) {
         this.title = title;
         this.content = content;
+        this.classification = classification;
     }
 
 
@@ -103,19 +109,11 @@ public class ClubArticle extends BaseEntity {
         }
     }
 
-    public List<ClubArticleComment> getClubArticleComments() {
-        return clubArticleComments;
-    }
+    public void setClubMember(final ClubMember clubMember) {
+        this.clubMember = clubMember;
 
-//    public ClubArticleClassification getClubArticleClassification() {
-//        return clubArticleClassification;
-//    }
-//
-//    public void setClubArticleClassification(final ClubArticleClassification clubArticleClassification) {
-//        this.clubArticleClassification = clubArticleClassification;
-//        // 무한루프에 빠지지 않도록 체크
-//        if (!clubArticleClassification.getclubArticles().contains(this)) {
-//            clubArticleClassification.getclubArticles().add(this);
-//        }
-//    }
+        if (clubMember.getClubArticle() != this) { // null 체크 추가
+            clubMember.setClubArticle(this);
+        }
+    }
 }

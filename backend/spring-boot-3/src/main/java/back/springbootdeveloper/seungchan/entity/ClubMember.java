@@ -26,6 +26,9 @@ public class ClubMember {
     @JoinColumn(name = "club_grade_id")
     private ClubGrade clubGrade;
 
+    @OneToOne(mappedBy = "clubMember", cascade = CascadeType.REMOVE)
+    private ClubArticle clubArticle;
+
     public void setMember(final Member member) {
         this.member = member;
 
@@ -44,5 +47,13 @@ public class ClubMember {
 
     public void setClubGrade(final ClubGrade clubGrade) {
         this.clubGrade = clubGrade;
+    }
+
+    public void setClubArticle(final ClubArticle clubArticle) {
+        this.clubArticle = clubArticle;
+
+        if (clubArticle.getClubMember() != this) { // null 체크 추가
+            clubArticle.setClubMember(this);
+        }
     }
 }

@@ -36,7 +36,7 @@ public class ClubArticleComment extends BaseEntity {
     private Integer declarationCount = 0;
 
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_article_id")
     private ClubArticle clubArticle;
 
