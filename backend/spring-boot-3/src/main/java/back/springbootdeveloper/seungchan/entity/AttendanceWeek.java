@@ -54,6 +54,9 @@ public class AttendanceWeek extends BaseEntity {
     private POSSIBLE_STATUS sunday = POSSIBLE_STATUS.POSSIBLE;
     ;
 
+    @OneToOne(mappedBy = "attendanceWeek")
+    private ClubControl clubControl;
+
     public void updateMonday(POSSIBLE_STATUS monday) {
         this.monday = monday;
     }
@@ -80,5 +83,13 @@ public class AttendanceWeek extends BaseEntity {
 
     public void updateSunday(POSSIBLE_STATUS sunday) {
         this.sunday = sunday;
+    }
+
+    public void setClubControl(final ClubControl clubControl) {
+        this.clubControl = clubControl;
+
+        if (clubControl.getAttendanceWeek() != this) { // null 체크 추가
+            clubControl.setAttendanceWeek(this);
+        }
     }
 }

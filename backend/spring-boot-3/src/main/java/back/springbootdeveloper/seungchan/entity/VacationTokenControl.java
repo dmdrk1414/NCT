@@ -18,12 +18,18 @@ public class VacationTokenControl extends BaseEntity {
     @Column(name = "like_count")
     private Integer vacationTokenControl = 5;
 
-    @Builder
-    public VacationTokenControl(Integer vacationTokenControl) {
-        this.vacationTokenControl = vacationTokenControl;
-    }
+    @OneToOne(mappedBy = "vacationTokenControl")
+    private ClubControl clubControl;
 
     public void updateVacationTokenControl(Integer vacationTokenControl) {
         this.vacationTokenControl = vacationTokenControl;
+    }
+
+    public void setClubControl(final ClubControl clubControl) {
+        this.clubControl = clubControl;
+
+        if (clubControl.getVacationTokenControl() != this) { // null 체크 추가
+            clubControl.setVacationTokenControl(this);
+        }
     }
 }
