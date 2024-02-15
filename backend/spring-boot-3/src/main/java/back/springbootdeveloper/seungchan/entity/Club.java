@@ -25,11 +25,21 @@ public class Club {
     private String clubProfileImage;
 
     @Builder
-    public Club(String group) {
+    public Club(String clubName, String clubIntroduce, String clubProfileImage) {
+        this.clubName = clubName;
+        this.clubIntroduce = clubIntroduce;
+        this.clubProfileImage = clubProfileImage;
+    }
+
+    public void updateClubName(String group) {
         this.clubName = group;
     }
 
-    public void updateGroup(String group) {
-        this.clubName = group;
+    public void updateClubIntroduce(String clubIntroduce) {
+        this.clubIntroduce = clubIntroduce;
+    }
+
+    public void updateClubProfileImage(String clubProfileImage) {
+        this.clubProfileImage = clubProfileImage;
     }
 }
