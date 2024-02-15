@@ -34,8 +34,40 @@ class entityMappingTest {
 
     @Test
     void Member_ClubMember_Club_ClubIntroduceImage_매핑_저장_학습_테스트_1() throws Exception {
+        // ============================================ Club 등록 시작 ============================
+        Club entityClub_0 = applyClub(0);
+        // ============================================ Club 등록 완료 ============================
+
+        // ============================================ Member 등록 시작 ============================
+        Member entityMember_0 = applyMember(0);
+        // ============================================ Member 등록 완료 ============================
+
+        // ========================================= Member와 Club의 관계 설정 시작 ========================
+        Mapping_Member_Club(entityClub_0, entityMember_0);
+        // ========================================= Member와 Club의 관계 설정 완료 ========================
+    }
+
+    private void Mapping_Member_Club(Club entityClub_0, Member entityMember_0) {
+        // ClubMember
+        ClubMember clubMember = new ClubMember();
+
+        // Member와 ClubMember의 관계 설정
+        clubMember.setMember(entityMember_0);
+        clubMember.setClub(entityClub_0);
+
+        // Member 엔티티를 다시 저장하여 영속 상태를 유지
+        clubMemberRepository.save(clubMember);
+    }
+
+    private Member applyMember(Integer number) {
+        Member member = TestMakeEntity.createSampleMember(number);
+        Member entityMember = memberRepository.save(member);
+        return entityMember;
+    }
+
+    private Club applyClub(Integer number) {
         // Club
-        Club club = TestMakeEntity.createSampleClub(0);
+        Club club = TestMakeEntity.createSampleClub(number);
 
         // ClubIntroduceImage
         ClubIntroduceImage clubIntroduceImage_0 = TestMakeEntity.createSampleClubIntroduceImage(0);
@@ -48,24 +80,7 @@ class entityMappingTest {
         club.addClubIntroduceImage(clubIntroduceImage_2);
 
         Club entityClub = clubRepository.save(club);
-
-        // ============================================ club 등록 완료 ============================
-
-        // Member
-        Member member = TestMakeEntity.createSampleMember(0);
-        Member entityMember = memberRepository.save(member);
-
-
-        // ClubMember
-        ClubMember clubMember = new ClubMember();
-
-
-        // Member와 ClubMember의 관계 설정
-        clubMember.setMember(entityMember);
-        clubMember.setClub(entityClub);
-
-        // Member 엔티티를 다시 저장하여 영속 상태를 유지
-        clubMemberRepository.save(clubMember);
+        return entityClub;
     }
 
     @Test
