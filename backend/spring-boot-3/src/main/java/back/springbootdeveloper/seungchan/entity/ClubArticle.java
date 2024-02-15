@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,8 +19,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "club_article")
-@DynamicInsert // @ColumnDefault 사용 필수insert할시 Null 배제
-@DynamicUpdate // update할시 Null 배재
 public class ClubArticle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,9 +35,8 @@ public class ClubArticle {
     @Column(name = "club_article_check", length = 15)
     private CLUB_ARTICLE_SUGGESTION_CHECK answerCheck;
 
-    @ColumnDefault(value = "0")
     @Column(name = "like_count")
-    private Integer likeCount;
+    private Integer likeCount = 0;
 
     @Column(name = "suggestion_answer", length = 1000, nullable = false)
     private String suggestionAnswer = "";
