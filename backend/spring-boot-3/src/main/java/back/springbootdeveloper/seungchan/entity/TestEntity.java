@@ -7,7 +7,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "")

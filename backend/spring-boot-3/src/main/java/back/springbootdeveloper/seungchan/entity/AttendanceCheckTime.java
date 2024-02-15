@@ -12,7 +12,6 @@ import lombok.ToString;
  * 회원들의 출석시간을 월, 화, 수 목, 금, 토, 일요일에 지정할 수 있다.
  */
 @Getter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "attendance_check_time")

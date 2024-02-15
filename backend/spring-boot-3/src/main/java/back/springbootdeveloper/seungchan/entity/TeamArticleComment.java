@@ -16,7 +16,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "team_article_comment")

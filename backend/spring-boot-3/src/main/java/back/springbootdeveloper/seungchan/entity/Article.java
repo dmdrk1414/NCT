@@ -15,7 +15,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Getter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "article")

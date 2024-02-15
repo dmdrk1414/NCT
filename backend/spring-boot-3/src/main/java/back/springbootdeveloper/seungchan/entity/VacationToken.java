@@ -15,7 +15,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "vacation_token")

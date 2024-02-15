@@ -19,7 +19,6 @@ import java.util.List;
 
 
 @Getter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "team_article")

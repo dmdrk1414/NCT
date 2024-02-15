@@ -17,7 +17,6 @@ import java.time.format.DateTimeFormatter;
  * 랜덤으로 4자리 1~9의 숫자가 생성된다.
  */
 @Getter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "attendance_number")

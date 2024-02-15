@@ -15,7 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 @Table(name = "user_info")
 public class UserInfo implements UserDetails {
     @Id // id 필드를 기본키로 지정
