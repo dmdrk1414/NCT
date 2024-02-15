@@ -34,6 +34,8 @@ public class Club extends BaseEntity {
     @JoinColumn(name = "club_id")
     private List<ClubIntroduceImage> clubIntroduceImages = new ArrayList<>();
 
+    @OneToOne(mappedBy = "club")
+    private AttendanceNumber attendanceNumber;
 
     @Builder
     public Club(String clubName, String clubIntroduce, String clubProfileImage) {
@@ -64,5 +66,13 @@ public class Club extends BaseEntity {
 
     public void addClubIntroduceImage(final ClubIntroduceImage clubIntroduceImage) {
         this.clubIntroduceImages.add(clubIntroduceImage);
+    }
+
+    public void setAttendanceNumber(final AttendanceNumber attendanceNumber) {
+        this.attendanceNumber = attendanceNumber;
+
+        if (attendanceNumber.getClub() != this) { // null 체크 추가
+            attendanceNumber.setClub(this);
+        }
     }
 }

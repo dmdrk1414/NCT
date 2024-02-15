@@ -17,21 +17,24 @@ class entityMappingTest {
     private final ClubIntroduceImageRepository clubIntroduceImageRepository;
     private final ClubGradeRepository clubGradeRepository;
     private final ClubArticleRepository clubArticleRepository;
+    private final AttendanceNumberRepository attendanceNumberRepository;
 
     @Autowired
-    entityMappingTest(MemberRepository memberRepository, ClubMemberRepository clubMemberRepository, ClubRepository clubRepository, ClubIntroduceImageRepository clubIntroduceImageRepository, ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository) {
+    entityMappingTest(MemberRepository memberRepository, ClubMemberRepository clubMemberRepository, ClubRepository clubRepository, ClubIntroduceImageRepository clubIntroduceImageRepository, ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository, AttendanceNumberRepository attendanceNumberRepository) {
         this.memberRepository = memberRepository;
         this.clubMemberRepository = clubMemberRepository;
         this.clubRepository = clubRepository;
         this.clubIntroduceImageRepository = clubIntroduceImageRepository;
         this.clubGradeRepository = clubGradeRepository;
         this.clubArticleRepository = clubArticleRepository;
+        this.attendanceNumberRepository = attendanceNumberRepository;
     }
 
     @BeforeEach
     void setUp() {
         this.clubMemberRepository.deleteAll();
         this.memberRepository.deleteAll();
+        this.attendanceNumberRepository.deleteAll();
         this.clubRepository.deleteAll();
         this.clubArticleRepository.deleteAll();
     }
@@ -41,6 +44,11 @@ class entityMappingTest {
         // ============================================ Club 등록 시작 ============================
         Club entityClub_0 = applyClub(0);
         // ============================================ Club 등록 완료 ============================
+
+        // ============================================ 출석 AttendanceNumber 등록 시작 ============================
+        // 1:1
+        applyAttendanceNumber_mapping_Club_AttendanceNumber(entityClub_0, new AttendanceNumber());
+        // ============================================ 출석 AttendanceNumber 등록 완료 ============================
 
         // ============================================ Member 등록 시작 ============================
         Member entityMember_0 = applyMember(0);
@@ -69,6 +77,12 @@ class entityMappingTest {
         // ========================================= Member와 Club와 ClubArticle의 관계 설정 시작 ========================
         entityClubMember = Mapping_Member_Club(entityClubMember, entityClubArticle_suggestion);
         // ========================================= Member와 Club와 ClubArticle의 관계 설정 완료 ========================
+    }
+
+    private void applyAttendanceNumber_mapping_Club_AttendanceNumber(Club entityClub_0, AttendanceNumber attendanceNumber) {
+        AttendanceNumber attendanceNumber_0 = attendanceNumber;
+        attendanceNumber_0.setClub(entityClub_0);
+        attendanceNumberRepository.save(attendanceNumber_0);
     }
 
     private ClubMember Mapping_Member_Club(ClubMember entityClubMember, ClubArticle entityClubArticleSuggestion) {

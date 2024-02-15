@@ -33,6 +33,10 @@ public class AttendanceNumber extends BaseEntity {
     @Column(name = "attendance_date", nullable = false)
     private LocalDate attendanceDate;
 
+    @OneToOne()
+    @JoinColumn(name = "club_id")
+    private Club club;
+
     public String getAttendanceDate() {
         return attendanceDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
@@ -47,5 +51,13 @@ public class AttendanceNumber extends BaseEntity {
         // 1부터 9까지 랜덤한 4자리 숫자 생성
         int randomAttendanceNumber = (int) (Math.random() * 9_000) + 1_000;
         this.attendanceNumber = String.valueOf(randomAttendanceNumber);
+    }
+
+    public void setClub(final Club club) {
+        this.club = club;
+
+        if (club.getAttendanceNumber() != this) { // null 체크 추가
+            club.setAttendanceNumber(this);
+        }
     }
 }
