@@ -1,6 +1,6 @@
 package back.springbootdeveloper.seungchan.entity;
 
-import back.springbootdeveloper.seungchan.constant.entity.TEAM_ARTICLE_CHECK;
+import back.springbootdeveloper.seungchan.constant.entity.TEAM_ARTICLE_SUGGESTION_CHECK;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,7 +39,7 @@ public class TeamArticle {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "team_article_check", length = 15)
-    private TEAM_ARTICLE_CHECK answerCheck;
+    private TEAM_ARTICLE_SUGGESTION_CHECK answerCheck;
 
     @ColumnDefault(value = "0")
     @Column(name = "like_count")
@@ -73,7 +73,7 @@ public class TeamArticle {
         ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("Asia/Seoul"));
         this.TeamArticleDate = zonedDateTime.toLocalDate();
 
-        this.answerCheck = TEAM_ARTICLE_CHECK.UNCONFIRMED;
+        this.answerCheck = TEAM_ARTICLE_SUGGESTION_CHECK.UNCONFIRMED;
     }
 
 
@@ -85,7 +85,7 @@ public class TeamArticle {
         this.content = content;
     }
 
-    public void updateAnswerCheck(TEAM_ARTICLE_CHECK check) {
+    public void updateAnswerCheck(TEAM_ARTICLE_SUGGESTION_CHECK check) {
         this.answerCheck = check;
     }
 
