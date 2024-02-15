@@ -22,6 +22,9 @@ public class ClubControl {
     @JoinColumn(name = "attendance_week_id")
     private AttendanceWeek attendanceWeek;
 
+    @OneToOne(mappedBy = "clubControl")
+    private Club club;
+
     public void setVacationTokenControl(final VacationTokenControl vacationTokenControl) {
         this.vacationTokenControl = vacationTokenControl;
 
@@ -35,6 +38,14 @@ public class ClubControl {
 
         if (attendanceWeek.getClubControl() != this) { // null 체크 추가
             attendanceWeek.setClubControl(this);
+        }
+    }
+
+    public void setClub(final Club club) {
+        this.club = club;
+
+        if (club.getClubControl() != this) { // null 체크 추가
+            club.setClubControl(this);
         }
     }
 }

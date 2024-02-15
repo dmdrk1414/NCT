@@ -37,6 +37,10 @@ public class Club extends BaseEntity {
     @OneToOne(mappedBy = "club")
     private AttendanceNumber attendanceNumber;
 
+    @OneToOne
+    @JoinColumn(name = "club_control_id")
+    private ClubControl clubControl;
+
     @Builder
     public Club(String clubName, String clubIntroduce, String clubProfileImage) {
         this.clubName = clubName;
@@ -73,6 +77,14 @@ public class Club extends BaseEntity {
 
         if (attendanceNumber.getClub() != this) { // null 체크 추가
             attendanceNumber.setClub(this);
+        }
+    }
+
+    public void setClubControl(final ClubControl clubControl) {
+        this.clubControl = clubControl;
+
+        if (clubControl.getClub() != this) { // null 체크 추가
+            clubControl.setClub(this);
         }
     }
 }

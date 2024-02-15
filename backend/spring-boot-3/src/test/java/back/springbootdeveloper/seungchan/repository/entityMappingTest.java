@@ -58,6 +58,11 @@ class entityMappingTest {
         ClubControl clubControl_0 = mapping_ClubControl_VacattionTokenControl_AttendanceWeek();
         // ============================================ ClubControl - VacationTokenControl 등록 완료 ============================
 
+        // ============================================= Club - ClubControl 등록 ============================
+        // 1:1
+        entityClub_0 = mappring_Club_ClubControl(entityClub_0, clubControl_0);
+        // ============================================= Club - ClubControl 등록 완료 ============================
+
         // ============================================ Member 등록 시작 ============================
         Member entityMember_0 = applyMember(0);
         // ============================================ Member 등록 완료 ============================
@@ -85,6 +90,12 @@ class entityMappingTest {
         // ========================================= Member와 Club와 ClubArticle의 관계 설정 시작 ========================
         entityClubMember = Mapping_Member_Club(entityClubMember, entityClubArticle_suggestion);
         // ========================================= Member와 Club와 ClubArticle의 관계 설정 완료 ========================
+    }
+
+    private Club mappring_Club_ClubControl(Club entityClub_0, ClubControl clubControl_0) {
+        entityClub_0.setClubControl(clubControl_0);
+        entityClub_0 = clubRepository.save(entityClub_0);
+        return entityClub_0;
     }
 
     private ClubControl mapping_ClubControl_VacattionTokenControl_AttendanceWeek() {
