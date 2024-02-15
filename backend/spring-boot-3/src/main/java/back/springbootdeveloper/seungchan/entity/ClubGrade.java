@@ -31,4 +31,9 @@ public class ClubGrade extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "club_grade", length = 15)
     private CLUB_GRADE clubGrade;
+
+    @Builder
+    public ClubGrade(CLUB_GRADE clubGrade) {
+        this.clubGrade = clubGrade;
+    }
 }

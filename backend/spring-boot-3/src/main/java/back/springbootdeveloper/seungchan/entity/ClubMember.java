@@ -22,6 +22,10 @@ public class ClubMember {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_grade_id")
+    private ClubGrade clubGrade;
+
     public void setMember(final Member member) {
         this.member = member;
 
@@ -36,5 +40,9 @@ public class ClubMember {
         if (club.getClubMember() != this) { // null 체크 추가
             club.setClubMember(this);
         }
+    }
+
+    public void setClubGrade(final ClubGrade clubGrade) {
+        this.clubGrade = clubGrade;
     }
 }
