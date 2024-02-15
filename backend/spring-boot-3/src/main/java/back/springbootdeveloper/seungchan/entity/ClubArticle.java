@@ -1,11 +1,10 @@
 package back.springbootdeveloper.seungchan.entity;
 
-import back.springbootdeveloper.seungchan.constant.entity.TEAM_ARTICLE_SUGGESTION_CHECK;
+import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_SUGGESTION_CHECK;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -21,14 +20,14 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "team_article")
+@Table(name = "club_article")
 @DynamicInsert // @ColumnDefault 사용 필수insert할시 Null 배제
 @DynamicUpdate // update할시 Null 배재
-public class TeamArticle {
+public class ClubArticle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "team_article_id")
-    private Long teamArticleId;
+    @Column(name = "club_article_id")
+    private Long clubArticleId;
 
     @Column(name = "title", length = 255, nullable = false)
     private String title;
@@ -37,8 +36,8 @@ public class TeamArticle {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "team_article_check", length = 15)
-    private TEAM_ARTICLE_SUGGESTION_CHECK answerCheck;
+    @Column(name = "club_article_check", length = 15)
+    private CLUB_ARTICLE_SUGGESTION_CHECK answerCheck;
 
     @ColumnDefault(value = "0")
     @Column(name = "like_count")
@@ -48,18 +47,18 @@ public class TeamArticle {
     private String suggestionAnswer = "";
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "team_article_date", nullable = false)
-    private LocalDate TeamArticleDate;
+    @Column(name = "club_article_date", nullable = false)
+    private LocalDate ClubArticleDate;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "teamArticle")
-    private List<TeamArticleComment> teamArticleComments = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "clubArticle")
+    private List<ClubArticleComment> clubArticleComments = new ArrayList<>();
 
 //    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "team_article_classification_id")
-//    private TeamArticleClassification teamArticleClassification;
+//    @JoinColumn(name = "club_article_classification_id")
+//    private ClubArticleClassification clubArticleClassification;
 
     @Builder
-    public TeamArticle(String title, String content) {
+    public ClubArticle(String title, String content) {
         this.title = title;
         this.content = content;
     }
@@ -70,9 +69,9 @@ public class TeamArticle {
         // https://www.daleseo.com/java8-zoned-date-time/
         LocalDateTime dateTime = LocalDateTime.now();
         ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("Asia/Seoul"));
-        this.TeamArticleDate = zonedDateTime.toLocalDate();
+        this.ClubArticleDate = zonedDateTime.toLocalDate();
 
-        this.answerCheck = TEAM_ARTICLE_SUGGESTION_CHECK.UNCONFIRMED;
+        this.answerCheck = CLUB_ARTICLE_SUGGESTION_CHECK.UNCONFIRMED;
     }
 
 
@@ -84,7 +83,7 @@ public class TeamArticle {
         this.content = content;
     }
 
-    public void updateAnswerCheck(TEAM_ARTICLE_SUGGESTION_CHECK check) {
+    public void updateAnswerCheck(CLUB_ARTICLE_SUGGESTION_CHECK check) {
         this.answerCheck = check;
     }
 
@@ -102,26 +101,26 @@ public class TeamArticle {
         this.suggestionAnswer = suggestionAnswer;
     }
 
-    public void addTeamArticleComment(final TeamArticleComment teamArticleComment) {
-        this.teamArticleComments.add(teamArticleComment);
-        if (teamArticleComment.getTeamArticle() != this) { // 무한루프에 빠지지 않도록 체크
-            teamArticleComment.setTeamArticle(this);
+    public void addClubArticleComment(final ClubArticleComment clubArticleComment) {
+        this.clubArticleComments.add(clubArticleComment);
+        if (clubArticleComment.getClubArticle() != this) { // 무한루프에 빠지지 않도록 체크
+            clubArticleComment.setClubArticle(this);
         }
     }
 
-    public List<TeamArticleComment> getTeamArticleComments() {
-        return teamArticleComments;
+    public List<ClubArticleComment> getClubArticleComments() {
+        return clubArticleComments;
     }
 
-//    public TeamArticleClassification getTeamArticleClassification() {
-//        return teamArticleClassification;
+//    public ClubArticleClassification getClubArticleClassification() {
+//        return clubArticleClassification;
 //    }
-
-//    public void setTeamArticleClassification(final TeamArticleClassification teamArticleClassification) {
-//        this.teamArticleClassification = teamArticleClassification;
+//
+//    public void setClubArticleClassification(final ClubArticleClassification clubArticleClassification) {
+//        this.clubArticleClassification = clubArticleClassification;
 //        // 무한루프에 빠지지 않도록 체크
-//        if (!teamArticleClassification.getTeamArticles().contains(this)) {
-//            teamArticleClassification.getTeamArticles().add(this);
+//        if (!clubArticleClassification.getclubArticles().contains(this)) {
+//            clubArticleClassification.getclubArticles().add(this);
 //        }
 //    }
 }
