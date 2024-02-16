@@ -1,12 +1,12 @@
 'use client';
 import Header from '../atoms/molecule/header';
-import MainCarousel from '../atoms/template/main-carousel';
 import { useEffect } from 'react';
 import { userToken } from '../states/index';
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import { replaceRouterMain } from '@/utils/RouteHandling';
 import { hasToken } from '@/utils/validate/ExistenceChecker';
+import Image from 'next/image';
 
 export default function Home() {
   const [token, setToken] = useRecoilState(userToken);
@@ -22,11 +22,11 @@ export default function Home() {
   return (
     <>
       <header>
-        <Header isVisible={true} />
+        <Header isVisible={true}/>
       </header>
       <main>
         <article>
-          <MainCarousel />
+          <Image src="/home-introduction.png" alt="" priority={true} width={0} height={0} sizes='100vw' className='w-full'></Image>
         </article>
       </main>
     </>
