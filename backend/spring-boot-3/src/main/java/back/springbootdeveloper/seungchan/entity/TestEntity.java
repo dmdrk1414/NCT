@@ -14,7 +14,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate // update할시 Null 배재
 @Builder
 @AllArgsConstructor
-public class TestEntity {
+public class TestEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "test_id")

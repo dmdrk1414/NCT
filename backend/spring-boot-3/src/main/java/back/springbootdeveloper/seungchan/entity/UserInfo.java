@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user_info")
-public class UserInfo implements UserDetails {
+public class UserInfo extends BaseEntity implements UserDetails {
     @Id // id 필드를 기본키로 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 자동으로 1씩 증가
     @Column(name = "id", updatable = false)
@@ -143,6 +143,7 @@ public class UserInfo implements UserDetails {
         this.yearOfRegistration = DayUtill.getYear();
         this.regularMember = true;
     }
+
     public void update(UserInfo user) {
         this.id = user.getId();
         this.name = user.getName();
