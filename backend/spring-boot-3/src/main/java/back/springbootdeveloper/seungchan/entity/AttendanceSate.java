@@ -1,11 +1,7 @@
 package back.springbootdeveloper.seungchan.entity;
 
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 import jakarta.persistence.*;
 
 @Getter
@@ -30,9 +26,6 @@ public class AttendanceSate {
     @JoinColumn(name = "attendance_check_time_id")
     private AttendanceCheckTime attendanceCheckTime;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "attendanceSate")
-    private ClubMember clubMember;
-
     public void setAttendanceWeekDate(final AttendanceWeekDate attendanceWeekDate) {
         this.attendanceWeekDate = attendanceWeekDate;
 
@@ -54,14 +47,6 @@ public class AttendanceSate {
 
         if (attendanceCheckTime.getAttendanceSate() != this) { // null 체크 추가
             attendanceCheckTime.setAttendanceSate(this);
-        }
-    }
-
-    public void setClubMember(final ClubMember clubMember) {
-        this.clubMember = clubMember;
-
-        if (clubMember.getAttendanceSate() != this) { // null 체크 추가
-            clubMember.setAttendanceSate(this);
         }
     }
 }

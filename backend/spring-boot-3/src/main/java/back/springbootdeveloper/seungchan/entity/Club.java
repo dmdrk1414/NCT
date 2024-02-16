@@ -27,9 +27,6 @@ public class Club extends BaseEntity {
     @Column(name = "club_profile_image", length = 200, nullable = false)
     private String clubProfileImage;
 
-    @OneToOne(mappedBy = "club")
-    private ClubMember clubMember;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "club_id")
     private List<ClubIntroduceImage> clubIntroduceImages = new ArrayList<>();
@@ -58,14 +55,6 @@ public class Club extends BaseEntity {
 
     public void updateClubProfileImage(String clubProfileImage) {
         this.clubProfileImage = clubProfileImage;
-    }
-
-    public void setClubMember(final ClubMember clubMember) {
-        this.clubMember = clubMember;
-
-        if (clubMember.getClub() != this) { // null 체크 추가
-            clubMember.setClub(this);
-        }
     }
 
     public void addClubIntroduceImage(final ClubIntroduceImage clubIntroduceImage) {

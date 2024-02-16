@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -53,9 +52,8 @@ public class ClubArticle extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "clubArticle")
     private List<ClubArticleComment> clubArticleComments = new ArrayList<>();
 
-    @ManyToOne()
-    @JoinColumn(name = "club_member_id")
-    private ClubMember clubMember;
+    @Column(name = "club_member_id")
+    private Long clubMemberId;
 
     @Builder
     public ClubArticle(String title, String content, CLUB_ARTICLE_CLASSIFICATION classification) {
@@ -106,14 +104,6 @@ public class ClubArticle extends BaseEntity {
         this.clubArticleComments.add(clubArticleComment);
         if (clubArticleComment.getClubArticle() != this) { // 무한루프에 빠지지 않도록 체크
             clubArticleComment.setClubArticle(this);
-        }
-    }
-
-    public void setClubMember(final ClubMember clubMember) {
-        this.clubMember = clubMember;
-
-        if (!clubMember.getClubArticles().contains(this)) { // null 체크 추가
-            clubMember.getClubArticles().add(this);
         }
     }
 }

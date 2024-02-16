@@ -21,9 +21,6 @@ public class ClubMemberInformation extends BaseEntity {
     @Column(name = "introduce", length = 1000, nullable = false)
     private String introduce;
 
-    @OneToOne(mappedBy = "clubMemberInformation")
-    private ClubMember clubMember;
-
     @Builder
     public ClubMemberInformation(String introduce) {
         this.introduce = introduce;
@@ -31,13 +28,5 @@ public class ClubMemberInformation extends BaseEntity {
 
     public void updateIntroduce(String introduce) {
         this.introduce = introduce;
-    }
-
-    public void setClubMember(final ClubMember clubMember) {
-        this.clubMember = clubMember;
-
-        if (clubMember.getClubMemberInformation() != this) { // null 체크 추가
-            clubMember.setClubMemberInformation(this);
-        }
     }
 }
