@@ -31,10 +31,10 @@ public class Club extends BaseEntity {
     @JoinColumn(name = "club_id")
     private List<ClubIntroduceImage> clubIntroduceImages = new ArrayList<>();
 
-    @OneToOne(mappedBy = "club")
-    private AttendanceNumber attendanceNumber;
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
+    private List<AttendanceNumber> attendanceNumbers = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "club_control_id")
     private ClubControl clubControl;
 
@@ -61,8 +61,8 @@ public class Club extends BaseEntity {
         this.clubIntroduceImages.add(clubIntroduceImage);
     }
 
-    public void setAttendanceNumber(final AttendanceNumber attendanceNumber) {
-        this.attendanceNumber = attendanceNumber;
+    public void addAttendanceNumber(final AttendanceNumber attendanceNumber) {
+        this.attendanceNumbers.add(attendanceNumber);
 
         if (attendanceNumber.getClub() != this) { // null 체크 추가
             attendanceNumber.setClub(this);
