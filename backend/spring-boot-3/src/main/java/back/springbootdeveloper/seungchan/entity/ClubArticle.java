@@ -52,14 +52,15 @@ public class ClubArticle extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "clubArticle")
     private List<ClubArticleComment> clubArticleComments = new ArrayList<>();
 
-    @Column(name = "club_member_id")
+    @Column(name = "club_member_id", nullable = false)
     private Long clubMemberId;
 
     @Builder
-    public ClubArticle(String title, String content, CLUB_ARTICLE_CLASSIFICATION classification) {
+    public ClubArticle(String title, String content, CLUB_ARTICLE_CLASSIFICATION classification, Long clubMemberId) {
         this.title = title;
         this.content = content;
         this.classification = classification;
+        this.clubMemberId = clubMemberId;
     }
 
 
