@@ -53,7 +53,7 @@ public class ClubArticle extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "clubArticle")
     private List<ClubArticleComment> clubArticleComments = new ArrayList<>();
 
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "club_member_id")
     private ClubMember clubMember;
 
@@ -112,8 +112,8 @@ public class ClubArticle extends BaseEntity {
     public void setClubMember(final ClubMember clubMember) {
         this.clubMember = clubMember;
 
-        if (clubMember.getClubArticle() != this) { // null 체크 추가
-            clubMember.setClubArticle(this);
+        if (!clubMember.getClubArticles().contains(this)) { // null 체크 추가
+            clubMember.getClubArticles().add(this);
         }
     }
 }

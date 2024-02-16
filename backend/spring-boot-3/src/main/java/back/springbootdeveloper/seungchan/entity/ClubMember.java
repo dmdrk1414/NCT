@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -26,8 +29,8 @@ public class ClubMember {
     @JoinColumn(name = "club_grade_id")
     private ClubGrade clubGrade;
 
-    @OneToOne(mappedBy = "clubMember", cascade = CascadeType.REMOVE)
-    private ClubArticle clubArticle;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clubMember")
+    private List<ClubArticle> clubArticles = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "attendance_state_id")
@@ -57,8 +60,8 @@ public class ClubMember {
         this.clubGrade = clubGrade;
     }
 
-    public void setClubArticle(final ClubArticle clubArticle) {
-        this.clubArticle = clubArticle;
+    public void addClubArticle(final ClubArticle clubArticle) {
+        this.clubArticles.add(clubArticle);
 
         if (clubArticle.getClubMember() != this) { // null 체크 추가
             clubArticle.setClubMember(this);
