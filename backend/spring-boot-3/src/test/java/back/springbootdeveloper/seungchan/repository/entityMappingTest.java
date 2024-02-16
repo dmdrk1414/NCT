@@ -207,10 +207,6 @@ class entityMappingTest {
         return entityClub;
     }
 
-    @Test
-    void sdf() throws Exception {
-    }
-
     private ClubArticle applyClubArticle(CLUB_ARTICLE_CLASSIFICATION clubArticleClassification, Integer number) {
         // ClubArticle
         ClubArticle clubArticle = TestMakeEntity.createSampleClubArticle(clubArticleClassification, number);
