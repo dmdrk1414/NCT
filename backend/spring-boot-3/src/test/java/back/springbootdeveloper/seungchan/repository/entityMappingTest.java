@@ -111,9 +111,9 @@ class entityMappingTest {
         // ========================================= Member와 Club와 ClubArticle의 관계 설정 시작 ========================
 //        entityClubMember = Mapping_Member_Club(entityClubMember, entityClubArticle_suggestion);
 
-        entityClubMember.addClubArticle(entityClubArticle_suggestion);
-        entityClubMember.addClubArticle(entityClubArticle_suggestion_1);
-        entityClubMember.addClubArticle(entityClubArticle_suggestion_2);
+//        entityClubMember.addClubArticle(entityClubArticle_suggestion); // 변경
+//        entityClubMember.addClubArticle(entityClubArticle_suggestion_1);
+//        entityClubMember.addClubArticle(entityClubArticle_suggestion_2);
         clubArticleRepository.save(entityClubArticle_suggestion);
         clubArticleRepository.save(entityClubArticle_suggestion_1);
         clubArticleRepository.save(entityClubArticle_suggestion_2);
@@ -397,12 +397,12 @@ class entityMappingTest {
 
     private ClubMember mapping_ClubMemberInformation_ClubMember(ClubMember entityClubMember, Integer number) {
         ClubMemberInformation clubMemberInformation = TestMakeEntity.createSampleClubMemberInformation(number);
-        entityClubMember.setClubMemberInformation(clubMemberInformation);
+//        entityClubMember.setClubMemberInformation(clubMemberInformation); // 변경
         return clubMemberRepository.save(entityClubMember);
     }
 
     private ClubMember mapping_AttendanceState_ClubMember(ClubMember entityClubMember, AttendanceSate attendanceSate) {
-        entityClubMember.setAttendanceSate(attendanceSate);
+//        entityClubMember.setAttendanceSate(attendanceSate); // 변경
 
         return clubMemberRepository.save(entityClubMember);
     }
@@ -444,7 +444,7 @@ class entityMappingTest {
     }
 
     private ClubMember Mapping_Member_Club(ClubMember entityClubMember, ClubArticle entityClubArticleSuggestion) {
-        entityClubMember.addClubArticle(entityClubArticleSuggestion);
+//        entityClubMember.addClubArticle(entityClubArticleSuggestion); // 변경
 
         clubArticleRepository.save(entityClubArticleSuggestion);
         return clubMemberRepository.save(entityClubMember);
@@ -455,9 +455,9 @@ class entityMappingTest {
         ClubMember clubMember = new ClubMember();
 
         // Member와 ClubMember의 관계 설정
-        clubMember.setMember(entityMember_0);
-        clubMember.setClub(entityClub_0);
-        clubMember.setClubGrade(clubGrade);
+//        clubMember.setMember(entityMember_0); // 변경
+//        clubMember.setClub(entityClub_0);
+//        clubMember.setClubGrade(clubGrade);
 
         // Member 엔티티를 다시 저장하여 영속 상태를 유지
         return clubMemberRepository.save(clubMember);

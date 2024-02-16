@@ -61,4 +61,14 @@ public class TestMakeEntity {
                 .introduce("테스트_클럽_지원_자기소개_" + number)
                 .build();
     }
+
+    public static ClubMember createSampleClubMember(Long memberId, Long clubId, Long clubGradeId, Long attendanceStateId, Long clubMemberInformationId) {
+        return ClubMember.builder()
+                .memberId(memberId)
+                .clubId(clubId)
+                .clubGradeId(clubGradeId)
+                .attendanceSateId(attendanceStateId)
+                .clubMemberInformationId(clubMemberInformationId)
+                .build();
+    }
 }
