@@ -81,15 +81,18 @@ class entityMappingTest {
 
         // ============================================ Member 등록 시작 ============================
         Member entityMember_0 = applyMember(0);
+        Member entityMember_1 = applyMember(1);
         // ============================================ Member 등록 완료 ============================
 
         // ============================================ ClubGrade 찾기 시작 ============================
         ClubGrade clubGradeLeader = clubGradeRepository.findByClubGrade(CLUB_GRADE.LEADER);
+        ClubGrade clubGradeMember = clubGradeRepository.findByClubGrade(CLUB_GRADE.MEMBER);
         // ============================================ ClubGrade 찾기 완료 ============================
 
 
         // ========================================= Member와 Club의 관계 설정 시작 ========================
         ClubMember entityClubMember = Mapping_Member_Club(entityClub_0, entityMember_0, clubGradeLeader);
+        ClubMember entityClubMember_1 = Mapping_Member_Club(entityClub_0, entityMember_1, clubGradeMember);
         // ========================================= Member와 Club의 관계 설정 완료 ========================
 
         // ========================================= ClubArticle 등록 시작 ========================
