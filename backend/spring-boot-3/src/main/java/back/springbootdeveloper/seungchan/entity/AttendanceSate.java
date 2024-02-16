@@ -26,6 +26,10 @@ public class AttendanceSate {
     @JoinColumn(name = "vacation_token_id")
     private VacationToken vacationToken;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "attendance_check_time_id")
+    private AttendanceCheckTime attendanceCheckTime;
+
     public void setAttendanceWeekDate(final AttendanceWeekDate attendanceWeekDate) {
         this.attendanceWeekDate = attendanceWeekDate;
 
@@ -39,6 +43,14 @@ public class AttendanceSate {
 
         if (vacationToken.getAttendanceSate() != this) { // null 체크 추가
             vacationToken.setAttendanceSate(this);
+        }
+    }
+
+    public void setAttendanceCheckTime(final AttendanceCheckTime attendanceCheckTime) {
+        this.attendanceCheckTime = attendanceCheckTime;
+
+        if (attendanceCheckTime.getAttendanceSate() != this) { // null 체크 추가
+            attendanceCheckTime.setAttendanceSate(this);
         }
     }
 }

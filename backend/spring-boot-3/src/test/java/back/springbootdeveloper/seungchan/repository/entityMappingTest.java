@@ -62,9 +62,11 @@ class entityMappingTest {
         applyAttendanceNumber_mapping_Club_AttendanceNumber(entityClub_0, new AttendanceNumber());
         // ============================================ 출석 AttendanceNumber 등록 완료 ============================
 
-        // ==================================  AttendanceSate - AttendanceWeekDate - VacationToken 매핑 시작 ============================
-        AttendanceSate attendanceSate = mapping_AttendanceSate_AttendanceWeekDate_VacationToken();
-        // ==================================  AttendanceSate - AttendanceWeekDate - VacationToken 매핑 완료 ============================
+        // ==================================  AttendanceSate  매핑 시작 ============================
+        // ==================================        |                  ============================
+        // =====================  AttendanceWeekDate - VacationToken -VacationToken ============================
+        AttendanceSate attendanceSate = mapping_AttendanceSate_AttendanceCheckTime_AttendanceWeekDate_VacationToken();
+        // ==================================  AttendanceSate 매핑 완료 ============================
 
         // ================================ ClubControl - VacationTokenControl - AttendanceWeek 등록 ============================
         // 1:1
@@ -105,10 +107,13 @@ class entityMappingTest {
         // ========================================= Member와 Club와 ClubArticle의 관계 설정 완료 ========================
     }
 
-    private AttendanceSate mapping_AttendanceSate_AttendanceWeekDate_VacationToken() {
-        AttendanceWeekDate attendanceWeekDate = new AttendanceWeekDate();
+    private AttendanceSate mapping_AttendanceSate_AttendanceCheckTime_AttendanceWeekDate_VacationToken() {
         AttendanceSate attendanceSate = new AttendanceSate();
+        AttendanceCheckTime attendanceCheckTime = new AttendanceCheckTime();
+        AttendanceWeekDate attendanceWeekDate = new AttendanceWeekDate();
         VacationToken vacationToken = new VacationToken();
+
+        attendanceSate.setAttendanceCheckTime(attendanceCheckTime);
         attendanceSate.setAttendanceWeekDate(attendanceWeekDate);
         attendanceSate.setVacationToken(vacationToken);
 
