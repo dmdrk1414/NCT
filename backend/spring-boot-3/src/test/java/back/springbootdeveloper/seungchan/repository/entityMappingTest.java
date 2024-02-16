@@ -52,7 +52,7 @@ class entityMappingTest {
     }
 
     @Test
-    void Member_ClubMember_Club_ClubIntroduceImage_매핑_저장_학습_테스트_1() throws Exception {
+    void 매핑_저장_학습_테스트_1() throws Exception {
         // ============================================ Club 등록 시작 ============================
         Club entityClub_0 = applyClub(0);
         // ============================================ Club 등록 완료 ============================
