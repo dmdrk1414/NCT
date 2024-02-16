@@ -110,6 +110,16 @@ class entityMappingTest {
         // ==================================  ClubMember - AttendanceState 매핑 시작 ============================
         entityClubMember = mapping_AttendanceState_ClubMember(entityClubMember, attendanceSate);
         // ==================================  ClubMember - AttendanceState 매핑 완료 ============================
+
+        // ==================================  ClubMember - ClubMemberInformation 매핑 시작 ============================
+        entityClubMember = mapping_ClubMemberInformation_ClubMember(entityClubMember);
+        // ==================================  ClubMember - AttendanceState 매핑 완료 ============================
+    }
+
+    private ClubMember mapping_ClubMemberInformation_ClubMember(ClubMember entityClubMember) {
+        ClubMemberInformation clubMemberInformation = TestMakeEntity.createSampleClubMemberInformation(0);
+        entityClubMember.setClubMemberInformation(clubMemberInformation);
+        return clubMemberRepository.save(entityClubMember);
     }
 
     private ClubMember mapping_AttendanceState_ClubMember(ClubMember entityClubMember, AttendanceSate attendanceSate) {
