@@ -68,6 +68,7 @@ class entityMappingTest {
         AttendanceSate attendanceSate = mapping_AttendanceSate_AttendanceCheckTime_AttendanceWeekDate_VacationToken();
         // ==================================  AttendanceSate 매핑 완료 ============================
 
+
         // ================================ ClubControl - VacationTokenControl - AttendanceWeek 등록 ============================
         // 1:1
         ClubControl clubControl_0 = mapping_ClubControl_VacattionTokenControl_AttendanceWeek();
@@ -105,6 +106,16 @@ class entityMappingTest {
         // ========================================= Member와 Club와 ClubArticle의 관계 설정 시작 ========================
         entityClubMember = Mapping_Member_Club(entityClubMember, entityClubArticle_suggestion);
         // ========================================= Member와 Club와 ClubArticle의 관계 설정 완료 ========================
+
+        // ==================================  ClubMember - AttendanceState 매핑 시작 ============================
+        entityClubMember = mapping_AttendanceState_ClubMember(entityClubMember, attendanceSate);
+        // ==================================  ClubMember - AttendanceState 매핑 완료 ============================
+    }
+
+    private ClubMember mapping_AttendanceState_ClubMember(ClubMember entityClubMember, AttendanceSate attendanceSate) {
+        entityClubMember.setAttendanceSate(attendanceSate);
+
+        return clubMemberRepository.save(entityClubMember);
     }
 
     private AttendanceSate mapping_AttendanceSate_AttendanceCheckTime_AttendanceWeekDate_VacationToken() {
