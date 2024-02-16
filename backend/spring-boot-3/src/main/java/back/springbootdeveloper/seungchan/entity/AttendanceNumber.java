@@ -3,7 +3,6 @@ package back.springbootdeveloper.seungchan.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,7 +32,7 @@ public class AttendanceNumber extends BaseEntity {
     @Column(name = "attendance_date", nullable = false)
     private LocalDate attendanceDate;
 
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "club_id")
     private Club club;
 
@@ -56,8 +55,8 @@ public class AttendanceNumber extends BaseEntity {
     public void setClub(final Club club) {
         this.club = club;
 
-        if (club.getAttendanceNumber() != this) { // null 체크 추가
-            club.setAttendanceNumber(this);
+        if (!club.getAttendanceNumbers().contains(club)) { // null 체크 추가
+            club.addAttendanceNumber(this);
         }
     }
 }
