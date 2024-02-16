@@ -15,7 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Entity
 @Table(name = "attendance_check_time")
-public class AttendanceCheckTime {
+public class AttendanceCheckTime extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attendance_check_time_id")

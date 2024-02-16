@@ -4,17 +4,18 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "member")
-public class Member {
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -40,6 +41,9 @@ public class Member {
 
     @Column(name = "registration", length = 10, nullable = false)
     private String registration;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    private List<ClubMember> clubMembers = new ArrayList<>();
 
     @Builder
     public Member(String firstName, String lastName, String nickName, String email, String major, String studentId, String registration) {
@@ -82,5 +86,13 @@ public class Member {
 
     public void updateStudentId(String studentId) {
         this.studentId = studentId;
+    }
+
+    public void addClubMembers(final ClubMember clubMember) {
+        this.clubMembers.add(clubMember);
+
+        if (clubMember.getMember() != this) { // 무한루프에 빠지지 않도록 체크
+            clubMember.setMember(this);
+        }
     }
 }

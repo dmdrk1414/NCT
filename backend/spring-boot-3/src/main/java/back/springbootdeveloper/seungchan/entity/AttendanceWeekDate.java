@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @Entity
 @Table(name = "attendance_week_date")
-public class AttendanceWeekDate {
+public class AttendanceWeekDate extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attendance_week_date_id")
