@@ -21,9 +21,10 @@ class entityMappingTest {
     private final ClubControlRepository clubControlRepository;
     private final AttendanceWeekDateRepository attendanceWeekDateRepository;
     private final AttendanceSateRepository attendanceSateRepository;
+    private final VacationTokenRepository vacationTokenRepository;
 
     @Autowired
-    entityMappingTest(MemberRepository memberRepository, ClubMemberRepository clubMemberRepository, ClubRepository clubRepository, ClubIntroduceImageRepository clubIntroduceImageRepository, ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository, AttendanceNumberRepository attendanceNumberRepository, ClubControlRepository clubControlRepository, AttendanceWeekDateRepository attendanceWeekDateRepository, AttendanceSateRepository attendanceSateRepository) {
+    entityMappingTest(MemberRepository memberRepository, ClubMemberRepository clubMemberRepository, ClubRepository clubRepository, ClubIntroduceImageRepository clubIntroduceImageRepository, ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository, AttendanceNumberRepository attendanceNumberRepository, ClubControlRepository clubControlRepository, AttendanceWeekDateRepository attendanceWeekDateRepository, AttendanceSateRepository attendanceSateRepository, VacationTokenRepository vacationTokenRepository) {
         this.memberRepository = memberRepository;
         this.clubMemberRepository = clubMemberRepository;
         this.clubRepository = clubRepository;
@@ -34,6 +35,7 @@ class entityMappingTest {
         this.clubControlRepository = clubControlRepository;
         this.attendanceWeekDateRepository = attendanceWeekDateRepository;
         this.attendanceSateRepository = attendanceSateRepository;
+        this.vacationTokenRepository = vacationTokenRepository;
     }
 
     @BeforeEach
@@ -43,6 +45,9 @@ class entityMappingTest {
         this.attendanceNumberRepository.deleteAll();
         this.clubRepository.deleteAll();
         this.clubArticleRepository.deleteAll();
+        this.clubControlRepository.deleteAll();
+        this.attendanceWeekDateRepository.deleteAll();
+        this.attendanceSateRepository.deleteAll();
         this.clubControlRepository.deleteAll();
     }
 
@@ -57,9 +62,9 @@ class entityMappingTest {
         applyAttendanceNumber_mapping_Club_AttendanceNumber(entityClub_0, new AttendanceNumber());
         // ============================================ 출석 AttendanceNumber 등록 완료 ============================
 
-        // ==================================  AttendanceSate - AttendanceWeekDate 매핑 시작 ============================
-        AttendanceSate attendanceSate = mapping_AttendanceSate_AttendanceWeekDate();
-        // ==================================  AttendanceSate - AttendanceWeekDate 매핑 완료 ============================
+        // ==================================  AttendanceSate - AttendanceWeekDate - VacationToken 매핑 시작 ============================
+        AttendanceSate attendanceSate = mapping_AttendanceSate_AttendanceWeekDate_VacationToken();
+        // ==================================  AttendanceSate - AttendanceWeekDate - VacationToken 매핑 완료 ============================
 
         // ================================ ClubControl - VacationTokenControl - AttendanceWeek 등록 ============================
         // 1:1
@@ -100,10 +105,12 @@ class entityMappingTest {
         // ========================================= Member와 Club와 ClubArticle의 관계 설정 완료 ========================
     }
 
-    private AttendanceSate mapping_AttendanceSate_AttendanceWeekDate() {
+    private AttendanceSate mapping_AttendanceSate_AttendanceWeekDate_VacationToken() {
         AttendanceWeekDate attendanceWeekDate = new AttendanceWeekDate();
         AttendanceSate attendanceSate = new AttendanceSate();
+        VacationToken vacationToken = new VacationToken();
         attendanceSate.setAttendanceWeekDate(attendanceWeekDate);
+        attendanceSate.setVacationToken(vacationToken);
 
         return attendanceSateRepository.save(attendanceSate);
     }
