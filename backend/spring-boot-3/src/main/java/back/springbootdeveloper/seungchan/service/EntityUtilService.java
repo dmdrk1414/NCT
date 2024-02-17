@@ -25,24 +25,6 @@ public class EntityUtilService {
         this.clubMemberRepository = clubMemberRepository;
     }
 
-    private static Club createClub(String clubName, String clubIntroduce, String clubProfileImage) {
-        return Club.builder()
-                .clubName(clubName)
-                .clubIntroduce(clubIntroduce)
-                .clubProfileImage(clubProfileImage)
-                .build();
-    }
-
-    private static ClubMember creatClubMember(Member member, Club club, ClubMemberInformation clubMemberInformation, AttendanceSate attendanceSate, ClubGrade clubGrade) {
-        return ClubMember.builder()
-                .memberId(member.getMemberId())
-                .clubMemberInformationId(clubMemberInformation.getClubMemberInformationId())
-                .clubId(club.getClubId())
-                .clubGradeId(clubGrade.getClubGradeId())
-                .attendanceSateId(attendanceSate.getAttendanceStateId())
-                .clubMemberInformationId(clubMemberInformation.getClubMemberInformationId())
-                .build();
-    }
 
     /**
      * Club을 생성하고 저장합니다.
@@ -126,5 +108,42 @@ public class EntityUtilService {
         clubControl.setAttendanceWeek(attendanceWeek);
 
         return clubControl;
+    }
+
+    /**
+     * 주어진 정보를 사용하여 Club 객체를 생성합니다.
+     *
+     * @param clubName         Club 이름
+     * @param clubIntroduce    Club 자기소개
+     * @param clubProfileImage Club 프로필 이미지 URL
+     * @return 생성된 Club 객체
+     */
+    private Club createClub(String clubName, String clubIntroduce, String clubProfileImage) {
+        return Club.builder()
+                .clubName(clubName)
+                .clubIntroduce(clubIntroduce)
+                .clubProfileImage(clubProfileImage)
+                .build();
+    }
+
+    /**
+     * 주어진 정보를 사용하여 클럽 ClubMember 객체를 생성합니다.
+     *
+     * @param member                ClubMember 멤버의 회원 정보
+     * @param club                  Club 정보
+     * @param clubMemberInformation Club 멤버의 추가 정보
+     * @param attendanceSate        Club 멤버의 출석 상태
+     * @param clubGrade             Club 멤버의 등급
+     * @return 생성된 ClubMember 멤버 객체
+     */
+    private ClubMember creatClubMember(Member member, Club club, ClubMemberInformation clubMemberInformation, AttendanceSate attendanceSate, ClubGrade clubGrade) {
+        return ClubMember.builder()
+                .memberId(member.getMemberId())
+                .clubMemberInformationId(clubMemberInformation.getClubMemberInformationId())
+                .clubId(club.getClubId())
+                .clubGradeId(clubGrade.getClubGradeId())
+                .attendanceSateId(attendanceSate.getAttendanceStateId())
+                .clubMemberInformationId(clubMemberInformation.getClubMemberInformationId())
+                .build();
     }
 }
