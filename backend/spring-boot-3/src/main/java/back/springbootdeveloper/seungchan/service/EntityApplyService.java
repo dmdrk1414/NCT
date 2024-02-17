@@ -11,9 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Club 등록, Club 지원, ClubArticle 생성을 담당하는 클래스입니다.
+ */
 @Service
 @Transactional(readOnly = true)
-public class EntityUtilService {
+public class EntityApplyService {
     private final ClubRepository clubRepository;
     private final AttendanceSateRepository attendanceSateRepository;
     private final ClubMemberRepository clubMemberRepository;
@@ -22,7 +25,7 @@ public class EntityUtilService {
     private final ClubArticleRepository clubArticleRepository;
 
     @Autowired
-    public EntityUtilService(ClubRepository clubRepository, AttendanceSateRepository attendanceSateRepository, ClubMemberRepository clubMemberRepository, ClubMemberInformationRepository clubMemberInformationRepository, ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository) {
+    public EntityApplyService(ClubRepository clubRepository, AttendanceSateRepository attendanceSateRepository, ClubMemberRepository clubMemberRepository, ClubMemberInformationRepository clubMemberInformationRepository, ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository) {
         this.clubRepository = clubRepository;
         this.attendanceSateRepository = attendanceSateRepository;
         this.clubMemberRepository = clubMemberRepository;
