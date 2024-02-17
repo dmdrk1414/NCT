@@ -55,10 +55,16 @@ class entityMappingTest {
         this.clubArticleRepository.deleteAll();
         this.attendanceSateRepository.deleteAll();
         this.clubMemberInformationRepository.deleteAll();
+        this.clubGradeRepository.deleteAll();
     }
 
     @Test
     void 매핑_저장_학습_테스트_1() throws Exception {
+        this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.LEADER));
+        this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.DEPUTY_LEADER));
+        this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.MEMBER));
+        this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.DORMANT));
+
         데베_저장_팀이름_시작멤버수_끝멤버수_휴면멤버수_테스트(
                 0, 0, 29, 10);
         데베_저장_팀이름_시작멤버수_끝멤버수_휴면멤버수_테스트(
