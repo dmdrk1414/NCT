@@ -34,4 +34,8 @@ public class ClubMemberInformation extends BaseEntity {
     public void updateIntroduce(String introduce) {
         this.introduce = introduce;
     }
+
+    public void updateFavoriteCheck(FAVORITE_CHECK favoriteCheck) {
+        this.favoriteCheck = favoriteCheck;
+    }
 }
