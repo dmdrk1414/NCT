@@ -2,9 +2,7 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.entity.*;
-import back.springbootdeveloper.seungchan.repository.AttendanceSateRepository;
-import back.springbootdeveloper.seungchan.repository.ClubMemberRepository;
-import back.springbootdeveloper.seungchan.repository.ClubRepository;
+import back.springbootdeveloper.seungchan.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +15,16 @@ public class EntityUtilService {
     private final ClubRepository clubRepository;
     private final AttendanceSateRepository attendanceSateRepository;
     private final ClubMemberRepository clubMemberRepository;
+    private final ClubMemberInformationRepository clubMemberInformationRepository;
+    private final ClubGradeRepository clubGradeRepository;
 
     @Autowired
-    public EntityUtilService(ClubRepository clubRepository, AttendanceSateRepository attendanceSateRepository, ClubMemberRepository clubMemberRepository) {
+    public EntityUtilService(ClubRepository clubRepository, AttendanceSateRepository attendanceSateRepository, ClubMemberRepository clubMemberRepository, ClubMemberInformationRepository clubMemberInformationRepository, ClubGradeRepository clubGradeRepository) {
         this.clubRepository = clubRepository;
         this.attendanceSateRepository = attendanceSateRepository;
         this.clubMemberRepository = clubMemberRepository;
+        this.clubMemberInformationRepository = clubMemberInformationRepository;
+        this.clubGradeRepository = clubGradeRepository;
     }
 
 
@@ -62,11 +64,12 @@ public class EntityUtilService {
     @Transactional
     public ClubMember applyClub(Member member, Club club, CLUB_GRADE CLUB_GRADE, ClubMemberInformation clubMemberInformation) {
         AttendanceSate attendanceSate = attendanceSateRepository.save(createAttendanceState());
-        ClubGrade clubGrade = new ClubGrade(CLUB_GRADE);
+        ClubGrade clubGrade = clubGradeRepository.findByClubGrade(CLUB_GRADE);
+        ClubMemberInformation entityClubMemberInformation = clubMemberInformationRepository.save(clubMemberInformation);
 
         // ClubMember
         //   - Member, Club, ClubMemberInformation, AttendanceSate, ClubGrade
-        ClubMember clubMember = creatClubMember(member, club, clubMemberInformation, attendanceSate, clubGrade);
+        ClubMember clubMember = creatClubMember(member, club, entityClubMemberInformation, attendanceSate, clubGrade);
 
         return clubMemberRepository.save(clubMember);
     }
