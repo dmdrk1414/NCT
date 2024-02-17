@@ -65,6 +65,14 @@ class entityMappingTest {
                 1, 30, 49, 5);
         데베_저장_팀이름_시작멤버수_끝멤버수_휴면멤버수_테스트(
                 2, 50, 79, 15);
+        데베_저장_팀이름_시작멤버수_끝멤버수_휴면멤버수_테스트(
+                3, 80, 89, 3);
+        데베_저장_팀이름_시작멤버수_끝멤버수_휴면멤버수_테스트(
+                4, 90, 99, 4);
+    }
+
+    @Test
+    void 매핑_저장_학습_테스트() throws Exception {
     }
 
     void 데베_저장_팀이름_시작멤버수_끝멤버수_휴면멤버수_테스트(Integer clubNumber, Integer startMemberNumber,
@@ -193,6 +201,8 @@ class entityMappingTest {
         VacationToken vacationToken = new VacationToken();
 
         attendanceSate.setAttendanceCheckTime(attendanceCheckTime);
+
+
         attendanceSate.setAttendanceWeekDate(attendanceWeekDate);
         attendanceSate.setVacationToken(vacationToken);
 
