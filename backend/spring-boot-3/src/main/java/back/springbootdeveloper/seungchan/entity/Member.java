@@ -43,14 +43,13 @@ public class Member extends BaseEntity {
     private String registration;
 
     @Builder
-    public Member(String firstName, String lastName, String nickName, String email, String major, String studentId, String registration) {
+    public Member(String firstName, String lastName, String nickName, String email, String major, String studentId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.nickName = nickName;
         this.email = email;
         this.major = major;
         this.studentId = studentId;
-        this.registration = registration;
     }
 
     @PrePersist
