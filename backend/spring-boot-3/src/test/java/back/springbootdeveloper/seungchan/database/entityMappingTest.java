@@ -1,8 +1,9 @@
-package back.springbootdeveloper.seungchan.repository;
+package back.springbootdeveloper.seungchan.database;
 
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.entity.*;
+import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.testutills.TestMakeEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,10 +56,16 @@ class entityMappingTest {
         this.clubArticleRepository.deleteAll();
         this.attendanceSateRepository.deleteAll();
         this.clubMemberInformationRepository.deleteAll();
+        this.clubGradeRepository.deleteAll();
     }
 
     @Test
     void 매핑_저장_학습_테스트_1() throws Exception {
+        this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.LEADER));
+        this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.DEPUTY_LEADER));
+        this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.MEMBER));
+        this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.DORMANT));
+
         데베_저장_팀이름_시작멤버수_끝멤버수_휴면멤버수_테스트(
                 0, 0, 29, 10);
         데베_저장_팀이름_시작멤버수_끝멤버수_휴면멤버수_테스트(
@@ -73,6 +80,10 @@ class entityMappingTest {
 
     @Test
     void 매핑_저장_학습_테스트() throws Exception {
+        this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.LEADER));
+        this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.DEPUTY_LEADER));
+        this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.MEMBER));
+        this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.DORMANT));
     }
 
     void 데베_저장_팀이름_시작멤버수_끝멤버수_휴면멤버수_테스트(Integer clubNumber, Integer startMemberNumber,
@@ -100,10 +111,10 @@ class entityMappingTest {
         club = mappring_Club_ClubControl(club, clubControl);
 
         // ==================================== Club 5.ClubGrade 찾기 시작 ============================
-        ClubGrade clubGradeLeader = clubGradeRepository.findByClubGrade(CLUB_GRADE.LEADER);
-        ClubGrade clubGradeDeputyLeader = clubGradeRepository.findByClubGrade(CLUB_GRADE.DEPUTY_LEADER);
-        ClubGrade clubGradeMember = clubGradeRepository.findByClubGrade(CLUB_GRADE.MEMBER);
-        ClubGrade clubGradeDormant = clubGradeRepository.findByClubGrade(CLUB_GRADE.DORMANT);
+        ClubGrade clubGradeLeader = clubGradeRepository.findByClubGrade(CLUB_GRADE.LEADER).get();
+        ClubGrade clubGradeDeputyLeader = clubGradeRepository.findByClubGrade(CLUB_GRADE.DEPUTY_LEADER).get();
+        ClubGrade clubGradeMember = clubGradeRepository.findByClubGrade(CLUB_GRADE.MEMBER).get();
+        ClubGrade clubGradeDormant = clubGradeRepository.findByClubGrade(CLUB_GRADE.DORMANT).get();
 
         List<Member> members = new ArrayList<>();
         // ================================= Member 20.Member 등록 시작 ============================
