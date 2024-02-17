@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
@@ -18,14 +19,31 @@ public class EntityUtilService {
     private final ClubMemberRepository clubMemberRepository;
     private final ClubMemberInformationRepository clubMemberInformationRepository;
     private final ClubGradeRepository clubGradeRepository;
+    private final ClubArticleRepository clubArticleRepository;
 
     @Autowired
-    public EntityUtilService(ClubRepository clubRepository, AttendanceSateRepository attendanceSateRepository, ClubMemberRepository clubMemberRepository, ClubMemberInformationRepository clubMemberInformationRepository, ClubGradeRepository clubGradeRepository) {
+    public EntityUtilService(ClubRepository clubRepository, AttendanceSateRepository attendanceSateRepository, ClubMemberRepository clubMemberRepository, ClubMemberInformationRepository clubMemberInformationRepository, ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository) {
         this.clubRepository = clubRepository;
         this.attendanceSateRepository = attendanceSateRepository;
         this.clubMemberRepository = clubMemberRepository;
         this.clubMemberInformationRepository = clubMemberInformationRepository;
         this.clubGradeRepository = clubGradeRepository;
+        this.clubArticleRepository = clubArticleRepository;
+    }
+
+
+    /**
+     * ClubArticle 생성, 저장.
+     *
+     * @param title          ClubArticle 제목
+     * @param content        ClubArticle 내용
+     * @param classification ClubArticle 분류
+     * @param clubMemberId   ClubArticle 작성한 클럽 멤버의 ID
+     * @return 생성된 클럽 게시글
+     */
+    @Transactional
+    public ClubArticle applyClubArticle(String title, String content, CLUB_ARTICLE_CLASSIFICATION classification, Long clubMemberId) {
+        return clubArticleRepository.save(createClubArticle(title, content, classification, clubMemberId));
     }
 
 
@@ -149,6 +167,25 @@ public class EntityUtilService {
                 .clubGradeId(clubGrade.getClubGradeId())
                 .attendanceSateId(attendanceSate.getAttendanceStateId())
                 .clubMemberInformationId(clubMemberInformation.getClubMemberInformationId())
+                .build();
+    }
+
+
+    /**
+     * ClubArticle 생성
+     *
+     * @param title          ClubArticle 제목
+     * @param content        ClubArticle 내용
+     * @param classification ClubArticle 분류
+     * @param clubMemberId   ClubArticle 작성한 ClubMember ID
+     * @return 생성된 ClubArticle 객체 반환
+     */
+    private ClubArticle createClubArticle(String title, String content, CLUB_ARTICLE_CLASSIFICATION classification, Long clubMemberId) {
+        return ClubArticle.builder()
+                .title(title)
+                .content(content)
+                .classification(classification)
+                .clubMemberId(clubMemberId)
                 .build();
     }
 }
