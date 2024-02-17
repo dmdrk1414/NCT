@@ -2,6 +2,7 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.entity.*;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,7 +65,8 @@ public class EntityUtilService {
     @Transactional
     public ClubMember applyClub(Member member, Club club, CLUB_GRADE CLUB_GRADE, ClubMemberInformation clubMemberInformation) {
         AttendanceSate attendanceSate = attendanceSateRepository.save(createAttendanceState());
-        ClubGrade clubGrade = clubGradeRepository.findByClubGrade(CLUB_GRADE);
+        ClubGrade clubGrade = clubGradeRepository.findByClubGrade(CLUB_GRADE)
+                .orElseThrow(EntityNotFoundException::new);
         ClubMemberInformation entityClubMemberInformation = clubMemberInformationRepository.save(clubMemberInformation);
 
         // ClubMember

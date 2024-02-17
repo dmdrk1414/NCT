@@ -111,10 +111,10 @@ class entityMappingTest {
         club = mappring_Club_ClubControl(club, clubControl);
 
         // ==================================== Club 5.ClubGrade 찾기 시작 ============================
-        ClubGrade clubGradeLeader = clubGradeRepository.findByClubGrade(CLUB_GRADE.LEADER);
-        ClubGrade clubGradeDeputyLeader = clubGradeRepository.findByClubGrade(CLUB_GRADE.DEPUTY_LEADER);
-        ClubGrade clubGradeMember = clubGradeRepository.findByClubGrade(CLUB_GRADE.MEMBER);
-        ClubGrade clubGradeDormant = clubGradeRepository.findByClubGrade(CLUB_GRADE.DORMANT);
+        ClubGrade clubGradeLeader = clubGradeRepository.findByClubGrade(CLUB_GRADE.LEADER).get();
+        ClubGrade clubGradeDeputyLeader = clubGradeRepository.findByClubGrade(CLUB_GRADE.DEPUTY_LEADER).get();
+        ClubGrade clubGradeMember = clubGradeRepository.findByClubGrade(CLUB_GRADE.MEMBER).get();
+        ClubGrade clubGradeDormant = clubGradeRepository.findByClubGrade(CLUB_GRADE.DORMANT).get();
 
         List<Member> members = new ArrayList<>();
         // ================================= Member 20.Member 등록 시작 ============================
