@@ -1,8 +1,9 @@
-package back.springbootdeveloper.seungchan.repository;
+package back.springbootdeveloper.seungchan.database;
 
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.entity.*;
+import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.testutills.TestMakeEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
