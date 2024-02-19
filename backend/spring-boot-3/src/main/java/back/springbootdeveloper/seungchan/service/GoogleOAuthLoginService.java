@@ -4,10 +4,8 @@ import back.springbootdeveloper.seungchan.dto.request.GoogleOAuthLoginReqDto;
 import back.springbootdeveloper.seungchan.dto.request.LoginReqDto;
 import back.springbootdeveloper.seungchan.dto.response.GoogleOAuthLoginResDto;
 import back.springbootdeveloper.seungchan.dto.response.GoogleOAuthTokenInfoResDto;
-import back.springbootdeveloper.seungchan.dto.response.UserLoginResponse;
 import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.repository.MemberRepository;
-import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.util.GoogleConfigUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,15 +49,19 @@ public class GoogleOAuthLoginService {
             GoogleOAuthLoginResDto googleOAuthLoginResDto = objectMapper.readValue(apiResponseString.getBody(), new TypeReference<GoogleOAuthLoginResDto>() {});
             System.out.println(googleOAuthLoginResDto.toString());
 
-            // Get Token Information
+            // Get Token Information(email)
             String googleJwtToken = googleOAuthLoginResDto.getAccessToken();
             String requestTokenInfoUrl = UriComponentsBuilder.fromHttpUrl(googleConfigUtil.getGoogleAuthUrl() + "/tokeninfo").queryParam("access_token", googleJwtToken).toUriString();
             String resultTokenInfo = restTemplate.getForObject(requestTokenInfoUrl,String.class);
+            System.out.println(resultTokenInfo.toString());
+
+            // Check member exist
             if(resultTokenInfo != null){
                 GoogleOAuthTokenInfoResDto googleOAuthTokenInfoResDto = objectMapper.readValue(resultTokenInfo, new TypeReference<GoogleOAuthTokenInfoResDto>() {});
 
                 // Check user exist
                 Optional<Member> existedMember = memberRepository.findByEmail(googleOAuthTokenInfoResDto.getEmail());
+                System.out.println(existedMember.toString());
                 if(existedMember.isPresent()){
                     System.out.println("User Exist: User Exist");
 
