@@ -6,10 +6,12 @@ import back.springbootdeveloper.seungchan.dto.request.LoginReqDto;
 import back.springbootdeveloper.seungchan.dto.response.GoogleOAuthLoginResDto;
 import back.springbootdeveloper.seungchan.dto.response.GoogleOAuthTokenInfoResDto;
 import back.springbootdeveloper.seungchan.entity.Member;
+import back.springbootdeveloper.seungchan.filter.handler.RestTemplateResponseErrorHandler;
 import back.springbootdeveloper.seungchan.repository.MemberRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -29,7 +31,7 @@ public class GoogleOAuthLoginService {
     public void loginGoogleOAuth(LoginReqDto request){
         // Get Token from google
         // get params
-        RestTemplate restTemplate = new RestTemplate(); // 외부 API 통신을 위해 사용됨.
+        RestTemplate restTemplate = new RestTemplateBuilder().errorHandler(new RestTemplateResponseErrorHandler()).build(); // 외부 API 통신을 위해 사용됨.
         GoogleOAuthLoginReqDto googleOAuthLoginReqDto = GoogleOAuthLoginReqDto.builder()
                 .clientId(googleConfig.getGoogleClientId())
                 .clientSecret(googleConfig.getGoogleSecret())
@@ -55,14 +57,16 @@ public class GoogleOAuthLoginService {
             // Check member exist
             if(resultTokenInfo != null){
                 GoogleOAuthTokenInfoResDto googleOAuthTokenInfoResDto = objectMapper.readValue(resultTokenInfo, new TypeReference<GoogleOAuthTokenInfoResDto>() {});
-
                 // Check user exist
-                Optional<Member> existedMember = memberRepository.findByEmail(googleOAuthTokenInfoResDto.getEmail());
+                String googleEmail = googleOAuthTokenInfoResDto.getEmail();
+                Optional<Member> existedMember = memberRepository.findByEmail(googleEmail);
                 System.out.println(existedMember.toString());
                 if(existedMember.isPresent()){
                     // Check Refresh token is valid
                 }else{
-                    // Create Refresh, Access Token
+                    // If the user does not exist
+                    memberRepository.save(new Member(googleEmail));
+
                     System.out.println("User does not exist");
                 }
 

@@ -83,7 +83,6 @@ dependencies {
 
     //  스프링 데이터 JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
     implementation 'mysql:mysql-connector-java:8.0.27'
 
     // str <==> json parsing method
@@ -100,7 +99,6 @@ dependencies {
     // test용 lombok 의존성 추가
     testImplementation 'org.projectlombok:lombok'
 
-
     //프로젝트에 jwt 라이브러리를 추가하여 JSON Web Token(JWT)을 생성하고
     // 처리하는 기능을 사용할 수 있도록 해줍니다.
     // JWT는 인증 및 인가를 위한 토큰 기반 인증 방식으로 자주 사용되며,
@@ -108,8 +106,6 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1' // // 자바 JWT 라이브러리
     implementation 'javax.xml.bind:jaxb-api:2.3.1' // XML 문서와 Java 객체 간 매핑을 자동화
 
-    // 외부 API 통신을 위한 의존성
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     // swagger 설정
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
