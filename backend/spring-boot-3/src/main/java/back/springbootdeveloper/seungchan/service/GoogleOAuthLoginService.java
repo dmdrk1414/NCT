@@ -1,12 +1,12 @@
 package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.config.GoogleConfig;
 import back.springbootdeveloper.seungchan.dto.request.GoogleOAuthLoginReqDto;
 import back.springbootdeveloper.seungchan.dto.request.LoginReqDto;
 import back.springbootdeveloper.seungchan.dto.response.GoogleOAuthLoginResDto;
 import back.springbootdeveloper.seungchan.dto.response.GoogleOAuthTokenInfoResDto;
 import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.repository.MemberRepository;
-import back.springbootdeveloper.seungchan.util.GoogleConfigUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Optional;
 
@@ -24,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GoogleOAuthLoginService {
     private final MemberRepository memberRepository;
-    private final GoogleConfigUtil googleConfigUtil;
+    private final GoogleConfig googleConfig;
     private final ObjectMapper objectMapper;
 
     public void loginGoogleOAuth(LoginReqDto request){
@@ -32,10 +31,10 @@ public class GoogleOAuthLoginService {
         // get params
         RestTemplate restTemplate = new RestTemplate(); // 외부 API 통신을 위해 사용됨.
         GoogleOAuthLoginReqDto googleOAuthLoginReqDto = GoogleOAuthLoginReqDto.builder()
-                .clientId(googleConfigUtil.getGoogleClientId())
-                .clientSecret(googleConfigUtil.getGoogleSecret())
+                .clientId(googleConfig.getGoogleClientId())
+                .clientSecret(googleConfig.getGoogleSecret())
                 .code(request.getAuthCode())
-                .redirectUri(googleConfigUtil.getGoogleRedirectUrl())
+                .redirectUri(googleConfig.getGoogleRedirectUrl())
                 .grantType("authorization_code")
                 .build();
 
@@ -43,17 +42,15 @@ public class GoogleOAuthLoginService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<GoogleOAuthLoginReqDto> httpRequestEntity = new HttpEntity<>(googleOAuthLoginReqDto, headers);
-            ResponseEntity<String> apiResponseString = restTemplate.postForEntity(googleConfigUtil.getGoogleAuthUrl() + "/token", httpRequestEntity, String.class);
+            ResponseEntity<String> apiResponseString = restTemplate.postForEntity(googleConfig.getGoogleTokenURI(), httpRequestEntity, String.class);
 
             // String to Object
             GoogleOAuthLoginResDto googleOAuthLoginResDto = objectMapper.readValue(apiResponseString.getBody(), new TypeReference<GoogleOAuthLoginResDto>() {});
-            System.out.println(googleOAuthLoginResDto.toString());
 
             // Get Token Information(email)
-            String googleJwtToken = googleOAuthLoginResDto.getAccessToken();
-            String requestTokenInfoUrl = UriComponentsBuilder.fromHttpUrl(googleConfigUtil.getGoogleAuthUrl() + "/tokeninfo").queryParam("access_token", googleJwtToken).toUriString();
+            String googleAccessToken = googleOAuthLoginResDto.getAccessToken();
+            String requestTokenInfoUrl = googleConfig.getGoogleTokenInfoURI(googleAccessToken);
             String resultTokenInfo = restTemplate.getForObject(requestTokenInfoUrl,String.class);
-            System.out.println(resultTokenInfo.toString());
 
             // Check member exist
             if(resultTokenInfo != null){
@@ -63,9 +60,9 @@ public class GoogleOAuthLoginService {
                 Optional<Member> existedMember = memberRepository.findByEmail(googleOAuthTokenInfoResDto.getEmail());
                 System.out.println(existedMember.toString());
                 if(existedMember.isPresent()){
-                    System.out.println("User Exist: User Exist");
-
+                    // Check Refresh token is valid
                 }else{
+                    // Create Refresh, Access Token
                     System.out.println("User does not exist");
                 }
 
