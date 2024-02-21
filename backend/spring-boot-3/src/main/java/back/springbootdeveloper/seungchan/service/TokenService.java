@@ -4,6 +4,7 @@ import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
 import back.springbootdeveloper.seungchan.entity.RefreshToken;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.repository.RefreshTokenRepository;
+import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -26,6 +28,7 @@ public class TokenService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenService refreshTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
     private final UserService userService;
 
     public String createNewAccessToken(String refreshToken) {
@@ -40,7 +43,7 @@ public class TokenService {
         return tokenProvider.generateToken(user, ACCESS_TOKEN_DURATION);
     }
 
-    public String createAccessAndRefreshToken(HttpServletRequest request, HttpServletResponse response, String userEmail) {
+    public String createAccessAndRefreshToken(String userEmail) {
         // 이메일을 기반으로 사용자 정보를 조회
         UserInfo user = userService.findByEmail(userEmail);
 
@@ -51,15 +54,11 @@ public class TokenService {
         saveRefreshToken(user.getId(), refreshToken);
 
         // 리프레쉬 토큰을 쿠키에 추가한다.
-        addRefreshTokenToCookie(request, response, refreshToken);
+//        addRefreshTokenToCookie(request, response, refreshToken);
 
         // 새로운 access 토큰을 생성한다.
-        String accessToken = tokenProvider.generateToken(user, ACCESS_TOKEN_DURATION);
-
-
-        return accessToken;
+        return tokenProvider.generateToken(user, ACCESS_TOKEN_DURATION);
     }
-
 
     // 사용자 ID를 기반으로 refresh 토큰을 저장하거나 갱신한다.
     private void saveRefreshToken(Long userId, String newRefreshToken) {
@@ -102,4 +101,6 @@ public class TokenService {
 
         return token;
     }
+
+
 }

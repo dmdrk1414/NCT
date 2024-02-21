@@ -2,7 +2,9 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.dto.request.LoginReqDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
+import back.springbootdeveloper.seungchan.service.GoogleLoginService;
 import back.springbootdeveloper.seungchan.service.GoogleOAuthLoginService;
+import back.springbootdeveloper.seungchan.service.LoginService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,13 +21,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users/login")
 @ResponseBody
 public class OAuthLoginController {
-    private final GoogleOAuthLoginService googleOAuthLoginService;
+    private final LoginService loginService;
 
     @Operation(summary = "로그인", description = "Google OAuth 로그인이다.")
     @ResponseBody
     @PostMapping("/google")
     public ResponseEntity<BaseResponseBody> googleLogin(@RequestBody @Valid LoginReqDto request) {
-        googleOAuthLoginService.loginGoogleOAuth(request);
+        String accessToken = loginService.loginGoogle(request);
         return BaseResponseBodyUtiil.BaseResponseBodySuccess("Success");
     }
 }
