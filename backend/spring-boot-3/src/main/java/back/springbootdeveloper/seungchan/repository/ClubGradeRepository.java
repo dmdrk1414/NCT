@@ -6,8 +6,9 @@ import back.springbootdeveloper.seungchan.entity.ClubGrade;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ClubGradeRepository extends JpaRepository<ClubGrade, Long> {
-
-    ClubGrade findByClubGrade(CLUB_GRADE clubGrade);
+    Optional<ClubGrade> findByClubGrade(CLUB_GRADE clubGrade);
 }

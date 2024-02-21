@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Table(name = "user_utill")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserUtill extends BaseEntity {
+public class UserUtill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)

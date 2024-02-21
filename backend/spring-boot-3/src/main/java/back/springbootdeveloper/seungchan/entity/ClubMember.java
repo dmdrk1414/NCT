@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
@@ -11,49 +12,30 @@ import jakarta.persistence.*;
 public class ClubMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "club_member_id")
+    @Column(name = "club_member_id", nullable = false)
     private Long clubMemberId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId; // member
 
-    @OneToOne
-    @JoinColumn(name = "club_id")
-    private Club club;
+    @Column(name = "club_id", nullable = false)
+    private Long clubId; // club
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_grade_id")
-    private ClubGrade clubGrade;
+    @Column(name = "club_grade_id", nullable = false)
+    private Long clubGradeId; // member - club
 
-    @OneToOne(mappedBy = "clubMember", cascade = CascadeType.REMOVE)
-    private ClubArticle clubArticle;
+    @Column(name = "attendance_state_id", nullable = false)
+    private Long attendanceSateId; // member - club
 
-    public void setMember(final Member member) {
-        this.member = member;
+    @Column(name = "club_member_information_id", nullable = false)
+    private Long clubMemberInformationId; // member - club
 
-        if (!member.getClubMembers().contains(this)) { // null 체크 추가
-            member.getClubMembers().add(this);
-        }
-    }
-
-    public void setClub(final Club club) {
-        this.club = club;
-
-        if (club.getClubMember() != this) { // null 체크 추가
-            club.setClubMember(this);
-        }
-    }
-
-    public void setClubGrade(final ClubGrade clubGrade) {
-        this.clubGrade = clubGrade;
-    }
-
-    public void setClubArticle(final ClubArticle clubArticle) {
-        this.clubArticle = clubArticle;
-
-        if (clubArticle.getClubMember() != this) { // null 체크 추가
-            clubArticle.setClubMember(this);
-        }
+    @Builder
+    public ClubMember(Long memberId, Long clubId, Long clubGradeId, Long attendanceSateId, Long clubMemberInformationId) {
+        this.memberId = memberId;
+        this.clubId = clubId;
+        this.clubGradeId = clubGradeId;
+        this.attendanceSateId = attendanceSateId;
+        this.clubMemberInformationId = clubMemberInformationId;
     }
 }

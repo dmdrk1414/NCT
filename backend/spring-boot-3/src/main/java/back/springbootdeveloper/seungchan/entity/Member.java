@@ -42,18 +42,14 @@ public class Member extends BaseEntity {
     @Column(name = "registration", length = 10, nullable = false)
     private String registration;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
-    private List<ClubMember> clubMembers = new ArrayList<>();
-
     @Builder
-    public Member(String firstName, String lastName, String nickName, String email, String major, String studentId, String registration) {
+    public Member(String firstName, String lastName, String nickName, String email, String major, String studentId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.nickName = nickName;
         this.email = email;
         this.major = major;
         this.studentId = studentId;
-        this.registration = registration;
     }
 
     @PrePersist
@@ -88,11 +84,4 @@ public class Member extends BaseEntity {
         this.studentId = studentId;
     }
 
-    public void addClubMembers(final ClubMember clubMember) {
-        this.clubMembers.add(clubMember);
-
-        if (clubMember.getMember() != this) { // 무한루프에 빠지지 않도록 체크
-            clubMember.setMember(this);
-        }
-    }
 }
