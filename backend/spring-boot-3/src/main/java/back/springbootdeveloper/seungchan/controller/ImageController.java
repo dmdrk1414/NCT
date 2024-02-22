@@ -30,3 +30,51 @@ public class ImageController {
         return ResponseEntity.ok(imageResponse);
     }
 }
+/**
+ * "form-data": "^4.0.0",
+ * "formidable": "^3.5.1",
+ * 'use client';
+ * import axios from 'axios';
+ * import { SetStateAction, ChangeEvent, useState } from 'react';
+ * import { axBase } from '@/apis/axiosinstance';
+ * <p>
+ * export default function Home() {
+ * const [file, setFile] = useState<File | null>(null);
+ * <p>
+ * const onChangeImg = (e: ChangeEvent<HTMLInputElement>) => {
+ * e.preventDefault();
+ * const formData = new FormData();
+ * <p>
+ * const uploadFile = e.target.files?.[0];
+ * if (uploadFile) {
+ * formData.append('scheduleImage', uploadFile);
+ * setFile(uploadFile);
+ * <p>
+ * console.log('===formData===');
+ * console.log(formData.get('scheduleImage'));
+ * console.log('===uploadFile===');
+ * console.log(uploadFile);
+ * console.log('===useState===');
+ * console.log(file);
+ * <p>
+ * axBase()({
+ * method: 'post',
+ * url: '/clubs/schedules/manual',
+ * data: formData,
+ * })
+ * .then(response => {
+ * console.log(response.data);
+ * })
+ * .catch(err => {});
+ * }
+ * };
+ * <p>
+ * return (
+ * <>
+ * <form encType="multipart/form-data">
+ * <input type="file" id="profile-upload" accept="image/*" onChange={onChangeImg} />
+ * </form>
+ * </>
+ * );
+ * }
+ */
