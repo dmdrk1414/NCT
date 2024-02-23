@@ -122,6 +122,9 @@ dependencies {
 
     // 이메일 체크를 위한 의존성 주입
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // WebClient: 내부 HTTP 요청을 위한 객체
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 test {
