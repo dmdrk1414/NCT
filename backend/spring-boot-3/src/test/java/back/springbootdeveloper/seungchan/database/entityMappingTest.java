@@ -97,9 +97,9 @@ class entityMappingTest {
         Integer deputyLeaderNumber = startMemberNumber + 1;
 
         // ================================== Club 2.AttendanceSate 등록 ============================
-        List<AttendanceSate> attendanceSates = new ArrayList<>();
-        AttendanceSate attendanceSate_1 = mapping_AttendanceSate___AttendanceCheckTime_AttendanceWeekDate_VacationToken();
-        AttendanceSate attendanceSate_2 = mapping_AttendanceSate___AttendanceCheckTime_AttendanceWeekDate_VacationToken();
+        List<AttendanceState> attendanceSates = new ArrayList<>();
+        AttendanceState attendanceSate_1 = mapping_AttendanceSate___AttendanceCheckTime_AttendanceWeekDate_VacationToken();
+        AttendanceState attendanceSate_2 = mapping_AttendanceSate___AttendanceCheckTime_AttendanceWeekDate_VacationToken();
         for (int i = roofStart; i <= roofEnd; i++) {
             attendanceSates.add(mapping_AttendanceSate___AttendanceCheckTime_AttendanceWeekDate_VacationToken());
         }
@@ -187,7 +187,7 @@ class entityMappingTest {
         }
     }
 
-    private ClubMember applyClubMember(Member member, Club club, ClubGrade clubGrade, AttendanceSate attendanceSate, ClubMemberInformation clubMemberInformation) {
+    private ClubMember applyClubMember(Member member, Club club, ClubGrade clubGrade, AttendanceState attendanceSate, ClubMemberInformation clubMemberInformation) {
         ClubMember clubMember = TestMakeEntity.createSampleClubMember(member.getMemberId(), club.getClubId(),
                 clubGrade.getClubGradeId(), attendanceSate.getAttendanceStateId(), clubMemberInformation.getClubMemberInformationId());
 
@@ -205,8 +205,8 @@ class entityMappingTest {
      *
      * @return
      */
-    private AttendanceSate mapping_AttendanceSate___AttendanceCheckTime_AttendanceWeekDate_VacationToken() {
-        AttendanceSate attendanceSate = new AttendanceSate();
+    private AttendanceState mapping_AttendanceSate___AttendanceCheckTime_AttendanceWeekDate_VacationToken() {
+        AttendanceState attendanceSate = new AttendanceState();
         AttendanceCheckTime attendanceCheckTime = new AttendanceCheckTime();
         AttendanceWeekDate attendanceWeekDate = new AttendanceWeekDate();
         VacationToken vacationToken = new VacationToken();

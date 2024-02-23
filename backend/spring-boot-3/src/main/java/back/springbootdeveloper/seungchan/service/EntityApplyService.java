@@ -85,7 +85,7 @@ public class EntityApplyService {
      */
     @Transactional
     public ClubMember applyClub(Member member, Club club, CLUB_GRADE CLUB_GRADE, ClubMemberInformation clubMemberInformation) {
-        AttendanceSate attendanceSate = attendanceSateRepository.save(createAttendanceState());
+        AttendanceState attendanceSate = attendanceSateRepository.save(createAttendanceState());
         ClubGrade clubGrade = clubGradeRepository.findByClubGrade(CLUB_GRADE)
                 .orElseThrow(EntityNotFoundException::new);
         ClubMemberInformation entityClubMemberInformation = clubMemberInformationRepository.save(clubMemberInformation);
@@ -102,8 +102,8 @@ public class EntityApplyService {
      *
      * @return AttendanceState 반환
      */
-    private AttendanceSate createAttendanceState() {
-        AttendanceSate attendanceSate = new AttendanceSate();
+    private AttendanceState createAttendanceState() {
+        AttendanceState attendanceSate = new AttendanceState();
         AttendanceCheckTime attendanceCheckTime = new AttendanceCheckTime();
         AttendanceWeekDate attendanceWeekDate = new AttendanceWeekDate();
         VacationToken vacationToken = new VacationToken();
@@ -162,7 +162,7 @@ public class EntityApplyService {
      * @param clubGrade             Club 멤버의 등급
      * @return 생성된 ClubMember 멤버 객체
      */
-    private ClubMember creatClubMember(Member member, Club club, ClubMemberInformation clubMemberInformation, AttendanceSate attendanceSate, ClubGrade clubGrade) {
+    private ClubMember creatClubMember(Member member, Club club, ClubMemberInformation clubMemberInformation, AttendanceState attendanceSate, ClubGrade clubGrade) {
         return ClubMember.builder()
                 .memberId(member.getMemberId())
                 .clubMemberInformationId(clubMemberInformation.getClubMemberInformationId())
