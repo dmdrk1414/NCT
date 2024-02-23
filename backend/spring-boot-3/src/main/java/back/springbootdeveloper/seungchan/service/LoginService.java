@@ -2,6 +2,7 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.dto.request.LoginReqDto;
 import back.springbootdeveloper.seungchan.dto.response.GoogleOAuthProfile;
+import back.springbootdeveloper.seungchan.dto.response.LoginResDto;
 import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.entity.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ public class LoginService {
     private final TokenService tokenService;
     private final RefreshTokenService refreshTokenService;
 
-    public String loginGoogle(LoginReqDto request){
+    public LoginResDto loginGoogle(LoginReqDto request){
         try {
             // Google Login 요청
             GoogleOAuthProfile profile = oAuthLoginApiClientService.requestOAuthLogin(request.getAuthCode());
@@ -27,17 +28,17 @@ public class LoginService {
             if(member == null){
                 // Create new Member
                 memberService.createMemberByEmail(email);
-                return tokenService.createAccessAndRefreshToken(email);
+                return new LoginResDto(tokenService.createAccessAndRefreshToken(email));
             }else{
                 // Check refresh token exist
                 String existedRefreshToken = refreshTokenService.findByMemberId(member.getMemberId()).getRefreshToken();
                 boolean isValidRefreshToken = tokenService.isValidToken(existedRefreshToken);
                 if(isValidRefreshToken){
                     // Create access token only
-                   return tokenService.createNewAccessToken(existedRefreshToken);
+                   return new LoginResDto(tokenService.createNewAccessToken(existedRefreshToken));
                 }else{
                     // Create Refresh and access Token
-                    return tokenService.createAccessAndRefreshToken(email);
+                    return new LoginResDto(tokenService.createAccessAndRefreshToken(email));
                 }
             }
         }catch (Exception e){

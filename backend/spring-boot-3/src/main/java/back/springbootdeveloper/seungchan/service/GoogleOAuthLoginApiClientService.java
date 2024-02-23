@@ -75,7 +75,6 @@ public class GoogleOAuthLoginApiClientService implements OAuthLoginApiClientServ
 
         // Check member exist
         if(resultTokenInfo == null) {
-            // TODO Exception : Email Information does not exist
             System.out.println("Does not exist");
         }
         GoogleOAuthTokenInfoResDto response = objectMapper.readValue(resultTokenInfo, new TypeReference<GoogleOAuthTokenInfoResDto>() {});

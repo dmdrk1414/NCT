@@ -1,9 +1,13 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.dto.request.LoginReqDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
+import back.springbootdeveloper.seungchan.dto.response.ImageResDto;
+import back.springbootdeveloper.seungchan.dto.response.LoginResDto;
 import back.springbootdeveloper.seungchan.service.LoginService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
+import back.springbootdeveloper.seungchan.util.BaseResultDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -23,11 +27,12 @@ public class OAuthLoginController {
     @Operation(summary = "로그인", description = "Google OAuth 로그인이다.")
     @ResponseBody
     @PostMapping("/google")
-    public ResponseEntity<BaseResponseBody> googleLogin(@RequestBody @Valid LoginReqDto request) {
+    public BaseResultDTO<LoginResDto> googleLogin(@RequestBody @Valid LoginReqDto request) {
         // Get Access Token
-        String accessToken = loginService.loginGoogle(request);
+        LoginResDto loginResDto = loginService.loginGoogle(request);
+
 
         // TODO: Response Format 맞추기
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess(accessToken);
+        return BaseResultDTO.ofSuccessWithMessage(ResponseMessage.OAUTH_LOGIN_SUCCESS.get(), loginResDto);
     }
 }
