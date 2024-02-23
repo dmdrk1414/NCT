@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -59,7 +58,7 @@ public class AttendanceWeekDate extends BaseEntity {
     private LocalDate sundayDate;
 
     @OneToOne(mappedBy = "attendanceWeekDate")
-    private AttendanceSate attendanceSate;
+    private AttendanceState attendanceSate;
 
     @Builder
     public AttendanceWeekDate(ATTENDANCE_STATE monday, ATTENDANCE_STATE tuesday, ATTENDANCE_STATE wednesday, ATTENDANCE_STATE thursday, ATTENDANCE_STATE friday, ATTENDANCE_STATE saturday, ATTENDANCE_STATE sunday) {
@@ -185,7 +184,7 @@ public class AttendanceWeekDate extends BaseEntity {
         }
     }
 
-    public void setAttendanceSate(final AttendanceSate attendanceSate) {
+    public void setAttendanceSate(final AttendanceState attendanceSate) {
         this.attendanceSate = attendanceSate;
 
         if (attendanceSate.getAttendanceWeekDate() != this) { // null 체크 추가

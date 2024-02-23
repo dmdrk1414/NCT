@@ -13,8 +13,8 @@ public class RefreshToken extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
-    private Long id;
+    @Column(name = "refresh_token_id", updatable = false)
+    private Long refresh_token_id;
 
     @Column(name = "user_id", nullable = false, unique = true)
     private Long userId;

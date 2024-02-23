@@ -60,6 +60,10 @@ public class Member extends BaseEntity {
         this.registration = String.valueOf(zonedDateTime.toLocalDate().getYear());
     }
 
+    public String getFullName() {
+        return this.firstName + this.lastName;
+    }
+
     public void updateFirstName(String firstName) {
         this.firstName = firstName;
     }
