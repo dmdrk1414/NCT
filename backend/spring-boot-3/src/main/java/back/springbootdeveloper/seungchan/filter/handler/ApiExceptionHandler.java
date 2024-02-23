@@ -177,6 +177,8 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, httpStatus);
     }
 
+
+
     // 외부 API 4xx 응답시 발생하는 기본 Exception
     @ExceptionHandler(value = {DefaultExternalApiClientErrorException.class})
     public ResponseEntity<Object> handleDefaultExternalApiClientErrorException(DefaultExternalApiClientErrorException e){

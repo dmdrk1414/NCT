@@ -28,7 +28,6 @@ public class LoginService {
                 // Create new Member
                 memberService.createMemberByEmail(email);
                 return tokenService.createAccessAndRefreshToken(email);
-
             }else{
                 // Check refresh token exist
                 String existedRefreshToken = refreshTokenService.findByMemberId(member.getMemberId()).getRefreshToken();
@@ -42,7 +41,7 @@ public class LoginService {
                 }
             }
         }catch (Exception e){
-            e.printStackTrace();
+            e.getStackTrace();
         }
         return null;
     }
