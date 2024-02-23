@@ -24,7 +24,7 @@ class entityMappingTest {
     private final AttendanceNumberRepository attendanceNumberRepository;
     private final ClubControlRepository clubControlRepository;
     private final AttendanceWeekDateRepository attendanceWeekDateRepository;
-    private final AttendanceSateRepository attendanceSateRepository;
+    private final AttendanceStateRepository attendanceSateRepository;
     private final VacationTokenRepository vacationTokenRepository;
     private final ClubMemberInformationRepository clubMemberInformationRepository;
 
@@ -33,7 +33,7 @@ class entityMappingTest {
     CLUB_ARTICLE_CLASSIFICATION CONFIDENTIAL = CLUB_ARTICLE_CLASSIFICATION.CONFIDENTIAL;
 
     @Autowired
-    entityMappingTest(MemberRepository memberRepository, ClubMemberRepository clubMemberRepository, ClubRepository clubRepository, ClubIntroduceImageRepository clubIntroduceImageRepository, ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository, AttendanceNumberRepository attendanceNumberRepository, ClubControlRepository clubControlRepository, AttendanceWeekDateRepository attendanceWeekDateRepository, AttendanceSateRepository attendanceSateRepository, VacationTokenRepository vacationTokenRepository, ClubMemberInformationRepository clubMemberInformationRepository) {
+    entityMappingTest(MemberRepository memberRepository, ClubMemberRepository clubMemberRepository, ClubRepository clubRepository, ClubIntroduceImageRepository clubIntroduceImageRepository, ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository, AttendanceNumberRepository attendanceNumberRepository, ClubControlRepository clubControlRepository, AttendanceWeekDateRepository attendanceWeekDateRepository, AttendanceStateRepository attendanceSateRepository, VacationTokenRepository vacationTokenRepository, ClubMemberInformationRepository clubMemberInformationRepository) {
         this.memberRepository = memberRepository;
         this.clubMemberRepository = clubMemberRepository;
         this.clubRepository = clubRepository;

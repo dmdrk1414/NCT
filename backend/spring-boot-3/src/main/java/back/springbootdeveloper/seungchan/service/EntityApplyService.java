@@ -18,14 +18,14 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class EntityApplyService {
     private final ClubRepository clubRepository;
-    private final AttendanceSateRepository attendanceSateRepository;
+    private final AttendanceStateRepository attendanceSateRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final ClubMemberInformationRepository clubMemberInformationRepository;
     private final ClubGradeRepository clubGradeRepository;
     private final ClubArticleRepository clubArticleRepository;
 
     @Autowired
-    public EntityApplyService(ClubRepository clubRepository, AttendanceSateRepository attendanceSateRepository, ClubMemberRepository clubMemberRepository, ClubMemberInformationRepository clubMemberInformationRepository, ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository) {
+    public EntityApplyService(ClubRepository clubRepository, AttendanceStateRepository attendanceSateRepository, ClubMemberRepository clubMemberRepository, ClubMemberInformationRepository clubMemberInformationRepository, ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository) {
         this.clubRepository = clubRepository;
         this.attendanceSateRepository = attendanceSateRepository;
         this.clubMemberRepository = clubMemberRepository;
