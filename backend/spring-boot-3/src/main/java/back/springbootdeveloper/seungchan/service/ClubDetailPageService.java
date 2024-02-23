@@ -1,15 +1,17 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
-import back.springbootdeveloper.seungchan.entity.ClubMember;
-import back.springbootdeveloper.seungchan.entity.Member;
+import back.springbootdeveloper.seungchan.dto.response.AttendanceStates;
+import back.springbootdeveloper.seungchan.dto.response.ClubMemberDetailResDto;
+import back.springbootdeveloper.seungchan.dto.response.ClubMemberResponse;
+import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
-import back.springbootdeveloper.seungchan.repository.ClubMemberRepository;
-import back.springbootdeveloper.seungchan.repository.MemberRepository;
+import back.springbootdeveloper.seungchan.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,6 +20,10 @@ import java.util.List;
 public class ClubDetailPageService {
     private final ClubMemberRepository clubMemberRepository;
     private final MemberRepository memberRepository;
+    private final VacationTokenRepository vacationTokenRepository;
+    private final AttendanceStateRepository attendanceStateRepository;
+    private final AttendanceWeekDateRepository attendanceWeekDateRepository;
+    private final ClubRepository clubRepository;
 
     /**
      * 주어진 클럽의 휴면 회원들의 전체 이름을 가져와서 반환합니다.
@@ -30,6 +36,55 @@ public class ClubDetailPageService {
         List<Member> dormantMembers = getMembersFromClubMember(dormantClubMembers);
 
         return getFullNamesFromMembers(dormantMembers);
+    }
+
+    /**
+     * 특정 클럽의 특정 회원에 대한 클럽 회원 상세 정보를 반환합니다.
+     *
+     * @param clubId   클럽의 ID
+     * @param memberId 회원의 ID
+     * @return 클럽 회원 상세 정보를 담은 ClubMemberDetailResDto 객체
+     * @throws EntityNotFoundException 클럽이나 회원을 찾을 수 없는 경우
+     */
+    public ClubMemberDetailResDto getClubMemberResponse(Long clubId, Long memberId) {
+        List<ClubMember> clubMembers = clubMemberRepository.findAllByClubIdAndClubGradeId(clubId, CLUB_GRADE.MEMBER.getId());
+        List<ClubMemberResponse> clubMemberResponses = getClubMemberResponsesFromClubMembers(clubMembers);
+        Club club = clubRepository.findById(clubId).orElseThrow(EntityNotFoundException::new);
+        ClubMember clubMember = clubMemberRepository.findByMemberId(memberId).orElseThrow(EntityNotFoundException::new);
+
+        return ClubMemberDetailResDto.builder()
+                .clubName(club.getClubName())
+                .myClubMemberId(clubMember.getMemberId())
+                .clubMembers(clubMemberResponses)
+                .build();
+    }
+
+    /**
+     * ClubMember 객체 리스트로부터 ClubMemberResponse 객체 리스트를 생성하여 반환합니다.
+     * 각 ClubMemberResponse 객체는 ClubMember와 관련된 Member와 AttendanceState 정보를 포함합니다.
+     *
+     * @param clubMembers ClubMember 객체 리스트
+     * @return ClubMemberResponse 객체 리스트
+     * @throws EntityNotFoundException ClubMember 또는 AttendanceState를 찾을 수 없는 경우
+     */
+    private List<ClubMemberResponse> getClubMemberResponsesFromClubMembers(List<ClubMember> clubMembers) {
+        List<ClubMemberResponse> clubMemberResponses = new ArrayList<>();
+
+        for (ClubMember clubMember : clubMembers) {
+            Member member = memberRepository.findById(clubMember.getMemberId()).orElseThrow(EntityNotFoundException::new);
+            AttendanceState attendanceState = attendanceStateRepository.findById(clubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
+            AttendanceStates attendanceStates = new AttendanceStates(attendanceState.getAttendanceWeekDate());
+
+            clubMemberResponses.add(
+                    ClubMemberResponse.builder()
+                            .clubMemberId(clubMember.getClubMemberId())
+                            .memberName(member.getFullName())
+                            .vacationToken(attendanceState.getVacationToken().getVacationToken())
+                            .attendanceStatus(attendanceStates)
+                            .build()
+            );
+        }
+        return clubMemberResponses;
     }
 
     /**
