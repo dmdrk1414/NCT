@@ -25,7 +25,7 @@ public class ClubMember {
     private Long clubGradeId; // member - club
 
     @Column(name = "attendance_state_id", nullable = false)
-    private Long attendanceSateId; // member - club
+    private Long attendanceStateId; // member - club
 
     @Column(name = "club_member_information_id", nullable = false)
     private Long clubMemberInformationId; // member - club
@@ -35,7 +35,7 @@ public class ClubMember {
         this.memberId = memberId;
         this.clubId = clubId;
         this.clubGradeId = clubGradeId;
-        this.attendanceSateId = attendanceSateId;
+        this.attendanceStateId = attendanceSateId;
         this.clubMemberInformationId = clubMemberInformationId;
     }
 }

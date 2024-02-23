@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -28,7 +27,7 @@ public class VacationToken extends BaseEntity {
     private String vacationTokenDate;
 
     @OneToOne(mappedBy = "vacationToken")
-    private AttendanceSate attendanceSate;
+    private AttendanceState attendanceSate;
 
     @Builder
     public VacationToken(Integer vacationCount) {
@@ -63,7 +62,7 @@ public class VacationToken extends BaseEntity {
         this.vacationToken = this.vacationToken + number;
     }
 
-    public void setAttendanceSate(final AttendanceSate attendanceSate) {
+    public void setAttendanceSate(final AttendanceState attendanceSate) {
         this.attendanceSate = attendanceSate;
 
         if (attendanceSate.getVacationToken() != this) { // null 체크 추가
