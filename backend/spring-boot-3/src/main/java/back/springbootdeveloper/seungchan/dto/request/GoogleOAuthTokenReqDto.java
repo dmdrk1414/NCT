@@ -1,13 +1,14 @@
-package back.springbootdeveloper.seungchan.util.oauth;
+package back.springbootdeveloper.seungchan.dto.request;
 
-import back.springbootdeveloper.seungchan.dto.request.GoogleOAuthLoginReqDto;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
 @Data
-public class GoogleOAuthLoginReqCommand implements OAuthLoginReqCommand<GoogleOAuthLoginReqDto> {
+@PropertySource("classpath:application-oauth.properties")
+public class GoogleOAuthTokenReqDto implements OAuthTokenReqDto<GoogleOAuthLoginReqDto> {
 
     @Value("${google.redirect.uri}")
     private String googleRedirectUrl;

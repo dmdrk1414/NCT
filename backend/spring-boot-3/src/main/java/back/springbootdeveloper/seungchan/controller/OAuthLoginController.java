@@ -2,10 +2,7 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.dto.request.LoginReqDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
-import back.springbootdeveloper.seungchan.service.GoogleLoginService;
-import back.springbootdeveloper.seungchan.service.GoogleOAuthLoginService;
 import back.springbootdeveloper.seungchan.service.LoginService;
-import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +24,10 @@ public class OAuthLoginController {
     @ResponseBody
     @PostMapping("/google")
     public ResponseEntity<BaseResponseBody> googleLogin(@RequestBody @Valid LoginReqDto request) {
+        // Get Access Token
         String accessToken = loginService.loginGoogle(request);
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess("Success");
+
+        // TODO: Response Format 맞추기
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess(accessToken);
     }
 }

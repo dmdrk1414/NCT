@@ -21,8 +21,10 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
         if(response.getStatusCode().is4xxClientError()){
+            System.out.println("Error Body" + response.getBody());
             throw new DefaultExternalApiClientErrorException();
         }else if(response.getStatusCode().is5xxServerError()){
+            System.out.println(response.getBody().toString());
             throw new DefaultExternalApiServerErrorException();
         }
     }

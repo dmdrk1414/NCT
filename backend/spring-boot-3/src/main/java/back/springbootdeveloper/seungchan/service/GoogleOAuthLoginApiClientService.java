@@ -1,5 +1,6 @@
-package back.springbootdeveloper.seungchan.util.oauth;
+package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.dto.request.GoogleOAuthTokenReqDto;
 import back.springbootdeveloper.seungchan.dto.request.GoogleOAuthLoginReqDto;
 import back.springbootdeveloper.seungchan.dto.response.GoogleOAuthLoginResDto;
 import back.springbootdeveloper.seungchan.dto.response.GoogleOAuthProfile;
@@ -15,13 +16,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Component
 @Data
-public class GoogleOAuthLoginApiClient implements OAuthLoginApiClient<GoogleOAuthProfile>{
+@Service
+public class GoogleOAuthLoginApiClientService implements OAuthLoginApiClientService<GoogleOAuthProfile> {
     @Value("${google.auth.url}")
     private String googleAuthUrl;
 
@@ -31,23 +32,31 @@ public class GoogleOAuthLoginApiClient implements OAuthLoginApiClient<GoogleOAut
     @Value("${google.auth.scope}")
     private String scopes;
 
-    private RestTemplate restTemplate = new RestTemplateBuilder().errorHandler(new RestTemplateResponseErrorHandler()).build();
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private RestTemplate restTemplate;
+    private ObjectMapper objectMapper;
 
-    @Override
+    private final GoogleOAuthTokenReqDto command;
+
+
+    private void init(){
+        restTemplate = new RestTemplateBuilder().errorHandler(new RestTemplateResponseErrorHandler()).build();
+        objectMapper = new ObjectMapper();
+    }
+
     public String getTokenURI() {
-        return getGoogleAuthUrl() + "/token";
+        return UriComponentsBuilder.fromHttpUrl(getGoogleAuthUrl()+"/token").toUriString();
     }
 
     public String getGoogleTokenInfoURI(String accessToken){
-        return UriComponentsBuilder.fromHttpUrl(getGoogleAuthUrl() + "/tokeninfo").queryParam("access_token", accessToken).toUriString();
+        return UriComponentsBuilder.fromHttpUrl(getGoogleAuthUrl()+"/tokeninfo").queryParam("access_token", accessToken).toUriString();
     }
 
 
-    @Override
-    public String requestOAuthClientAccessToken(String authCode) throws JsonProcessingException {
+    private String requestOAuthClientAccessToken(String authCode) throws JsonProcessingException {
+        // init
+        init();
+
         // Make Request
-        GoogleOAuthLoginReqCommand command = new GoogleOAuthLoginReqCommand();
         GoogleOAuthLoginReqDto request= command.makeOAuthTokenReqBody(authCode);
 
         // Request /token
@@ -60,8 +69,7 @@ public class GoogleOAuthLoginApiClient implements OAuthLoginApiClient<GoogleOAut
         return googleOAuthLoginResDto.getAccessToken();
     }
 
-    @Override
-    public GoogleOAuthProfile requestOauthInfo(String accessToken) throws JsonProcessingException {
+    private GoogleOAuthProfile requestOauthInfo(String accessToken) throws JsonProcessingException {
         String requestTokenInfoUrl = getGoogleTokenInfoURI(accessToken);
         String resultTokenInfo = restTemplate.getForObject(requestTokenInfoUrl,String.class);
 
@@ -74,5 +82,15 @@ public class GoogleOAuthLoginApiClient implements OAuthLoginApiClient<GoogleOAut
         return new GoogleOAuthProfile(response.getEmail());
     }
 
+    @Override
+    public GoogleOAuthProfile requestOAuthLogin(String authCode) {
+        try {
+            String accessToken = requestOAuthClientAccessToken(authCode);
+            return requestOauthInfo(accessToken);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
+
+    }
 }
