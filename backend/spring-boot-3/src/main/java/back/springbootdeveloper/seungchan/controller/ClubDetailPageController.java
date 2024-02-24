@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.dto.response.ClubMemberDetailResDto;
+import back.springbootdeveloper.seungchan.dto.response.ClubMemberInformationResDto;
 import back.springbootdeveloper.seungchan.dto.response.ClubMemberResponse;
 import back.springbootdeveloper.seungchan.dto.response.DormancysMembersResDto;
 import back.springbootdeveloper.seungchan.service.ClubDetailPageService;
@@ -38,6 +39,16 @@ public class ClubDetailPageController {
         // TODO: 2/24/24 token으로 memberId 얻기
         Long memberId = 1L;
         ClubMemberDetailResDto clubMemberResponse = clubDetailPageService.getClubMemberResponse(clubId, memberId);
+
+        return BaseResultDTO.ofSuccess(clubMemberResponse);
+    }
+
+    @GetMapping(value = "/{club_member_id}")
+    public BaseResultDTO<ClubMemberInformationResDto> getClubMemberDetails(@PathVariable(value = "club_id") Long clubId,
+                                                                           @PathVariable(value = "club_member_id") Long clubMemberId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+        ClubMemberInformationResDto clubMemberResponse = clubDetailPageService.getClubMemberInformationResDto(memberId, clubMemberId);
 
         return BaseResultDTO.ofSuccess(clubMemberResponse);
     }
