@@ -66,7 +66,7 @@ public class ClubDetailPageController {
     }
 
     @Operation(summary = "동아리 소개 페이지 - 휴가 제공 API", description = "동아리 대표의 동아리 회원에게 휴가 제공을 해주는 API 제공")
-    @GetMapping(value = "/{club_member_id}/vacation")
+    @PostMapping(value = "/{club_member_id}/vacation")
     public ResponseEntity<BaseResponseBody> giveVacationTokenToClubMember(
             @RequestBody @Valid GiveVacationTokenReqDto giveVacationTokenReqDto,
             @PathVariable(value = "club_id") Long clubId,
@@ -85,7 +85,7 @@ public class ClubDetailPageController {
     }
 
     @Operation(summary = "동아리 소개 페이지 - 회원 추방 API", description = "동아리 대표가 동아리 회원을 추방 시킨다.")
-    @GetMapping(value = "/{club_member_id}/expulsion")
+    @PostMapping(value = "/{club_member_id}/expulsion")
     public ResponseEntity<BaseResponseBody> expulsionClubMember(
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
@@ -100,7 +100,7 @@ public class ClubDetailPageController {
 
 
     @Operation(summary = "동아리 소개 페이지 - 회원 휴먼 API", description = "동아리 대표가 동아리 회원을 휴면으로 변경")
-    @GetMapping(value = "/{club_member_id}/dormancy")
+    @PostMapping(value = "/{club_member_id}/dormancy")
     public ResponseEntity<BaseResponseBody> dormancyClubMember(
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
