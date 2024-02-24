@@ -47,6 +47,7 @@ public class ClubDetailPageController {
         // TODO: 2/24/24 token으로 memberId 얻기
         Long memberId = 1L;
         ClubGrade myClubGrade = clubGradeService.findByClubIdAndMemberId(clubId, memberId);
+        // 동아리 회원의 상세 페이지 조회
         ClubMemberDetailResDto clubMemberResponse = clubDetailPageService.getClubMemberResponse(clubId, memberId, myClubGrade.getClubGrade());
 
         return BaseResultDTO.ofSuccess(clubMemberResponse);
@@ -54,8 +55,9 @@ public class ClubDetailPageController {
 
     @Operation(summary = "회원 상세 조회", description = "동아리 특정 회원 정보 상세 조회 가능")
     @GetMapping(value = "/{club_member_id}")
-    public BaseResultDTO<ClubMemberInformationResDto> getClubMemberDetails(@PathVariable(value = "club_id") Long clubId,
-                                                                           @PathVariable(value = "club_member_id") Long clubMemberId) {
+    public BaseResultDTO<ClubMemberInformationResDto> getClubMemberDetails(
+            @PathVariable(value = "club_id") Long clubId,
+            @PathVariable(value = "club_member_id") Long clubMemberId) {
         // TODO: 2/24/24 token으로 memberId 얻기
         Long memberId = 1L;
         ClubMemberInformationResDto clubMemberResponse = clubDetailPageService.getClubMemberInformationResDto(memberId, clubMemberId);
@@ -73,6 +75,7 @@ public class ClubDetailPageController {
         Long memberId = 1L;
         Member member = memberService.findByMemberId(memberId);
         Integer vacationToken = giveVacationTokenReqDto.getVacationToken();
+        // 요청한 휴가 갯수에 따른 휴가 갯수 업데이트
         Boolean updateSuccess = vacationTokenService.updateVacationToken(clubMemberId, vacationToken);
 
         if (updateSuccess) {
@@ -89,7 +92,9 @@ public class ClubDetailPageController {
         // TODO: 2/24/24 token으로 memberId 얻기
         Long memberId = 1L;
         Member member = memberService.findByMemberId(memberId);
+        // 멤버 추방
         entityDeleteService.expulsionMemberFromClub(clubMemberId);
+
         return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_EXPULSION_MEMBER(member.getFullName()));
     }
 
