@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE_VALUE;
+import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.ClubGrade;
@@ -90,5 +91,29 @@ public class ClubDetailPageController {
         Member member = memberService.findByMemberId(memberId);
         entityDeleteService.expulsionMemberFromClub(clubMemberId);
         return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_EXPULSION_MEMBER(member.getFullName()));
+    }
+
+
+    @Operation(summary = "동아리 소개 페이지 - 회원 휴먼 API", description = "동아리 대표가 동아리 회원을 휴면으로 변경")
+    @GetMapping(value = "/{club_member_id}/dormancy")
+    public ResponseEntity<BaseResponseBody> dormancyClubMember(
+            @PathVariable(value = "club_id") Long clubId,
+            @PathVariable(value = "club_member_id") Long clubMemberId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+        Member member = memberService.findByMemberId(memberId);
+        // 휴면 멤버 여부
+        Boolean alreadyDormant = clubGradeService.isDormantMemberStatus(clubMemberId);
+        if (alreadyDormant) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.ALREADY_DORMANT_MEMBER(member.getFullName()));
+        }
+
+        // 휴면 등급 업데이트
+        Boolean updateSuccess = clubGradeService.updateClubGradeOfClubMember(clubMemberId, CLUB_GRADE.DORMANT);
+        if (updateSuccess) {
+            return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_UPDATE_CLUB_GRADE(member.getFullName()));
+        }
+
+        return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.FAIL_UPDATE_CLUB_GRADE(member.getFullName()));
     }
 }

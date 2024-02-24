@@ -12,4 +12,16 @@ public class RESPONSE_MESSAGE_VALUE {
     public static String SUCCESS_EXPULSION_MEMBER(String memberName) {
         return memberName + "님을 추방하였습니다.";
     }
+
+    public static String SUCCESS_UPDATE_CLUB_GRADE(String memberName) {
+        return memberName + "님을 휴면 회원으로 전환하였습니다.";
+    }
+
+    public static String FAIL_UPDATE_CLUB_GRADE(String memberName) {
+        return memberName + "님을 휴면 회원으로 전환을 실패하였습니다.";
+    }
+
+    public static String ALREADY_DORMANT_MEMBER(String memberName) {
+        return memberName + "님은 휴면 회원입니다.";
+    }
 }
