@@ -5,6 +5,7 @@ import back.springbootdeveloper.seungchan.dto.request.ClubRegistrationReqDto;
 import back.springbootdeveloper.seungchan.dto.request.FindPasswordReqDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.service.ClubRegistrationService;
+import back.springbootdeveloper.seungchan.service.EntityService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,11 +22,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/main/club/apply")
 public class ClubRegistrationController {
     private final ClubRegistrationService clubRegistrationService;
+    private final EntityService entityService;
 
     @Operation(summary = "팀 등록 api ")
     @PostMapping("")
     public ResponseEntity<BaseResponseBody> getClubRegistraionInfo(@RequestBody @Valid ClubRegistrationReqDto clubRegistrationReqDto, HttpServletRequest request) {
+        this.entityService.applyClub();
+
         clubRegistrationService.save(clubRegistrationReqDto);
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.TEMP_PASSWORD_MESSAGE.get());
+    }
+
+    @GetMapping ("")
+    public ResponseEntity<BaseResponseBody> cas() {
+        this.entityService.applyClub();
+
         return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.TEMP_PASSWORD_MESSAGE.get());
     }
 }
