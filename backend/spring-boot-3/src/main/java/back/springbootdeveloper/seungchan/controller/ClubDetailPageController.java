@@ -1,9 +1,14 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE_VALUE;
+import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
+import back.springbootdeveloper.seungchan.constant.entity.ATTENDANCE_STATE;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
+import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
 import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
+import back.springbootdeveloper.seungchan.entity.AttendanceCheckTime;
+import back.springbootdeveloper.seungchan.entity.AttendanceWeekDate;
 import back.springbootdeveloper.seungchan.entity.ClubGrade;
 import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.service.*;
@@ -29,6 +34,8 @@ public class ClubDetailPageController {
     private final VacationTokenService vacationTokenService;
     private final ClubGradeService clubGradeService;
     private final EntityDeleteService entityDeleteService;
+    private final AttendanceNumberService attendanceNumberService;
+    private final AttendanceWeekDateService attendanceWeekDateService;
 
     @Operation(summary = "회원 휴먼 페이지 조회", description = "해당 클럽의 휴먼 회원들 조회")
     @GetMapping(value = "/dormancys")
@@ -120,5 +127,26 @@ public class ClubDetailPageController {
         }
 
         return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.FAIL_UPDATE_CLUB_GRADE(member.getFullName()));
+    }
+
+    @Operation(summary = "출석번호 입력 API", description = "동아리 회원의 출석번호 입력")
+    @PostMapping(value = "/{club_member_id}/attendance")
+    public ResponseEntity<BaseResponseBody> checkAttendanceNumber(
+            @RequestBody @Valid AttendanceNumberReqDto attendanceNumberReqDto,
+            @PathVariable(value = "club_id") Long clubId,
+            @PathVariable(value = "club_member_id") Long clubMemberId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+        Member member = memberService.findByMemberId(memberId);
+        // 출석번호 확인
+        Boolean isPassTodayAttendance = attendanceNumberService.checkAttendanceNumber(clubId, attendanceNumberReqDto.getNumOfAttendance());
+
+        if (isPassTodayAttendance) {
+            // 출석 상태 전환
+            attendanceWeekDateService.updateTodayAttendanceWeekDate(clubMemberId, ATTENDANCE_STATE.ATTENDANCE);
+            return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.PASS_TODAY_ATTENDANCE.get());
+        }
+
+        return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_TODAY_ATTENDANCE.get());
     }
 }
