@@ -10,11 +10,7 @@ import lombok.*;
 public class UserLoginResponse {
     private String accessToken;
 
-    public UserLoginResponse(String accessToken, UserInfo user, UserUtill userUtill) {
+    public UserLoginResponse(String accessToken) {
         this.accessToken = accessToken;
-        this.name = user.getName();
-        this.userId = user.getUserInfoId();
-        this.isNuriKing = userUtill.isNuriKing();
     }
-
 }
