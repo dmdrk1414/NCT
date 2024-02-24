@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.service;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.dto.response.AttendanceStates;
 import back.springbootdeveloper.seungchan.dto.response.ClubMemberDetailResDto;
+import back.springbootdeveloper.seungchan.dto.response.ClubMemberInformationResDto;
 import back.springbootdeveloper.seungchan.dto.response.ClubMemberResponse;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
@@ -24,6 +25,7 @@ public class ClubDetailPageService {
     private final AttendanceStateRepository attendanceStateRepository;
     private final AttendanceWeekDateRepository attendanceWeekDateRepository;
     private final ClubRepository clubRepository;
+    private final ClubMemberInformationRepository clubMemberInformationRepository;
 
     /**
      * 주어진 클럽의 휴면 회원들의 전체 이름을 가져와서 반환합니다.
@@ -56,6 +58,28 @@ public class ClubDetailPageService {
                 .clubName(club.getClubName())
                 .myClubMemberId(clubMember.getMemberId())
                 .clubMembers(clubMemberResponses)
+                .build();
+    }
+
+    /**
+     * 특정 클럽의 특정 회원에 대한 클럽 회원 정보를 반환합니다.
+     *
+     * @param clubId       클럽의 ID
+     * @param memberId     회원의 ID
+     * @param clubMemberId
+     * @return 클럽 회원 정보를 담은 ClubMemberInformationResDto 객체
+     * @throws EntityNotFoundException 클럽, 회원 또는 회원 정보를 찾을 수 없는 경우
+     */
+    public ClubMemberInformationResDto getClubMemberInformationResDto(Long memberId, Long clubMemberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
+        ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(EntityNotFoundException::new);
+        ClubMemberInformation clubMemberInformation = clubMemberInformationRepository.findById(clubMember.getClubMemberInformationId()).orElseThrow(EntityNotFoundException::new);
+
+        return ClubMemberInformationResDto.builder()
+                .name(member.getFullName())
+                .major(member.getMajor())
+                .studentId(member.getStudentId())
+                .selfIntroduction(clubMemberInformation.getIntroduce())
                 .build();
     }
 
