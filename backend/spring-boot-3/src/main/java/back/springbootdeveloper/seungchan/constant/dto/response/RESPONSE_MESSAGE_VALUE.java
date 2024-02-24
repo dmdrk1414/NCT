@@ -8,4 +8,8 @@ public class RESPONSE_MESSAGE_VALUE {
     public static String FAIL_UPDATE_VACATION_TOKEN(String memberName) {
         return memberName + "에게 휴가 부여를 실패하였습니다.";
     }
+
+    public static String SUCCESS_EXPULSION_MEMBER(String memberName) {
+        return memberName + "님을 추방하였습니다.";
+    }
 }

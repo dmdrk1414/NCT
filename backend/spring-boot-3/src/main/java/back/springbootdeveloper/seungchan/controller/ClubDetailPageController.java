@@ -5,10 +5,7 @@ import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.ClubGrade;
 import back.springbootdeveloper.seungchan.entity.Member;
-import back.springbootdeveloper.seungchan.service.ClubDetailPageService;
-import back.springbootdeveloper.seungchan.service.ClubGradeService;
-import back.springbootdeveloper.seungchan.service.MemberService;
-import back.springbootdeveloper.seungchan.service.VacationTokenService;
+import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import back.springbootdeveloper.seungchan.util.BaseResultDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +27,7 @@ public class ClubDetailPageController {
     private final MemberService memberService;
     private final VacationTokenService vacationTokenService;
     private final ClubGradeService clubGradeService;
+    private final EntityDeleteService entityDeleteService;
 
     @Operation(summary = "회원 휴먼 페이지 조회", description = "해당 클럽의 휴먼 회원들 조회")
     @GetMapping(value = "/dormancys")
@@ -80,5 +78,17 @@ public class ClubDetailPageController {
             return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_UPDATE_VACATION_TOKEN(member.getFullName(), vacationToken));
         }
         return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.FAIL_UPDATE_VACATION_TOKEN(member.getFullName()));
+    }
+
+    @Operation(summary = "동아리 소개 페이지 - 회원 추방 API", description = "동아리 대표가 동아리 회원을 추방 시킨다.")
+    @GetMapping(value = "/{club_member_id}/expulsion")
+    public ResponseEntity<BaseResponseBody> expulsionClubMember(
+            @PathVariable(value = "club_id") Long clubId,
+            @PathVariable(value = "club_member_id") Long clubMemberId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+        Member member = memberService.findByMemberId(memberId);
+        entityDeleteService.expulsionMemberFromClub(clubMemberId);
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_EXPULSION_MEMBER(member.getFullName()));
     }
 }
