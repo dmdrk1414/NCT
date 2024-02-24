@@ -2,7 +2,6 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
 import back.springbootdeveloper.seungchan.entity.Member;
-import back.springbootdeveloper.seungchan.entity.MemberService;
 import back.springbootdeveloper.seungchan.entity.RefreshToken;
 import back.springbootdeveloper.seungchan.repository.RefreshTokenRepository;
 import back.springbootdeveloper.seungchan.util.CookieUtil;

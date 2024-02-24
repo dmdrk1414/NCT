@@ -1,20 +1,15 @@
 package back.springbootdeveloper.seungchan.config.jwt;
 
 import back.springbootdeveloper.seungchan.entity.Member;
-import back.springbootdeveloper.seungchan.entity.MemberService;
-import back.springbootdeveloper.seungchan.entity.UserInfo;
-import back.springbootdeveloper.seungchan.entity.UserUtill;
-import back.springbootdeveloper.seungchan.service.UserUtillService;
+import back.springbootdeveloper.seungchan.service.MemberService;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.Collections;

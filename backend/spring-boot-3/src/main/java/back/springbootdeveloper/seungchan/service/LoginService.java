@@ -4,7 +4,6 @@ import back.springbootdeveloper.seungchan.dto.request.LoginReqDto;
 import back.springbootdeveloper.seungchan.dto.response.GoogleOAuthProfile;
 import back.springbootdeveloper.seungchan.dto.response.LoginResDto;
 import back.springbootdeveloper.seungchan.entity.Member;
-import back.springbootdeveloper.seungchan.entity.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
