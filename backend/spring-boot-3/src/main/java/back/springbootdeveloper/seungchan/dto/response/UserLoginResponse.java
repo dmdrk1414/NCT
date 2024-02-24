@@ -9,9 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 public class UserLoginResponse {
     private String accessToken;
-    private String name;
-    private Long userId;
-    private boolean isNuriKing;
 
     public UserLoginResponse(String accessToken, UserInfo user, UserUtill userUtill) {
         this.accessToken = accessToken;
@@ -19,4 +16,5 @@ public class UserLoginResponse {
         this.userId = user.getUserInfoId();
         this.isNuriKing = userUtill.isNuriKing();
     }
+
 }
