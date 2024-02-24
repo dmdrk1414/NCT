@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.entity;
 
+import back.springbootdeveloper.seungchan.constant.entity.FAVORITE_CHECK;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -21,8 +22,9 @@ public class ClubMemberInformation extends BaseEntity {
     @Column(name = "introduce", length = 1000, nullable = false)
     private String introduce;
 
-    @OneToOne(mappedBy = "clubMemberInformation")
-    private ClubMember clubMember;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "favorite_check", length = 15, nullable = false)
+    private FAVORITE_CHECK favoriteCheck = FAVORITE_CHECK.UNCHECK;
 
     @Builder
     public ClubMemberInformation(String introduce) {
@@ -33,11 +35,7 @@ public class ClubMemberInformation extends BaseEntity {
         this.introduce = introduce;
     }
 
-    public void setClubMember(final ClubMember clubMember) {
-        this.clubMember = clubMember;
-
-        if (clubMember.getClubMemberInformation() != this) { // null 체크 추가
-            clubMember.setClubMemberInformation(this);
-        }
+    public void updateFavoriteCheck(FAVORITE_CHECK favoriteCheck) {
+        this.favoriteCheck = favoriteCheck;
     }
 }

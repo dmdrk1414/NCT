@@ -48,17 +48,28 @@ public class TestMakeEntity {
                 .build();
     }
 
-    public static ClubArticle createSampleClubArticle(CLUB_ARTICLE_CLASSIFICATION classification, Integer nuber) {
+    public static ClubArticle createSampleClubArticle(CLUB_ARTICLE_CLASSIFICATION classification, Integer nuber, ClubMember clubMember) {
         return ClubArticle.builder()
                 .title("테스트_클럽_게시물_제목_" + nuber)
-                .content("테스트_클럽_게시물_댓글_" + nuber)
+                .content("테스트_클럽_게시물_내용_" + nuber)
                 .classification(classification)
+                .clubMemberId(clubMember.getClubMemberId())
                 .build();
     }
 
     public static ClubMemberInformation createSampleClubMemberInformation(Integer number) {
         return ClubMemberInformation.builder()
                 .introduce("테스트_클럽_지원_자기소개_" + number)
+                .build();
+    }
+
+    public static ClubMember createSampleClubMember(Long memberId, Long clubId, Long clubGradeId, Long attendanceStateId, Long clubMemberInformationId) {
+        return ClubMember.builder()
+                .memberId(memberId)
+                .clubId(clubId)
+                .clubGradeId(clubGradeId)
+                .attendanceSateId(attendanceStateId)
+                .clubMemberInformationId(clubMemberInformationId)
                 .build();
     }
 }

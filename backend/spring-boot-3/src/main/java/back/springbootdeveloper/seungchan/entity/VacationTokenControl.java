@@ -15,7 +15,7 @@ public class VacationTokenControl extends BaseEntity {
     @Column(name = "vacation_token_control_id")
     private Long vacationTokenControlId;
 
-    @Column(name = "like_count")
+    @Column(name = "vacation_token_control")
     private Integer vacationTokenControl = 5;
 
     @OneToOne(mappedBy = "vacationTokenControl")
