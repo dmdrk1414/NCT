@@ -50,7 +50,7 @@ public class ClubDetailPageService {
      * @throws EntityNotFoundException 클럽이나 회원을 찾을 수 없는 경우
      */
     public ClubMemberDetailResDto getClubMemberResponse(Long clubId, Long memberId, CLUB_GRADE myClubGrade) {
-        List<ClubMember> clubMembers = clubMemberRepository.findAllByClubIdAndClubGradeId(clubId, CLUB_GRADE.MEMBER.getId());
+        List<ClubMember> clubMembers = clubMemberRepository.findAllByClubIdExcludeDormant(clubId, CLUB_GRADE.DORMANT.getId());
         // ClubMemberResponse 리스트 생성
         List<ClubMemberResponse> clubMemberResponses = getClubMemberResponsesFromClubMembers(clubMembers);
         Club club = clubRepository.findById(clubId).orElseThrow(EntityNotFoundException::new);
