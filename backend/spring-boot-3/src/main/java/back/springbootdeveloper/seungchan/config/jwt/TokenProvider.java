@@ -34,6 +34,7 @@ public class TokenProvider {
     private final MemberService memberService;
 
     // 토큰 생성을 한다. user의 정보와 원하는 유효기간을 매개 변수로 받는다.
+
     public String generateToken(Member member, Duration expiredAt) {
         Date now = new Date();
         // 현제 시간 + 원하는 유효기간을 토대로 토큰을 만든다.
@@ -57,6 +58,7 @@ public class TokenProvider {
                 .setIssuer(jwtProperties.getIssuer()) // 내용 iss : ajufresh@gmail.com
                 .setIssuedAt(now) // 내용 iat : 현재 시간
                 .setExpiration(expiry) // 내용 exp : expiry 멤버 변숫 값 / 토큰 만료기간 / 현제 + 만료 기간
+
                 .setSubject(member.getEmail()) // 내용 sub : 유저의 이메일
                 .claim("MemberId", member.getMemberId()) // 클레임 id : 유저 ID
 //                .claim("isMoariumKing",) // TODO: Moarium 전체 관리자에 대한 상의가 필요
