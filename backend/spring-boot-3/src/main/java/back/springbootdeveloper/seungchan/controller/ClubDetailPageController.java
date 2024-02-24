@@ -3,8 +3,10 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE_VALUE;
 import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
+import back.springbootdeveloper.seungchan.entity.ClubGrade;
 import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.service.ClubDetailPageService;
+import back.springbootdeveloper.seungchan.service.ClubGradeService;
 import back.springbootdeveloper.seungchan.service.MemberService;
 import back.springbootdeveloper.seungchan.service.VacationTokenService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
@@ -27,6 +29,7 @@ public class ClubDetailPageController {
     private final ClubDetailPageService clubDetailPageService;
     private final MemberService memberService;
     private final VacationTokenService vacationTokenService;
+    private final ClubGradeService clubGradeService;
 
     @Operation(summary = "회원 휴먼 페이지 조회", description = "해당 클럽의 휴먼 회원들 조회")
     @GetMapping(value = "/dormancys")
@@ -44,7 +47,8 @@ public class ClubDetailPageController {
     public BaseResultDTO<ClubMemberDetailResDto> getMemberDetailsPage(@PathVariable(value = "club_id") Long clubId) {
         // TODO: 2/24/24 token으로 memberId 얻기
         Long memberId = 1L;
-        ClubMemberDetailResDto clubMemberResponse = clubDetailPageService.getClubMemberResponse(clubId, memberId);
+        ClubGrade myClubGrade = clubGradeService.findByClubIdAndMemberId(clubId, memberId);
+        ClubMemberDetailResDto clubMemberResponse = clubDetailPageService.getClubMemberResponse(clubId, memberId, myClubGrade.getClubGrade());
 
         return BaseResultDTO.ofSuccess(clubMemberResponse);
     }

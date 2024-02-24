@@ -13,5 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ClubGradeService {
+    private final ClubMemberRepository clubMemberRepository;
+    private final ClubGradeRepository clubGradeRepository;
 
+    public ClubGrade findByClubIdAndMemberId(Long clubId, Long memberId) {
+        ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, memberId).orElseThrow(EntityNotFoundException::new);
+        return clubGradeRepository.findById(clubMember.getClubGradeId()).orElseThrow(EntityNotFoundException::new);
+    }
 }
