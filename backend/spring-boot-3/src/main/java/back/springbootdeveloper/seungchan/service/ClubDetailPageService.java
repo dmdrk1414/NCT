@@ -64,7 +64,6 @@ public class ClubDetailPageService {
     /**
      * 특정 클럽의 특정 회원에 대한 클럽 회원 정보를 반환합니다.
      *
-     * @param clubId       클럽의 ID
      * @param memberId     회원의 ID
      * @param clubMemberId
      * @return 클럽 회원 정보를 담은 ClubMemberInformationResDto 객체
