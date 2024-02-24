@@ -58,7 +58,7 @@ public class TokenProvider {
                 .setIssuedAt(now) // 내용 iat : 현재 시간
                 .setExpiration(expiry) // 내용 exp : expiry 멤버 변숫 값 / 토큰 만료기간 / 현제 + 만료 기간
                 .setSubject(member.getEmail()) // 내용 sub : 유저의 이메일
-                .claim("id", member.getMemberId()) // 클레임 id : 유저 ID
+                .claim("MemberId", member.getMemberId()) // 클레임 id : 유저 ID
 //                .claim("isMoariumKing",) // TODO: Moarium 전체 관리자에 대한 상의가 필요
                 // 서명 : 비밀값과 함께 해시값을 HS256 방식으로 암호화
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
@@ -90,7 +90,7 @@ public class TokenProvider {
     // 클레임 정보를 반환받고 클레임에서 id 킬로 저장된 값을 가져와 반환합니다.
     public Long getUserId(String token) {
         Claims claims = getClaims(token); // 토큰의 정보를 가져오는 claims 만들기
-        return claims.get("id", Long.class); // 토큰 기반으로 유저 id 가져오기
+        return claims.get("MemberId", Long.class); // 토큰 기반으로 유저 id 가져오기
     }
 
     // TODO: 8/8/23  MoariumKing을 가져온다.
