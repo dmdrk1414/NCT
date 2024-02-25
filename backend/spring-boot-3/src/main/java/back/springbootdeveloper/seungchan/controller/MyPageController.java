@@ -41,7 +41,7 @@ public class MyPageController {
 
     @Operation(summary = "마이페이지 - 휴면/활동 전환", description = "해당 클럽 인원이 마이페이지 휴면/활동 전환 기능")
     @PostMapping(value = "/transform")
-    public ResponseEntity<BaseResponseBody> dormancyClubMember(
+    public ResponseEntity<BaseResponseBody> togleMemberAndDormancyClubMember(
             @PathVariable(value = "club_member_id") Long clubMemberId) {
         // TODO: 2/24/24 token으로 memberId 얻기
         Long memberId = 1L;
