@@ -5,6 +5,7 @@ import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
+import back.springbootdeveloper.seungchan.dto.response.ClubMemberArticlesResDto;
 import back.springbootdeveloper.seungchan.dto.response.ClubMemberCommentsResDto;
 import back.springbootdeveloper.seungchan.entity.ClubArticleComment;
 import back.springbootdeveloper.seungchan.service.*;
@@ -29,6 +30,7 @@ public class MyPageController {
     private final TokenService tokenService;
     private final ClubGradeService clubGradeService;
     private final ClubArticleCommentService clubArticleCommentService;
+    private final ClubArticleService clubArticleService;
 
     @Operation(summary = "마이페이지 - 동아리 탈퇴하기", description = "클럽 인원이 클럽을 탈퇴한다.")
     @PostMapping(value = "/quit")
@@ -73,6 +75,18 @@ public class MyPageController {
         Long memberId = 1L;
 
         ClubMemberCommentsResDto clubMemberCommentsResDto = clubArticleCommentService.getClubMemberCommentsResDto(clubMemberId);
+
+        return BaseResultDTO.ofSuccess(clubMemberCommentsResDto);
+    }
+
+    @Operation(summary = "마이페이지 - 내가 쓴 글 보기", description = "해당 클럽 인원이 마이페이지에서 내가 쓴 글 보기")
+    @GetMapping(value = "/articles")
+    @ResponseBody
+    public BaseResultDTO<ClubMemberArticlesResDto> findAllClubMemberArticles(
+            @PathVariable(value = "club_member_id") Long clubMemberId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+        ClubMemberArticlesResDto clubMemberCommentsResDto = clubArticleService.getClubMemberArticlesResDto(clubMemberId);
 
         return BaseResultDTO.ofSuccess(clubMemberCommentsResDto);
     }
