@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -54,7 +55,7 @@ public class ClubDetailPageService {
         // ClubMemberResponse 리스트 생성
         List<ClubMemberResponse> clubMemberResponses = getClubMemberResponsesFromClubMembers(clubMembers);
         Club club = clubRepository.findById(clubId).orElseThrow(EntityNotFoundException::new);
-        ClubMember clubMember = clubMemberRepository.findByMemberId(memberId).orElseThrow(EntityNotFoundException::new);
+        ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, memberId).orElseThrow(EntityNotFoundException::new);
 
         return ClubMemberDetailResDto.builder()
                 .clubName(club.getClubName())
@@ -100,7 +101,10 @@ public class ClubDetailPageService {
         for (ClubMember clubMember : clubMembers) {
             Member member = memberRepository.findById(clubMember.getMemberId()).orElseThrow(EntityNotFoundException::new);
             AttendanceState attendanceState = attendanceStateRepository.findById(clubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-            AttendanceStates attendanceStates = new AttendanceStates(attendanceState.getAttendanceWeekDate());
+            // 역정렬을 해서 최근정보 가져오기.
+            List<AttendanceWeekDate> attendanceWeekDates = attendanceState.getAttendanceWeekDates();
+            Collections.reverse(attendanceWeekDates);
+            AttendanceStates attendanceStates = new AttendanceStates(attendanceWeekDates.get(0));
 
             clubMemberResponses.add(
                     ClubMemberResponse.builder()
