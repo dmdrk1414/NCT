@@ -80,11 +80,20 @@ public class ClubArticleService {
         throw new EntityNotFoundException();
     }
 
+    /**
+     * 주어진 게시글 ID에 해당하는 클럽 게시글을 삭제합니다.
+     *
+     * @param clubId    클럽 ID
+     * @param memberId  회원 ID
+     * @param articleId 게시글 ID
+     * @throws EntityNotFoundException 엔티티를 찾을 수 없을 때 발생하는 예외
+     */
     @Transactional
     public void deleteClubArticle(Long clubId, Long memberId, Long articleId) {
         final ClubArticle clubArticle = clubArticleRepository.findById(articleId).orElseThrow(EntityNotFoundException::new);
         clubArticleRepository.delete(clubArticle);
     }
+
 
     private Boolean isSame(ClubMember clubMember, ClubArticle clubArticle) {
         return clubArticle.getClubMemberId() == clubMember.getClubMemberId();
