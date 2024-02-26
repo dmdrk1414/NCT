@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Club 등록, Club 지원, ClubArticle 생성을 담당하는 클래스입니다.
@@ -85,7 +84,7 @@ public class EntityApplyService {
      * @return 생성된 클럽 멤버
      */
     @Transactional
-    public Optional<ClubMember> applyClub(Member member, Club club, CLUB_GRADE CLUB_GRADE, ClubMemberInformation clubMemberInformation) {
+    public ClubMember applyClub(Member member, Club club, CLUB_GRADE CLUB_GRADE, ClubMemberInformation clubMemberInformation) {
         AttendanceState attendanceSate = attendanceSateRepository.save(createAttendanceState());
         ClubGrade clubGrade = clubGradeRepository.findByClubGrade(CLUB_GRADE)
                 .orElseThrow(EntityNotFoundException::new);
@@ -95,7 +94,7 @@ public class EntityApplyService {
         //   - Member, Club, ClubMemberInformation, AttendanceSate, ClubGrade
         ClubMember clubMember = creatClubMember(member, club, entityClubMemberInformation, attendanceSate, clubGrade);
 
-        return Optional.of(clubMemberRepository.save(clubMember));
+        return clubMemberRepository.save(clubMember);
     }
 
     /**
