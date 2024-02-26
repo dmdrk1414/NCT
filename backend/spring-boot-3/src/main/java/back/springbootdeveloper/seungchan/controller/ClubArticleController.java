@@ -90,4 +90,16 @@ public class ClubArticleController {
 
         return BaseResultDTO.ofSuccess(clubMemberSimpleInformationResDto);
     }
+
+    @Operation(summary = "팀 비밀 게시판 - 전체 조회", description = "팀 비밀 게시판 전체 조회")
+    @GetMapping(value = "/confidentials")
+    public BaseResultDTO<ClubMemberSimpleInformationResDto> findAllConfidentialClubArticle(
+            @PathVariable(value = "club_id") Long clubId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+        ClubMemberSimpleInformationResDto clubMemberSimpleInformationResDto =
+                clubArticleService.getClubMemberSimpleInformationResDto(clubId, memberId, CLUB_ARTICLE_CLASSIFICATION.CONFIDENTIAL);
+
+        return BaseResultDTO.ofSuccess(clubMemberSimpleInformationResDto);
+    }
 }
