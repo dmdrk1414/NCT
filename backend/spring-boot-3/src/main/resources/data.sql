@@ -1367,28 +1367,28 @@ VALUES (100, '2024-02-17 16:00:02.803303', '2024-02-17 16:00:02.803273', 'UNDECI
 INSERT INTO attendance_week_date (attendance_week_date_id, create_date, update_date, friday, monday, monday_date,
                                   saturday, sunday, sunday_date, thursday, tuesday, wednesday,
                                   attendance_state_id)
-VALUES (101, '2024-02-17 17:06:46.349015', '2024-02-17 17:06:46.348974', 'UNDECIDED', 'UNDECIDED', '2024-02-12',
-        'UNDECIDED', 'UNDECIDED', '2024-02-18', 'UNDECIDED', 'UNDECIDED', 'UNDECIDED', 101);
+VALUES (101, '2024-02-17 17:06:46.349015', '2024-02-17 17:06:46.348974', 'ATTENDANCE', 'ATTENDANCE', '2024-02-12',
+        'ATTENDANCE', 'ATTENDANCE', '2024-02-18', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 101);
 INSERT INTO attendance_week_date (attendance_week_date_id, create_date, update_date, friday, monday, monday_date,
                                   saturday, sunday, sunday_date, thursday, tuesday, wednesday,
                                   attendance_state_id)
-VALUES (102, '2024-02-17 17:06:46.349015', '2024-02-17 17:06:46.348974', 'UNDECIDED', 'UNDECIDED', '2024-02-12',
-        'UNDECIDED', 'UNDECIDED', '2024-02-18', 'UNDECIDED', 'UNDECIDED', 'UNDECIDED', 102);
+VALUES (102, '2024-02-17 17:06:46.349015', '2024-02-17 17:06:46.348974', 'ATTENDANCE', 'ATTENDANCE', '2024-02-12',
+        'ATTENDANCE', 'ATTENDANCE', '2024-02-18', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 102);
 INSERT INTO attendance_week_date (attendance_week_date_id, create_date, update_date, friday, monday, monday_date,
                                   saturday, sunday, sunday_date, thursday, tuesday, wednesday,
                                   attendance_state_id)
-VALUES (103, '2024-02-17 17:06:46.349015', '2024-02-17 17:06:46.348974', 'UNDECIDED', 'UNDECIDED', '2024-02-12',
-        'UNDECIDED', 'UNDECIDED', '2024-02-18', 'UNDECIDED', 'UNDECIDED', 'UNDECIDED', 103);
+VALUES (103, '2024-02-17 17:06:46.349015', '2024-02-17 17:06:46.348974', 'VACATION', 'ATTENDANCE', '2024-02-12',
+        'ATTENDANCE', 'ATTENDANCE', '2024-02-18', 'ATTENDANCE', 'ATTENDANCE', 'ABSENCE', 103);
 INSERT INTO attendance_week_date (attendance_week_date_id, create_date, update_date, friday, monday, monday_date,
                                   saturday, sunday, sunday_date, thursday, tuesday, wednesday,
                                   attendance_state_id)
-VALUES (104, '2024-02-17 17:06:46.349015', '2024-02-17 17:06:46.348974', 'UNDECIDED', 'UNDECIDED', '2024-02-12',
-        'UNDECIDED', 'UNDECIDED', '2024-02-18', 'UNDECIDED', 'UNDECIDED', 'UNDECIDED', 104);
+VALUES (104, '2024-02-17 17:06:46.349015', '2024-02-17 17:06:46.348974', 'ATTENDANCE', 'ATTENDANCE', '2024-02-12',
+        'ATTENDANCE', 'ATTENDANCE', '2024-02-18', 'ABSENCE', 'ABSENCE', 'ABSENCE', 104);
 INSERT INTO attendance_week_date (attendance_week_date_id, create_date, update_date, friday, monday, monday_date,
                                   saturday, sunday, sunday_date, thursday, tuesday, wednesday,
                                   attendance_state_id)
-VALUES (105, '2024-02-18 17:06:46.349015', '2024-02-17 17:06:46.348974', 'UNDECIDED', 'UNDECIDED', '2024-02-12',
-        'UNDECIDED', 'ATTENDANCE', '2024-02-18', 'UNDECIDED', 'VACATION', 'UNDECIDED', 1);
+VALUES (105, '2024-02-18 17:06:46.349015', '2024-02-17 17:06:46.348974', 'ATTENDANCE', 'ATTENDANCE', '2024-02-12',
+        'ATTENDANCE', 'ATTENDANCE', '2024-02-18', 'ATTENDANCE', 'ABSENCE', 'VACATION', 1);
 
 
 -- attendance_week
@@ -1398,7 +1398,8 @@ VALUES (1, '2024-02-17 17:06:45.154056', '2024-02-17 17:06:45.152504', 'POSSIBLE
         'POSSIBLE', 'POSSIBLE', 'POSSIBLE');
 INSERT INTO attendance_week (attendance_week_id, create_date, update_date, friday, monday, saturday, sunday, thursday,
                              tuesday, wednesday)
-VALUES (2, '2024-02-17 17:06:45.745359', '2024-02-17 17:06:45.745342', 'POSSIBLE', 'POSSIBLE', 'POSSIBLE', 'POSSIBLE',
+VALUES (2, '2024-02-17 17:06:45.745359', '2024-02-17 17:06:45.745342', 'IMPOSSIBLE', 'IMPOSSIBLE', 'POSSIBLE',
+        'POSSIBLE',
         'POSSIBLE', 'POSSIBLE', 'POSSIBLE');
 INSERT INTO attendance_week (attendance_week_id, create_date, update_date, friday, monday, saturday, sunday, thursday,
                              tuesday, wednesday)
@@ -1407,11 +1408,11 @@ VALUES (3, '2024-02-17 17:06:45.973333', '2024-02-17 17:06:45.973315', 'POSSIBLE
 INSERT INTO attendance_week (attendance_week_id, create_date, update_date, friday, monday, saturday, sunday, thursday,
                              tuesday, wednesday)
 VALUES (4, '2024-02-17 17:06:46.255451', '2024-02-17 17:06:46.255432', 'POSSIBLE', 'POSSIBLE', 'POSSIBLE', 'POSSIBLE',
-        'POSSIBLE', 'POSSIBLE', 'POSSIBLE');
+        'POSSIBLE', 'IMPOSSIBLE', 'IMPOSSIBLE');
 INSERT INTO attendance_week (attendance_week_id, create_date, update_date, friday, monday, saturday, sunday, thursday,
                              tuesday, wednesday)
 VALUES (5, '2024-02-17 17:06:46.349665', '2024-02-17 17:06:46.349648', 'POSSIBLE', 'POSSIBLE', 'POSSIBLE', 'POSSIBLE',
-        'POSSIBLE', 'POSSIBLE', 'POSSIBLE');
+        'POSSIBLE', 'POSSIBLE', 'IMPOSSIBLE');
 
 -- vacation_token_control
 INSERT INTO vacation_token_control (vacation_token_control_id, create_date, update_date, vacation_token_control)
