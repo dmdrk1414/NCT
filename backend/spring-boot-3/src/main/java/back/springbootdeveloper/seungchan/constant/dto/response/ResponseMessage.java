@@ -15,7 +15,10 @@ public enum ResponseMessage {
     UPDATE_CLUB_ARTICLE("게시글 수정 되었습니다."),
     BAD_UPDATE_CLUB_ARTICLE("게시글 수정에 실패 하였습니다."),
     SUCCESS_DELETE_CLUB_ARTICLE("글이 삭제되었습니다."),
-    BAD_DELETE_CLUB_ARTICLE("삭제에 실패하였습니다.");
+    BAD_DELETE_CLUB_ARTICLE("삭제에 실패하였습니다."),
+    BAD_REPORT_CLUB_ARTICLE("신고에 실패하였습니다."),
+    BAD_ALREADY_REPORT_CLUB_ARTICLE("신고에 실패하였습니다."),
+    SUCCESS_REPORT_CLUB_ARTICLE("신고 접수 되었습니다..");
 
 
     private final String message;

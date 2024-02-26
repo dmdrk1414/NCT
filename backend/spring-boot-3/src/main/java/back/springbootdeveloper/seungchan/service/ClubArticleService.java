@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.constant.judgement.AUTHOR_JUDGMENT;
 import back.springbootdeveloper.seungchan.dto.request.UpdateClubArticlePutDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.*;
@@ -11,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +19,9 @@ import java.util.NoSuchElementException;
 public class ClubArticleService {
     private final ClubArticleRepository clubArticleRepository;
     private final ClubMemberRepository clubMemberRepository;
+    private final ClubRepository clubRepository;
+    private final MemberRepository memberRepository;
+    private final ClubArticleCommentRepository clubArticleCommentRepository;
 
     /**
      * 주어진 clubMemberId에 해당하는 클럽 회원의 게시글을 가져와서 해당 회원이 작성한 게시글을 MyClubArticle 객체의 리스트로 변환한 후,
@@ -94,6 +97,85 @@ public class ClubArticleService {
         clubArticleRepository.delete(clubArticle);
     }
 
+    /**
+     * 주어진 클럽 ID, 게시글 ID, 회원 ID를 기반으로 클럽 게시글의 상세 정보를 가져옵니다.
+     *
+     * @param clubId    클럽 ID
+     * @param articleId 게시글 ID
+     * @param memberId  회원 ID
+     * @return 클럽 게시글의 상세 정보를 담은 ClubArticleDetailResDto 객체
+     * @throws EntityNotFoundException 엔티티를 찾을 수 없을 때 발생하는 예외
+     */
+    public ClubArticleDetailResDto getClubArticleDetailResDto(Long clubId, Long articleId, Long memberId) {
+        // 게시글 및 회원 정보 조회
+        ClubArticle clubArticle = clubArticleRepository.findById(articleId).orElseThrow(EntityNotFoundException::new);
+        ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, memberId).orElseThrow(EntityNotFoundException::new);
+
+        // 게시글 댓글 정보 조회
+        List<ClubArticleComment> clubArticleComments = clubArticle.getClubArticleComments();
+        List<ClubArticleCommentInformation> clubArticleCommentInformations = getClubArticleCommentInformations(memberId, clubArticleComments);
+        // 게시글 작성자 여부 확인
+        String isClubArticleAuthor = getIsClubArticleAuthor(clubArticle, clubMember);
+
+        // ClubArticleDetailResDto 객체 생성 및 반환
+        return ClubArticleDetailResDto.builder()
+                .isClubArticleAuthor(isClubArticleAuthor)
+                .clubArticleTitle(clubArticle.getTitle())
+                .clubArticleContent(clubArticle.getContent())
+                .clubArticleLikeNumber(String.valueOf(clubArticle.getLikeCount()))
+                .clubArticleCommentNumber(String.valueOf(clubArticle.getClubArticleComments().size()))
+                .clubArticleDate(clubArticle.getClubArticleDate())
+                .clubArticleAnswerSuggestion(clubArticle.getSuggestionAnswer())
+                .clubArticleAnswerCheck(clubArticle.getAnswerCheck().getCheck())
+                .clubArticleClassification(clubArticle.getClassification().getSort())
+                .clubArticleCommentInformations(clubArticleCommentInformations)
+                .build();
+    }
+
+    /**
+     * 주어진 회원 ID와 클럽 게시글 댓글 목록을 받아서 해당 회원이 댓글 작성자인지 여부를 확인하고, 필요한 정보로 변환하여 ClubArticleCommentInformation 객체의 리스트를 반환합니다.
+     *
+     * @param memberId            회원 ID
+     * @param clubArticleComments 클럽 게시글 댓글 목록
+     * @return ClubArticleCommentInformation 객체의 리스트
+     */
+    private List<ClubArticleCommentInformation> getClubArticleCommentInformations(Long memberId, List<ClubArticleComment> clubArticleComments) {
+        List<ClubArticleCommentInformation> clubArticleCommentInformations = new ArrayList<>();
+
+        for (ClubArticleComment clubArticleComment : clubArticleComments) {
+            // comment의 저자을 알려준다.
+            String isClubArticleCommentAuthor = getIsClubArticleCommentAuthor(memberId, clubArticleComment);
+            // 저자의 Member객체
+            Member authMember = memberRepository.findById(clubArticleComment.getMemberId()).orElseThrow(EntityNotFoundException::new);
+
+            clubArticleCommentInformations.add(
+                    ClubArticleCommentInformation.builder()
+                            .isClubArticleCommentAuthor(isClubArticleCommentAuthor)
+                            .clubArticleCommentContent(clubArticleComment.getContent())
+                            .clubArticleCommentAuthorName(authMember.getFirstName())
+                            .clubArticleCommentDate(clubArticleComment.getCommentDate())
+                            .clubArticleCommentLike(String.valueOf(clubArticleComment.getLikeCount()))
+                            .build()
+            );
+        }
+        return clubArticleCommentInformations;
+    }
+
+    private String getIsClubArticleCommentAuthor(Long memberId, ClubArticleComment clubArticleComment) {
+        if (memberId == clubArticleComment.getMemberId()) {
+
+            return AUTHOR_JUDGMENT.AUTHOR.getJudgment();
+        }
+        return AUTHOR_JUDGMENT.NOT_AUTHOR.getJudgment();
+    }
+
+    private String getIsClubArticleAuthor(ClubArticle clubArticle, ClubMember clubMember) {
+        if (clubArticle.getClubMemberId() == clubMember.getClubMemberId()) {
+
+            return AUTHOR_JUDGMENT.AUTHOR.getJudgment();
+        }
+        return AUTHOR_JUDGMENT.NOT_AUTHOR.getJudgment();
+    }
 
     private Boolean isSame(ClubMember clubMember, ClubArticle clubArticle) {
         return clubArticle.getClubMemberId() == clubMember.getClubMemberId();
