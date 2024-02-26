@@ -102,4 +102,16 @@ public class ClubArticleController {
 
         return BaseResultDTO.ofSuccess(clubMemberSimpleInformationResDto);
     }
+
+    @Operation(summary = "팀 자유 게시판 - 전체 조회", description = "팀 자유 게시판 전체 조회")
+    @GetMapping(value = "/frees")
+    public BaseResultDTO<ClubMemberSimpleInformationResDto> findAllFreeClubArticle(
+            @PathVariable(value = "club_id") Long clubId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+        ClubMemberSimpleInformationResDto clubMemberSimpleInformationResDto =
+                clubArticleService.getClubMemberSimpleInformationResDto(clubId, memberId, CLUB_ARTICLE_CLASSIFICATION.FREEDOM);
+
+        return BaseResultDTO.ofSuccess(clubMemberSimpleInformationResDto);
+    }
 }
