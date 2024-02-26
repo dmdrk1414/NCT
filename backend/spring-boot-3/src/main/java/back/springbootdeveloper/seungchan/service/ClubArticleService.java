@@ -1,11 +1,8 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.dto.response.ClubMemberArticlesResDto;
-import back.springbootdeveloper.seungchan.dto.response.MyClubArticle;
-import back.springbootdeveloper.seungchan.entity.ClubArticle;
-import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
-import back.springbootdeveloper.seungchan.repository.ClubArticleRepository;
-import back.springbootdeveloper.seungchan.repository.ClubMemberRepository;
+import back.springbootdeveloper.seungchan.dto.response.*;
+import back.springbootdeveloper.seungchan.entity.*;
+import back.springbootdeveloper.seungchan.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
