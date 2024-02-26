@@ -133,6 +133,29 @@ public class ClubArticleService {
     }
 
     /**
+     * 주어진 게시글 ID에 해당하는 클럽 게시글의 좋아요 수를 증가시킵니다.
+     *
+     * @param articleId 게시글 ID
+     * @return 좋아요 수가 증가했는지 여부를 나타내는 값
+     * @throws EntityNotFoundException 엔티티를 찾을 수 없을 때 발생하는 예외
+     */
+    @Transactional
+    public Boolean addLikeCountClubArticle(Long articleId) {
+        final ClubArticle clubArticle = clubArticleRepository.findById(articleId).orElseThrow(EntityNotFoundException::new);
+        Integer clubArticleLikeCount = clubArticle.getLikeCount();
+        clubArticle.addLike();
+
+        final ClubArticle updateClubArticle = clubArticleRepository.save(clubArticle);
+
+        return isNotSame(updateClubArticle.getLikeCount(), clubArticleLikeCount);
+    }
+
+    private boolean isNotSame(Integer updateClubArticleLikeCount, Integer clubArticleLikeCount) {
+        return updateClubArticleLikeCount != clubArticleLikeCount;
+    }
+
+
+    /**
      * 주어진 회원 ID와 클럽 게시글 댓글 목록을 받아서 해당 회원이 댓글 작성자인지 여부를 확인하고, 필요한 정보로 변환하여 ClubArticleCommentInformation 객체의 리스트를 반환합니다.
      *
      * @param memberId            회원 ID
