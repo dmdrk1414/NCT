@@ -1,10 +1,7 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
-import back.springbootdeveloper.seungchan.dto.response.AttendanceStates;
-import back.springbootdeveloper.seungchan.dto.response.ClubMemberDetailResDto;
-import back.springbootdeveloper.seungchan.dto.response.ClubMemberInformationResDto;
-import back.springbootdeveloper.seungchan.dto.response.ClubMemberResponse;
+import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.*;
@@ -27,6 +24,7 @@ public class ClubDetailPageService {
     private final AttendanceWeekDateRepository attendanceWeekDateRepository;
     private final ClubRepository clubRepository;
     private final ClubMemberInformationRepository clubMemberInformationRepository;
+    private final AttendanceWeekRepository attendanceWeekRepository;
 
     /**
      * 주어진 클럽의 휴면 회원들의 전체 이름을 가져와서 반환합니다.
@@ -56,10 +54,13 @@ public class ClubDetailPageService {
         List<ClubMemberResponse> clubMemberResponses = getClubMemberResponsesFromClubMembers(clubMembers);
         Club club = clubRepository.findById(clubId).orElseThrow(EntityNotFoundException::new);
         ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, memberId).orElseThrow(EntityNotFoundException::new);
+        ClubControl clubControl = club.getClubControl();
+        ClubMemberAttendanceCheckDate clubMemberAttendanceCheckDate = new ClubMemberAttendanceCheckDate(clubControl.getAttendanceWeek());
 
         return ClubMemberDetailResDto.builder()
                 .clubName(club.getClubName())
                 .myClubMemberId(clubMember.getMemberId())
+                .clubMemberAttendanceCheckDate(clubMemberAttendanceCheckDate)
                 .myClubGrade(myClubGrade.getGrade())
                 .clubMembers(clubMemberResponses)
                 .build();

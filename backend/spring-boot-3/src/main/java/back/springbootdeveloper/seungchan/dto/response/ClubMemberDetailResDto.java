@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 public class ClubMemberDetailResDto {
     private String clubName;
+    private ClubMemberAttendanceCheckDate clubMemberAttendanceCheckDate;
     private Long myClubMemberId;
     private String myClubGrade;
     private List<ClubMemberResponse> clubMembers;
