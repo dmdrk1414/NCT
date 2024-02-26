@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.constant.judgement.AUTHOR_JUDGMENT;
 import back.springbootdeveloper.seungchan.dto.request.UpdateClubArticlePutDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
@@ -148,6 +149,56 @@ public class ClubArticleService {
         final ClubArticle updateClubArticle = clubArticleRepository.save(clubArticle);
 
         return isNotSame(updateClubArticle.getLikeCount(), clubArticleLikeCount);
+    }
+
+    /**
+     * 주어진 클럽 ID, 회원 ID 및 게시글 분류를 기반으로 해당 클럽 회원의 간단한 정보를 가져옵니다.
+     *
+     * @param clubId         클럽 ID
+     * @param memberId       회원 ID
+     * @param classification 게시글 분류
+     * @return 해당 클럽 회원의 간단한 정보를 담은 ClubMemberSimpleInformationResDto 객체
+     */
+    public ClubMemberSimpleInformationResDto getClubMemberSimpleInformationResDto(Long clubId, Long memberId, CLUB_ARTICLE_CLASSIFICATION classification) {
+        List<ClubArticleSimpleInformation> clubArticleSimpleInformations = new ArrayList<>();
+        List<ClubMember> clubMembers = clubMemberRepository.findAllByClubId(clubId);
+
+        // 각 클럽 회원에 대해 반복하여 클럽 게시글 조회
+        for (ClubMember clubMember : clubMembers) {
+            // 해당 클럽 회원이 작성한 특정 분류의 클럽 게시글 조회
+            List<ClubArticle> clubArticles = clubArticleRepository.findAllByClubMemberIdAndClassification(clubMember.getClubMemberId(), classification);
+            Member authorMember = memberRepository.findById(clubMember.getMemberId()).orElseThrow(EntityNotFoundException::new);
+
+            // 각 게시글에 대해 간단한 정보 생성하여 리스트에 추가
+            for (ClubArticle clubArticle : clubArticles) {
+                clubArticleSimpleInformations.add(
+                        createClubArticleSimpleInformation(authorMember, clubArticle)
+                );
+            }
+        }
+
+        // ClubMemberSimpleInformationResDto 객체 생성 및 반환
+        return ClubMemberSimpleInformationResDto.builder()
+                .clubArticleSimpleInformations(clubArticleSimpleInformations)
+                .build();
+    }
+
+    /**
+     * 주어진 회원과 클럽 게시글 정보를 기반으로 클럽 게시글의 간단한 정보를 생성합니다.
+     *
+     * @param authorMember 게시글 작성자 회원 정보
+     * @param clubArticle  클럽 게시글 정보
+     * @return 생성된 클럽 게시글의 간단한 정보를 담은 ClubArticleSimpleInformation 객체
+     */
+    private ClubArticleSimpleInformation createClubArticleSimpleInformation(Member authorMember, ClubArticle clubArticle) {
+        return ClubArticleSimpleInformation.builder()
+                .clubArticleClassification(clubArticle.getClassification().getSort())
+                .clubArticleTitle(clubArticle.getTitle())
+                .clubArticleAuthorName(authorMember.getFullName())
+                .clubArticleDate(clubArticle.getClubArticleDate())
+                .clubArticleCommentCount(String.valueOf(clubArticle.getClubArticleComments().size()))
+                .clubArticleAnswerCheck(clubArticle.getAnswerCheck().getCheck())
+                .build();
     }
 
     private boolean isNotSame(Integer updateClubArticleLikeCount, Integer clubArticleLikeCount) {
