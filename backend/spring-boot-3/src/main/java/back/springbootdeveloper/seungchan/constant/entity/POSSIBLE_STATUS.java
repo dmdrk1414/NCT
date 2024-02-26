@@ -11,4 +11,8 @@ public enum POSSIBLE_STATUS {
     POSSIBLE_STATUS(String status) {
         this.status = status;
     }
+
+    public Boolean isSame(String status) {
+        return this.status.equals(status);
+    }
 }

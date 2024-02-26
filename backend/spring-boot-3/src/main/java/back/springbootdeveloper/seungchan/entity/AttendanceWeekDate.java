@@ -192,4 +192,26 @@ public class AttendanceWeekDate extends BaseEntity {
             attendanceSate.addAttendanceWeekDates(this);
         }
     }
+
+    public ATTENDANCE_STATE getAttendanceStateForDay(DayOfWeek dayOfWeek) {
+        switch (dayOfWeek) {
+            case MONDAY:
+                return this.monday;
+            case TUESDAY:
+                return this.tuesday;
+            case WEDNESDAY:
+                return this.wednesday;
+            case THURSDAY:
+                return this.thursday;
+            case FRIDAY:
+                return this.friday;
+            case SATURDAY:
+                return this.saturday;
+            case SUNDAY:
+                return this.sunday;
+            default:
+                break;
+        }
+        return null;
+    }
 }
