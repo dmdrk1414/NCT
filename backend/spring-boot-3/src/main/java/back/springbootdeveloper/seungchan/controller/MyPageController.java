@@ -3,10 +3,9 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE_VALUE;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
+import back.springbootdeveloper.seungchan.constant.entity.ATTENDANCE_STATE;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
-import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
-import back.springbootdeveloper.seungchan.dto.response.ClubMemberArticlesResDto;
-import back.springbootdeveloper.seungchan.dto.response.ClubMemberCommentsResDto;
+import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.ClubArticleComment;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
@@ -17,6 +16,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "마이페이지", description = "마이페이지 관련 API")
 @RestController
@@ -31,6 +32,7 @@ public class MyPageController {
     private final ClubGradeService clubGradeService;
     private final ClubArticleCommentService clubArticleCommentService;
     private final ClubArticleService clubArticleService;
+    private final MyPageService myPageService;
 
     @Operation(summary = "마이페이지 - 동아리 탈퇴하기", description = "클럽 인원이 클럽을 탈퇴한다.")
     @PostMapping(value = "/quit")
@@ -89,5 +91,19 @@ public class MyPageController {
         ClubMemberArticlesResDto clubMemberCommentsResDto = clubArticleService.getClubMemberArticlesResDto(clubMemberId);
 
         return BaseResultDTO.ofSuccess(clubMemberCommentsResDto);
+    }
+
+    @Operation(summary = "마이페이지 - 전체 출석 현황", description = "현제 회원이 참여한 클럽의 출석 정보 확인 가능")
+    @GetMapping(value = "/attendances")
+    @ResponseBody
+    public BaseResultDTO<MyAllClubMembersInformationsResDto> findAllClubMemberAttendanceInformation(
+            @PathVariable(value = "club_member_id") Long clubMemberId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+        List<MyAllClubMembersAttendance> myAllClubMembersAttendances = myPageService.getMyAllClubMembersAttendance(memberId, clubMemberId);
+
+        return BaseResultDTO.ofSuccess(MyAllClubMembersInformationsResDto.builder()
+                .myAllClubMembersAttendances(myAllClubMembersAttendances)
+                .build());
     }
 }
