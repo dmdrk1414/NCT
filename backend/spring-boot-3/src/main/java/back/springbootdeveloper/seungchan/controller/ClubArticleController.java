@@ -35,4 +35,19 @@ public class ClubArticleController {
         }
         return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_UPDATE_CLUB_ARTICLE.get());
     }
+
+    @Operation(summary = "팀 게시판 - 삭제 API", description = "글 작성자의 게시물을 삭제 한다.")
+    @DeleteMapping(value = "/{article_id}")
+    public ResponseEntity<BaseResponseBody> deleteClubArticle(
+            @PathVariable(value = "club_id") Long clubId,
+            @PathVariable(value = "article_id") Long articleId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+        if (clubArticleService.isAuthor(memberId, clubId, articleId)) {
+            clubArticleService.deleteClubArticle(clubId, memberId, articleId);
+
+            return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.SUCCESS_DELETE_CLUB_ARTICLE.get());
+        }
+        return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_DELETE_CLUB_ARTICLE.get());
+    }
 }

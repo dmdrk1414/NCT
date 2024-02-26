@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -77,6 +78,12 @@ public class ClubArticleService {
             return updateClubArticle;
         }
         throw new EntityNotFoundException();
+    }
+
+    @Transactional
+    public void deleteClubArticle(Long clubId, Long memberId, Long articleId) {
+        final ClubArticle clubArticle = clubArticleRepository.findById(articleId).orElseThrow(EntityNotFoundException::new);
+        clubArticleRepository.delete(clubArticle);
     }
 
     private Boolean isSame(ClubMember clubMember, ClubArticle clubArticle) {

@@ -13,7 +13,10 @@ public enum ResponseMessage {
     SUCCESS_TOGLE_DORMANT_GRADE("휴면회원으로 전환되었습니다."),
     BAD_TOGLE_GRADE("등급 전환에 실패했습니다."),
     UPDATE_CLUB_ARTICLE("게시글 수정 되었습니다."),
-    BAD_UPDATE_CLUB_ARTICLE("게시글 수정에 실패 하였습니다.");
+    BAD_UPDATE_CLUB_ARTICLE("게시글 수정에 실패 하였습니다."),
+    SUCCESS_DELETE_CLUB_ARTICLE("글이 삭제되었습니다."),
+    BAD_DELETE_CLUB_ARTICLE("삭제에 실패하였습니다.");
+
 
     private final String message;
 
