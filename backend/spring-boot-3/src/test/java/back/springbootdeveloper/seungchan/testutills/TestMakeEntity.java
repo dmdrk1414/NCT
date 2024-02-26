@@ -42,9 +42,10 @@ public class TestMakeEntity {
                 .build();
     }
 
-    public static ClubArticleComment createSampleClubArticleComment(Integer nuber) {
+    public static ClubArticleComment createSampleClubArticleComment(Integer nuber, Member member) {
         return ClubArticleComment.builder()
                 .content("테스트_클럽_게시물_댓글_" + nuber)
+                .memberId(member.getMemberId())
                 .build();
     }
 

@@ -35,14 +35,17 @@ public class ClubArticleComment extends BaseEntity {
     @Column(name = "declaration_count")
     private Integer declarationCount = 0;
 
+    @Column(name = "member_id")
+    private Long memberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_article_id")
     private ClubArticle clubArticle;
 
     @Builder
-    public ClubArticleComment(String content) {
+    public ClubArticleComment(String content, Long memberId) {
         this.content = content;
+        this.memberId = memberId;
     }
 
     @PrePersist
