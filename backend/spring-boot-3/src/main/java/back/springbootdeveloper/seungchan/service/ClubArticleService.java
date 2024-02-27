@@ -1,8 +1,10 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
+import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_SUGGESTION_CHECK;
 import back.springbootdeveloper.seungchan.constant.judgement.AUTHOR_JUDGMENT;
 import back.springbootdeveloper.seungchan.dto.request.UpdateClubArticlePutDto;
+import back.springbootdeveloper.seungchan.dto.request.WriteSuggestionAnswerReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
@@ -203,6 +205,30 @@ public class ClubArticleService {
                 .clubArticleCommentNumber(String.valueOf(clubArticle.getClubArticleComments().size()))
                 .clubArticleDate(clubArticle.getClubArticleDate())
                 .build();
+    }
+
+    /**
+     * 주어진 게시글 ID를 기반으로 클럽 게시글의 건의에 대한 답변을 업데이트하고, 답변 확인 상태를 업데이트한 후 저장합니다.
+     *
+     * @param articleId                   게시글 ID
+     * @param writeSuggestionAnswerReqDto 건의 답변 정보가 담긴 DTO
+     * @return 답변이 성공적으로 업데이트되었으면 true를 반환합니다.
+     * @throws EntityNotFoundException 엔티티를 찾을 수 없을 때 발생하는 예외
+     */
+    @Transactional
+    public Boolean updateSuggestionAnswerClubArticle(Long articleId, WriteSuggestionAnswerReqDto writeSuggestionAnswerReqDto) {
+        final ClubArticle clubArticle = clubArticleRepository.findById(articleId).orElseThrow(EntityNotFoundException::new);
+
+        // 건의 답변 업데이트 및 답변 확인 상태 업데이트
+        clubArticle.updateSuggestionAnswer(writeSuggestionAnswerReqDto.getClubSuggestionArticleAnswer());
+        clubArticle.updateAnswerCheck(CLUB_ARTICLE_SUGGESTION_CHECK.CONFIRMED);
+        final ClubArticle updateClubArticle = clubArticleRepository.save(clubArticle);
+
+        // 업데이트된 게시글이 존재하면 true 반환, 그렇지 않으면 예외 발생
+        if (updateClubArticle != null) {
+            return true;
+        }
+        throw new EntityNotFoundException();
     }
 
     /**
