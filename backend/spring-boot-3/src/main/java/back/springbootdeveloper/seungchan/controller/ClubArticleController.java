@@ -119,7 +119,7 @@ public class ClubArticleController {
 
     @Operation(summary = "팀 건의 게시판 답변 조회", description = "팀 건의 게시판 답변 조회")
     @GetMapping(value = "/{article_id}/answer")
-    public BaseResultDTO<ClubArticleAnswerResDto> findAllFreeClubArticle(
+    public BaseResultDTO<ClubArticleAnswerResDto> findSuggestionAnswerClubArticle(
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "article_id") Long articleId) {
         // TODO: 2/24/24 token으로 memberId 얻기
