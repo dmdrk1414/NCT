@@ -137,7 +137,7 @@ public class ClubArticleController {
     }
 
 
-    @Operation(summary = "팀 건의 게시판 - 상세 페이지 - 답변 쓰기", description = "팀 건의 게시판 답변 조회")
+    @Operation(summary = "팀 건의 게시판 - 상세 페이지 - 답변 쓰기", description = "팀 건의 게시판 답변 쓰기")
     @PostMapping(value = "/{article_id}/answer/write")
     public ResponseEntity<BaseResponseBody> writeSuggestionAnswerClubArticle(
             @RequestBody WriteSuggestionAnswerReqDto writeSuggestionAnswerReqDto,
