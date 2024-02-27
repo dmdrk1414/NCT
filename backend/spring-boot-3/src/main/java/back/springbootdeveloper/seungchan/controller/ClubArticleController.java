@@ -5,14 +5,15 @@ import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFIC
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.dto.request.UpdateClubArticlePutDto;
 import back.springbootdeveloper.seungchan.dto.request.WriteSuggestionAnswerReqDto;
-import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
-import back.springbootdeveloper.seungchan.dto.response.ClubArticleAnswerResDto;
-import back.springbootdeveloper.seungchan.dto.response.ClubArticleDetailResDto;
-import back.springbootdeveloper.seungchan.dto.response.ClubArticleSimpleInformationResDto;
+import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.Club;
+import back.springbootdeveloper.seungchan.entity.ClubArticle;
+import back.springbootdeveloper.seungchan.entity.ClubArticleComment;
 import back.springbootdeveloper.seungchan.entity.ClubGrade;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.service.ClubArticleService;
 import back.springbootdeveloper.seungchan.service.ClubGradeService;
+import back.springbootdeveloper.seungchan.service.EntityApplyService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import back.springbootdeveloper.seungchan.util.BaseResultDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 public class ClubArticleController {
     private final ClubArticleService clubArticleService;
     private final ClubGradeService clubGradeService;
+    private final EntityApplyService entityApplyService;
 
     @Operation(summary = "팀 게시판 - 수정 API", description = "글 작성자의 게시물을 업데이트한다.")
     @PutMapping(value = "/{article_id}")
@@ -155,5 +157,23 @@ public class ClubArticleController {
             return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.SUCCESS_SUGGESTION_ANSWER.get());
         }
         return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_SUGGESTION_ANSWER.get());
+    }
+
+
+    @Operation(summary = "팀 게시판 - 상세 페이지 - 댓글 쓰기", description = "팀 게시판 - 상세 페이지 - 댓글 쓰기")
+    @PostMapping(value = "/{article_id}/comment/write")
+    public ResponseEntity<BaseResponseBody> writeClubArticleComment(
+            @RequestBody WriteClubArticleCommentReqDto writeClubArticleCommentReqDto,
+            @PathVariable(value = "club_id") Long clubId,
+            @PathVariable(value = "article_id") Long articleId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+
+        String clubArticleCommentContent = writeClubArticleCommentReqDto.getClubArticleCommentContent();
+        String anonymity = writeClubArticleCommentReqDto.getAnonymity();
+        entityApplyService.addClubArticleComment2ClubArticle(articleId, memberId, clubArticleCommentContent, anonymity)
+                .orElseThrow(EntityNotFoundException::new);
+
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }
 }

@@ -12,4 +12,8 @@ public enum ANONYMITY {
     ANONYMITY(String state) {
         this.state = state;
     }
+
+    public boolean is(String str) {
+        return this.state.equals(str);
+    }
 }
