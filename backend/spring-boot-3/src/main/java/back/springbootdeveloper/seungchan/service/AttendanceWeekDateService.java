@@ -45,7 +45,6 @@ public class AttendanceWeekDateService {
 
         // 업데이트 적용
         attendanceWeekDateRepository.save(attendanceWeekDate);
-
     }
 
     /**
@@ -64,5 +63,25 @@ public class AttendanceWeekDateService {
         if (attendanceEnum == ATTENDANCE_STATE.ATTENDANCE) {
             attendanceWeekDate.updateAttendanceAtToday();
         }
+    }
+
+    /**
+     * 출석 상태를 업데이트할 수 있는지 여부를 확인합니다.
+     *
+     * @param clubId   클럽 ID
+     * @param memberId 회원 ID
+     * @return 출석 상태를 업데이트할 수 있는지 여부
+     * @throws EntityNotFoundException 엔티티를 찾을 수 없을 때 발생하는 예외
+     */
+    public Boolean isPossibleUpdateAttendanceState(Long clubId, Long memberId) {
+        final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, memberId).orElseThrow(EntityNotFoundException::new);
+        final AttendanceState attendanceState = attendanceStateRepository.findById(clubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
+
+        // 리스트의 마지막 요소의 인덱스를 계산합니다
+        List<AttendanceWeekDate> attendanceWeekDates = attendanceState.getAttendanceWeekDates();
+        int lastIndex = attendanceWeekDates.size() - 1; // 리스트의 마지막 요소의 인덱스를 계산합니다
+        AttendanceWeekDate attendanceWeekDate = attendanceWeekDates.get(lastIndex); // 리스트의 마지막 요소를 가져옵니다
+
+        return attendanceWeekDate.isPossibleUpdateAttendanceState();
     }
 }

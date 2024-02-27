@@ -229,4 +229,27 @@ public class AttendanceWeekDate extends BaseEntity {
         }
         return null;
     }
+
+    public Boolean isPossibleUpdateAttendanceState() {
+        ZonedDateTime now = ZonedDateTime.now();
+        DayOfWeek currentDayOfWeek = now.getDayOfWeek();
+
+        switch (currentDayOfWeek) {
+            case MONDAY:
+                return this.monday.is(ATTENDANCE_STATE.UNDECIDED);
+            case TUESDAY:
+                return this.tuesday.is(ATTENDANCE_STATE.UNDECIDED);
+            case WEDNESDAY:
+                return this.wednesday.is(ATTENDANCE_STATE.UNDECIDED);
+            case THURSDAY:
+                return this.thursday.is(ATTENDANCE_STATE.UNDECIDED);
+            case FRIDAY:
+                return this.friday.is(ATTENDANCE_STATE.UNDECIDED);
+            case SATURDAY:
+                return this.saturday.is(ATTENDANCE_STATE.UNDECIDED);
+            case SUNDAY:
+                return this.sunday.is(ATTENDANCE_STATE.UNDECIDED);
+        }
+        return false;
+    }
 }
