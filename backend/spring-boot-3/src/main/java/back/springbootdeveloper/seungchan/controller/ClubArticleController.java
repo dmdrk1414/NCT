@@ -4,6 +4,7 @@ import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.dto.request.SaveClubArticleConfidential;
+import back.springbootdeveloper.seungchan.dto.request.SaveClubArticleFreeAndSuggestion;
 import back.springbootdeveloper.seungchan.dto.request.UpdateClubArticlePutDto;
 import back.springbootdeveloper.seungchan.dto.request.WriteSuggestionAnswerReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
@@ -211,6 +212,23 @@ public class ClubArticleController {
         String content = saveClubArticleConfidential.getClubArticleContent();
         String anonymity = saveClubArticleConfidential.getAnonymity();
         entityApplyService.applyClubArticleConfidential(title, content, clubMemberId, anonymity);
+
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+    }
+
+    @Operation(summary = "팀 건의, 자유 게시판 - 생성 API", description = "팀 건의, 자유 게시판 - 생성 API")
+    @PostMapping(value = "/{club_member_id}/save")
+    public ResponseEntity<BaseResponseBody> saveClubArticleFreeAndSuggestion(
+            @RequestBody @Valid SaveClubArticleFreeAndSuggestion saveClubArticleFreeAndSuggestion,
+            @PathVariable(value = "club_id") Long clubId,
+            @PathVariable(value = "club_member_id") Long clubMemberId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+
+        String title = saveClubArticleFreeAndSuggestion.getClubArticleTitle();
+        String content = saveClubArticleFreeAndSuggestion.getClubArticleContent();
+        String classification = saveClubArticleFreeAndSuggestion.getClassification();
+        entityApplyService.applyClubArticleFreeAndSuggestion(title, content, clubMemberId, classification);
 
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
     }

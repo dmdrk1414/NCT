@@ -58,6 +58,28 @@ public class EntityApplyService {
     }
 
     /**
+     * 자유 게시글 또는 제안 게시글을 적용합니다.
+     *
+     * @param title          게시글 제목
+     * @param content        게시글 내용
+     * @param clubMemberId   클럽 회원 ID
+     * @param classification 게시글 분류 (CLUB_ARTICLE_CLASSIFICATION.SUGGESTION 또는 CLUB_ARTICLE_CLASSIFICATION.FREEDOM)
+     * @return 새로운 클럽 게시글이 저장된 Optional 객체
+     */
+    @Transactional
+    public Optional<ClubArticle> applyClubArticleFreeAndSuggestion(String title, String content, Long clubMemberId, String classification) {
+        // 주어진 익명성에 따라 클럽 게시글 생성
+        if (CLUB_ARTICLE_CLASSIFICATION.SUGGESTION.is(classification)) {
+            return Optional.of(clubArticleRepository.save(createClubArticle(title, content, CLUB_ARTICLE_CLASSIFICATION.SUGGESTION, clubMemberId, ANONYMITY.REAL_NAME)));
+        }
+        if (CLUB_ARTICLE_CLASSIFICATION.FREEDOM.is(classification)) {
+            return Optional.of(clubArticleRepository.save(createClubArticle(title, content, CLUB_ARTICLE_CLASSIFICATION.FREEDOM, clubMemberId, ANONYMITY.REAL_NAME)));
+        }
+
+        return null;
+    }
+
+    /**
      * 주어진 클럽 게시글 ID, 회원 ID, 댓글 내용 및 익명성을 기반으로 클럽 게시글에 댓글을 추가합니다.
      *
      * @param clubArticleId             클럽 게시글 ID
