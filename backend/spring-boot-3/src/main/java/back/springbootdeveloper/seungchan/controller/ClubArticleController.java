@@ -4,6 +4,7 @@ import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.dto.request.UpdateClubArticlePutDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
+import back.springbootdeveloper.seungchan.dto.response.ClubArticleAnswerResDto;
 import back.springbootdeveloper.seungchan.dto.response.ClubArticleDetailResDto;
 import back.springbootdeveloper.seungchan.dto.response.ClubArticleSimpleInformationResDto;
 import back.springbootdeveloper.seungchan.service.ClubArticleService;
@@ -113,5 +114,19 @@ public class ClubArticleController {
                 clubArticleService.getClubMemberSimpleInformationResDto(clubId, memberId, CLUB_ARTICLE_CLASSIFICATION.FREEDOM);
 
         return BaseResultDTO.ofSuccess(clubMemberSimpleInformationResDto);
+    }
+
+
+    @Operation(summary = "팀 건의 게시판 답변 조회", description = "팀 건의 게시판 답변 조회")
+    @GetMapping(value = "/{article_id}/answer")
+    public BaseResultDTO<ClubArticleAnswerResDto> findAllFreeClubArticle(
+            @PathVariable(value = "club_id") Long clubId,
+            @PathVariable(value = "article_id") Long articleId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+        ClubArticleAnswerResDto clubArticleAnswerResDto =
+                clubArticleService.getClubArticleAnswerResDto(clubId, memberId, articleId);
+
+        return BaseResultDTO.ofSuccess(clubArticleAnswerResDto);
     }
 }

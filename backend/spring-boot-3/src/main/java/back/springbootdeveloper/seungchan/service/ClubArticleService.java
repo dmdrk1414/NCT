@@ -184,6 +184,28 @@ public class ClubArticleService {
     }
 
     /**
+     * 주어진 클럽 ID, 회원 ID 및 게시글 ID를 기반으로 클럽 게시글의 답변에 대한 응답 DTO를 반환합니다.
+     *
+     * @param clubId    클럽 ID
+     * @param memberId  회원 ID
+     * @param articleId 게시글 ID
+     * @return 클럽 게시글의 답변에 대한 응답 DTO인 ClubArticleAnswerResDto 객체
+     * @throws EntityNotFoundException 엔티티를 찾을 수 없을 때 발생하는 예외
+     */
+    public ClubArticleAnswerResDto getClubArticleAnswerResDto(Long clubId, Long memberId, Long articleId) {
+        final ClubArticle clubArticle = clubArticleRepository.findById(articleId).orElseThrow(EntityNotFoundException::new);
+
+        // ClubArticleAnswerResDto 객체 생성 및 반환
+        return ClubArticleAnswerResDto.builder()
+                .clubArticleTitle(clubArticle.getTitle())
+                .clubArticleContent(clubArticle.getContent())
+                .clubArticleLikeNumber(String.valueOf(clubArticle.getLikeCount()))
+                .clubArticleCommentNumber(String.valueOf(clubArticle.getClubArticleComments().size()))
+                .clubArticleDate(clubArticle.getClubArticleDate())
+                .build();
+    }
+
+    /**
      * 주어진 회원과 클럽 게시글 정보를 기반으로 클럽 게시글의 간단한 정보를 생성합니다.
      *
      * @param authorMember 게시글 작성자 회원 정보
