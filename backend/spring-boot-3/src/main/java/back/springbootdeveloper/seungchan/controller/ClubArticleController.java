@@ -11,6 +11,7 @@ import back.springbootdeveloper.seungchan.entity.ClubArticle;
 import back.springbootdeveloper.seungchan.entity.ClubArticleComment;
 import back.springbootdeveloper.seungchan.entity.ClubGrade;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
+import back.springbootdeveloper.seungchan.service.ClubArticleCommentService;
 import back.springbootdeveloper.seungchan.service.ClubArticleService;
 import back.springbootdeveloper.seungchan.service.ClubGradeService;
 import back.springbootdeveloper.seungchan.service.EntityApplyService;
@@ -32,6 +33,7 @@ public class ClubArticleController {
     private final ClubArticleService clubArticleService;
     private final ClubGradeService clubGradeService;
     private final EntityApplyService entityApplyService;
+    private final ClubArticleCommentService clubArticleCommentService;
 
     @Operation(summary = "팀 게시판 - 수정 API", description = "글 작성자의 게시물을 업데이트한다.")
     @PutMapping(value = "/{article_id}")
@@ -175,5 +177,23 @@ public class ClubArticleController {
                 .orElseThrow(EntityNotFoundException::new);
 
         return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+    }
+
+    @Operation(summary = "팀 게시판 - 상세 페이지 - 댓글 삭제", description = "팀 게시판 - 상세 페이지 - 댓글 삭제")
+    @DeleteMapping(value = "/{article_id}/comment/{comment_id}")
+    public ResponseEntity<BaseResponseBody> deleteClubArticleComment(
+            @PathVariable(value = "club_id") Long clubId,
+            @PathVariable(value = "article_id") Long articleId,
+            @PathVariable(value = "comment_id") Long commentId) {
+        // TODO: 2/24/24 token으로 memberId 얻기
+        Long memberId = 1L;
+
+        final Boolean isAuthorClubArticleComment = clubArticleCommentService.isAuthor(memberId, commentId);
+        if (isAuthorClubArticleComment) {
+            clubArticleCommentService.deleteByCommentId(commentId);
+
+            return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+        }
+        return BaseResponseBodyUtiil.BaseResponseBodyFailure();
     }
 }
