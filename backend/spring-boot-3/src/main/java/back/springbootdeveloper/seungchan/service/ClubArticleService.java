@@ -272,6 +272,7 @@ public class ClubArticleService {
 
             clubArticleCommentInformations.add(
                     ClubArticleCommentInformation.builder()
+                            .clubArticleCommentId(clubArticleComment.getClubArticleCommentId())
                             .isClubArticleCommentAuthor(isClubArticleCommentAuthor)
                             .clubArticleCommentContent(clubArticleComment.getContent())
                             .clubArticleCommentAuthorName(authMember.getFirstName())
