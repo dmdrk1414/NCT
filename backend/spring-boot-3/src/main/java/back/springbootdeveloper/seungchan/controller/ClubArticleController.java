@@ -142,7 +142,7 @@ public class ClubArticleController {
     @Operation(summary = "팀 건의 게시판 - 상세 페이지 - 답변 쓰기", description = "팀 건의 게시판 답변 쓰기")
     @PostMapping(value = "/{article_id}/answer/write")
     public ResponseEntity<BaseResponseBody> writeSuggestionAnswerClubArticle(
-            @RequestBody WriteSuggestionAnswerReqDto writeSuggestionAnswerReqDto,
+            @RequestBody @Valid WriteSuggestionAnswerReqDto writeSuggestionAnswerReqDto,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "article_id") Long articleId) {
         // TODO: 2/24/24 token으로 memberId 얻기
@@ -163,7 +163,7 @@ public class ClubArticleController {
     @Operation(summary = "팀 게시판 - 상세 페이지 - 댓글 쓰기", description = "팀 게시판 - 상세 페이지 - 댓글 쓰기")
     @PostMapping(value = "/{article_id}/comment/write")
     public ResponseEntity<BaseResponseBody> writeClubArticleComment(
-            @RequestBody WriteClubArticleCommentReqDto writeClubArticleCommentReqDto,
+            @RequestBody @Valid WriteClubArticleCommentReqDto writeClubArticleCommentReqDto,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "article_id") Long articleId) {
         // TODO: 2/24/24 token으로 memberId 얻기
