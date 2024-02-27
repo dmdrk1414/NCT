@@ -75,7 +75,7 @@ public class ClubArticleController {
     }
 
     @Operation(summary = "팀 게시판 - 상세 페이지 - 좋아요", description = "해당 club 게시판의 좋아요 표기")
-    @GetMapping(value = "/{article_id}/like")
+    @PostMapping(value = "/{article_id}/like")
     public ResponseEntity<BaseResponseBody> addClubArticleLikeCount(
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "article_id") Long articleId) {
