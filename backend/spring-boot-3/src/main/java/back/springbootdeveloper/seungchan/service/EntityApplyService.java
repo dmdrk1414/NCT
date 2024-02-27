@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Club 등록, Club 지원, ClubArticle 생성을 담당하는 클래스입니다.
@@ -45,8 +46,8 @@ public class EntityApplyService {
      * @return 생성된 클럽 게시글
      */
     @Transactional
-    public ClubArticle applyClubArticle(String title, String content, CLUB_ARTICLE_CLASSIFICATION classification, Long clubMemberId) {
-        return clubArticleRepository.save(createClubArticle(title, content, classification, clubMemberId));
+    public Optional<ClubArticle> applyClubArticle(String title, String content, CLUB_ARTICLE_CLASSIFICATION classification, Long clubMemberId) {
+        return Optional.of(clubArticleRepository.save(createClubArticle(title, content, classification, clubMemberId)));
     }
 
 
@@ -60,7 +61,7 @@ public class EntityApplyService {
      * @return 저장된 Club
      */
     @Transactional
-    public Club saveClub(String clubName, String clubIntroduce, String clubProfileImage, List<ClubIntroduceImage> clubIntroduceImages) {
+    public Optional<Club> saveClub(String clubName, String clubIntroduce, String clubProfileImage, List<ClubIntroduceImage> clubIntroduceImages) {
         final Club club = createClub(clubName, clubIntroduce, clubProfileImage);
         final ClubControl clubControl = createClubControl();
 
@@ -71,7 +72,7 @@ public class EntityApplyService {
         // Club - ClubControl
         club.setClubControl(clubControl);
 
-        return clubRepository.save(club);
+        return Optional.of(clubRepository.save(club));
     }
 
     /**
@@ -84,7 +85,7 @@ public class EntityApplyService {
      * @return 생성된 클럽 멤버
      */
     @Transactional
-    public ClubMember applyClub(Member member, Club club, CLUB_GRADE CLUB_GRADE, ClubMemberInformation clubMemberInformation) {
+    public Optional<ClubMember> applyClub(Member member, Club club, CLUB_GRADE CLUB_GRADE, ClubMemberInformation clubMemberInformation) {
         AttendanceState attendanceSate = attendanceSateRepository.save(createAttendanceState());
         ClubGrade clubGrade = clubGradeRepository.findByClubGrade(CLUB_GRADE)
                 .orElseThrow(EntityNotFoundException::new);
@@ -94,7 +95,7 @@ public class EntityApplyService {
         //   - Member, Club, ClubMemberInformation, AttendanceSate, ClubGrade
         ClubMember clubMember = creatClubMember(member, club, entityClubMemberInformation, attendanceSate, clubGrade);
 
-        return clubMemberRepository.save(clubMember);
+        return Optional.of(clubMemberRepository.save(clubMember));
     }
 
     /**
