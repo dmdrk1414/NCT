@@ -35,10 +35,10 @@ public class AttendanceWeekDateService {
 
         ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(EntityNotFoundException::new);
         AttendanceState attendanceState = attendanceStateRepository.findById(clubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-        // 역정렬해서 하나 가져오기
+        // 마지막 컬럼 가져오기
         List<AttendanceWeekDate> attendanceWeekDates = attendanceState.getAttendanceWeekDates();
-        Collections.reverse(attendanceWeekDates);
-        AttendanceWeekDate attendanceWeekDate = attendanceWeekDates.get(0);
+        int lastIndex = attendanceWeekDates.size() - 1;
+        AttendanceWeekDate attendanceWeekDate = attendanceWeekDates.get(lastIndex);
 
         // 원하는 출석 상태에 의해 변경
         updateAttendanceStateWithAttendanceEnum(attendanceEnum, attendanceWeekDate);
