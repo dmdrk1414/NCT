@@ -1,10 +1,12 @@
 package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.constant.entity.ANONYMITY;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.*;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +52,32 @@ public class EntityApplyService {
         return Optional.of(clubArticleRepository.save(createClubArticle(title, content, classification, clubMemberId)));
     }
 
+    /**
+     * 주어진 클럽 게시글 ID, 회원 ID, 댓글 내용 및 익명성을 기반으로 클럽 게시글에 댓글을 추가합니다.
+     *
+     * @param clubArticleId             클럽 게시글 ID
+     * @param memberId                  회원 ID
+     * @param clubArticleCommentContent 댓글 내용
+     * @param targetAnonymity           익명성
+     * @return 클럽 게시글에 댓글이 추가된 Optional<ClubArticle> 객체
+     * @throws EntityNotFoundException 엔티티를 찾을 수 없을 때 발생하는 예외
+     */
+    @Transactional
+    public Optional<ClubArticle> addClubArticleComment2ClubArticle(final Long clubArticleId, final Long memberId, final String clubArticleCommentContent, final String targetAnonymity) {
+        final ClubArticle clubArticle = clubArticleRepository.findById(clubArticleId).orElseThrow(EntityNotFoundException::new);
+
+        ANONYMITY anonymity = getAnonymity(targetAnonymity);
+
+        ClubArticleComment clubArticleComment = ClubArticleComment.builder()
+                .content(clubArticleCommentContent)
+                .memberId(memberId)
+                .anonymity(anonymity)
+                .build();
+
+        clubArticle.addClubArticleComment(clubArticleComment);
+
+        return Optional.of(clubArticleRepository.save(clubArticle));
+    }
 
     /**
      * Club을 생성하고 저장합니다.
@@ -96,6 +124,23 @@ public class EntityApplyService {
         ClubMember clubMember = creatClubMember(member, club, entityClubMemberInformation, attendanceSate, clubGrade);
 
         return Optional.of(clubMemberRepository.save(clubMember));
+    }
+
+    /**
+     * 주어진 익명성 문자열을 기반으로 ANONYMITY 열거형을 가져옵니다.
+     *
+     * @param targetAnonymity 대상 익명성 문자열
+     * @return 대상 익명성에 해당하는 ANONYMITY 열거형
+     */
+    private ANONYMITY getAnonymity(String targetAnonymity) {
+        ANONYMITY anonymity;
+        if (ANONYMITY.REAL_NAME.is(targetAnonymity)) {
+            anonymity = ANONYMITY.REAL_NAME;
+        } else {
+            anonymity = ANONYMITY.ANONYMOUS;
+        }
+        
+        return anonymity;
     }
 
     /**
