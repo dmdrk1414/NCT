@@ -5,7 +5,7 @@ import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFIC
 import back.springbootdeveloper.seungchan.dto.request.UpdateClubArticlePutDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.ClubArticleDetailResDto;
-import back.springbootdeveloper.seungchan.dto.response.ClubMemberSimpleInformationResDto;
+import back.springbootdeveloper.seungchan.dto.response.ClubArticleSimpleInformationResDto;
 import back.springbootdeveloper.seungchan.service.ClubArticleService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import back.springbootdeveloper.seungchan.util.BaseResultDTO;
@@ -82,22 +82,22 @@ public class ClubArticleController {
 
     @Operation(summary = "팀 건의 게시판 - 전체 조회", description = "팀 건 게시판 전체 조회")
     @GetMapping(value = "/suggestions")
-    public BaseResultDTO<ClubMemberSimpleInformationResDto> findAllSuggestionClubArticle(
+    public BaseResultDTO<ClubArticleSimpleInformationResDto> findAllSuggestionClubArticle(
             @PathVariable(value = "club_id") Long clubId) {
         // TODO: 2/24/24 token으로 memberId 얻기
         Long memberId = 1L;
-        ClubMemberSimpleInformationResDto clubMemberSimpleInformationResDto = clubArticleService.getClubMemberSimpleInformationResDto(clubId, memberId, CLUB_ARTICLE_CLASSIFICATION.SUGGESTION);
+        ClubArticleSimpleInformationResDto clubMemberSimpleInformationResDto = clubArticleService.getClubMemberSimpleInformationResDto(clubId, memberId, CLUB_ARTICLE_CLASSIFICATION.SUGGESTION);
 
         return BaseResultDTO.ofSuccess(clubMemberSimpleInformationResDto);
     }
 
     @Operation(summary = "팀 비밀 게시판 - 전체 조회", description = "팀 비밀 게시판 전체 조회")
     @GetMapping(value = "/confidentials")
-    public BaseResultDTO<ClubMemberSimpleInformationResDto> findAllConfidentialClubArticle(
+    public BaseResultDTO<ClubArticleSimpleInformationResDto> findAllConfidentialClubArticle(
             @PathVariable(value = "club_id") Long clubId) {
         // TODO: 2/24/24 token으로 memberId 얻기
         Long memberId = 1L;
-        ClubMemberSimpleInformationResDto clubMemberSimpleInformationResDto =
+        ClubArticleSimpleInformationResDto clubMemberSimpleInformationResDto =
                 clubArticleService.getClubMemberSimpleInformationResDto(clubId, memberId, CLUB_ARTICLE_CLASSIFICATION.CONFIDENTIAL);
 
         return BaseResultDTO.ofSuccess(clubMemberSimpleInformationResDto);
@@ -105,11 +105,11 @@ public class ClubArticleController {
 
     @Operation(summary = "팀 자유 게시판 - 전체 조회", description = "팀 자유 게시판 전체 조회")
     @GetMapping(value = "/frees")
-    public BaseResultDTO<ClubMemberSimpleInformationResDto> findAllFreeClubArticle(
+    public BaseResultDTO<ClubArticleSimpleInformationResDto> findSuggestionAnswerClubArticle(
             @PathVariable(value = "club_id") Long clubId) {
         // TODO: 2/24/24 token으로 memberId 얻기
         Long memberId = 1L;
-        ClubMemberSimpleInformationResDto clubMemberSimpleInformationResDto =
+        ClubArticleSimpleInformationResDto clubMemberSimpleInformationResDto =
                 clubArticleService.getClubMemberSimpleInformationResDto(clubId, memberId, CLUB_ARTICLE_CLASSIFICATION.FREEDOM);
 
         return BaseResultDTO.ofSuccess(clubMemberSimpleInformationResDto);

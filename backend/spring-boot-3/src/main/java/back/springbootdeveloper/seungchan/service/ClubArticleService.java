@@ -159,7 +159,7 @@ public class ClubArticleService {
      * @param classification 게시글 분류
      * @return 해당 클럽 회원의 간단한 정보를 담은 ClubMemberSimpleInformationResDto 객체
      */
-    public ClubMemberSimpleInformationResDto getClubMemberSimpleInformationResDto(Long clubId, Long memberId, CLUB_ARTICLE_CLASSIFICATION classification) {
+    public ClubArticleSimpleInformationResDto getClubMemberSimpleInformationResDto(Long clubId, Long memberId, CLUB_ARTICLE_CLASSIFICATION classification) {
         List<ClubArticleSimpleInformation> clubArticleSimpleInformations = new ArrayList<>();
         List<ClubMember> clubMembers = clubMemberRepository.findAllByClubId(clubId);
 
@@ -178,7 +178,7 @@ public class ClubArticleService {
         }
 
         // ClubMemberSimpleInformationResDto 객체 생성 및 반환
-        return ClubMemberSimpleInformationResDto.builder()
+        return ClubArticleSimpleInformationResDto.builder()
                 .clubArticleSimpleInformations(clubArticleSimpleInformations)
                 .build();
     }

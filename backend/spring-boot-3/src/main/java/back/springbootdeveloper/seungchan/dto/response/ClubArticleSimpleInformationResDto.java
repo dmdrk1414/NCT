@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class ClubMemberSimpleInformationResDto {
+public class ClubArticleSimpleInformationResDto {
     List<ClubArticleSimpleInformation> clubArticleSimpleInformations;
 }
