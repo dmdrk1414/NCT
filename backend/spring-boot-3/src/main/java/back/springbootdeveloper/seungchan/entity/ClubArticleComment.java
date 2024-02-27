@@ -37,7 +37,7 @@ public class ClubArticleComment extends BaseEntity {
     @Column(name = "declaration_count")
     private Integer declarationCount = 0;
 
-    @Column(name = "member_id")
+    @Column(name = "member_id", nullable = false)
     private Long memberId;
 
     @Enumerated(EnumType.STRING)
@@ -47,12 +47,6 @@ public class ClubArticleComment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_article_id")
     private ClubArticle clubArticle;
-
-    @Builder
-    public ClubArticleComment(String content, Long memberId) {
-        this.content = content;
-        this.memberId = memberId;
-    }
 
     @Builder
     public ClubArticleComment(String content, Long memberId, ANONYMITY anonymity) {

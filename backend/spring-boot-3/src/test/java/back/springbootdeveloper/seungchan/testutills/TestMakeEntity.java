@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.testutills;
 
+import back.springbootdeveloper.seungchan.constant.entity.ANONYMITY;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.entity.*;
 
@@ -45,6 +46,7 @@ public class TestMakeEntity {
     public static ClubArticleComment createSampleClubArticleComment(Integer nuber, Member member) {
         return ClubArticleComment.builder()
                 .content("테스트_클럽_게시물_댓글_" + nuber)
+                .anonymity(ANONYMITY.REAL_NAME)
                 .memberId(member.getMemberId())
                 .build();
     }
