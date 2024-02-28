@@ -143,9 +143,13 @@ public class ClubDetailPageController {
         Long memberId = tokenService.getMemberIdFromToken(request);
 
         // 출석번호 확인
-        // TODO: 2/28/24  휴면 유저 여부
+        Boolean isDormantMember = clubGradeService.isMemberStatus(clubMemberId, CLUB_GRADE.DORMANT);
         Boolean isPassTodayAttendance = attendanceNumberService.checkAttendanceNumber(clubId, attendanceNumberReqDto.getNumOfAttendance());
         Boolean isPossibleAttendance = attendanceWeekDateService.isPossibleUpdateAttendanceState(clubId, memberId);
+
+        if (isDormantMember) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_DORMANT_TODAY_ATTENDANCE_STATE.get());
+        }
 
         if (!isPossibleAttendance) {
             return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_ALREADY_TODAY_UPDATE_ATTENDANCE_STATE.get());
