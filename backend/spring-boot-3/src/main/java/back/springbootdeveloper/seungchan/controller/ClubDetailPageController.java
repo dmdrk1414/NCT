@@ -14,6 +14,7 @@ import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import back.springbootdeveloper.seungchan.util.BaseResultDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +35,11 @@ public class ClubDetailPageController {
     private final EntityDeleteService entityDeleteService;
     private final AttendanceNumberService attendanceNumberService;
     private final AttendanceWeekDateService attendanceWeekDateService;
+    private final TokenService tokenService;
 
     @Operation(summary = "회원 휴먼 페이지 조회", description = "해당 클럽의 휴먼 회원들 조회")
     @GetMapping(value = "/dormancys")
-    public BaseResultDTO<DormancysMembersResDto> getDormancysMemberPage(@PathVariable(value = "club_id") Long clubId) {
+    public BaseResultDTO<DormancysMembersResDto> getDormancysMemberPage(HttpServletRequest request, @PathVariable(value = "club_id") Long clubId) {
         List<String> allDormancyMemberNamesOfClub = clubDetailPageService.getAllDormancyMemberNamesOfClub(clubId);
         DormancysMembersResDto dormancysMembersResDto = DormancysMembersResDto.builder()
                 .dormancyMembers(allDormancyMemberNamesOfClub)
@@ -48,9 +50,9 @@ public class ClubDetailPageController {
 
     @Operation(summary = "동아리 상세 페이지 조회", description = "동아리 휴먼 회원들 제외한 모든 회원들 상세 조회 가능")
     @GetMapping(value = "")
-    public BaseResultDTO<ClubMemberDetailResDto> getMemberDetailsPage(@PathVariable(value = "club_id") Long clubId) {
-        // TODO: 2/24/24 token으로 memberId 얻기
-        Long memberId = 1L;
+    public BaseResultDTO<ClubMemberDetailResDto> getMemberDetailsPage(HttpServletRequest request, @PathVariable(value = "club_id") Long clubId) {
+        Long memberId = tokenService.getMemberIdFromToken(request);
+
         ClubGrade myClubGrade = clubGradeService.findByClubIdAndMemberId(clubId, memberId);
         // 동아리 회원의 상세 페이지 조회
         ClubMemberDetailResDto clubMemberResponse = clubDetailPageService.getClubMemberResponse(clubId, memberId, myClubGrade.getClubGrade());
@@ -61,10 +63,11 @@ public class ClubDetailPageController {
     @Operation(summary = "회원 상세 조회", description = "동아리 특정 회원 정보 상세 조회 가능")
     @GetMapping(value = "/{club_member_id}")
     public BaseResultDTO<ClubMemberInformationResDto> getClubMemberDetails(
+            HttpServletRequest request,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        // TODO: 2/24/24 token으로 memberId 얻기
-        Long memberId = 1L;
+        Long memberId = tokenService.getMemberIdFromToken(request);
+
         ClubMemberInformationResDto clubMemberResponse = clubDetailPageService.getClubMemberInformationResDto(memberId, clubMemberId);
 
         return BaseResultDTO.ofSuccess(clubMemberResponse);
@@ -73,11 +76,12 @@ public class ClubDetailPageController {
     @Operation(summary = "동아리 소개 페이지 - 휴가 제공 API", description = "동아리 대표의 동아리 회원에게 휴가 제공을 해주는 API 제공")
     @PostMapping(value = "/{club_member_id}/vacation")
     public ResponseEntity<BaseResponseBody> giveVacationTokenToClubMember(
+            HttpServletRequest request,
             @RequestBody @Valid GiveVacationTokenReqDto giveVacationTokenReqDto,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        // TODO: 2/24/24 token으로 memberId 얻기
-        Long memberId = 1L;
+        Long memberId = tokenService.getMemberIdFromToken(request);
+
         Member member = memberService.findByMemberId(memberId);
         Integer vacationToken = giveVacationTokenReqDto.getVacationToken();
         // 요청한 휴가 갯수에 따른 휴가 갯수 업데이트
@@ -92,10 +96,11 @@ public class ClubDetailPageController {
     @Operation(summary = "동아리 소개 페이지 - 회원 추방 API", description = "동아리 대표가 동아리 회원을 추방 시킨다.")
     @PostMapping(value = "/{club_member_id}/expulsion")
     public ResponseEntity<BaseResponseBody> expulsionClubMember(
+            HttpServletRequest request,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        // TODO: 2/24/24 token으로 memberId 얻기
-        Long memberId = 1L;
+        Long memberId = tokenService.getMemberIdFromToken(request);
+
         Member member = memberService.findByMemberId(memberId);
         // 멤버 추방
         entityDeleteService.expulsionMemberFromClub(clubMemberId);
@@ -107,10 +112,11 @@ public class ClubDetailPageController {
     @Operation(summary = "동아리 소개 페이지 - 회원 휴먼 API", description = "동아리 대표가 동아리 회원을 휴면으로 변경")
     @PostMapping(value = "/{club_member_id}/dormancy")
     public ResponseEntity<BaseResponseBody> dormancyClubMember(
+            HttpServletRequest request,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        // TODO: 2/24/24 token으로 memberId 얻기
-        Long memberId = 1L;
+        Long memberId = tokenService.getMemberIdFromToken(request);
+
         Member member = memberService.findByMemberId(memberId);
         // 휴면 멤버 여부
         Boolean alreadyDormant = clubGradeService.isMemberStatus(clubMemberId, CLUB_GRADE.DORMANT);
@@ -130,13 +136,14 @@ public class ClubDetailPageController {
     @Operation(summary = "출석번호 입력 API", description = "동아리 회원의 출석번호 입력")
     @PostMapping(value = "/{club_member_id}/attendance")
     public ResponseEntity<BaseResponseBody> checkAttendanceNumber(
+            HttpServletRequest request,
             @RequestBody @Valid AttendanceNumberReqDto attendanceNumberReqDto,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        // TODO: 2/24/24 token으로 memberId 얻기
-        Long memberId = 1L;
-        Member member = memberService.findByMemberId(memberId);
+        Long memberId = tokenService.getMemberIdFromToken(request);
+
         // 출석번호 확인
+        // TODO: 2/28/24  휴면 유저 여부
         Boolean isPassTodayAttendance = attendanceNumberService.checkAttendanceNumber(clubId, attendanceNumberReqDto.getNumOfAttendance());
         Boolean isPossibleAttendance = attendanceWeekDateService.isPossibleUpdateAttendanceState(clubId, memberId);
 
