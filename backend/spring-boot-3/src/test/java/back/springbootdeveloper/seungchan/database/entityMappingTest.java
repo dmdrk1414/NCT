@@ -5,11 +5,10 @@ import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFIC
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.repository.*;
-import back.springbootdeveloper.seungchan.testutills.TestMakeEntity;
+import back.springbootdeveloper.seungchan.testutil.TestMakeEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
