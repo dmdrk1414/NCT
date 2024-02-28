@@ -1,39 +1,37 @@
 package back.springbootdeveloper.seungchan.controller.config.jwt;
 
 import back.springbootdeveloper.seungchan.entity.Member;
-import back.springbootdeveloper.seungchan.service.MemberService;
+import back.springbootdeveloper.seungchan.repository.MemberRepository;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.Builder;
 import lombok.Getter;
 import back.springbootdeveloper.seungchan.config.jwt.JwtProperties;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.Date;
-import java.util.Map;
-
-import static java.util.Collections.emptyMap;
 
 @Getter
 @NoArgsConstructor
+@Component
 public class JwtFactory {
-    public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(14); // 리프레쉬 토큰의 유효기간
-    private String subject = "test@email.com";
-    private Date issuedAt = new Date();
-    private Date expiration = new Date(new Date().getTime() + Duration.ofDays(14).toMillis());
-    private Map<String, Object> claims = emptyMap();
-
+    @Autowired
+    private JwtProperties jwtProperties;
+    @Autowired
+    private MemberRepository memberRepository;
 
     /**
      * 회원에 대한 토큰을 생성합니다.
      *
-     * @param member        회원 정보
-     * @param jwtProperties JWT 속성
+     * @param memberId 회원 정보 Id
      * @return 생성된 토큰
      */
-    public String createToken(Member member, JwtProperties jwtProperties) {
+    public String createToken(long memberId) {
+        Member member = memberRepository.findById(memberId).get();
+
         Date now = new Date();
         // 토큰을 만들어 반환을 한다.
         return Jwts.builder()
@@ -42,7 +40,7 @@ public class JwtFactory {
                 // JWT 내용
                 .setIssuer(jwtProperties.getIssuer()) // 내용 iss : ajufresh@gmail.com
                 .setIssuedAt(now) // 내용 iat : 현재 시간
-                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_DURATION.toMillis())) // 내용 exp : expiry 멤버 변숫 값 / 토큰 만료기간 / 현제 + 만료 기간
+                .setExpiration(new Date(now.getTime() + Duration.ofDays(14).toMillis())) // 내용 exp : expiry 멤버 변숫 값 / 토큰 만료기간 / 현제 + 만료 기간
 
                 .setSubject(member.getEmail()) // 내용 sub : 유저의 이메일
                 .claim("MemberId", member.getMemberId()) // 클레임 id : 유저 ID
