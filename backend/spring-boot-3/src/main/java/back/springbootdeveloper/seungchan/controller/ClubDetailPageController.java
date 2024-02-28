@@ -66,9 +66,8 @@ public class ClubDetailPageController {
             HttpServletRequest request,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        Long memberId = tokenService.getMemberIdFromToken(request);
 
-        ClubMemberInformationResDto clubMemberResponse = clubDetailPageService.getClubMemberInformationResDto(memberId, clubMemberId);
+        ClubMemberInformationResDto clubMemberResponse = clubDetailPageService.getClubMemberInformationResDto(clubMemberId);
 
         return BaseResultDTO.ofSuccess(clubMemberResponse);
     }
