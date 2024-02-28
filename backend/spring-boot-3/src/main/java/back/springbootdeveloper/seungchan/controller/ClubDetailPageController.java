@@ -79,14 +79,13 @@ public class ClubDetailPageController {
             @RequestBody @Valid GiveVacationTokenReqDto giveVacationTokenReqDto,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        Long memberId = tokenService.getMemberIdFromToken(request);
+        Long memberLeaderId = tokenService.getMemberIdFromToken(request);
 
         Integer vacationToken = giveVacationTokenReqDto.getVacationToken();
         Member targetMember = memberService.findByClubMemberId(clubMemberId);
 
         // 엔티티에 실장 검증 하는 검증 메서드
-        Boolean isLeaderClub = clubGradeService.isMemberStatus(clubId, memberId, CLUB_GRADE.LEADER);
-
+        Boolean isLeaderClub = clubGradeService.isMemberStatus(clubId, memberLeaderId, CLUB_GRADE.LEADER);
         if (!isLeaderClub) {
             return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_NOT_LEADER_CLUB.get());
         }
@@ -106,13 +105,19 @@ public class ClubDetailPageController {
             HttpServletRequest request,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        Long memberId = tokenService.getMemberIdFromToken(request);
+        Long memberLeaderId = tokenService.getMemberIdFromToken(request);
+        Member targetMember = memberService.findByClubMemberId(clubMemberId);
 
-        Member member = memberService.findByMemberId(memberId);
+        // 엔티티에 실장 검증 하는 검증 메서드
+        Boolean isLeaderClub = clubGradeService.isMemberStatus(clubId, memberLeaderId, CLUB_GRADE.LEADER);
+        if (!isLeaderClub) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_NOT_LEADER_CLUB.get());
+        }
+
         // 멤버 추방
         entityDeleteService.expulsionMemberFromClub(clubMemberId);
 
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_EXPULSION_MEMBER(member.getFullName()));
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_EXPULSION_MEMBER(targetMember.getFullName()));
     }
 
 
