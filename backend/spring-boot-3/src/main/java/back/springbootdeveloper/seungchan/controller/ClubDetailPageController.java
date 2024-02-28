@@ -166,10 +166,12 @@ public class ClubDetailPageController {
         Boolean isPassTodayAttendance = attendanceNumberService.checkAttendanceNumber(clubId, attendanceNumberReqDto.getNumOfAttendance());
         Boolean isPossibleAttendance = attendanceWeekDateService.isPossibleUpdateAttendanceState(clubId, memberId);
 
+        // 휴면 계정 확인
         if (isDormantMember) {
             return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_DORMANT_TODAY_ATTENDANCE_STATE.get());
         }
 
+        // 출석 가능 확인
         if (!isPossibleAttendance) {
             return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_ALREADY_TODAY_UPDATE_ATTENDANCE_STATE.get());
         }
