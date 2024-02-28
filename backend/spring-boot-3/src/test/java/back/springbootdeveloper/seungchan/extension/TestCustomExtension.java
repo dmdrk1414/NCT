@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.extension;
 
 import back.springbootdeveloper.seungchan.service.DatabaseCleanup;
+import back.springbootdeveloper.seungchan.testutil.TestSaveEntity;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -23,5 +24,10 @@ public class TestCustomExtension implements BeforeEachCallback {
         SpringExtension.getApplicationContext(context)
                 .getBean("databaseCleanup", DatabaseCleanup.class)
                 .execute();
+
+        SpringExtension.getApplicationContext(context)
+                .getBean("testSaveEntity", TestSaveEntity.class)
+                .creatEntityTest();
+
     }
 }
