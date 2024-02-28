@@ -127,23 +127,29 @@ public class ClubDetailPageController {
             HttpServletRequest request,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        Long memberId = tokenService.getMemberIdFromToken(request);
+        Long memberLeaderId = tokenService.getMemberIdFromToken(request);
+        Member memberLeader = memberService.findByMemberId(memberLeaderId);
+        Member targetMember = memberService.findByClubMemberId(clubMemberId);
 
-        Member member = memberService.findByMemberId(memberId);
         // 휴면 멤버 여부
         Boolean alreadyDormant = clubGradeService.isMemberStatus(clubMemberId, CLUB_GRADE.DORMANT);
         if (alreadyDormant) {
-            return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.ALREADY_DORMANT_MEMBER(member.getFullName()));
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.ALREADY_DORMANT_MEMBER(memberLeader.getFullName()));
+        }
+
+        // 엔티티에 실장 검증 하는 검증 메서드
+        Boolean isLeaderClub = clubGradeService.isMemberStatus(clubId, memberLeaderId, CLUB_GRADE.LEADER);
+        if (!isLeaderClub) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_NOT_LEADER_CLUB.get());
         }
 
         // 휴면 등급 업데이트
-        // TODO: 2/29/24 실장검증
         Boolean updateSuccess = clubGradeService.updateClubGradeOfClubMember(clubMemberId, CLUB_GRADE.DORMANT);
         if (updateSuccess) {
-            return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_UPDATE_CLUB_GRADE(member.getFullName()));
+            return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_UPDATE_CLUB_GRADE(targetMember.getFullName()));
         }
 
-        return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.FAIL_UPDATE_CLUB_GRADE(member.getFullName()));
+        return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.FAIL_UPDATE_CLUB_GRADE(targetMember.getFullName()));
     }
 
     @Operation(summary = "출석번호 입력 API", description = "동아리 회원의 출석번호 입력")
