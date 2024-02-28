@@ -22,8 +22,8 @@ public enum ResponseMessage {
     SUCCESS_SUGGESTION_ANSWER("답변이 완료 되었습니다."),
     BAD_SUGGESTION_ANSWER("답변이 실패 되었습니다."),
     BAD_ALREADY_TODAY_UPDATE_ATTENDANCE_STATE("이미 결석, 휴가를 하였 습니다."),
-    BAD_DORMANT_TODAY_ATTENDANCE_STATE("휴면 회원은 출석을 할 수 없습니다.");
-
+    BAD_DORMANT_TODAY_ATTENDANCE_STATE("휴면 회원은 출석을 할 수 없습니다."),
+    BAD_NOT_LEADER_CLUB("클럽의 대표가 아닙니다.");
 
     private final String message;
 

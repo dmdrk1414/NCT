@@ -81,15 +81,23 @@ public class ClubDetailPageController {
             @PathVariable(value = "club_member_id") Long clubMemberId) {
         Long memberId = tokenService.getMemberIdFromToken(request);
 
-        Member member = memberService.findByMemberId(memberId);
         Integer vacationToken = giveVacationTokenReqDto.getVacationToken();
+        Member targetMember = memberService.findByClubMemberId(clubMemberId);
+
+        // 엔티티에 실장 검증 하는 검증 메서드
+        Boolean isLeaderClub = clubGradeService.isMemberStatus(clubId, memberId, CLUB_GRADE.LEADER);
+
+        if (!isLeaderClub) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_NOT_LEADER_CLUB.get());
+        }
+
         // 요청한 휴가 갯수에 따른 휴가 갯수 업데이트
         Boolean updateSuccess = vacationTokenService.updateVacationToken(clubMemberId, vacationToken);
 
         if (updateSuccess) {
-            return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_UPDATE_VACATION_TOKEN(member.getFullName(), vacationToken));
+            return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_UPDATE_VACATION_TOKEN(targetMember.getFullName(), vacationToken));
         }
-        return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.FAIL_UPDATE_VACATION_TOKEN(member.getFullName()));
+        return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.FAIL_UPDATE_VACATION_TOKEN(targetMember.getFullName()));
     }
 
     @Operation(summary = "동아리 소개 페이지 - 회원 추방 API", description = "동아리 대표가 동아리 회원을 추방 시킨다.")
@@ -124,6 +132,7 @@ public class ClubDetailPageController {
         }
 
         // 휴면 등급 업데이트
+        // TODO: 2/29/24 실장검증
         Boolean updateSuccess = clubGradeService.updateClubGradeOfClubMember(clubMemberId, CLUB_GRADE.DORMANT);
         if (updateSuccess) {
             return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_UPDATE_CLUB_GRADE(member.getFullName()));
