@@ -83,6 +83,21 @@ public class AttendanceWeekDateService {
         return attendanceWeekDate.isPossibleUpdateAttendanceState();
     }
 
+    /**
+     * 특정 클럽 멤버의 최근 출석 주간 날짜를 반환합니다.
+     *
+     * @param clubId   클럽 식별자
+     * @param memberId 멤버 식별자
+     * @return 특정 클럽 멤버의 최근 출석 주간 날짜
+     * @throws EntityNotFoundException 만약 주어진 clubId 또는 memberId에 해당하는 클럽 멤버가 존재하지 않을 경우 발생합니다.
+     */
+    public AttendanceWeekDate getLast(Long clubId, Long memberId) {
+        final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, memberId).orElseThrow(EntityNotFoundException::new);
+        final AttendanceState attendanceState = attendanceStateRepository.findById(clubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
+
+
+        return getLastAttendanceWeekDate(attendanceState);
+    }
 
     /**
      * 주어진 출석 주간 날짜 목록에서 마지막 주간 날짜를 반환합니다.
