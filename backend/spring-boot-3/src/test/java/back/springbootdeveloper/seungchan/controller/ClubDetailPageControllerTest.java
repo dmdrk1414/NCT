@@ -5,6 +5,7 @@ import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.entity.ATTENDANCE_STATE;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
+import back.springbootdeveloper.seungchan.constant.entity.POSSIBLE_STATUS;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
 import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
 import back.springbootdeveloper.seungchan.entity.*;
@@ -60,6 +61,8 @@ class ClubDetailPageControllerTest {
     private AttendanceWeekDateRepository attendanceWeekDateRepository;
     @Autowired
     private AttendanceWeekDateService attendanceWeekDateService;
+    @Autowired
+    private AttendanceWeekRepository attendanceWeekRepository;
     private String token;
     private Member memberOneClubLeader;
     private Long targetClubOneId;
@@ -408,7 +411,7 @@ class ClubDetailPageControllerTest {
         // 타겟 유저
         final Club targetClub = clubRepository.findById(targetClubOneId).get();
         final AttendanceNumber targetLastAttendanceNumber = attendanceNumberService.findLastOneByClubId(targetClub.getClubId());
-        final Member targetMember = testCreateUtil.get_entity_one_club_deputy_leader_member();
+        final Member targetMember = testCreateUtil.get_entity_one_club_leader_member();
         final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId, targetMember.getMemberId()).get();
         final AttendanceNumberReqDto requestDto = AttendanceNumberReqDto.builder()
                 .numOfAttendance(targetLastAttendanceNumber.getAttendanceNumber())
@@ -438,6 +441,44 @@ class ClubDetailPageControllerTest {
     }
 
     @Test
+    void 동아리_소개_페이지_출석_번호_입력_예외_클럽_지정_출석_체크_테스트() throws Exception {
+        // given
+        // 유저 로그인
+        final String token = testCreateUtil.create_token_one_club_leader_member();
+        final String url = "/clubs/informations/{club_id}/details/{club_member_id}/attendance";
+
+        // 타겟 유저
+        final Club targetClub = clubRepository.findById(targetClubOneId).get();
+        final AttendanceNumber targetLastAttendanceNumber = attendanceNumberService.findLastOneByClubId(targetClub.getClubId());
+        final Member targetMember = testCreateUtil.get_entity_one_club_leader_member();
+        final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId, targetMember.getMemberId()).get();
+        final AttendanceNumberReqDto requestDto = AttendanceNumberReqDto.builder()
+                .numOfAttendance(targetLastAttendanceNumber.getAttendanceNumber())
+                .build();
+
+        final ClubControl targetClubControl = targetClub.getClubControl();
+        final AttendanceWeek targetAttendanceWeek = targetClubControl.getAttendanceWeek();
+        targetAttendanceWeek.updateStatusForDay(DayUtil.getTodayDayOfWeek(), POSSIBLE_STATUS.IMPOSSIBLE);
+        attendanceWeekRepository.save(targetAttendanceWeek);
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+        ResultActions result = mockMvc.perform(post(url, targetClubOneId, targetClubMember.getClubMemberId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+
+        result
+                .andExpect(jsonPath("$.message").value(ResponseMessage.BAD_REQUEST_NOT_CLUB_CHECK_STATE.get()))
+                .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
     void 동아리_소개_페이지_출석_번호_입력_예외_휴면_계정_확인_테스트() throws Exception {
         // given
         // 유저 로그인
@@ -447,7 +488,7 @@ class ClubDetailPageControllerTest {
         // 타겟 유저
         final Club targetClub = clubRepository.findById(targetClubOneId).get();
         final AttendanceNumber targetLastAttendanceNumber = attendanceNumberService.findLastOneByClubId(targetClub.getClubId());
-        final Member targetMember = testCreateUtil.get_entity_one_club_deputy_leader_member();
+        final Member targetMember = testCreateUtil.get_entity_one_club_leader_member();
         final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId, targetMember.getMemberId()).get();
         final AttendanceNumberReqDto requestDto = AttendanceNumberReqDto.builder()
                 .numOfAttendance(targetLastAttendanceNumber.getAttendanceNumber())
