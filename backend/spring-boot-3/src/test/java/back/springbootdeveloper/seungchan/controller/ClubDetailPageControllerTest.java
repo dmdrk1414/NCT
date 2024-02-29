@@ -216,7 +216,7 @@ class ClubDetailPageControllerTest {
     }
 
     @Test
-    void 동아리_소개_페이지_회원_추방_예외_실장_로드인_검증_테스트() throws Exception {
+    void 동아리_소개_페이지_회원_추방_예외_실장_대상_검증_테스트() throws Exception {
         // given
         // 대표가 아닌 유저 로그인
         final String token = testCreateUtil.create_token_one_club_deputy_leader_member();
@@ -296,5 +296,36 @@ class ClubDetailPageControllerTest {
                 .andExpect(jsonPath("$.message").value(RESPONSE_MESSAGE_VALUE.SUCCESS_UPDATE_CLUB_GRADE(targetMember.getFullName())));
 
         assertThat(Integer.valueOf(String.valueOf(resultClubGradId))).isEqualTo(CLUB_GRADE.DORMANT.getId());
+    }
+
+    @Test
+    void 동아리_소개_페이지_회원_휴면_전환_예외_휴면_멤버_여부_테스트() throws Exception {
+        // given
+        // 대표 유저 로그인
+        final String token = testCreateUtil.create_token_one_club_leader_member();
+        final String url = "/clubs/informations/{club_id}/details/{club_member_id}/dormancy";
+
+        // 타겟 유저
+        final Member targetMember = testCreateUtil.get_entity_one_club_deputy_leader_member();
+        final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId, targetMember.getMemberId()).get();
+
+        // 타겟 멤버를 휴면 유저로 전환
+        targetClubMember.updateClubGradeId(CLUB_GRADE.DORMANT.getId());
+        final ClubMember badUpdateTargetClubMember = clubMemberRepository.save(targetClubMember);
+
+        // when
+        ResultActions result = mockMvc.perform(post(url, targetClubOneId, badUpdateTargetClubMember.getClubMemberId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+
+        result
+                .andExpect(jsonPath("$.message").value(RESPONSE_MESSAGE_VALUE.ALREADY_DORMANT_MEMBER(targetMember.getFullName())))
+                .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.BAD_REQUEST.value()));
+
     }
 }
