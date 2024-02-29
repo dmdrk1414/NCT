@@ -84,7 +84,7 @@ public class ClubDetailPageController {
         Integer vacationToken = giveVacationTokenReqDto.getVacationToken();
         Member targetMember = memberService.findByClubMemberId(clubMemberId);
 
-        // 엔티티에 실장 검증 하는 검증 메서드
+        // 로그인 대상 실장 검증 하는 검증 메서드
         Boolean isLeaderClub = clubGradeService.isMemberStatus(clubId, memberLeaderId, CLUB_GRADE.LEADER);
         if (!isLeaderClub) {
             return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_NOT_LEADER_CLUB.get());
@@ -108,7 +108,7 @@ public class ClubDetailPageController {
         Long memberLeaderId = tokenService.getMemberIdFromToken(request);
         Member targetMember = memberService.findByClubMemberId(clubMemberId);
 
-        // 엔티티에 실장 검증 하는 검증 메서드
+        // 로그인 대상 실장 검증 하는 검증 메서드
         Boolean isLeaderClub = clubGradeService.isMemberStatus(clubId, memberLeaderId, CLUB_GRADE.LEADER);
         if (!isLeaderClub) {
             return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_NOT_LEADER_CLUB.get());
@@ -143,7 +143,7 @@ public class ClubDetailPageController {
             return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.ALREADY_DORMANT_MEMBER(targetMember.getFullName()));
         }
 
-        // 엔티티에 실장 검증 하는 검증 메서드
+        // 로그인 대상 실장 검증 하는 검증 메서드
         Boolean isLeaderClub = clubGradeService.isMemberStatus(clubId, memberLeaderId, CLUB_GRADE.LEADER);
         if (!isLeaderClub) {
             return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_NOT_LEADER_CLUB.get());
