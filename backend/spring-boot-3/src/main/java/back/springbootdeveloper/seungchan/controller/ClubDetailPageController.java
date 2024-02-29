@@ -4,14 +4,17 @@ import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.entity.ATTENDANCE_STATE;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
+import back.springbootdeveloper.seungchan.constant.entity.POSSIBLE_STATUS;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
 import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
+import back.springbootdeveloper.seungchan.entity.AttendanceWeek;
 import back.springbootdeveloper.seungchan.entity.ClubGrade;
 import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import back.springbootdeveloper.seungchan.util.BaseResultDTO;
+import back.springbootdeveloper.seungchan.util.DayUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +39,7 @@ public class ClubDetailPageController {
     private final AttendanceNumberService attendanceNumberService;
     private final AttendanceWeekDateService attendanceWeekDateService;
     private final TokenService tokenService;
+    private final AttendanceWeekService attendanceWeekService;
 
     @Operation(summary = "회원 휴먼 페이지 조회", description = "해당 클럽의 휴먼 회원들 조회")
     @GetMapping(value = "/dormancys")
@@ -178,6 +182,13 @@ public class ClubDetailPageController {
         Boolean isDormantMember = clubGradeService.isMemberStatus(clubMemberId, CLUB_GRADE.DORMANT);
         Boolean isPassTodayAttendance = attendanceNumberService.checkAttendanceNumber(clubId, attendanceNumberReqDto.getNumOfAttendance());
         Boolean isPossibleAttendance = attendanceWeekDateService.isPossibleUpdateAttendanceState(clubId, memberId);
+
+        // 클럽 지정 출석을 체크
+        String clubPossibleStatus = attendanceWeekService.getTodayPossibleStatus(clubId, DayUtil.getTodayDayOfWeek());
+        if (POSSIBLE_STATUS.POSSIBLE.isNot(clubPossibleStatus)) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_REQUEST_NOT_CLUB_CHECK_STATE.get());
+        }
+
 
         // 휴면 계정 확인
         if (isDormantMember) {
