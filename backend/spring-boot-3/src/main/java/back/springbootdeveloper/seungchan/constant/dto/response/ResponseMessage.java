@@ -24,7 +24,9 @@ public enum ResponseMessage {
     BAD_ALREADY_TODAY_UPDATE_ATTENDANCE_STATE("이미 결석, 휴가를 하였 습니다."),
     BAD_DORMANT_TODAY_ATTENDANCE_STATE("휴면 회원은 출석을 할 수 없습니다."),
     BAD_NOT_LEADER_CLUB("클럽의 대표가 아닙니다."),
-    BAD_TARGET_LEADER_MEMBER("대표을 대상으로 할수 없는 기능입니다.");
+    BAD_TARGET_LEADER_MEMBER("대표을 대상으로 할수 없는 기능입니다."),
+    BAD_REQUEST_NOT_CLUB_CHECK_STATE("클럽 출석 체크 지정일이 아닙니다."),
+    BAD_NOT_SAME_LOGIN_TARGET_MEMBER("타인의 계정에 시도 할 수 없는 기능 입니다.");
 
     private final String message;
 
