@@ -55,12 +55,10 @@ public class AttendanceNumberService {
      * @return 첫 번째 출석 번호
      */
     private AttendanceNumber getFirstAttendanceNumber(Club club) {
-        // attendanceNumbers 목록을 역정렬합니다.
-        Collections.sort(club.getAttendanceNumbers(), Comparator.comparing(AttendanceNumber::getCreateDate).reversed());
-
-        // 첫 번째 요소를 가져옵니다.
-        AttendanceNumber firstAttendanceNumber = club.getAttendanceNumbers().get(0);
-        return firstAttendanceNumber;
+        List<AttendanceNumber> attendanceNumbers = club.getAttendanceNumbers();
+        Integer lastIndex = attendanceNumbers.size() - 1;
+        
+        return attendanceNumbers.get(lastIndex);
     }
 
     private boolean isSame(String numOfAttendance, AttendanceNumber firstAttendanceNumber) {
