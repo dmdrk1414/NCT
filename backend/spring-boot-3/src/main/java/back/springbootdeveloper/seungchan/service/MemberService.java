@@ -47,4 +47,11 @@ public class MemberService {
 
         return memberRepository.findById(clubMember.getMemberId()).orElseThrow(EntityNotFoundException::new);
     }
+
+    public Boolean isSameTargetAndLoginMember(Long loginMemberId, Long targetClubMemberId) {
+        ClubMember targetClubMember = clubMemberRepository.findById(targetClubMemberId).orElseThrow(EntityNotFoundException::new);
+        Member targetMember = memberRepository.findById(targetClubMember.getMemberId()).orElseThrow(EntityNotFoundException::new);
+
+        return targetMember.isSame(loginMemberId);
+    }
 }
