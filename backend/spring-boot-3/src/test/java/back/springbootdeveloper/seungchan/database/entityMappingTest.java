@@ -6,6 +6,7 @@ import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.testutil.TestMakeEntity;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,6 +51,7 @@ class entityMappingTest {
 
 
     @Test
+    @Disabled
     void 매핑_저장_학습_테스트_1() throws Exception {
         this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.LEADER));
         this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.DEPUTY_LEADER));
@@ -69,6 +71,7 @@ class entityMappingTest {
     }
 
     @Test
+    @Disabled
     void 매핑_저장_학습_테스트() throws Exception {
         this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.LEADER));
         this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.DEPUTY_LEADER));

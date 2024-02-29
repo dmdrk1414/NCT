@@ -4,14 +4,17 @@ import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.entity.ATTENDANCE_STATE;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
+import back.springbootdeveloper.seungchan.constant.entity.POSSIBLE_STATUS;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
 import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
+import back.springbootdeveloper.seungchan.entity.AttendanceWeek;
 import back.springbootdeveloper.seungchan.entity.ClubGrade;
 import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import back.springbootdeveloper.seungchan.util.BaseResultDTO;
+import back.springbootdeveloper.seungchan.util.DayUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +39,7 @@ public class ClubDetailPageController {
     private final AttendanceNumberService attendanceNumberService;
     private final AttendanceWeekDateService attendanceWeekDateService;
     private final TokenService tokenService;
+    private final AttendanceWeekService attendanceWeekService;
 
     @Operation(summary = "회원 휴먼 페이지 조회", description = "해당 클럽의 휴먼 회원들 조회")
     @GetMapping(value = "/dormancys")
@@ -66,9 +70,8 @@ public class ClubDetailPageController {
             HttpServletRequest request,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        Long memberId = tokenService.getMemberIdFromToken(request);
 
-        ClubMemberInformationResDto clubMemberResponse = clubDetailPageService.getClubMemberInformationResDto(memberId, clubMemberId);
+        ClubMemberInformationResDto clubMemberResponse = clubDetailPageService.getClubMemberInformationResDto(clubMemberId);
 
         return BaseResultDTO.ofSuccess(clubMemberResponse);
     }
@@ -80,17 +83,24 @@ public class ClubDetailPageController {
             @RequestBody @Valid GiveVacationTokenReqDto giveVacationTokenReqDto,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        Long memberId = tokenService.getMemberIdFromToken(request);
+        Long memberLeaderId = tokenService.getMemberIdFromToken(request);
 
-        Member member = memberService.findByMemberId(memberId);
         Integer vacationToken = giveVacationTokenReqDto.getVacationToken();
+        Member targetMember = memberService.findByClubMemberId(clubMemberId);
+
+        // 로그인 대상 대표 검증 하는 검증 메서드
+        Boolean isLeaderClub = clubGradeService.isMemberStatus(clubId, memberLeaderId, CLUB_GRADE.LEADER);
+        if (!isLeaderClub) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_NOT_LEADER_CLUB.get());
+        }
+
         // 요청한 휴가 갯수에 따른 휴가 갯수 업데이트
         Boolean updateSuccess = vacationTokenService.updateVacationToken(clubMemberId, vacationToken);
 
         if (updateSuccess) {
-            return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_UPDATE_VACATION_TOKEN(member.getFullName(), vacationToken));
+            return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_UPDATE_VACATION_TOKEN(targetMember.getFullName(), vacationToken));
         }
-        return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.FAIL_UPDATE_VACATION_TOKEN(member.getFullName()));
+        return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.FAIL_UPDATE_VACATION_TOKEN(targetMember.getFullName()));
     }
 
     @Operation(summary = "동아리 소개 페이지 - 회원 추방 API", description = "동아리 대표가 동아리 회원을 추방 시킨다.")
@@ -99,38 +109,64 @@ public class ClubDetailPageController {
             HttpServletRequest request,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        Long memberId = tokenService.getMemberIdFromToken(request);
+        Long memberLeaderId = tokenService.getMemberIdFromToken(request);
+        Member targetMember = memberService.findByClubMemberId(clubMemberId);
 
-        Member member = memberService.findByMemberId(memberId);
+        // 로그인 대상 대표 검증 하는 검증 메서드
+        Boolean isLeaderClub = clubGradeService.isMemberStatus(clubId, memberLeaderId, CLUB_GRADE.LEADER);
+        if (!isLeaderClub) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_NOT_LEADER_CLUB.get());
+        }
+
+        // 대상이 대표확인
+        Boolean isTargetLeaderClub = clubGradeService.isMemberStatus(clubMemberId, CLUB_GRADE.LEADER);
+        if (isTargetLeaderClub) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_TARGET_LEADER_MEMBER.get());
+        }
+
         // 멤버 추방
         entityDeleteService.expulsionMemberFromClub(clubMemberId);
 
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_EXPULSION_MEMBER(member.getFullName()));
+        return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_EXPULSION_MEMBER(targetMember.getFullName()));
     }
 
 
-    @Operation(summary = "동아리 소개 페이지 - 회원 휴먼 API", description = "동아리 대표가 동아리 회원을 휴면으로 변경")
+    @Operation(summary = "동아리 소개 페이지 - 회원 휴먼 전환 API", description = "동아리 대표가 동아리 회원을 휴면으로 변경")
     @PostMapping(value = "/{club_member_id}/dormancy")
     public ResponseEntity<BaseResponseBody> dormancyClubMember(
             HttpServletRequest request,
             @PathVariable(value = "club_id") Long clubId,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
-        Long memberId = tokenService.getMemberIdFromToken(request);
+        Long memberLeaderId = tokenService.getMemberIdFromToken(request);
+        Member memberLeader = memberService.findByMemberId(memberLeaderId);
+        Member targetMember = memberService.findByClubMemberId(clubMemberId);
 
-        Member member = memberService.findByMemberId(memberId);
         // 휴면 멤버 여부
         Boolean alreadyDormant = clubGradeService.isMemberStatus(clubMemberId, CLUB_GRADE.DORMANT);
         if (alreadyDormant) {
-            return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.ALREADY_DORMANT_MEMBER(member.getFullName()));
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.ALREADY_DORMANT_MEMBER(targetMember.getFullName()));
         }
+
+        // 로그인 대상 대표 검증 하는 검증 메서드
+        Boolean isLeaderClub = clubGradeService.isMemberStatus(clubId, memberLeaderId, CLUB_GRADE.LEADER);
+        if (!isLeaderClub) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_NOT_LEADER_CLUB.get());
+        }
+
+        // 대상이 대표확인
+        Boolean isTargetLeaderClub = clubGradeService.isMemberStatus(clubMemberId, CLUB_GRADE.LEADER);
+        if (isTargetLeaderClub) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_TARGET_LEADER_MEMBER.get());
+        }
+
 
         // 휴면 등급 업데이트
         Boolean updateSuccess = clubGradeService.updateClubGradeOfClubMember(clubMemberId, CLUB_GRADE.DORMANT);
         if (updateSuccess) {
-            return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_UPDATE_CLUB_GRADE(member.getFullName()));
+            return BaseResponseBodyUtiil.BaseResponseBodySuccess(RESPONSE_MESSAGE_VALUE.SUCCESS_UPDATE_CLUB_GRADE(targetMember.getFullName()));
         }
 
-        return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.FAIL_UPDATE_CLUB_GRADE(member.getFullName()));
+        return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.FAIL_UPDATE_CLUB_GRADE(targetMember.getFullName()));
     }
 
     @Operation(summary = "출석번호 입력 API", description = "동아리 회원의 출석번호 입력")
@@ -147,10 +183,24 @@ public class ClubDetailPageController {
         Boolean isPassTodayAttendance = attendanceNumberService.checkAttendanceNumber(clubId, attendanceNumberReqDto.getNumOfAttendance());
         Boolean isPossibleAttendance = attendanceWeekDateService.isPossibleUpdateAttendanceState(clubId, memberId);
 
+        // 클럽 지정 출석을 체크
+        String clubPossibleStatus = attendanceWeekService.getTodayPossibleStatus(clubId, DayUtil.getTodayDayOfWeek());
+        if (POSSIBLE_STATUS.POSSIBLE.isNot(clubPossibleStatus)) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_REQUEST_NOT_CLUB_CHECK_STATE.get());
+        }
+
+        // 로그인 한 회원이 타겟의 유저인지 확인
+        Boolean isSameMemberTargetAndLogin = memberService.isSameTargetAndLoginMember(memberId, clubMemberId);
+        if (!isSameMemberTargetAndLogin) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_NOT_SAME_LOGIN_TARGET_MEMBER.get());
+        }
+
+        // 휴면 계정 확인
         if (isDormantMember) {
             return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_DORMANT_TODAY_ATTENDANCE_STATE.get());
         }
 
+        // 출석 가능 확인
         if (!isPossibleAttendance) {
             return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_ALREADY_TODAY_UPDATE_ATTENDANCE_STATE.get());
         }

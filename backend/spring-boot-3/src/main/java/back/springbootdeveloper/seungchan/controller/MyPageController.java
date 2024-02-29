@@ -39,6 +39,13 @@ public class MyPageController {
     public ResponseEntity<BaseResponseBody> quitClubMember(
             HttpServletRequest request,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
+
+        // 대상이 실장확인
+        Boolean isTargetLeaderClub = clubGradeService.isMemberStatus(clubMemberId, CLUB_GRADE.LEADER);
+        if (isTargetLeaderClub) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_TARGET_LEADER_MEMBER.get());
+        }
+        
         // 클럽 이름
         String clubName = clubService.getClubName(clubMemberId);
         // 멤버 추방
@@ -52,6 +59,13 @@ public class MyPageController {
     public ResponseEntity<BaseResponseBody> togleMemberAndDormancyClubMember(
             HttpServletRequest request,
             @PathVariable(value = "club_member_id") Long clubMemberId) {
+
+        // 대상이 실장확인
+        Boolean isTargetLeaderClub = clubGradeService.isMemberStatus(clubMemberId, CLUB_GRADE.LEADER);
+        if (isTargetLeaderClub) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_TARGET_LEADER_MEMBER.get());
+        }
+
 
         // 휴면 등급 업데이트
         Boolean updateSuccess = clubGradeService.toggleMemberAndDormantOfClubGrade(clubMemberId);
