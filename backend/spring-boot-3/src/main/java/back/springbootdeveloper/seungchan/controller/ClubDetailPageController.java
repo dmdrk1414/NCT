@@ -189,6 +189,11 @@ public class ClubDetailPageController {
             return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_REQUEST_NOT_CLUB_CHECK_STATE.get());
         }
 
+        // 로그인 한 회원이 타겟의 유저인지 확인
+        Boolean isSameMemberTargetAndLogin = memberService.isSameTargetAndLoginMember(memberId, clubMemberId);
+        if (!isSameMemberTargetAndLogin) {
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(ResponseMessage.BAD_NOT_SAME_LOGIN_TARGET_MEMBER.get());
+        }
 
         // 휴면 계정 확인
         if (isDormantMember) {
