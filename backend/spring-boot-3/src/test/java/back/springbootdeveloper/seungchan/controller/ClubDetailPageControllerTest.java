@@ -419,4 +419,41 @@ class ClubDetailPageControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessage.PASS_TODAY_ATTENDANCE.get()));
     }
+
+    @Test
+    void 동아리_소개_페이지_출석_번호_입력_예외_휴면_계정_확인_테스트() throws Exception {
+        // given
+        // 유저 로그인
+        final String token = testCreateUtil.create_token_one_club_leader_member();
+        final String url = "/clubs/informations/{club_id}/details/{club_member_id}/attendance";
+
+        // 타겟 유저
+        final Club targetClub = clubRepository.findById(targetClubOneId).get();
+        final AttendanceNumber targetLastAttendanceNumber = attendanceNumberService.findLastOneByClubId(targetClub.getClubId());
+        final Member targetMember = testCreateUtil.get_entity_one_club_deputy_leader_member();
+        final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId, targetMember.getMemberId()).get();
+        final AttendanceNumberReqDto requestDto = AttendanceNumberReqDto.builder()
+                .numOfAttendance(targetLastAttendanceNumber.getAttendanceNumber())
+                .build();
+
+        // 타겟 유저 휴면 계정 전환
+        targetClubMember.updateClubGradeId(CLUB_GRADE.DORMANT.getId());
+        final ClubMember targetDormantUpdateMemberClub = clubMemberRepository.save(targetClubMember);
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+        ResultActions result = mockMvc.perform(post(url, targetClubOneId, targetDormantUpdateMemberClub.getClubMemberId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+
+        result
+                .andExpect(jsonPath("$.message").value(ResponseMessage.BAD_DORMANT_TODAY_ATTENDANCE_STATE.get()))
+                .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.statusCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
 }
