@@ -9,6 +9,7 @@ import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.*;
+import back.springbootdeveloper.seungchan.service.AttendanceNumberService;
 import back.springbootdeveloper.seungchan.service.ClubGradeService;
 import back.springbootdeveloper.seungchan.testutil.TestCreateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,9 +48,9 @@ class ClubDetailPageControllerTest {
     @Autowired
     private AttendanceStateRepository attendanceStateRepository;
     @Autowired
-    private VacationTokenRepository vacationTokenRepository;
+    private AttendanceNumberService attendanceNumberService;
     @Autowired
-    private ClubGradeService clubGradeService;
+    private ClubRepository clubRepository;
     private String token;
     private Member memberOneClubLeader;
     private Long targetClubOneId;
@@ -386,5 +387,36 @@ class ClubDetailPageControllerTest {
                 .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"))
                 .andExpect(jsonPath("$.statusCode").value(HttpStatus.BAD_REQUEST.value()));
 
+    }
+
+    @Test
+    void 동아리_소개_페이지_출석_번호_입력_테스트() throws Exception {
+        // given
+        // 유저 로그인
+        final String token = testCreateUtil.create_token_one_club_leader_member();
+        final String url = "/clubs/informations/{club_id}/details/{club_member_id}/attendance";
+
+        // 타겟 유저
+        final Club targetClub = clubRepository.findById(targetClubOneId).get();
+        final AttendanceNumber targetLastAttendanceNumber = attendanceNumberService.findLastOneByClubId(targetClub.getClubId());
+        final Member targetMember = testCreateUtil.get_entity_one_club_deputy_leader_member();
+        final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId, targetMember.getMemberId()).get();
+        final AttendanceNumberReqDto requestDto = AttendanceNumberReqDto.builder()
+                .numOfAttendance(targetLastAttendanceNumber.getAttendanceNumber())
+                .build();
+
+        // when
+        final String requestBody = objectMapper.writeValueAsString(requestDto);
+        ResultActions result = mockMvc.perform(post(url, targetClubOneId, targetClubMember.getClubMemberId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestBody)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(ResponseMessage.PASS_TODAY_ATTENDANCE.get()));
     }
 }
