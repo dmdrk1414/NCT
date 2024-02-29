@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.controller;
 import back.springbootdeveloper.seungchan.annotation.MoariumSpringBootTest;
 import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE_VALUE;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
+import back.springbootdeveloper.seungchan.constant.entity.ATTENDANCE_STATE;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
 import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
@@ -10,8 +11,10 @@ import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.AttendanceNumberService;
+import back.springbootdeveloper.seungchan.service.AttendanceWeekDateService;
 import back.springbootdeveloper.seungchan.service.ClubGradeService;
 import back.springbootdeveloper.seungchan.testutil.TestCreateUtil;
+import back.springbootdeveloper.seungchan.util.DayUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +25,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -51,6 +56,10 @@ class ClubDetailPageControllerTest {
     private AttendanceNumberService attendanceNumberService;
     @Autowired
     private ClubRepository clubRepository;
+    @Autowired
+    private AttendanceWeekDateRepository attendanceWeekDateRepository;
+    @Autowired
+    private AttendanceWeekDateService attendanceWeekDateService;
     private String token;
     private Member memberOneClubLeader;
     private Long targetClubOneId;
@@ -404,6 +413,8 @@ class ClubDetailPageControllerTest {
         final AttendanceNumberReqDto requestDto = AttendanceNumberReqDto.builder()
                 .numOfAttendance(targetLastAttendanceNumber.getAttendanceNumber())
                 .build();
+        final AttendanceWeekDate targetAttendanceWeekDate = attendanceWeekDateService.getLast(targetClubOneId, targetMember.getMemberId());
+        final ATTENDANCE_STATE targetState = targetAttendanceWeekDate.getAttendanceStateForDay(DayUtil.getTodayDayOfWeek());
 
         // when
         final String requestBody = objectMapper.writeValueAsString(requestDto);
@@ -414,10 +425,16 @@ class ClubDetailPageControllerTest {
                 .header("authorization", "Bearer " + token) // token header에 담기
         );
 
+        final AttendanceWeekDate resultAttendanceWeekDate = attendanceWeekDateService.getLast(targetClubOneId, targetMember.getMemberId());
+        final ATTENDANCE_STATE resultTargetState = resultAttendanceWeekDate.getAttendanceStateForDay(DayUtil.getTodayDayOfWeek());
+
         // then
         result
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessage.PASS_TODAY_ATTENDANCE.get()));
+
+        assertThat(resultTargetState).isEqualTo(ATTENDANCE_STATE.ATTENDANCE);
+        assertThat(resultTargetState).isNotEqualTo(targetState);
     }
 
     @Test
