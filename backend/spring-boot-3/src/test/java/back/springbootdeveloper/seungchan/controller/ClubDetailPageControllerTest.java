@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -153,6 +154,7 @@ class ClubDetailPageControllerTest {
     @Test
     void 동아리_소개_페이지_휴가_제공_예외_일반회원_검증_테스트() throws Exception {
         // given
+        // 실장이 아닌 유저 로그인
         final String token = testCreateUtil.create_token_one_club_deputy_leader_member();
         final String url = "/clubs/informations/{club_id}/details/{club_member_id}/vacation";
 
@@ -180,5 +182,36 @@ class ClubDetailPageControllerTest {
                 .andExpect(jsonPath("$.message").value(ResponseMessage.BAD_NOT_LEADER_CLUB.get()))
                 .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"))
                 .andExpect(jsonPath("$.statusCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    void 동아리_소개_페이지_회원_추방_테스트() throws Exception {
+        // given
+        // 실장 유저 로그인
+        final String token = testCreateUtil.create_token_one_club_leader_member();
+        final String url = "/clubs/informations/{club_id}/details/{club_member_id}/expulsion";
+
+        // 타겟 유저
+        final Member targetMember = testCreateUtil.get_entity_one_club_deputy_leader_member();
+        final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId, targetMember.getMemberId()).get();
+        Boolean resultDelete = false;
+        // when
+        ResultActions result = mockMvc.perform(post(url, targetClubOneId, targetClubMember.getClubMemberId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        final ClubMember deleteClubMember;
+        try {
+            deleteClubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId, targetMember.getMemberId()).get();
+        } catch (NoSuchElementException e) {
+            resultDelete = true;
+        }
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(RESPONSE_MESSAGE_VALUE.SUCCESS_EXPULSION_MEMBER(targetMember.getFullName())));
+        assertThat(resultDelete).isTrue();
     }
 }
