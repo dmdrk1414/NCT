@@ -127,7 +127,7 @@ public class ClubDetailPageController {
     }
 
 
-    @Operation(summary = "동아리 소개 페이지 - 회원 휴먼 API", description = "동아리 대표가 동아리 회원을 휴면으로 변경")
+    @Operation(summary = "동아리 소개 페이지 - 회원 휴먼 전환 API", description = "동아리 대표가 동아리 회원을 휴면으로 변경")
     @PostMapping(value = "/{club_member_id}/dormancy")
     public ResponseEntity<BaseResponseBody> dormancyClubMember(
             HttpServletRequest request,
@@ -140,7 +140,7 @@ public class ClubDetailPageController {
         // 휴면 멤버 여부
         Boolean alreadyDormant = clubGradeService.isMemberStatus(clubMemberId, CLUB_GRADE.DORMANT);
         if (alreadyDormant) {
-            return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.ALREADY_DORMANT_MEMBER(memberLeader.getFullName()));
+            return BaseResponseBodyUtiil.BaseResponseBodyFailure(RESPONSE_MESSAGE_VALUE.ALREADY_DORMANT_MEMBER(targetMember.getFullName()));
         }
 
         // 엔티티에 실장 검증 하는 검증 메서드
