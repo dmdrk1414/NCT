@@ -61,17 +61,17 @@ class ClubDetailPageControllerTest {
     @Test
     void 회원_휴면_페이지_조회() throws Exception {
         // given
+        final String token = testCreateUtil.create_token_one_club_leader_member();
         final String url = "/clubs/informations/{club_id}/details/dormancys";
         List<ClubMember> clubMemberDormants
-                = clubMemberRepository.findAllByClubIdAndClubGradeId(testCreateUtil.getONE_CLUB_ID(), CLUB_GRADE.DORMANT.getId());
+                = clubMemberRepository.findAllByClubIdAndClubGradeId(targetClubOneId, CLUB_GRADE.DORMANT.getId());
 
         List<Member> memberDormants = new ArrayList<>();
-
         clubMemberDormants.forEach(clubMember ->
                 memberDormants.add(memberRepository.findById(clubMember.getMemberId()).get()));
 
         // when
-        ResultActions result = mockMvc.perform(get(url, testCreateUtil.getONE_CLUB_ID())
+        ResultActions result = mockMvc.perform(get(url, targetClubOneId)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("authorization", "Bearer " + token) // token header에 담기
         );
@@ -87,17 +87,19 @@ class ClubDetailPageControllerTest {
     @Test
     void 회원_상세_조회_테스트() throws Exception {
         // given
+        final String token = testCreateUtil.create_token_one_club_leader_member();
         final String url = "/clubs/informations/{club_id}/details/{club_member_id}";
-        final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId, memberOneClubLeader.getMemberId()).get();
-        final ClubMemberInformation clubMemberInformation = clubMemberInformationRepository.findById(clubMember.getClubMemberInformationId()).get();
+        final Member targetMember = memberOneClubLeader;
+        final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId, targetMember.getMemberId()).get();
+        final ClubMemberInformation clubMemberInformation = clubMemberInformationRepository.findById(targetClubMember.getClubMemberInformationId()).get();
 
-        final String targetName = memberOneClubLeader.getFullName();
-        final String targetMajor = memberOneClubLeader.getMajor();
-        final String targetStudentId = memberOneClubLeader.getStudentId();
+        final String targetName = targetMember.getFullName();
+        final String targetMajor = targetMember.getMajor();
+        final String targetStudentId = targetMember.getStudentId();
         final String targetSelfIntroduction = clubMemberInformation.getIntroduce();
 
         // when
-        ResultActions result = mockMvc.perform(get(url, targetClubOneId, clubMember.getClubMemberId())
+        ResultActions result = mockMvc.perform(get(url, targetClubOneId, targetClubMember.getClubMemberId())
                 .accept(MediaType.APPLICATION_JSON)
                 .header("authorization", "Bearer " + token) // token header에 담기
         );
