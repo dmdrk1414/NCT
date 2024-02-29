@@ -64,8 +64,10 @@ class ClubDetailPageControllerTest {
     @Test
     void 회원_휴면_페이지_조회() throws Exception {
         // given
+        // 유저 로그인
         final String token = testCreateUtil.create_token_one_club_leader_member();
         final String url = "/clubs/informations/{club_id}/details/dormancys";
+
         List<ClubMember> clubMemberDormants
                 = clubMemberRepository.findAllByClubIdAndClubGradeId(targetClubOneId, CLUB_GRADE.DORMANT.getId());
 
@@ -90,8 +92,10 @@ class ClubDetailPageControllerTest {
     @Test
     void 회원_상세_조회_테스트() throws Exception {
         // given
+        // 유저 로그인
         final String token = testCreateUtil.create_token_one_club_leader_member();
         final String url = "/clubs/informations/{club_id}/details/{club_member_id}";
+
         final Member targetMember = memberOneClubLeader;
         final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId, targetMember.getMemberId()).get();
         final ClubMemberInformation clubMemberInformation = clubMemberInformationRepository.findById(targetClubMember.getClubMemberInformationId()).get();
@@ -119,6 +123,7 @@ class ClubDetailPageControllerTest {
     @Test
     void 동아리_소개_페이지_휴가_제공_테스트() throws Exception {
         // given
+        // 유저 로그인
         final String token = testCreateUtil.create_token_one_club_leader_member();
         final String url = "/clubs/informations/{club_id}/details/{club_member_id}/vacation";
 
@@ -154,7 +159,7 @@ class ClubDetailPageControllerTest {
     @Test
     void 동아리_소개_페이지_휴가_제공_예외_일반회원_검증_테스트() throws Exception {
         // given
-        // 대표이 아닌 유저 로그인
+        // 유저 로그인
         final String token = testCreateUtil.create_token_one_club_deputy_leader_member();
         final String url = "/clubs/informations/{club_id}/details/{club_member_id}/vacation";
 
@@ -187,7 +192,7 @@ class ClubDetailPageControllerTest {
     @Test
     void 동아리_소개_페이지_회원_추방_테스트() throws Exception {
         // given
-        // 대표 유저 로그인
+        // 유저 로그인
         final String token = testCreateUtil.create_token_one_club_leader_member();
         final String url = "/clubs/informations/{club_id}/details/{club_member_id}/expulsion";
 
@@ -218,7 +223,7 @@ class ClubDetailPageControllerTest {
     @Test
     void 동아리_소개_페이지_회원_추방_예외_실장_대상_검증_테스트() throws Exception {
         // given
-        // 대표가 아닌 유저 로그인
+        // 유저 로그인
         final String token = testCreateUtil.create_token_one_club_deputy_leader_member();
         final String url = "/clubs/informations/{club_id}/details/{club_member_id}/expulsion";
 
@@ -245,7 +250,7 @@ class ClubDetailPageControllerTest {
     @Test
     void 동아리_소개_페이지_회원_추방_예외_대상_대표_검증_테스트() throws Exception {
         // given
-        // 대표 유저 로그인
+        // 유저 로그인
         final String token = testCreateUtil.create_token_one_club_leader_member();
         final String url = "/clubs/informations/{club_id}/details/{club_member_id}/expulsion";
 
@@ -272,7 +277,7 @@ class ClubDetailPageControllerTest {
     @Test
     void 동아리_소개_페이지_회원_휴면_전환_테스트() throws Exception {
         // given
-        // 대표 유저 로그인
+        // 유저 로그인
         final String token = testCreateUtil.create_token_one_club_leader_member();
         final String url = "/clubs/informations/{club_id}/details/{club_member_id}/dormancy";
 
@@ -301,7 +306,7 @@ class ClubDetailPageControllerTest {
     @Test
     void 동아리_소개_페이지_회원_휴면_전환_예외_휴면_멤버_여부_테스트() throws Exception {
         // given
-        // 대표 유저 로그인
+        // 유저 로그인
         final String token = testCreateUtil.create_token_one_club_leader_member();
         final String url = "/clubs/informations/{club_id}/details/{club_member_id}/dormancy";
 
@@ -332,7 +337,7 @@ class ClubDetailPageControllerTest {
     @Test
     void 동아리_소개_페이지_회원_휴면_전환_예외_실장_로그인_테스트() throws Exception {
         // given
-        // 대표 유저 로그인
+        // 유저 로그인
         final String token = testCreateUtil.create_token_one_club_deputy_leader_member();
         final String url = "/clubs/informations/{club_id}/details/{club_member_id}/dormancy";
 
