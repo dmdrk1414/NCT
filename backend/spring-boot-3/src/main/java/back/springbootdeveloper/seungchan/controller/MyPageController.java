@@ -7,6 +7,7 @@ import back.springbootdeveloper.seungchan.constant.entity.ATTENDANCE_STATE;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.ClubArticleComment;
+import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import back.springbootdeveloper.seungchan.util.BaseResultDTO;
@@ -40,6 +41,15 @@ public class MyPageController {
   public ResponseEntity<BaseResponseBody> quitClubMember(
       HttpServletRequest request,
       @PathVariable(value = "club_member_id") Long clubMemberId) {
+    Long loginMemberId = tokenService.getMemberIdFromToken(request);
+
+    // 해당 계정이 로그인한 회원의 계정 여부 확인
+    Member targetMember = memberService.findByClubMemberId(clubMemberId);
+    Boolean isSameLoginAndTargetMember = targetMember.isSame(loginMemberId);
+    if (!isSameLoginAndTargetMember) {
+      return BaseResponseBodyUtiil.BaseResponseBodyFailure(
+          ResponseMessage.BAD_NOT_SAME_LOGIN_TARGET_MEMBER.get());
+    }
 
     // 대상이 실장확인
     Boolean isTargetLeaderClub = clubGradeService.isMemberStatus(clubMemberId, CLUB_GRADE.LEADER);
