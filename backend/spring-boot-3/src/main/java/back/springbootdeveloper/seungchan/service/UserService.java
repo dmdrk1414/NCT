@@ -11,16 +11,17 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor // final이 붙거나  @NotNull이 붙는 필드의 생성자 추가
 public class UserService {
-    private final UserRepository userRepository;
 
-    public UserInfo findUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(UserNotExistException::new); // 찾아서 없으면 예외처리.;
-    }
+  private final UserRepository userRepository;
 
-    public UserInfo findByEmail(String email) { // 유저 email 정보로 유저 객체를 찾기
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
-    }
+  public UserInfo findUserById(Long id) {
+    return userRepository.findById(id)
+        .orElseThrow(UserNotExistException::new); // 찾아서 없으면 예외처리.;
+  }
+
+  public UserInfo findByEmail(String email) { // 유저 email 정보로 유저 객체를 찾기
+    return userRepository.findByEmail(email)
+        .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+  }
 }
 

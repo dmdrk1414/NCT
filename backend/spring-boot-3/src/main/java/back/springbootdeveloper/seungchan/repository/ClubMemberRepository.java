@@ -11,24 +11,26 @@ import java.util.Optional;
 
 @Repository
 public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
-    List<ClubMember> findAllByClubIdAndClubGradeId(Long clubId, Integer clubGradeId);
+
+  List<ClubMember> findAllByClubIdAndClubGradeId(Long clubId, Integer clubGradeId);
 
 
-    /**
-     * 지정된 클럽 ID에 해당하는 모든 클럽 멤버를 검색하되, 휴면 상태가 아닌 멤버만 반환합니다.
-     *
-     * @param clubId    검색할 클럽의 ID
-     * @param dormantId 휴면 상태를 나타내는 ID
-     * @return 휴면 상태가 아닌 모든 클럽 멤버의 목록
-     */
-    @Query("SELECT cm FROM ClubMember cm WHERE cm.clubId = :clubId AND cm.clubGradeId <> :dormantId")
-    List<ClubMember> findAllByClubIdExcludeDormant(@Param("clubId") Long clubId, @Param("dormantId") Integer dormantId);
+  /**
+   * 지정된 클럽 ID에 해당하는 모든 클럽 멤버를 검색하되, 휴면 상태가 아닌 멤버만 반환합니다.
+   *
+   * @param clubId    검색할 클럽의 ID
+   * @param dormantId 휴면 상태를 나타내는 ID
+   * @return 휴면 상태가 아닌 모든 클럽 멤버의 목록
+   */
+  @Query("SELECT cm FROM ClubMember cm WHERE cm.clubId = :clubId AND cm.clubGradeId <> :dormantId")
+  List<ClubMember> findAllByClubIdExcludeDormant(@Param("clubId") Long clubId,
+      @Param("dormantId") Integer dormantId);
 
-    Optional<ClubMember> findByMemberId(Long memberId);
+  Optional<ClubMember> findByMemberId(Long memberId);
 
-    Optional<ClubMember> findByClubIdAndMemberId(Long clubId, Long memberId);
+  Optional<ClubMember> findByClubIdAndMemberId(Long clubId, Long memberId);
 
-    List<ClubMember> findAllByMemberId(Long memberId);
+  List<ClubMember> findAllByMemberId(Long memberId);
 
-    List<ClubMember> findAllByClubId(Long clubId);
+  List<ClubMember> findAllByClubId(Long clubId);
 }

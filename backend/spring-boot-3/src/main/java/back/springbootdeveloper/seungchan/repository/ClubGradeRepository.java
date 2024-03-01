@@ -10,5 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface ClubGradeRepository extends JpaRepository<ClubGrade, Long> {
-    Optional<ClubGrade> findByClubGrade(CLUB_GRADE clubGrade);
+
+  Optional<ClubGrade> findByClubGrade(CLUB_GRADE clubGrade);
 }

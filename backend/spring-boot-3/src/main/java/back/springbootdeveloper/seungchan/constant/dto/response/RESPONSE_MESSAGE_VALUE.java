@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.constant.dto.response;
 
 public class RESPONSE_MESSAGE_VALUE {
+
     public static String SUCCESS_UPDATE_VACATION_TOKEN(String memberName, Integer vacationToken) {
         return memberName + "에게 휴가 " + vacationToken + "일을 부여했습니다.";
     }
