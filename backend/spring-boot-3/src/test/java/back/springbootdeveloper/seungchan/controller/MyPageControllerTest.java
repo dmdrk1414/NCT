@@ -2,6 +2,7 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.annotation.MoariumSpringBootTest;
 import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE_VALUE;
+import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
 import back.springbootdeveloper.seungchan.entity.AttendanceState;
 import back.springbootdeveloper.seungchan.entity.Club;
@@ -17,6 +18,7 @@ import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -85,5 +87,32 @@ class MyPageControllerTest {
             RESPONSE_MESSAGE_VALUE.SUCCESS_QUIT_CLUB(targetClub.getClubName())));
 
     assertThat(resultDelete).isTrue();
+  }
+
+  @Test
+  void 마이페이지_동아리_탈퇴하기_해당_계정이_로그인_회원의_계정_여부_확인_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    token = testCreateUtil.create_token_one_club_deputy_leader_member();
+    final String url = "/clubs/personal-info/{club_member_id}/quit";
+    final Member targetMember = testCreateUtil.get_entity_one_club_leader_member();
+    final ClubMember targetClubMember = clubMemberRepository.findByMemberId(
+        targetMember.getMemberId()).get();
+
+    // when
+    ResultActions result = mockMvc.perform(
+        post(url, targetClubMember.getClubMemberId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    // then
+    result
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value(
+            ResponseMessage.BAD_NOT_SAME_LOGIN_TARGET_MEMBER.get()))
+        .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"))
+        .andExpect(jsonPath("$.statusCode").value(HttpStatus.BAD_REQUEST.value()));
   }
 }
