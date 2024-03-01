@@ -36,4 +36,8 @@ public class ClubGrade extends BaseEntity {
     public ClubGrade(CLUB_GRADE clubGrade) {
         this.clubGrade = clubGrade;
     }
+
+    public String getClubGradeString() {
+        return this.clubGrade.getGrade();
+    }
 }
