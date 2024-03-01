@@ -23,21 +23,22 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "club_grade")
 public class ClubGrade extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "club_grade_id")
-    private Long clubGradeId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "club_grade", length = 15)
-    private CLUB_GRADE clubGrade;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "club_grade_id")
+  private Long clubGradeId;
 
-    @Builder
-    public ClubGrade(CLUB_GRADE clubGrade) {
-        this.clubGrade = clubGrade;
-    }
+  @Enumerated(EnumType.STRING)
+  @Column(name = "club_grade", length = 15)
+  private CLUB_GRADE clubGrade;
 
-    public String getClubGradeString() {
-        return this.clubGrade.getGrade();
-    }
+  @Builder
+  public ClubGrade(CLUB_GRADE clubGrade) {
+    this.clubGrade = clubGrade;
+  }
+
+  public String getClubGradeString() {
+    return this.clubGrade.getGrade();
+  }
 }

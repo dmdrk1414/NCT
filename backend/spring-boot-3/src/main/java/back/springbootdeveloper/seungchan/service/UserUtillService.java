@@ -11,9 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor // final이 붙거나  @NotNull이 붙는 필드의 생성자 추가
 @ToString
 public class UserUtillService {
-    private final UserUtilRepository userUtilRepository;
 
-    public UserUtill findUserByUserId(Long userId) {
-        return userUtilRepository.findByUserId(userId);
-    }
+  private final UserUtilRepository userUtilRepository;
+
+  public UserUtill findUserByUserId(Long userId) {
+    return userUtilRepository.findByUserId(userId);
+  }
 }

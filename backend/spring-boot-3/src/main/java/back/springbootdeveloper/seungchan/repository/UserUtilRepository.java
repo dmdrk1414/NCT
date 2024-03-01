@@ -9,15 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface UserUtilRepository extends JpaRepository<UserUtill, Long> {
-    UserUtill findByUserId(Long userId);
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE UserUtill u SET u.cntVacation = :cntVacation WHERE u.userId = :userId")
-    void updateCntVacationUserUtilData(Long userId, int cntVacation);
+  UserUtill findByUserId(Long userId);
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE UserUtill u SET u.cntVacation = :cntVacation")
-    void resetCntVacation(int cntVacation);
+  @Transactional
+  @Modifying
+  @Query("UPDATE UserUtill u SET u.cntVacation = :cntVacation WHERE u.userId = :userId")
+  void updateCntVacationUserUtilData(Long userId, int cntVacation);
+
+  @Transactional
+  @Modifying
+  @Query("UPDATE UserUtill u SET u.cntVacation = :cntVacation")
+  void resetCntVacation(int cntVacation);
 }

@@ -14,28 +14,29 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "club_member_information")
 public class ClubMemberInformation extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "club_member_information_id")
-    private Long clubMemberInformationId;
 
-    @Column(name = "introduce", length = 1000, nullable = false)
-    private String introduce;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "club_member_information_id")
+  private Long clubMemberInformationId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "favorite_check", length = 15, nullable = false)
-    private FAVORITE_CHECK favoriteCheck = FAVORITE_CHECK.UNCHECK;
+  @Column(name = "introduce", length = 1000, nullable = false)
+  private String introduce;
 
-    @Builder
-    public ClubMemberInformation(String introduce) {
-        this.introduce = introduce;
-    }
+  @Enumerated(EnumType.STRING)
+  @Column(name = "favorite_check", length = 15, nullable = false)
+  private FAVORITE_CHECK favoriteCheck = FAVORITE_CHECK.UNCHECK;
 
-    public void updateIntroduce(String introduce) {
-        this.introduce = introduce;
-    }
+  @Builder
+  public ClubMemberInformation(String introduce) {
+    this.introduce = introduce;
+  }
 
-    public void updateFavoriteCheck(FAVORITE_CHECK favoriteCheck) {
-        this.favoriteCheck = favoriteCheck;
-    }
+  public void updateIntroduce(String introduce) {
+    this.introduce = introduce;
+  }
+
+  public void updateFavoriteCheck(FAVORITE_CHECK favoriteCheck) {
+    this.favoriteCheck = favoriteCheck;
+  }
 }

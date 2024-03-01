@@ -8,9 +8,10 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 public class UserLoginResponse {
-    private String accessToken;
 
-    public UserLoginResponse(String accessToken) {
-        this.accessToken = accessToken;
-    }
+  private String accessToken;
+
+  public UserLoginResponse(String accessToken) {
+    this.accessToken = accessToken;
+  }
 }

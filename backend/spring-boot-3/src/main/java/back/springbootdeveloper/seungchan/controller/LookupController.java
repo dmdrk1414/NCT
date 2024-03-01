@@ -21,10 +21,13 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/admin")
 public class LookupController {
-    @Operation(summary = "admin page 비밀 번호 찾기 api ", description = "이메일 인증을 통해 해당 이메일로 비밀번호를 보낸다.")
-    @PostMapping("/find/password")
-    public ResponseEntity<BaseResponseBody> getTempPasswordController(@RequestBody @Valid FindPasswordReqDto findPasswordReqDto) {
 
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.TEMP_PASSWORD_MESSAGE.get());
-    }
+  @Operation(summary = "admin page 비밀 번호 찾기 api ", description = "이메일 인증을 통해 해당 이메일로 비밀번호를 보낸다.")
+  @PostMapping("/find/password")
+  public ResponseEntity<BaseResponseBody> getTempPasswordController(
+      @RequestBody @Valid FindPasswordReqDto findPasswordReqDto) {
+
+    return BaseResponseBodyUtiil.BaseResponseBodySuccess(
+        ResponseMessage.TEMP_PASSWORD_MESSAGE.get());
+  }
 }
