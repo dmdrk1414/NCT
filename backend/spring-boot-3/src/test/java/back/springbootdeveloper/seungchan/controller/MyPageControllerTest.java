@@ -227,8 +227,6 @@ class MyPageControllerTest {
     final Member targetMember = testCreateUtil.get_entity_one_club_leader_member();
     final ClubMember targetClubMember = clubMemberRepository.findByMemberId(
         targetMember.getMemberId()).get();
-    final ClubGrade targetClubGrade = clubGradeRepository.findById(
-        targetClubMember.getClubGradeId()).get();
 
     // when
     ResultActions result = mockMvc.perform(
