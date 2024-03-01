@@ -90,7 +90,7 @@ class MyPageControllerTest {
   }
 
   @Test
-  void 마이페이지_동아리_탈퇴하기_해당_계정이_로그인_회원의_계정_여부_확인_테스트() throws Exception {
+  void 마이페이지_동아리_탈퇴하기_예외_해당_계정이_로그인_회원의_계정_여부_확인_테스트() throws Exception {
     // given
     // 유저 로그인
     token = testCreateUtil.create_token_one_club_deputy_leader_member();
