@@ -8,12 +8,13 @@ import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.constant.entity.POSSIBLE_STATUS;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
 import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
+import back.springbootdeveloper.seungchan.dto.response.ClubMemberAttendanceCheckDate;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.AttendanceNumberService;
 import back.springbootdeveloper.seungchan.service.AttendanceWeekDateService;
-import back.springbootdeveloper.seungchan.service.ClubGradeService;
+import back.springbootdeveloper.seungchan.service.AttendanceWeekService;
 import back.springbootdeveloper.seungchan.testutil.TestCreateUtil;
 import back.springbootdeveloper.seungchan.util.DayUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,8 +27,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -60,9 +59,13 @@ class ClubDetailPageControllerTest {
     @Autowired
     private AttendanceWeekDateRepository attendanceWeekDateRepository;
     @Autowired
+    private ClubGradeRepository clubGradeRepository;
+    @Autowired
     private AttendanceWeekDateService attendanceWeekDateService;
     @Autowired
     private AttendanceWeekRepository attendanceWeekRepository;
+    @Autowired
+    private AttendanceWeekService attendanceWeekService;
     private String token;
     private Member memberOneClubLeader;
     private Long targetClubOneId;
@@ -100,6 +103,42 @@ class ClubDetailPageControllerTest {
                 .andExpect(jsonPath("$.result.dormancyMembers", Matchers.hasSize(clubMemberDormants.size())))
                 .andExpect(jsonPath("$.result.dormancyMembers[0]").value(memberDormants.get(0).getFullName()))
                 .andExpect(jsonPath("$.result.dormancyMembers[1]").value(memberDormants.get(1).getFullName()));
+    }
+
+    @Test
+    void 동아리_상세_페이지_조회() throws Exception {
+        // given
+        // 유저 로그인
+        final String token = testCreateUtil.create_token_one_club_leader_member();
+        final String url = "/clubs/informations/{club_id}/details";
+
+        final Club club = clubRepository.findById(targetClubOneId).get();
+        final Member member = memberOneClubLeader;
+        final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId, member.getMemberId()).get();
+
+        // 검증을 위한 데이터 준비
+        // 클럽관련 정보
+        final String resultClubName = club.getClubName();
+        final String resultMyClubGrade = clubGradeRepository.findById(clubMember.getClubGradeId()).get().getClubGradeString();
+        // 나의 Club Member Id 가져오기
+        final Long resultMyClubMemberId = clubMember.getMemberId();
+        // 클럽 관련 출석 체크 요일 여부 확인
+        final AttendanceWeek attendanceWeek = attendanceWeekService.findByClubId(club.getClubId());
+        final ClubMemberAttendanceCheckDate targetClubMemberAttendanceCheckDate = new ClubMemberAttendanceCheckDate(attendanceWeek);
+
+        // when
+        ResultActions result = mockMvc.perform(get(url, targetClubOneId)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Bearer " + token) // token header에 담기
+        );
+
+        // then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result.clubName").value(resultClubName))
+                .andExpect(jsonPath("$.result.myClubGrade").value(resultMyClubGrade))
+                .andExpect(jsonPath("$.result.myClubMemberId").value(resultMyClubMemberId))
+                .andExpect(jsonPath("$.result.clubMemberAttendanceCheckDate").value(targetClubMemberAttendanceCheckDate));
     }
 
     @Test

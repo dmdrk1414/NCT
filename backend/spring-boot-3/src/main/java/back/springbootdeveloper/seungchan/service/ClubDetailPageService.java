@@ -60,8 +60,8 @@ public class ClubDetailPageService {
         return ClubMemberDetailResDto.builder()
                 .clubName(club.getClubName())
                 .myClubMemberId(clubMember.getMemberId())
-                .clubMemberAttendanceCheckDate(clubMemberAttendanceCheckDate)
                 .myClubGrade(myClubGrade.getGrade())
+                .clubMemberAttendanceCheckDate(clubMemberAttendanceCheckDate)
                 .clubMembers(clubMemberResponses)
                 .build();
     }
