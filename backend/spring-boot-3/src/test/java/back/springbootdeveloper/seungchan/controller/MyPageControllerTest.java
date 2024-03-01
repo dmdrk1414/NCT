@@ -217,4 +217,31 @@ class MyPageControllerTest {
             ResponseMessage.SUCCESS_TOGLE_MEMBER_GRADE.get()));
     assertThat(resultSameTargetClubGrade).isFalse();
   }
+
+  @Test
+  void 마이페이지_동아리_휴면_활동_전환_예외_대상_실장_확인_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/personal-info/{club_member_id}/transform";
+    final Member targetMember = testCreateUtil.get_entity_one_club_leader_member();
+    final ClubMember targetClubMember = clubMemberRepository.findByMemberId(
+        targetMember.getMemberId()).get();
+    final ClubGrade targetClubGrade = clubGradeRepository.findById(
+        targetClubMember.getClubGradeId()).get();
+
+    // when
+    ResultActions result = mockMvc.perform(
+        post(url, targetClubMember.getClubMemberId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    // then
+    result
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value(
+            ResponseMessage.BAD_TARGET_LEADER_MEMBER.get()));
+  }
 }
