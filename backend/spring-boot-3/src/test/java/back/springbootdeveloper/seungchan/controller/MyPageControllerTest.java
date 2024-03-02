@@ -222,6 +222,31 @@ class MyPageControllerTest {
   }
 
   @Test
+  void 마이페이지_동아리_휴면_활동_전환_예외_해당_계정이_로그인_회원의_계정_여부_확인_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/personal-info/{club_member_id}/transform";
+    final Member targetMember = testCreateUtil.get_entity_one_club_deputy_leader_member();
+    final ClubMember targetClubMember = clubMemberRepository.findByMemberId(
+        targetMember.getMemberId()).get();
+
+    // when
+    ResultActions result = mockMvc.perform(
+        post(url, targetClubMember.getClubMemberId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    // then
+    result
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value(
+            ResponseMessage.BAD_NOT_SAME_LOGIN_TARGET_MEMBER.get()));
+  }
+
+  @Test
   void 마이페이지_동아리_휴면_활동_전환_예외_대상_실장_확인_테스트() throws Exception {
     // given
     // 유저 로그인
@@ -247,7 +272,7 @@ class MyPageControllerTest {
   }
 
   @Test
-  void 마이페이지_동아리_내가_쓴_댓글_보기_테스트() throws Exception {
+  void 마이페이지_동아리_내가_쓴_클럽_게시판_댓글_보기_테스트() throws Exception {
     // given
     // 유저 로그인
     final String token = testCreateUtil.create_token_one_club_leader_member();
