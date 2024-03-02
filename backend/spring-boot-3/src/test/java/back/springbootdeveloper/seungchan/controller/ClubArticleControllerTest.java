@@ -379,4 +379,52 @@ class ClubArticleControllerTest {
               targetClubArticleSimpleInformations.get(i).getClubArticleAnswerCheck()));
     }
   }
+
+  @Test
+  void 팀_비밀_게시판_전체_페이지_조회_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/informations/{club_id}/articles/confidentials";
+
+    // 검증을 위한 데이터 준비
+    final Club targetClub = clubRepository.findById(targetClubOneId).get();
+    final Member targetMember = memberOneClubLeader;
+    final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(
+        targetClub.getClubId(), targetMember.getMemberId()).get();
+    final ClubArticle targetClubArticle = clubArticleService.findLastByClubArticleId(
+        targetClubMember.getClubMemberId());
+
+    final ClubArticleSimpleInformationResDto targetClubMemberSimpleInformationResDto = clubArticleService.getClubMemberSimpleInformationResDto(
+        targetClub.getClubId(), targetMember.getMemberId(),
+        CLUB_ARTICLE_CLASSIFICATION.CONFIDENTIAL);
+    final List<ClubArticleSimpleInformation> targetClubArticleSimpleInformations = targetClubMemberSimpleInformationResDto.getClubArticleSimpleInformations();
+    // when
+
+    ResultActions result = mockMvc.perform(
+        get(url, targetClub.getClubId(), targetClubArticle.getClubArticleId())
+            .accept(MediaType.APPLICATION_JSON)
+            .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    // then
+    for (int i = 0; i < targetClubArticleSimpleInformations.size(); i++) {
+      result
+          .andExpect(
+              jsonPath("$.result.clubArticleSimpleInformations[" + i + "].clubArticleTitle").value(
+                  targetClubArticleSimpleInformations.get(i).getClubArticleTitle()))
+          .andExpect(jsonPath(
+              "$.result.clubArticleSimpleInformations[" + i + "].clubArticleAuthorName").value(
+              targetClubArticleSimpleInformations.get(i).getClubArticleAuthorName()))
+          .andExpect(
+              jsonPath("$.result.clubArticleSimpleInformations[" + i + "].clubArticleDate").value(
+                  targetClubArticleSimpleInformations.get(i).getClubArticleDate()))
+          .andExpect(jsonPath(
+              "$.result.clubArticleSimpleInformations[" + i + "].clubArticleCommentCount").value(
+              targetClubArticleSimpleInformations.get(i).getClubArticleCommentCount()))
+          .andExpect(jsonPath(
+              "$.result.clubArticleSimpleInformations[" + i + "].clubArticleAnswerCheck").value(
+              targetClubArticleSimpleInformations.get(i).getClubArticleAnswerCheck()));
+    }
+  }
 }
