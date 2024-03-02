@@ -648,5 +648,51 @@ class ClubArticleControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value(ResponseMessage.BAD_SUGGESTION_ANSWER.get()));
   }
+
+  @Test
+  void 팀_건의_게시판_답변_수정_테스트_리더() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/informations/{club_id}/articles/{article_id}/answer/write";
+
+    // 검증을 위한 데이터 준비
+    final Club targetClub = clubRepository.findById(targetClubOneId).get();
+    final Member targetMember = memberOneClubLeader;
+    final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(
+        targetClub.getClubId(), targetMember.getMemberId()).get();
+    final ClubArticle targetClubArticle = clubArticleService.findLastByClubArticleId(
+        targetClubMember.getClubMemberId());
+
+    // 생성을 위한 데이터
+    final String updateClubSuggestionArticleAnswer = "건의 게시판 답변 수정 데이터";
+    final WriteSuggestionAnswerReqDto requestDto = WriteSuggestionAnswerReqDto.builder()
+        .clubSuggestionArticleAnswer(updateClubSuggestionArticleAnswer)
+        .build();
+
+    // when
+    final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+    ResultActions result = mockMvc.perform(
+        put(url, targetClub.getClubId(), targetClubArticle.getClubArticleId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(requestBody)
+            .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    final ClubArticle resultClubArticle = clubArticleRepository.findById(
+        targetClubArticle.getClubArticleId()).get();
+
+    // then
+    result
+        .andExpect(status().isOk())
+        .andExpect(
+            jsonPath("$.message").value(ResponseMessage.SUCCESS_UPDATE_SUGGESTION_ANSWER.get()));
+
+    assertThat(resultClubArticle.getSuggestionAnswer()).isEqualTo(
+        updateClubSuggestionArticleAnswer);
+  }
+
 }
 
