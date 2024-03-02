@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import back.springbootdeveloper.seungchan.annotation.MoariumSpringBootTest;
 import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE_VALUE;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
+import back.springbootdeveloper.seungchan.constant.entity.ANONYMITY;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.dto.request.UpdateClubArticlePutDto;
 import back.springbootdeveloper.seungchan.dto.request.WriteSuggestionAnswerReqDto;
@@ -19,14 +20,17 @@ import back.springbootdeveloper.seungchan.dto.response.ClubArticleCommentInforma
 import back.springbootdeveloper.seungchan.dto.response.ClubArticleDetailResDto;
 import back.springbootdeveloper.seungchan.dto.response.ClubArticleSimpleInformation;
 import back.springbootdeveloper.seungchan.dto.response.ClubArticleSimpleInformationResDto;
+import back.springbootdeveloper.seungchan.dto.response.WriteClubArticleCommentReqDto;
 import back.springbootdeveloper.seungchan.entity.Club;
 import back.springbootdeveloper.seungchan.entity.ClubArticle;
+import back.springbootdeveloper.seungchan.entity.ClubArticleComment;
 import back.springbootdeveloper.seungchan.entity.ClubMember;
 import back.springbootdeveloper.seungchan.entity.ClubMemberInformation;
 import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.repository.ClubArticleRepository;
 import back.springbootdeveloper.seungchan.repository.ClubMemberRepository;
 import back.springbootdeveloper.seungchan.repository.ClubRepository;
+import back.springbootdeveloper.seungchan.service.ClubArticleCommentService;
 import back.springbootdeveloper.seungchan.service.ClubArticleService;
 import back.springbootdeveloper.seungchan.testutil.TestCreateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,6 +61,8 @@ class ClubArticleControllerTest {
   private ClubMemberRepository clubMemberRepository;
   @Autowired
   private ClubArticleService clubArticleService;
+  @Autowired
+  private ClubArticleCommentService clubArticleCommentService;
   private Member memberOneClubLeader;
   private Member memberOneClubDeputyLeader;
   private Long targetClubOneId;
@@ -777,6 +783,50 @@ class ClubArticleControllerTest {
             jsonPath("$.message").value(ResponseMessage.BAD_UPDATE_SUGGESTION_ANSWER.get()))
         .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"))
         .andExpect(jsonPath("$.statusCode").value(HttpStatus.BAD_REQUEST.value()));
+  }
+
+  @Test
+  void 팀_건의_게시판_상세_페이지_댓글_쓰기_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/informations/{club_id}/articles/{article_id}/comment/write";
+
+    // 검증을 위한 데이터 준비
+    final Club targetClub = clubRepository.findById(targetClubOneId).get();
+    final Member targetMember = memberOneClubLeader;
+    final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(
+        targetClub.getClubId(), targetMember.getMemberId()).get();
+    final ClubArticle targetClubArticle = clubArticleService.findLastByClubArticleId(
+        targetClubMember.getClubMemberId());
+
+    // 생성을 위한 데이터
+    final String saveClubArticleCommentContent = "클럽 게시판 댓글 쓰기";
+    final String saveClubArticleCommentAnoymity = ANONYMITY.REAL_NAME.getState();
+    final WriteClubArticleCommentReqDto requestDto = WriteClubArticleCommentReqDto.builder()
+        .clubArticleCommentContent(saveClubArticleCommentContent)
+        .anonymity(saveClubArticleCommentAnoymity)
+        .build();
+
+    // when
+    final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+    ResultActions result = mockMvc.perform(
+        post(url, targetClub.getClubId(), targetClubArticle.getClubArticleId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(requestBody)
+            .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    final ClubArticleComment resultClubArticleComment = clubArticleCommentService.getLastClubArticleComment(
+        targetClubArticle.getClubArticleId());
+
+    // then
+    assertThat(resultClubArticleComment.getContent()).isEqualTo(
+        saveClubArticleCommentContent);
+    assertThat(resultClubArticleComment.getAnonymity().getState()).isEqualTo(
+        saveClubArticleCommentAnoymity);
   }
 }
 
