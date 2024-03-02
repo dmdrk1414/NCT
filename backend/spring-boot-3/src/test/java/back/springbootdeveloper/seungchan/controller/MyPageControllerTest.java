@@ -4,7 +4,9 @@ import back.springbootdeveloper.seungchan.annotation.MoariumSpringBootTest;
 import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE_VALUE;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
+import back.springbootdeveloper.seungchan.dto.response.ClubMemberArticlesResDto;
 import back.springbootdeveloper.seungchan.dto.response.ClubMemberCommentsResDto;
+import back.springbootdeveloper.seungchan.dto.response.MyClubArticle;
 import back.springbootdeveloper.seungchan.dto.response.MyClubArticleComment;
 import back.springbootdeveloper.seungchan.entity.Club;
 import back.springbootdeveloper.seungchan.entity.ClubGrade;
@@ -14,6 +16,7 @@ import back.springbootdeveloper.seungchan.repository.ClubGradeRepository;
 import back.springbootdeveloper.seungchan.repository.ClubMemberRepository;
 import back.springbootdeveloper.seungchan.repository.ClubRepository;
 import back.springbootdeveloper.seungchan.service.ClubArticleCommentService;
+import back.springbootdeveloper.seungchan.service.ClubArticleService;
 import back.springbootdeveloper.seungchan.testutil.TestCreateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -50,6 +53,8 @@ class MyPageControllerTest {
   private ClubGradeRepository clubGradeRepository;
   @Autowired
   private ClubArticleCommentService clubArticleCommentService;
+  @Autowired
+  private ClubArticleService clubArticleService;
   private Member memberOneClubLeader;
   private Long targetClubOneId;
   private String token;
@@ -305,6 +310,45 @@ class MyPageControllerTest {
               resultMyClubArticleComments.get(i).getArticleComment()))
           .andExpect(jsonPath("$.result.myClubArticleComments[" + i + "].articleCommentDate").value(
               resultMyClubArticleComments.get(i).getArticleCommentDate()));
+    }
+  }
+
+  @Test
+  void 마이페이지_동아리_내가_쓴_클럽_게시판_보기_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/personal-info/{club_member_id}/articles";
+
+    final Member member = memberOneClubLeader;
+    final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId,
+        member.getMemberId()).get();
+
+    // 검증을 위한 데이터 준비
+    // 클럽관련 정보
+    final ClubMemberArticlesResDto clubMemberCommentsResDto = clubArticleService.getClubMemberArticlesResDto(
+        clubMember.getClubMemberId());
+    final List<MyClubArticle> myClubArticles = clubMemberCommentsResDto.getMyClubArticles();
+
+    // when
+    ResultActions result = mockMvc.perform(get(url, targetClubOneId)
+        .accept(MediaType.APPLICATION_JSON)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    for (int i = 0; i < myClubArticles.size(); i++) {
+      // then
+      result
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.result.myClubArticles[" + i + "].clubArticleId").value(
+              myClubArticles.get(i).getClubArticleId()))
+          .andExpect(jsonPath("$.result.myClubArticles[" + i + "].clubArticleTitle").value(
+              myClubArticles.get(i).getClubArticleTitle()))
+          .andExpect(jsonPath("$.result.myClubArticles[" + i + "].clubArticleDate").value(
+              myClubArticles.get(i).getClubArticleDate()))
+          .andExpect(
+              jsonPath("$.result.myClubArticles[" + i + "].clubArticleClassification").value(
+                  myClubArticles.get(i).getClubArticleClassification()));
     }
   }
 }
