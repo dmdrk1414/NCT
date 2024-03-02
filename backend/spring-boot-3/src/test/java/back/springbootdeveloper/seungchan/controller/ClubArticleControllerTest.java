@@ -184,4 +184,34 @@ class ClubArticleControllerTest {
 
     assertThat(resultDelete).isTrue();
   }
+
+  @Test
+  void 팀_게시판_삭제_API_예외_저자_검증_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/informations/{club_id}/articles/{article_id}";
+
+    // 검증을 위한 데이터 준비
+    final Club targetClub = clubRepository.findById(targetClubOneId).get();
+    final Member targetMember = memberOneClubDeputyLeader;
+    final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(
+        targetClub.getClubId(), targetMember.getMemberId()).get();
+    final ClubArticle targetClubArticle = clubArticleService.findLastByClubArticleId(
+        targetClubMember.getClubMemberId());
+
+    // when
+    ResultActions result = mockMvc.perform(
+        delete(url, targetClub.getClubId(), targetClubArticle.getClubArticleId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    // than
+    result
+        .andExpect(jsonPath("$.message").value(ResponseMessage.BAD_DELETE_CLUB_ARTICLE.get()))
+        .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"))
+        .andExpect(jsonPath("$.statusCode").value(HttpStatus.BAD_REQUEST.value()));
+  }
 }
