@@ -27,12 +27,14 @@ import back.springbootdeveloper.seungchan.entity.ClubArticleComment;
 import back.springbootdeveloper.seungchan.entity.ClubMember;
 import back.springbootdeveloper.seungchan.entity.ClubMemberInformation;
 import back.springbootdeveloper.seungchan.entity.Member;
+import back.springbootdeveloper.seungchan.repository.ClubArticleCommentRepository;
 import back.springbootdeveloper.seungchan.repository.ClubArticleRepository;
 import back.springbootdeveloper.seungchan.repository.ClubMemberRepository;
 import back.springbootdeveloper.seungchan.repository.ClubRepository;
 import back.springbootdeveloper.seungchan.service.ClubArticleCommentService;
 import back.springbootdeveloper.seungchan.service.ClubArticleService;
 import back.springbootdeveloper.seungchan.testutil.TestCreateUtil;
+import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -63,6 +65,8 @@ class ClubArticleControllerTest {
   private ClubArticleService clubArticleService;
   @Autowired
   private ClubArticleCommentService clubArticleCommentService;
+  @Autowired
+  private ClubArticleCommentRepository clubArticleCommentRepository;
   private Member memberOneClubLeader;
   private Member memberOneClubDeputyLeader;
   private Long targetClubOneId;
@@ -827,6 +831,49 @@ class ClubArticleControllerTest {
         saveClubArticleCommentContent);
     assertThat(resultClubArticleComment.getAnonymity().getState()).isEqualTo(
         saveClubArticleCommentAnoymity);
+  }
+
+  @Test
+  void 팀_건의_게시판_상세_페이지_댓글_삭제_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/informations/{club_id}/articles/{article_id}/comment/{comment_id}";
+
+    // 검증을 위한 데이터 준비
+    final Club targetClub = clubRepository.findById(targetClubOneId).get();
+    final Member targetMember = memberOneClubLeader;
+    final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(
+        targetClub.getClubId(), targetMember.getMemberId()).get();
+    final ClubArticle targetClubArticle = clubArticleService.findLastByClubArticleId(
+        targetClubMember.getClubMemberId());
+    final ClubArticleComment targetClubArticleComment = clubArticleCommentService.getLastClubArticleComment(
+        targetClubArticle.getClubArticleId());
+    Boolean resultDelete = false;
+
+    // when
+    ResultActions result = mockMvc.perform(
+        delete(url, targetClub.getClubId(), targetClubArticle.getClubArticleId(),
+            targetClubArticleComment.getClubArticleCommentId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    final ClubArticleComment deleteClubArticleComment;
+    try {
+      deleteClubArticleComment = clubArticleCommentRepository.findById(
+          targetClubArticleComment.getClubArticleCommentId()).get();
+    } catch (NoSuchElementException e) {
+      resultDelete = true;
+    }
+
+    // then
+    result
+        .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+        .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+
+    assertThat(resultDelete).isTrue();
   }
 }
 
