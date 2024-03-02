@@ -46,6 +46,7 @@ public class ClubArticleController {
       @PathVariable(value = "article_id") Long articleId) {
     Long memberId = tokenService.getMemberIdFromToken(request);
 
+    // 게시판 저자 검사
     if (clubArticleService.isAuthor(memberId, clubId, articleId)) {
       clubArticleService.updateClubArticle(clubId, memberId, articleId, updateClubArticlePutDto);
 
