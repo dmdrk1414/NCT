@@ -610,5 +610,43 @@ class ClubArticleControllerTest {
 
     assertThat(resultClubArticle.getSuggestionAnswer()).isEqualTo(saveClubSuggestionArticleAnswer);
   }
+
+  @Test
+  void 팀_건의_게시판_답변_쓰기_예외_일반_멤버_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_normal_member();
+    final String url = "/clubs/informations/{club_id}/articles/{article_id}/answer/write";
+
+    // 검증을 위한 데이터 준비
+    final Club targetClub = clubRepository.findById(targetClubOneId).get();
+    final Member targetMember = testCreateUtil.get_entity_one_club_normal_member();
+    final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(
+        targetClub.getClubId(), targetMember.getMemberId()).get();
+    final ClubArticle targetClubArticle = clubArticleService.findLastByClubArticleId(
+        targetClubMember.getClubMemberId());
+
+    // 생성을 위한 데이터
+    final String saveClubSuggestionArticleAnswer = "건의 게시판 답변 생성 데이터";
+    final WriteSuggestionAnswerReqDto requestDto = WriteSuggestionAnswerReqDto.builder()
+        .clubSuggestionArticleAnswer(saveClubSuggestionArticleAnswer)
+        .build();
+
+    // when
+    final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+    ResultActions result = mockMvc.perform(
+        post(url, targetClub.getClubId(), targetClubArticle.getClubArticleId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(requestBody)
+            .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    // then
+    result
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value(ResponseMessage.BAD_SUGGESTION_ANSWER.get()));
+  }
 }
 
