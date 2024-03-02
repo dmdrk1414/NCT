@@ -15,8 +15,10 @@ public class TestCreateUtil {
   private MemberRepository memberRepository;
   private Long ONE_CLUB_LEADER_ID_MEMBER = 1L;
   private Long ONE_CLUB_DEPUTY_LEADER_ID_MEMBER = 2L;
+  private Long ONE_CLUB_NORMAL_ID_MEMBER = 3L;
   private Long TWO_CLUB_LEADER_ID_MEMBER = 6L;
   private Long TWO_CLUB_DEPUTY_LEADER_ID_MEMBER = 7L;
+  private Long TWO_CLUB_NORMAL_ID_MEMBER = 8L;
   private Long ONE_CLUB_ID = 1L;
   private Long TWO_CLUB_ID = 2L;
 
@@ -63,6 +65,15 @@ public class TestCreateUtil {
   }
 
   /**
+   * 1_클럽에 속한 단일 멤버(일반)를 대상으로 토큰을 생성합니다.
+   *
+   * @return 생성된 토큰
+   */
+  public String create_token_one_club_normal_member() {
+    return jwtFactory.createToken(ONE_CLUB_NORMAL_ID_MEMBER);
+  }
+
+  /**
    * 2_클럽에 속한 단일 멤버(리더)를 대상으로 토큰을 생성합니다.
    *
    * @return 생성된 토큰
@@ -78,6 +89,15 @@ public class TestCreateUtil {
    */
   public String create_token_two_club_deputy_leader_member() {
     return jwtFactory.createToken(TWO_CLUB_DEPUTY_LEADER_ID_MEMBER);
+  }
+
+  /**
+   * 2_클럽에 속한 단일 멤버(일반)를 대상으로 토큰을 생성합니다.
+   *
+   * @return 생성된 토큰
+   */
+  public String create_token_two_club_normal_member() {
+    return jwtFactory.createToken(TWO_CLUB_NORMAL_ID_MEMBER);
   }
 
   /**
@@ -99,6 +119,15 @@ public class TestCreateUtil {
   }
 
   /**
+   * 1_클럽에 속한 단일 일반 멤버의 엔티티를 반환합니다.
+   *
+   * @return 클럽에 속한 단일 부회장 멤버의 엔티티
+   */
+  public Member get_entity_one_club_normal_member() {
+    return memberRepository.findById(ONE_CLUB_NORMAL_ID_MEMBER).get();
+  }
+
+  /**
    * 2_클럽에 속한 단일 멤버(리더)의 엔티티를 반환합니다.
    *
    * @return 클럽에 속한 단일 멤버(리더)의 엔티티
@@ -114,6 +143,15 @@ public class TestCreateUtil {
    */
   public Member get_entity_two_club_deputy_leader_member() {
     return memberRepository.findById(TWO_CLUB_DEPUTY_LEADER_ID_MEMBER).get();
+  }
+
+  /**
+   * 2_클럽에 속한 단일 일반 멤버의 엔티티를 반환합니다.
+   *
+   * @return 클럽에 속한 단일 부회장 멤버의 엔티티
+   */
+  public Member get_entity_two_club_normal_member() {
+    return memberRepository.findById(TWO_CLUB_NORMAL_ID_MEMBER).get();
   }
 
 }

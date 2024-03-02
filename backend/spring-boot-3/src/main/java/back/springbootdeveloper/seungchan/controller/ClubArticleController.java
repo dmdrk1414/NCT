@@ -46,6 +46,7 @@ public class ClubArticleController {
       @PathVariable(value = "article_id") Long articleId) {
     Long memberId = tokenService.getMemberIdFromToken(request);
 
+    // 게시판 저자 검사
     if (clubArticleService.isAuthor(memberId, clubId, articleId)) {
       clubArticleService.updateClubArticle(clubId, memberId, articleId, updateClubArticlePutDto);
 
@@ -64,6 +65,7 @@ public class ClubArticleController {
       @PathVariable(value = "article_id") Long articleId) {
     Long memberId = tokenService.getMemberIdFromToken(request);
 
+    // 저자 검증
     if (clubArticleService.isAuthor(memberId, clubId, articleId)) {
       clubArticleService.deleteClubArticle(clubId, memberId, articleId);
 
@@ -182,6 +184,30 @@ public class ClubArticleController {
         ResponseMessage.BAD_SUGGESTION_ANSWER.get());
   }
 
+  @Operation(summary = "팀 건의 게시판 - 상세 페이지 - 답변 쓰기", description = "팀 건의 게시판 답변 쓰기")
+  @PutMapping(value = "/{article_id}/answer/write")
+  public ResponseEntity<BaseResponseBody> updateSuggestionAnswerClubArticle(
+      HttpServletRequest request,
+      @RequestBody @Valid WriteSuggestionAnswerReqDto writeSuggestionAnswerReqDto,
+      @PathVariable(value = "club_id") Long clubId,
+      @PathVariable(value = "article_id") Long articleId) {
+    Long memberId = tokenService.getMemberIdFromToken(request);
+
+    Boolean isClubLeader = clubGradeService.isMemberStatus(clubId, memberId, CLUB_GRADE.LEADER);
+    Boolean isClubDeputyLeader = clubGradeService.isMemberStatus(clubId, memberId,
+        CLUB_GRADE.DEPUTY_LEADER);
+
+    // 클럽의 대표, 부대표 확인
+    if (isClubLeader || isClubDeputyLeader) {
+      clubArticleService.updateSuggestionAnswerClubArticle(articleId, writeSuggestionAnswerReqDto);
+
+      return BaseResponseBodyUtiil.BaseResponseBodySuccess(
+          ResponseMessage.SUCCESS_UPDATE_SUGGESTION_ANSWER.get());
+    }
+    return BaseResponseBodyUtiil.BaseResponseBodyFailure(
+        ResponseMessage.BAD_UPDATE_SUGGESTION_ANSWER.get());
+  }
+
 
   @Operation(summary = "팀 게시판 - 상세 페이지 - 댓글 쓰기", description = "팀 게시판 - 상세 페이지 - 댓글 쓰기")
   @PostMapping(value = "/{article_id}/comment/write")
@@ -210,6 +236,7 @@ public class ClubArticleController {
       @PathVariable(value = "comment_id") Long commentId) {
     Long memberId = tokenService.getMemberIdFromToken(request);
 
+    // 저자 검증
     final Boolean isAuthorClubArticleComment = clubArticleCommentService.isAuthor(memberId,
         commentId);
     if (isAuthorClubArticleComment) {

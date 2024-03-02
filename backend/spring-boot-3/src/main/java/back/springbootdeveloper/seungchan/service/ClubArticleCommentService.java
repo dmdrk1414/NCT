@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.dto.response.ClubMemberCommentsResDto;
 import back.springbootdeveloper.seungchan.dto.response.MyClubArticleComment;
 import back.springbootdeveloper.seungchan.entity.ClubArticle;
@@ -59,6 +60,22 @@ public class ClubArticleCommentService {
         .orElseThrow(EntityNotFoundException::new);
 
     return isSame(memberId, clubArticleComment);
+  }
+
+  /**
+   * 특정 클럽 게시물의 마지막 댓글을 반환합니다.
+   *
+   * @param clubArticleId 클럽 게시물의 ID입니다.
+   * @return 해당 클럽 게시물의 마지막 댓글입니다.
+   * @throws EntityNotFoundException 주어진 ID에 해당하는 클럽 게시물을 찾을 수 없을 때 발생합니다.
+   */
+  public ClubArticleComment getLastClubArticleComment(final Long clubArticleId) {
+    ClubArticle clubArticle = clubArticleRepository.findById(clubArticleId)
+        .orElseThrow(EntityNotFoundException::new);
+    List<ClubArticleComment> clubArticleComments = clubArticle.getClubArticleComments();
+    Integer lastIndex = clubArticleComments.size() - 1;
+
+    return clubArticleComments.get(lastIndex);
   }
 
   @Transactional
