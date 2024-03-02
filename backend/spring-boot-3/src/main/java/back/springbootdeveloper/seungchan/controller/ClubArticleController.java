@@ -65,6 +65,7 @@ public class ClubArticleController {
       @PathVariable(value = "article_id") Long articleId) {
     Long memberId = tokenService.getMemberIdFromToken(request);
 
+    // 저자 검증
     if (clubArticleService.isAuthor(memberId, clubId, articleId)) {
       clubArticleService.deleteClubArticle(clubId, memberId, articleId);
 
@@ -211,6 +212,7 @@ public class ClubArticleController {
       @PathVariable(value = "comment_id") Long commentId) {
     Long memberId = tokenService.getMemberIdFromToken(request);
 
+    // 저자 검증
     final Boolean isAuthorClubArticleComment = clubArticleCommentService.isAuthor(memberId,
         commentId);
     if (isAuthorClubArticleComment) {
