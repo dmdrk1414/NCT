@@ -298,7 +298,7 @@ class MyPageControllerTest {
         clubMember.getClubMemberId());
     final List<MyClubArticleComment> resultMyClubArticleComments = resultClubMemberCommentsResDto.getMyClubArticleComments();
     // when
-    ResultActions result = mockMvc.perform(get(url, targetClubOneId)
+    ResultActions result = mockMvc.perform(get(url, clubMember.getClubMemberId())
         .accept(MediaType.APPLICATION_JSON)
         .header("authorization", "Bearer " + token) // token header에 담기
     );
@@ -336,7 +336,7 @@ class MyPageControllerTest {
     final List<MyClubArticle> myClubArticles = clubMemberCommentsResDto.getMyClubArticles();
 
     // when
-    ResultActions result = mockMvc.perform(get(url, targetClubOneId)
+    ResultActions result = mockMvc.perform(get(url, clubMember.getClubMemberId())
         .accept(MediaType.APPLICATION_JSON)
         .header("authorization", "Bearer " + token) // token header에 담기
     );
@@ -374,7 +374,7 @@ class MyPageControllerTest {
         member.getMemberId(), clubMember.getClubMemberId());
 
     // when
-    ResultActions result = mockMvc.perform(get(url, targetClubOneId)
+    ResultActions result = mockMvc.perform(get(url, clubMember.getClubMemberId())
         .accept(MediaType.APPLICATION_JSON)
         .header("authorization", "Bearer " + token) // token header에 담기
     );
@@ -442,5 +442,41 @@ class MyPageControllerTest {
                       + "].myAttendanceCount.totalCount").value(
                   targetMyAllClubMembersAttendances.get(i).getMyAttendanceCount().getTotalCount()));
     }
+  }
+
+  @Test
+  void 마이페이지_동아리_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/personal-info/{club_member_id}";
+
+    final Member member = memberOneClubLeader;
+    final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId,
+        member.getMemberId()).get();
+    final Club club = clubRepository.findById(clubMember.getClubId()).get();
+
+    // 검증을 위한 데이터 준비
+    // 클럽관련 정보
+    String memberProfile = "향후 디비수정 ";
+    String memberName = member.getFullName();
+    String memberStudentId = member.getStudentId();
+    String clubName = club.getClubName();
+    String memberStatusMessage = "향후 디비수정";
+
+    // when
+    ResultActions result = mockMvc.perform(get(url, clubMember.getClubMemberId())
+        .accept(MediaType.APPLICATION_JSON)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    // then
+    result
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result.memberProfile").value(memberProfile))
+        .andExpect(jsonPath("$.result.memberName").value(memberName))
+        .andExpect(jsonPath("$.result.memberStudentId").value(memberStudentId))
+        .andExpect(jsonPath("$.result.clubName").value(clubName))
+        .andExpect(jsonPath("$.result.memberStatusMessage").value(memberStatusMessage));
   }
 }
