@@ -292,4 +292,40 @@ class ClubArticleControllerTest {
               clubArticleCommentInformations.get(i).getClubArticleCommentLike()));
     }
   }
+
+  @Test
+  void 팀_게시판_상세_페이지_좋아요() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/informations/{club_id}/articles/{article_id}/like";
+
+    // 검증을 위한 데이터 준비
+    final Club targetClub = clubRepository.findById(targetClubOneId).get();
+    final Member targetMember = memberOneClubLeader;
+    final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(
+        targetClub.getClubId(), targetMember.getMemberId()).get();
+    final ClubArticle targetClubArticle = clubArticleService.findLastByClubArticleId(
+        targetClubMember.getClubMemberId());
+    final Integer targetClubArticleCommentLikeCount = targetClubArticle.getLikeCount();
+
+    // when
+    ResultActions result = mockMvc.perform(
+        post(url, targetClub.getClubId(), targetClubArticle.getClubArticleId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    final ClubArticle resultClubArticle = clubArticleService.findLastByClubArticleId(
+        targetClubMember.getClubMemberId());
+    final Integer resultClubArticleCommentLikeCount = resultClubArticle.getLikeCount();
+
+    // than
+    result
+        .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+        .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+
+    assertThat(resultClubArticleCommentLikeCount).isEqualTo(targetClubArticleCommentLikeCount + 1);
+  }
 }
