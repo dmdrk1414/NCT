@@ -72,12 +72,21 @@ public class MyPageController {
   public ResponseEntity<BaseResponseBody> togleMemberAndDormancyClubMember(
       HttpServletRequest request,
       @PathVariable(value = "club_member_id") Long clubMemberId) {
+    Long loginMemberId = tokenService.getMemberIdFromToken(request);
 
     // 대상이 실장확인
     Boolean isTargetLeaderClub = clubGradeService.isMemberStatus(clubMemberId, CLUB_GRADE.LEADER);
     if (isTargetLeaderClub) {
       return BaseResponseBodyUtiil.BaseResponseBodyFailure(
           ResponseMessage.BAD_TARGET_LEADER_MEMBER.get());
+    }
+
+    // 해당 계정이 로그인한 회원의 계정 여부 확인
+    Member targetMember = memberService.findByClubMemberId(clubMemberId);
+    Boolean isSameLoginAndTargetMember = targetMember.isSame(loginMemberId);
+    if (!isSameLoginAndTargetMember) {
+      return BaseResponseBodyUtiil.BaseResponseBodyFailure(
+          ResponseMessage.BAD_NOT_SAME_LOGIN_TARGET_MEMBER.get());
     }
 
     // 휴면 등급 업데이트
