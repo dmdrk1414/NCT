@@ -65,7 +65,7 @@ class ClubArticleControllerTest {
     final Member targetMember = memberOneClubLeader;
     final ClubMember targetClubMember = clubMemberRepository.findByClubIdAndMemberId(
         targetClub.getClubId(), targetMember.getMemberId()).get();
-    final ClubArticle targetClubArticle = clubArticleService.findFirstByClubArticleId(
+    final ClubArticle targetClubArticle = clubArticleService.findLastByClubArticleId(
         targetClubMember.getClubMemberId());
 
     final String updateTitle = "테스트를 위한 업데이트 클럽게시물 제목";
