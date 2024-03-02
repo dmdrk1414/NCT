@@ -4,19 +4,19 @@ import back.springbootdeveloper.seungchan.annotation.MoariumSpringBootTest;
 import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE_VALUE;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
-import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
-import back.springbootdeveloper.seungchan.entity.AttendanceState;
+import back.springbootdeveloper.seungchan.dto.response.ClubMemberCommentsResDto;
+import back.springbootdeveloper.seungchan.dto.response.MyClubArticleComment;
 import back.springbootdeveloper.seungchan.entity.Club;
 import back.springbootdeveloper.seungchan.entity.ClubGrade;
 import back.springbootdeveloper.seungchan.entity.ClubMember;
 import back.springbootdeveloper.seungchan.entity.Member;
-import back.springbootdeveloper.seungchan.entity.VacationToken;
-import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.ClubGradeRepository;
 import back.springbootdeveloper.seungchan.repository.ClubMemberRepository;
 import back.springbootdeveloper.seungchan.repository.ClubRepository;
+import back.springbootdeveloper.seungchan.service.ClubArticleCommentService;
 import back.springbootdeveloper.seungchan.testutil.TestCreateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,6 +48,8 @@ class MyPageControllerTest {
   private ClubRepository clubRepository;
   @Autowired
   private ClubGradeRepository clubGradeRepository;
+  @Autowired
+  private ClubArticleCommentService clubArticleCommentService;
   private Member memberOneClubLeader;
   private Long targetClubOneId;
   private String token;
@@ -241,5 +244,42 @@ class MyPageControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value(
             ResponseMessage.BAD_TARGET_LEADER_MEMBER.get()));
+  }
+
+  @Test
+  void 마이페이지_동아리_내가_쓴_댓글_보기_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/personal-info/{club_member_id}/comments";
+
+    final Member member = memberOneClubLeader;
+    final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId,
+        member.getMemberId()).get();
+
+    // 검증을 위한 데이터 준비
+    // 클럽관련 정보
+    final ClubMemberCommentsResDto resultClubMemberCommentsResDto = clubArticleCommentService.getClubMemberCommentsResDto(
+        clubMember.getClubMemberId());
+    final List<MyClubArticleComment> resultMyClubArticleComments = resultClubMemberCommentsResDto.getMyClubArticleComments();
+    // when
+    ResultActions result = mockMvc.perform(get(url, targetClubOneId)
+        .accept(MediaType.APPLICATION_JSON)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    for (int i = 0; i < resultMyClubArticleComments.size(); i++) {
+      // then
+      result
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.result.myClubArticleComments[" + i + "].clubArticleId").value(
+              resultMyClubArticleComments.get(i).getClubArticleId()))
+          .andExpect(jsonPath("$.result.myClubArticleComments[" + i + "].clubArticleTitle").value(
+              resultMyClubArticleComments.get(i).getClubArticleTitle()))
+          .andExpect(jsonPath("$.result.myClubArticleComments[" + i + "].articleComment").value(
+              resultMyClubArticleComments.get(i).getArticleComment()))
+          .andExpect(jsonPath("$.result.myClubArticleComments[" + i + "].articleCommentDate").value(
+              resultMyClubArticleComments.get(i).getArticleCommentDate()));
+    }
   }
 }
