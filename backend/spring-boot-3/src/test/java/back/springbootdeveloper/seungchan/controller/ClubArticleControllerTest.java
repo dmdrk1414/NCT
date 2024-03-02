@@ -790,7 +790,7 @@ class ClubArticleControllerTest {
   }
 
   @Test
-  void 팀_건의_게시판_상세_페이지_댓글_쓰기_테스트() throws Exception {
+  void 팀_게시판_상세_페이지_댓글_쓰기_테스트() throws Exception {
     // given
     // 유저 로그인
     final String token = testCreateUtil.create_token_one_club_leader_member();
@@ -834,7 +834,7 @@ class ClubArticleControllerTest {
   }
 
   @Test
-  void 팀_건의_게시판_상세_페이지_댓글_삭제_테스트() throws Exception {
+  void 팀_게시판_상세_페이지_댓글_삭제_테스트() throws Exception {
     // given
     // 유저 로그인
     final String token = testCreateUtil.create_token_one_club_leader_member();
@@ -877,7 +877,7 @@ class ClubArticleControllerTest {
   }
 
   @Test
-  void 팀_건의_게시판_상세_페이지_댓글_삭제_예외_저자_검증_테스트() throws Exception {
+  void 팀_게시판_상세_페이지_댓글_삭제_예외_저자_검증_테스트() throws Exception {
     // given
     // 유저 로그인
     final String token = testCreateUtil.create_token_one_club_leader_member();
