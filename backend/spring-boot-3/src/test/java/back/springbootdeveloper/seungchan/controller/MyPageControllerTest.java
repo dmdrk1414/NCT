@@ -6,6 +6,8 @@ import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.dto.response.ClubMemberArticlesResDto;
 import back.springbootdeveloper.seungchan.dto.response.ClubMemberCommentsResDto;
+import back.springbootdeveloper.seungchan.dto.response.MyAllClubMembersAttendance;
+import back.springbootdeveloper.seungchan.dto.response.MyAllClubMembersInformationsResDto;
 import back.springbootdeveloper.seungchan.dto.response.MyClubArticle;
 import back.springbootdeveloper.seungchan.dto.response.MyClubArticleComment;
 import back.springbootdeveloper.seungchan.entity.Club;
@@ -17,6 +19,7 @@ import back.springbootdeveloper.seungchan.repository.ClubMemberRepository;
 import back.springbootdeveloper.seungchan.repository.ClubRepository;
 import back.springbootdeveloper.seungchan.service.ClubArticleCommentService;
 import back.springbootdeveloper.seungchan.service.ClubArticleService;
+import back.springbootdeveloper.seungchan.service.MyPageService;
 import back.springbootdeveloper.seungchan.testutil.TestCreateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -55,6 +58,8 @@ class MyPageControllerTest {
   private ClubArticleCommentService clubArticleCommentService;
   @Autowired
   private ClubArticleService clubArticleService;
+  @Autowired
+  private MyPageService myPageService;
   private Member memberOneClubLeader;
   private Long targetClubOneId;
   private String token;
@@ -349,6 +354,93 @@ class MyPageControllerTest {
           .andExpect(
               jsonPath("$.result.myClubArticles[" + i + "].clubArticleClassification").value(
                   myClubArticles.get(i).getClubArticleClassification()));
+    }
+  }
+
+  @Test
+  void 마이페이지_동아리_전체_출석_현황_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/personal-info/{club_member_id}/attendances";
+
+    final Member member = memberOneClubLeader;
+    final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId,
+        member.getMemberId()).get();
+
+    // 검증을 위한 데이터 준비
+    // 클럽관련 정보
+    final List<MyAllClubMembersAttendance> targetMyAllClubMembersAttendances = myPageService.getMyAllClubMembersAttendance(
+        member.getMemberId(), clubMember.getClubMemberId());
+
+    // when
+    ResultActions result = mockMvc.perform(get(url, targetClubOneId)
+        .accept(MediaType.APPLICATION_JSON)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    for (int i = 0; i < targetMyAllClubMembersAttendances.size(); i++) {
+      // then
+      result
+          .andExpect(status().isOk())
+          .andExpect(
+              jsonPath("$.result.myAllClubMembersAttendances[" + i + "].clubName").value(
+                  targetMyAllClubMembersAttendances.get(i).getClubName()))
+          .andExpect(
+              jsonPath("$.result.myAllClubMembersAttendances[" + i + "].vacationToken").value(
+                  targetMyAllClubMembersAttendances.get(i).getVacationToken()))
+          .andExpect(
+              jsonPath(
+                  "$.result.myAllClubMembersAttendances[" + i + "].myAttendanceState.monday").value(
+                  targetMyAllClubMembersAttendances.get(i).getMyAttendanceState().getMonday()))
+          .andExpect(
+              jsonPath(
+                  "$.result.myAllClubMembersAttendances[" + i
+                      + "].myAttendanceState.tuesday").value(
+                  targetMyAllClubMembersAttendances.get(i).getMyAttendanceState().getTuesday()))
+          .andExpect(
+              jsonPath(
+                  "$.result.myAllClubMembersAttendances[" + i
+                      + "].myAttendanceState.wednesday").value(
+                  targetMyAllClubMembersAttendances.get(i).getMyAttendanceState().getWednesday()))
+          .andExpect(
+              jsonPath(
+                  "$.result.myAllClubMembersAttendances[" + i
+                      + "].myAttendanceState.thursday").value(
+                  targetMyAllClubMembersAttendances.get(i).getMyAttendanceState().getThursday()))
+          .andExpect(
+              jsonPath(
+                  "$.result.myAllClubMembersAttendances[" + i + "].myAttendanceState.friday").value(
+                  targetMyAllClubMembersAttendances.get(i).getMyAttendanceState().getFriday()))
+          .andExpect(
+              jsonPath(
+                  "$.result.myAllClubMembersAttendances[" + i
+                      + "].myAttendanceState.saturday").value(
+                  targetMyAllClubMembersAttendances.get(i).getMyAttendanceState().getSaturday()))
+          .andExpect(
+              jsonPath(
+                  "$.result.myAllClubMembersAttendances[" + i + "].myAttendanceState.sunday").value(
+                  targetMyAllClubMembersAttendances.get(i).getMyAttendanceState().getSunday()))
+          .andExpect(
+              jsonPath(
+                  "$.result.myAllClubMembersAttendances[" + i
+                      + "].myAttendanceCount.vacation").value(
+                  targetMyAllClubMembersAttendances.get(i).getMyAttendanceCount().getVacation()))
+          .andExpect(
+              jsonPath(
+                  "$.result.myAllClubMembersAttendances[" + i
+                      + "].myAttendanceCount.attendance").value(
+                  targetMyAllClubMembersAttendances.get(i).getMyAttendanceCount().getAttendance()))
+          .andExpect(
+              jsonPath(
+                  "$.result.myAllClubMembersAttendances[" + i
+                      + "].myAttendanceCount.absence").value(
+                  targetMyAllClubMembersAttendances.get(i).getMyAttendanceCount().getAbsence()))
+          .andExpect(
+              jsonPath(
+                  "$.result.myAllClubMembersAttendances[" + i
+                      + "].myAttendanceCount.totalCount").value(
+                  targetMyAllClubMembersAttendances.get(i).getMyAttendanceCount().getTotalCount()));
     }
   }
 }
