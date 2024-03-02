@@ -252,6 +252,19 @@ public class ClubArticleService {
   }
 
   /**
+   * 특정 클럽 회원의 가장 최근 게시물을 반환합니다.
+   *
+   * @param clubMemberId 클럽 회원의 ID입니다.
+   * @return 해당 클럽 회원이 작성한 가장 최근의 게시물입니다.
+   */
+  public ClubArticle findLastByClubArticleId(Long clubMemberId) {
+    List<ClubArticle> clubArticles = clubArticleRepository.findAllByClubMemberId(clubMemberId);
+    Integer lastIndex = clubArticles.size() - 1;
+
+    return clubArticles.get(lastIndex);
+  }
+
+  /**
    * 주어진 회원과 클럽 게시글 정보를 기반으로 클럽 게시글의 간단한 정보를 생성합니다.
    *
    * @param authorMember 게시글 작성자 회원 정보
