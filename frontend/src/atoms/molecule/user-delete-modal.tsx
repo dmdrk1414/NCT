@@ -47,7 +47,7 @@ export default function UserDeleteModal(item: props) {
       <div className="bg-white w-[80%] h-[20%] rounded-[7%] flex flex-col justify-center items-center" onClick={e => e.stopPropagation()}>
         {isOpen ? (
           <>
-            <div className="font-bold text-xl">
+            <div className="p-[0.5rem] font-bold text-xl">
               <span className="text-red">{item.userName}</span>
               <span>님을 추방 하시겠습니까?</span>
             </div>
