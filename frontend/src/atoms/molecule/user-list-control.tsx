@@ -212,7 +212,7 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
     setIsGiveNuriKingModalOpen(true);
   };
 
-  // 실장 권한 주기 버튼 핸들러
+  // 졸업 회원 토글 기능 주기 버튼 핸들러
   const handlerTogleGradeButton = () => {
     setIsTogelGradeModalOpen(true);
   };
