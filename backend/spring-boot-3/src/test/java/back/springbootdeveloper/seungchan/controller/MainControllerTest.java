@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.dto.request.UserEachAttendanceControlReqDto;
@@ -720,6 +721,67 @@ class MainControllerTest {
     // then
     resultActions
         .andExpect(jsonPath("$.message").value(ResponseMessage.BAD_IS_GRADUATION_USER.get()));
+  }
+
+  @Test
+  void 일반_회원_졸업_토글_기능_테스트() throws Exception {
+    // given
+    final String url = "/main/detail/{id}/control/toggle/grade";
+    final UserInfo targetUser = nomalUser;
+
+    // when
+    ResultActions resultActions = mockMvc.perform(post(url, targetUser.getId())
+        .accept(MediaType.APPLICATION_JSON)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    UserInfo resultUserInfo = userRepository.findById(targetUser.getId()).get();
+    Boolean resultIsOd = resultUserInfo.isOb();
+
+    resultActions
+        .andExpect(jsonPath("$.message").value(
+            RESPONSE_MESSAGE.SUCCESE_TOGLE_GRADUATION(targetUser.getName())));
+    assertThat(resultIsOd).isEqualTo(!targetUser.isOb());
+  }
+
+  @Test
+  void 일반_졸업_회원_토글_기능_테스트() throws Exception {
+    // given
+    final String url = "/main/detail/{id}/control/toggle/grade";
+    final UserInfo targetUser = nomalUser;
+    userService.toggleGrade(targetUser.getId(), true);
+
+    // when
+    ResultActions resultActions = mockMvc.perform(post(url, targetUser.getId())
+        .accept(MediaType.APPLICATION_JSON)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    UserInfo resultUserInfo = userRepository.findById(targetUser.getId()).get();
+    Boolean resultIsOd = resultUserInfo.isOb();
+
+    resultActions
+        .andExpect(jsonPath("$.message").value(
+            RESPONSE_MESSAGE.SUCCESE_TOGLE_MEMBER(targetUser.getName())));
+    assertThat(resultIsOd).isFalse();
+  }
+
+  @Test
+  void 일반_졸업_회원_토글_기능_예외_실장_적용_테스트() throws Exception {
+    // given
+    final String url = "/main/detail/{id}/control/toggle/grade";
+    final UserInfo targetUser = kingUser;
+    userService.toggleGrade(targetUser.getId(), true);
+
+    // when
+    ResultActions resultActions = mockMvc.perform(post(url, targetUser.getId())
+        .accept(MediaType.APPLICATION_JSON)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    resultActions
+        .andExpect(jsonPath("$.message").value(
+            RESPONSE_MESSAGE.BAD_TOGGLE_MEMBER_GRADE(targetUser.getName())));
   }
 }
 
