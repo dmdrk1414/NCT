@@ -13,6 +13,7 @@ import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
+import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -781,7 +782,47 @@ class MainControllerTest {
 
     resultActions
         .andExpect(jsonPath("$.message").value(
-            RESPONSE_MESSAGE.BAD_TOGGLE_MEMBER_GRADE(targetUser.getName())));
+            ResponseMessage.BAD_IS_NURI_KING.get()));
+  }
+
+  @Test
+  void 실장_권한_주는_기능_테스트() throws Exception {
+    // given
+    final String url = "/main/detail/{id}/control/give/king";
+    final UserInfo targetUser = nomalUser;
+    final UserInfo myUser = kingUser;
+
+    // when
+    ResultActions resultActions = mockMvc.perform(post(url, targetUser.getId())
+        .accept(MediaType.APPLICATION_JSON)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    UserUtill resultKingUserUtill = userUtillService.findUserByUserId(myUser.getId());
+
+    resultActions
+        .andExpect(jsonPath("$.message").value(
+            RESPONSE_MESSAGE.SUCCESE_GIVE_KING(targetUser.getName(), myUser.getName())));
+
+    assertThat(resultKingUserUtill.isNuriKing()).isFalse();
+  }
+
+  @Test
+  void 실장_권한_주는_기능_예외_타겟_졸업_유저_테스트() throws Exception {
+    // given
+    final String url = "/main/detail/{id}/control/give/king";
+    final UserInfo targetUser = obUser;
+    final UserInfo myUser = nomalUser;
+
+    // when
+    ResultActions resultActions = mockMvc.perform(post(url, targetUser.getId())
+        .accept(MediaType.APPLICATION_JSON)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    resultActions
+        .andExpect(jsonPath("$.message").value(
+            ResponseMessage.BAD_NOT_GIVE_KING_GRADUATION_USER.get()));
   }
 }
 

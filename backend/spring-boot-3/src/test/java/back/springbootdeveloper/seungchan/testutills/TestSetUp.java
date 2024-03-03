@@ -118,6 +118,30 @@ public class TestSetUp {
     // userId OB 2
     UserInfo userOb = userService.save(TestMakeObject.makeUserOb("졸업 유저", "2@gmail.com"));
 
+    Long userId_ob = userOb.getId();
+
+    userUtillService.save(TestMakeObject.makeUserUtill(userOb, 5, false));
+
+    String vacationDates = "";
+    String absenceDates = "";
+    String weeklyData = "[0,0,0,0,0]";
+    attendanceService.save(
+        TestMakeObject.makeAttendanceStatus(userOb, vacationDates, absenceDates, weeklyData));
+
+    AttendanceTime attendanceTime = new AttendanceTime(userOb);
+    attendanceTimeService.save(attendanceTime);
+
+    String basicWeeklyData = "[0,0,0,0,0]";
+    String basicMonth = "";
+    PeriodicData periodicDataOfNewUser = PeriodicData.builder()
+        .userId(userOb.getId())
+        .name(userOb.getName())
+        .weeklyData(basicWeeklyData)
+        .thisMonth(basicMonth)
+        .previousMonth(basicMonth)
+        .build();
+    periodicDataService.save(periodicDataOfNewUser);
+
     return userOb;
   }
 
