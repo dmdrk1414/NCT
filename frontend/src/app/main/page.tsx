@@ -83,6 +83,7 @@ export default function Main() {
       })
         .then(res => {
           setUserList(res.data[0].obUserList);
+          console.log(res.data[0]);
         })
         .catch(err => {
           console.log(err);

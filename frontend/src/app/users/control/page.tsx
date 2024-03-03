@@ -55,7 +55,7 @@ export default function Main() {
           console.log(err);
         });
     }
-  }, [type, isAttendanceModalOpen]);
+  }, [type, userList]);
 
   return (
     <main>
@@ -75,7 +75,7 @@ export default function Main() {
         </article>
       </section>
 
-      <div className="w-[100vw] flex justify-around items-center bg-[#F3F3F3] h-[3rem]  bottom-[3.1rem] fixed">
+      <div className="w-[100vw] flex justify-around items-center bg-[#F3F3F3] h-[3rem]  bottom-[3rem] fixed">
         <div className={kingManagePageCss} onClick={() => router.push(RouteUrl.ROUTE_JOIN_APPLICATION_LIST)}>
           신입 신청 확인
         </div>
