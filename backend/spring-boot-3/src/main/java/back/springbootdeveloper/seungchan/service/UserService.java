@@ -106,6 +106,13 @@ public class UserService {
     return user;
   }
 
+  /**
+   * 주어진 ID를 가진 사용자가 졸업했는지 여부를 확인합니다.
+   *
+   * @param id 확인할 사용자의 ID입니다.
+   * @return 사용자가 졸업했으면 true, 그렇지 않으면 false를 반환합니다.
+   * @throws EntityNotFoundException 주어진 ID와 일치하는 사용자를 찾을 수 없는 경우 발생합니다.
+   */
   public Boolean idGraduationUser(final long id) {
     UserInfo userInfo = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     return userInfo.isOb();
