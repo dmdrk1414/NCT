@@ -7,6 +7,7 @@ import { InputControlTimeFrom } from '../atom/input-control-time-form';
 import { formatNumberWithLeadingZero, validateInputAttendanceTime } from '@/utils/validate/numberValidate';
 import UserDeleteModal from './user-delete-modal';
 import GiveNuriKingModal from './give-nuri-king-modal';
+import ToggleGradeModal from './toggle-grade-modal';
 
 type data = {
   name: string;
@@ -23,6 +24,8 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
   const [isOkDeleteModalInfoOpen, setOkDeleteModalInfoOpen] = useState(false);
   const [isGiveNuriKingModalOpen, setIsGiveNuriKingModalOpen] = useState(false);
   const [isOkGiveNuriKingModalInfoOpen, setOkDeletGiveNuriKingeModalInfoOpen] = useState(false);
+  const [isTogelGradeModalOpen, setIsTogelGradeModalOpen] = useState(false);
+  const [isOkTogelGradeModalOpen, setOkTogelGradeModalOpen] = useState(false);
   const [isExceptionAttendance, setIsExceptionAttendance] = useState(false);
   const [attendanceTimeData, setAttendanceTimeData] = useState({
     // get으로 얻는 현재 출석 정보
@@ -112,6 +115,11 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
   useEffect(() => {
     setIsDeleteMemberModalOpen(false);
   }, [isOkDeleteModalInfoOpen]);
+
+  // 회원 삭제 모달 감지
+  useEffect(() => {
+    setIsTogelGradeModalOpen(false);
+  }, [isOkTogelGradeModalOpen]);
 
   useEffect(() => {
     // 출석시간 변경시 hopeAttendanceTimes 설정
@@ -204,6 +212,11 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
     setIsGiveNuriKingModalOpen(true);
   };
 
+  // 실장 권한 주기 버튼 핸들러
+  const handlerTogleGradeButton = () => {
+    setIsTogelGradeModalOpen(true);
+  };
+
   // 장기휴가 신청 버튼 POST 버튼
   const submitExceptionAttendance = () => {
     if (isExceptionAttendance) {
@@ -239,6 +252,7 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
       <div>
         {isDeleteMemberModalOpen ? <UserDeleteModal userName={name} userId={userId} setIsDeleteModalInfoOpen={setIsDeleteMemberModalOpen} /> : null}
         {isGiveNuriKingModalOpen ? <GiveNuriKingModal userName={name} userId={userId} setIsGiveNuriKingModalOpen={setIsGiveNuriKingModalOpen} /> : null}
+        {isTogelGradeModalOpen ? <ToggleGradeModal userName={name} userId={userId} setIsTogelGradeModalOpen={setIsTogelGradeModalOpen} /> : null}
         <div className="font-semibold">{name}</div>
         <div className="font-semibold">현제출석 시간</div>
         <div className="flex justify-around ">
@@ -300,10 +314,18 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
 
       <button
         type="button"
-        className="mt-[0.5rem] px-2 py-1 text-xs font-medium text-center text-white bg-blue rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className="mr-[0.5rem] mt-[0.5rem] px-2 py-1 text-xs font-medium text-center text-white bg-blue rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         onClick={handlerGiveNuriKingButton}
       >
         실장 권한 주기
+      </button>
+
+      <button
+        type="button"
+        className="mt-[0.5rem] px-2 py-1 text-xs font-medium text-center text-white bg-blue rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        onClick={handlerTogleGradeButton}
+      >
+        졸업 회원 전환
       </button>
 
       <div className="border border-light-grey my-[0.5rem]"></div>
