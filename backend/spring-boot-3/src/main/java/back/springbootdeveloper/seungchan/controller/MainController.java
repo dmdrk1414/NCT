@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.domain.ObUser;
 import back.springbootdeveloper.seungchan.dto.request.UserEachAttendanceControlReqDto;
@@ -7,6 +8,7 @@ import back.springbootdeveloper.seungchan.dto.response.*;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.domain.YbUserInfomation;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
@@ -134,5 +136,39 @@ public class MainController {
 
     databaseService.deleteUser(id);
     return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.SUCCESS_DELETE_USER.get());
+  }
+
+  @Operation(summary = "회원 졸업-일반 전환 기능", description = "실장이 개인 회원 졸업-일반 전환 기능")
+  @PostMapping("/detail/{id}/control/toggle/grade")
+  public ResponseEntity<BaseResponseBody> togleGradeUserControl(
+      @PathVariable long id) {
+    final UserInfo targetUser = userServiceImp.findUserById(id);
+    final String targetUserName = targetUser.getName();
+    final Boolean GRADUATION_USER = true;
+    final Boolean NOMAL_USER = false;
+    System.out.println("sdfsd");
+
+    // 실장 유무 확인
+    Boolean targetIsNuriKing = userUtillService.isNuriKing(id);
+    if (targetIsNuriKing) {
+      return BaseResponseBodyUtiil.BaseResponseBodyBad(ResponseMessage.BAD_IS_NURI_KING.get());
+    }
+
+    Boolean isGraduation = userServiceImp.idGraduationUser(id);
+    // 일반 회원 -> 졸업 토글 기능
+    if (!isGraduation) {
+      userServiceImp.toggleGrade(id, GRADUATION_USER);
+      return BaseResponseBodyUtiil.BaseResponseBodySuccess(
+          RESPONSE_MESSAGE.SUCCESE_TOGLE_GRADUATION(targetUserName));
+    }
+    // 졸업 회원 -> 일반 토글 기능
+    if (isGraduation) {
+      userServiceImp.toggleGrade(id, NOMAL_USER);
+      return BaseResponseBodyUtiil.BaseResponseBodySuccess(
+          RESPONSE_MESSAGE.SUCCESE_TOGLE_MEMBER(targetUserName));
+    }
+
+    return BaseResponseBodyUtiil.BaseResponseBodySuccess(
+        RESPONSE_MESSAGE.BAD_TOGGLE_MEMBER_GRADE(targetUserName));
   }
 }

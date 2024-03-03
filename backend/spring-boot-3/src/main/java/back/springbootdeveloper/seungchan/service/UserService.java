@@ -9,6 +9,7 @@ import back.springbootdeveloper.seungchan.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor // final이 붙거나  @NotNull이 붙는 필드의 생성자 추가
@@ -116,6 +117,20 @@ public class UserService {
   public Boolean idGraduationUser(final long id) {
     UserInfo userInfo = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     return userInfo.isOb();
+  }
+
+  /**
+   * 주어진 사용자 ID에 해당하는 사용자의 성적을 전환합니다.
+   *
+   * @param userId      성적을 전환할 사용자의 ID입니다.
+   * @param updateGrade 성적을 업데이트할지 여부를 나타내는 부울 값입니다.
+   */
+  @Transactional
+  public void toggleGrade(final long userId, final Boolean updateGrade) {
+    UserInfo userInfo = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+    userInfo.setOb(updateGrade);
+
+    userRepository.save(userInfo);
   }
 }
 
