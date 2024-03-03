@@ -146,7 +146,6 @@ public class MainController {
     final String targetUserName = targetUser.getName();
     final Boolean GRADUATION_USER = true;
     final Boolean NOMAL_USER = false;
-    System.out.println("sdfsd");
 
     // 실장 유무 확인
     Boolean targetIsNuriKing = userUtillService.isNuriKing(id);
@@ -170,5 +169,39 @@ public class MainController {
 
     return BaseResponseBodyUtiil.BaseResponseBodySuccess(
         RESPONSE_MESSAGE.BAD_TOGGLE_MEMBER_GRADE(targetUserName));
+  }
+
+  @Operation(summary = "실장 권한 주는 기능", description = "실장이 개인 회원에게 실장 권한 전환 기능")
+  @PostMapping("/detail/{id}/control/give/king")
+  public ResponseEntity<BaseResponseBody> giveKing2UserControl(
+      HttpServletRequest request,
+      @PathVariable long id) {
+    final UserInfo targetUser = userServiceImp.findUserById(id);
+    final String targetUserName = targetUser.getName();
+    final Long myUserId = tokenService.getUserIdFromToken(request);
+    final UserInfo myUser = userServiceImp.findUserById(myUserId);
+
+    // 실장 유무 확인
+    Boolean targetIsNuriKing = userUtillService.isNuriKing(id);
+    if (targetIsNuriKing) {
+      return BaseResponseBodyUtiil.BaseResponseBodyBad(ResponseMessage.BAD_IS_NURI_KING.get());
+    }
+
+    // 타겟 유저 졸업 유저 유무
+    Boolean isGraduation = userServiceImp.idGraduationUser(id);
+    if (isGraduation) {
+      return BaseResponseBodyUtiil.BaseResponseBodyBad(
+          ResponseMessage.BAD_NOT_GIVE_KING_GRADUATION_USER.get());
+    }
+
+    // 실장 권한 주기
+    Boolean NURI_KING = true;
+    userUtillService.updateUserGrade(targetUser.getId(), NURI_KING);
+    // 내 권한 삭제
+    Boolean NOMAL_USER = false;
+    userUtillService.updateUserGrade(myUser.getId(), NOMAL_USER);
+
+    return BaseResponseBodyUtiil.BaseResponseBodySuccess(
+        RESPONSE_MESSAGE.SUCCESE_GIVE_KING(targetUserName, myUser.getName()));
   }
 }

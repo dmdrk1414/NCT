@@ -80,4 +80,8 @@ public class UserUtillService {
   public UserUtill save(UserUtill userUtill) {
     return userUtilRepository.save(userUtill);
   }
+
+  public void updateUserGrade(final Long id, final Boolean grade) {
+    userUtilRepository.updateIsKingNuri(id, grade);
+  }
 }
