@@ -5,40 +5,43 @@ import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "user_utill")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class UserUtill {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
-    private Long id;
 
-    @Column(name = "user_id", nullable = false, updatable = false, unique = true)
-    private Long userId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", updatable = false)
+  private Long id;
 
-    @Column(name = "name", length = 10, nullable = false, updatable = false)
-    private String name;
+  @Column(name = "user_id", nullable = false, updatable = false, unique = true)
+  private Long userId;
 
-    @Column(name = "cnt_vacation", nullable = false, updatable = false)
-    private int cntVacation;
+  @Column(name = "name", length = 10, nullable = false, updatable = false)
+  private String name;
 
-    @Column(name = "nuri_king", nullable = false, updatable = false)
-    private boolean isNuriKing;
+  @Column(name = "cnt_vacation", nullable = false, updatable = false)
+  private int cntVacation;
 
-    @Column(name = "general_affairs", nullable = false, updatable = false)
-    private boolean isGeneralAffairs;
+  @Column(name = "nuri_king", nullable = false, updatable = false)
+  private boolean isNuriKing;
 
-    @Builder
-    public UserUtill(Long userId, String name, int cntVacation, boolean isNuriKing, boolean isGeneralAffairs) {
-        this.userId = userId;
-        this.name = name;
-        this.cntVacation = cntVacation;
-        this.isNuriKing = isNuriKing;
-        this.isGeneralAffairs = isGeneralAffairs;
-    }
+  @Column(name = "general_affairs", nullable = false, updatable = false)
+  private boolean isGeneralAffairs;
 
-    public void updateVacationNum(int resultVacationNum) {
-        this.cntVacation = resultVacationNum;
-    }
+  @Builder
+  public UserUtill(Long userId, String name, int cntVacation, boolean isNuriKing,
+      boolean isGeneralAffairs) {
+    this.userId = userId;
+    this.name = name;
+    this.cntVacation = cntVacation;
+    this.isNuriKing = isNuriKing;
+    this.isGeneralAffairs = isGeneralAffairs;
+  }
+
+  public void updateVacationNum(int resultVacationNum) {
+    this.cntVacation = resultVacationNum;
+  }
 }

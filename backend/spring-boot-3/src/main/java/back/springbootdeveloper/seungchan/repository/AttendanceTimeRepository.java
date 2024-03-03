@@ -11,16 +11,20 @@ import java.util.List;
 
 @Repository
 public interface AttendanceTimeRepository extends JpaRepository<AttendanceTime, Long> {
-    AttendanceTime findByUserId(Long id);
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE AttendanceTime a SET a.monday = :monday, a.tuesday = :tuesday, a.wednesday = :wednesday, a.thursday = :thursday, a.friday = :friday WHERE a.userId = :userId")
-    void updateAttendanceTime(String monday, String tuesday, String wednesday, String thursday, String friday, Long userId);
+  AttendanceTime findByUserId(Long id);
+
+  @Transactional
+  @Modifying
+  @Query("UPDATE AttendanceTime a SET a.monday = :monday, a.tuesday = :tuesday, a.wednesday = :wednesday, a.thursday = :thursday, a.friday = :friday WHERE a.userId = :userId")
+  void updateAttendanceTime(String monday, String tuesday, String wednesday, String thursday,
+      String friday, Long userId);
 
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE AttendanceTime a SET a.isExceptonAttendance = :isChangeException WHERE a.userId = :userId")
-    void updateException(long userId, boolean isChangeException);
+  @Transactional
+  @Modifying
+  @Query("UPDATE AttendanceTime a SET a.isExceptonAttendance = :isChangeException WHERE a.userId = :userId")
+  void updateException(long userId, boolean isChangeException);
+
+  void deleteByUserId(Long userId);
 }
