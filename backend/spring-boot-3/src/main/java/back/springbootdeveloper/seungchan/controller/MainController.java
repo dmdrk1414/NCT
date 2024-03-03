@@ -120,7 +120,17 @@ public class MainController {
   @Operation(summary = "회원 추방 기능", description = "실장의 회원 추방 기능 추가.")
   @PostMapping("/detail/{id}/control/delete")
   public ResponseEntity<BaseResponseBody> deleteUserControl(
+      HttpServletRequest request,
       @PathVariable long id) {
+    final Long myUserId = tokenService.getUserIdFromToken(request);
+    final UserInfo myUser = userServiceImp.findUserById(myUserId);
+
+    // 기능 사용자 실장 유무 확인
+    Boolean myUserIsNuriKing = userUtillService.isNuriKing(myUserId);
+    if (!myUserIsNuriKing) {
+      return BaseResponseBodyUtiil.BaseResponseBodyBad(ResponseMessage.BAD_NOT_USER_NOMAL.get());
+    }
+
     // 졸업 유저 유무
     Boolean isGraduation = userServiceImp.idGraduationUser(id);
     if (isGraduation) {
