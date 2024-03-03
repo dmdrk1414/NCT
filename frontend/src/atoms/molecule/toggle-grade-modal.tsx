@@ -32,7 +32,6 @@ export default function ToggleGradeModal(item: props) {
         .then(res => {
           const data = res.data;
           const message = data.message;
-          console.log(message);
 
           setMessage(message);
         })
