@@ -5,6 +5,7 @@ import { userToken, isNuriKing } from '../../states/index';
 import { useRouter } from 'next/navigation';
 import { InputControlTimeFrom } from '../atom/input-control-time-form';
 import { formatNumberWithLeadingZero, validateInputAttendanceTime } from '@/utils/validate/numberValidate';
+import UserDeleteModal from './user-delete-modal';
 
 type data = {
   name: string;
@@ -17,7 +18,8 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
   const router = useRouter();
   const [token, setToken] = useRecoilState(userToken);
   const [type, setType] = useState(0);
-  const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
+  const [isDeleteMemberModalOpen, setIsDeleteMemberModalOpen] = useState(false);
+  const [isOkDeleteModalInfoOpen, setOkDeleteModalInfoOpen] = useState(false);
   const [isExceptionAttendance, setIsExceptionAttendance] = useState(false);
   const [attendanceTimeData, setAttendanceTimeData] = useState({
     // get으로 얻는 현재 출석 정보
@@ -104,6 +106,14 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
   };
 
   useEffect(() => {
+    if (isOkDeleteModalInfoOpen) {
+      setTimeout(() => {
+        setIsDeleteMemberModalOpen(false); // 2초 후에 AllertModal 닫기
+      }, 2000);
+    }
+  }, [isOkDeleteModalInfoOpen]);
+
+  useEffect(() => {
     // 출석시간 변경시 hopeAttendanceTimes 설정
     setHopeAttendanceTimes({
       ...hopeAttendanceTimes,
@@ -184,6 +194,11 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
     }
   };
 
+  // 삭제 버튼 핸들러
+  const handlerDeleteButton = () => {
+    setIsDeleteMemberModalOpen(true);
+  };
+
   // 장기휴가 신청 버튼 POST 버튼
   const submitExceptionAttendance = () => {
     if (isExceptionAttendance) {
@@ -217,6 +232,7 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
   return (
     <>
       <div>
+        {isDeleteMemberModalOpen ? <UserDeleteModal userName={name} userId={userId} setIsDeleteModalInfoOpen={setIsDeleteMemberModalOpen} /> : null}
         <div className="font-semibold">{name}</div>
         <div className="font-semibold">현제출석 시간</div>
         <div className="flex justify-around ">
@@ -262,10 +278,18 @@ export default function UserListOnControl({ name, isKing, userId, setIsMemberInf
 
       <button
         type="button"
-        className="px-2 py-1 text-xs font-medium text-center text-white bg-blue rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className="mr-[0.5rem]  px-2 py-1 text-xs font-medium text-center text-white bg-blue rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         onClick={submitExceptionAttendance}
       >
         장기휴가
+      </button>
+
+      <button
+        type="button"
+        className="px-2 py-1 text-xs font-medium text-center text-white bg-blue rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        onClick={handlerDeleteButton}
+      >
+        회원 추방
       </button>
 
       <div className="border border-light-grey my-[0.5rem]"></div>
