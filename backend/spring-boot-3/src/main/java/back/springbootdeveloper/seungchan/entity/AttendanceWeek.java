@@ -90,6 +90,12 @@ public class AttendanceWeek extends BaseEntity {
     }
   }
 
+  /**
+   * 주어진 요일에 대한 상태를 반환하는 메서드입니다.
+   *
+   * @param dayOfWeek 요일
+   * @return 해당 요일의 상태
+   */
   public String getStatusForDay(DayOfWeek dayOfWeek) {
     switch (dayOfWeek) {
       case MONDAY:
