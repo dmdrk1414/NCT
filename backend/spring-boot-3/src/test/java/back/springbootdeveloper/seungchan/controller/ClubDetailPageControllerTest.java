@@ -16,6 +16,7 @@ import back.springbootdeveloper.seungchan.service.AttendanceNumberService;
 import back.springbootdeveloper.seungchan.service.AttendanceWeekDateService;
 import back.springbootdeveloper.seungchan.service.AttendanceWeekService;
 import back.springbootdeveloper.seungchan.testutil.TestCreateUtil;
+import back.springbootdeveloper.seungchan.testutil.TestUtil;
 import back.springbootdeveloper.seungchan.util.DayUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
@@ -196,7 +197,9 @@ class ClubDetailPageControllerTest {
         targetClubOneId, targetMember.getMemberId()).get();
     final AttendanceState targetAttendanceState = attendanceStateRepository.findById(
         targetClubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-    final VacationToken targetVacationToken = targetAttendanceState.getVacationTokens();
+    final VacationToken targetVacationToken = TestUtil.getLastObject(
+        targetAttendanceState.getVacationTokens());
+
     final Integer targetTokenCount = 5;
     final GiveVacationTokenReqDto requestDto = GiveVacationTokenReqDto.builder()
         .vacationToken(targetTokenCount)
@@ -214,7 +217,8 @@ class ClubDetailPageControllerTest {
 
     final AttendanceState updateAttendanceState = attendanceStateRepository.findById(
         targetClubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-    final VacationToken updateVacationToken = updateAttendanceState.getVacationTokens();
+    final VacationToken updateVacationToken = TestUtil.getLastObject(
+        updateAttendanceState.getVacationTokens());
 
     // then
     result
@@ -239,7 +243,8 @@ class ClubDetailPageControllerTest {
         targetClubOneId, targetMember.getMemberId()).get();
     final AttendanceState targetAttendanceState = attendanceStateRepository.findById(
         targetClubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-    final VacationToken targetVacationToken = targetAttendanceState.getVacationTokens();
+    final VacationToken targetVacationToken = TestUtil.getLastObject(
+        targetAttendanceState.getVacationTokens());
     final Integer targetTokenCount = 5;
     final GiveVacationTokenReqDto requestDto = GiveVacationTokenReqDto.builder()
         .vacationToken(targetTokenCount)
