@@ -26,6 +26,11 @@ public class ClubControl {
   @OneToOne(mappedBy = "clubControl")
   private Club club;
 
+  /**
+   * 휴가 토큰 컨트롤을 설정하는 메서드입니다. 동시에 이 휴가 토큰 컨트롤이 해당 클럽 컨트롤과 연결되어 있지 않은 경우에만 연결합니다.
+   *
+   * @param vacationTokenControl 설정할 휴가 토큰 컨트롤
+   */
   public void setVacationTokenControl(final VacationTokenControl vacationTokenControl) {
     this.vacationTokenControl = vacationTokenControl;
 
@@ -34,6 +39,11 @@ public class ClubControl {
     }
   }
 
+  /**
+   * 출석 주를 설정하는 메서드입니다. 동시에 이 출석 주가 해당 클럽 컨트롤과 연결되어 있지 않은 경우에만 연결합니다.
+   *
+   * @param attendanceWeek 설정할 출석 주
+   */
   public void setAttendanceWeek(final AttendanceWeek attendanceWeek) {
     this.attendanceWeek = attendanceWeek;
 
@@ -42,6 +52,11 @@ public class ClubControl {
     }
   }
 
+  /**
+   * 클럽을 설정하는 메서드입니다. 동시에 이 클럽이 해당 클럽 컨트롤과 연결되어 있지 않은 경우에만 연결합니다.
+   *
+   * @param club 설정할 클럽
+   */
   public void setClub(final Club club) {
     this.club = club;
 
@@ -49,4 +64,5 @@ public class ClubControl {
       club.setClubControl(this);
     }
   }
+
 }

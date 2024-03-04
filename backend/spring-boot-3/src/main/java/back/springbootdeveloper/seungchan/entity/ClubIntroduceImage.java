@@ -24,6 +24,11 @@ public class ClubIntroduceImage extends BaseEntity {
     this.clubIntroduceImageUrl = clubIntroduceImageUrl;
   }
 
+  /**
+   * 클럽 소개 이미지 URL을 업데이트하는 메서드입니다.
+   *
+   * @param clubIntroduceImageUrl 새로운 클럽 소개 이미지 URL
+   */
   public void updateClubIntroduceImageUrl(String clubIntroduceImageUrl) {
     this.clubIntroduceImageUrl = clubIntroduceImageUrl;
   }
