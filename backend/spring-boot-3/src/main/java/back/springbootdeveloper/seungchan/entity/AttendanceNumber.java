@@ -52,10 +52,15 @@ public class AttendanceNumber extends BaseEntity {
     this.attendanceNumber = String.valueOf(randomAttendanceNumber);
   }
 
+  /**
+   * 클럽을 설정하는 메서드입니다. 동시에 이 출석 시간이 해당 클럽의 출석 번호에 포함되어 있지 않은 경우에만 추가합니다.
+   *
+   * @param club 클럽
+   */
   public void setClub(final Club club) {
     this.club = club;
 
-    if (!club.getAttendanceNumbers().contains(club)) { // null 체크 추가
+    if (!club.getAttendanceNumbers().contains(this)) { // null 체크 추가
       club.addAttendanceNumber(this);
     }
   }

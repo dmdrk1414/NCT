@@ -28,6 +28,11 @@ public class AttendanceState {
   @JoinColumn(name = "attendance_check_time_id")
   private AttendanceCheckTime attendanceCheckTime;
 
+  /**
+   * 출석 주차 날짜를 추가하는 메서드입니다. 동시에 이 출석 주차 날짜가 해당 출석 상태와 연결되어 있지 않은 경우에만 연결합니다.
+   *
+   * @param attendanceWeekDate 추가할 출석 주차 날짜
+   */
   public void addAttendanceWeekDates(final AttendanceWeekDate attendanceWeekDate) {
     this.attendanceWeekDates.add(attendanceWeekDate);
 
@@ -36,6 +41,11 @@ public class AttendanceState {
     }
   }
 
+  /**
+   * 휴가 토큰을 추가하는 메서드입니다. 동시에 이 휴가 토큰이 해당 출석 상태와 연결되어 있지 않은 경우에만 연결합니다.
+   *
+   * @param vacationToken 추가할 휴가 토큰
+   */
   public void addtVacationToken(final VacationToken vacationToken) {
     this.vacationTokens.add(vacationToken);
 
@@ -44,6 +54,11 @@ public class AttendanceState {
     }
   }
 
+  /**
+   * 출석 시간을 설정하는 메서드입니다. 동시에 이 출석 시간이 해당 출석 상태와 연결되어 있지 않은 경우에만 연결합니다.
+   *
+   * @param attendanceCheckTime 설정할 출석 시간
+   */
   public void setAttendanceCheckTime(final AttendanceCheckTime attendanceCheckTime) {
     this.attendanceCheckTime = attendanceCheckTime;
 
@@ -51,4 +66,5 @@ public class AttendanceState {
       attendanceCheckTime.setAttendanceSate(this);
     }
   }
+
 }
