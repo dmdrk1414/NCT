@@ -82,6 +82,11 @@ public class AttendanceWeek extends BaseEntity {
     this.sunday = sunday;
   }
 
+  /**
+   * 클럽 컨트롤을 설정하는 메서드입니다. 동시에 이 클럽 컨트롤이 해당 출석 주에 연결되어 있지 않은 경우에만 연결합니다.
+   *
+   * @param clubControl 설정할 클럽 컨트롤
+   */
   public void setClubControl(final ClubControl clubControl) {
     this.clubControl = clubControl;
 
