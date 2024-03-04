@@ -64,43 +64,79 @@ public class ClubArticleComment extends BaseEntity {
     this.commentDate = zonedDateTime.toLocalDate();
   }
 
+  /**
+   * 내용을 업데이트하는 메서드입니다.
+   *
+   * @param content 새로운 내용
+   */
   public void updateContent(String content) {
     this.content = content;
   }
 
+  /**
+   * 익명성을 업데이트하는 메서드입니다.
+   *
+   * @param anonymity 익명성
+   */
   public void updateAnonymity(ANONYMITY anonymity) {
     this.anonymity = anonymity;
   }
 
+  /**
+   * 좋아요 수를 감소시키는 메서드입니다. 만약 좋아요 수가 0보다 큰 경우에만 감소시킵니다.
+   */
   public void subtractLike() {
     if (this.likeCount > 0) {
       this.likeCount = this.likeCount - 1;
     }
   }
 
+  /**
+   * 좋아요 수를 증가시키는 메서드입니다.
+   */
   public void addLike() {
     this.likeCount = this.likeCount + 1;
   }
 
+  /**
+   * 신고 수를 감소시키는 메서드입니다. 만약 신고 수가 0보다 큰 경우에만 감소시킵니다.
+   */
   public void subtractDeclaration() {
     if (this.declarationCount > 0) {
       this.declarationCount = this.declarationCount - 1;
     }
   }
 
+  /**
+   * 신고 수를 증가시키는 메서드입니다.
+   */
   public void addDeclaration() {
     this.declarationCount = this.declarationCount + 1;
   }
 
+  /**
+   * 댓글 작성 날짜를 문자열로 반환하는 메서드입니다.
+   *
+   * @return 댓글 작성 날짜 문자열
+   */
   public String getCommentDate() {
     return this.commentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
   }
 
-
+  /**
+   * 클럽 글을 반환하는 메서드입니다.
+   *
+   * @return 클럽 글
+   */
   public ClubArticle getClubArticle() {
     return clubArticle;
   }
 
+  /**
+   * 클럽 글을 설정하는 메서드입니다. 동시에 무한 루프를 방지하기 위해 해당 댓글이 클럽 글에 이미 추가되어 있는지 확인합니다.
+   *
+   * @param clubArticle 설정할 클럽 글
+   */
   public void setClubArticle(final ClubArticle clubArticle) {
     this.clubArticle = clubArticle;
     // 무한루프에 빠지지 않도록 체크
@@ -108,4 +144,5 @@ public class ClubArticleComment extends BaseEntity {
       clubArticle.getClubArticleComments().add(this);
     }
   }
+
 }

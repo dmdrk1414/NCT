@@ -233,6 +233,11 @@ public class AttendanceWeekDate extends BaseEntity {
     return null;
   }
 
+  /**
+   * 출석 상태를 업데이트할 수 있는지 여부를 반환하는 메서드입니다. 현재 요일이 주어진 출석 상태를 업데이트할 수 있는지를 확인합니다.
+   *
+   * @return 출석 상태를 업데이트할 수 있는지 여부
+   */
   public Boolean isPossibleUpdateAttendanceState() {
     ZonedDateTime now = ZonedDateTime.now();
     DayOfWeek currentDayOfWeek = now.getDayOfWeek();

@@ -46,22 +46,47 @@ public class Club extends BaseEntity {
     this.clubProfileImage = clubProfileImage;
   }
 
+  /**
+   * 클럽 이름을 업데이트하는 메서드입니다.
+   *
+   * @param group 새로운 클럽 이름
+   */
   public void updateClubName(String group) {
     this.clubName = group;
   }
 
+  /**
+   * 클럽 소개를 업데이트하는 메서드입니다.
+   *
+   * @param clubIntroduce 새로운 클럽 소개
+   */
   public void updateClubIntroduce(String clubIntroduce) {
     this.clubIntroduce = clubIntroduce;
   }
 
+  /**
+   * 클럽 프로필 이미지를 업데이트하는 메서드입니다.
+   *
+   * @param clubProfileImage 새로운 클럽 프로필 이미지
+   */
   public void updateClubProfileImage(String clubProfileImage) {
     this.clubProfileImage = clubProfileImage;
   }
 
+  /**
+   * 클럽 소개 이미지를 추가하는 메서드입니다.
+   *
+   * @param clubIntroduceImage 추가할 클럽 소개 이미지
+   */
   public void addClubIntroduceImage(final ClubIntroduceImage clubIntroduceImage) {
     this.clubIntroduceImages.add(clubIntroduceImage);
   }
 
+  /**
+   * 출석 번호를 추가하는 메서드입니다. 동시에 이 출석 번호가 해당 클럽과 연결되어 있지 않은 경우에만 연결합니다.
+   *
+   * @param attendanceNumber 추가할 출석 번호
+   */
   public void addAttendanceNumber(final AttendanceNumber attendanceNumber) {
     this.attendanceNumbers.add(attendanceNumber);
 
@@ -70,6 +95,11 @@ public class Club extends BaseEntity {
     }
   }
 
+  /**
+   * 클럽 컨트롤을 설정하는 메서드입니다. 동시에 이 클럽 컨트롤이 해당 클럽과 연결되어 있지 않은 경우에만 연결합니다.
+   *
+   * @param clubControl 설정할 클럽 컨트롤
+   */
   public void setClubControl(final ClubControl clubControl) {
     this.clubControl = clubControl;
 
@@ -77,4 +107,5 @@ public class Club extends BaseEntity {
       clubControl.setClub(this);
     }
   }
+
 }
