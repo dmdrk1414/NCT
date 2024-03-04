@@ -2,7 +2,6 @@ package back.springbootdeveloper.seungchan.config;
 
 import back.springbootdeveloper.seungchan.config.jwt.TokenAuthenticationFilter;
 import back.springbootdeveloper.seungchan.config.jwt.TokenProvider;
-import back.springbootdeveloper.seungchan.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-  private final UserDetailService userService;
   private final TokenProvider tokenProvider;
 
   @Bean
