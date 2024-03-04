@@ -2,10 +2,12 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.dto.request.RequestUserForm;
+import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.UpdateFailedException;
 import back.springbootdeveloper.seungchan.filter.exception.user.UserNotExistException;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
