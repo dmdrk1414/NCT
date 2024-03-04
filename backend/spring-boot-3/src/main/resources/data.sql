@@ -249,3 +249,60 @@ VALUES ('09', '09', '09', '09', '09', '박승찬', true, 1),
        ('09', '09', '09', '09', '09', '최영진', false, 8),
        ('09', '09', '09', '09', '09', '김영희', false, 9),
        ('09', '09', '09', '09', '09', '이순신', false, 10);
+
+-- data.sql
+
+INSERT INTO attendance_week_date (user_id, monday, tuesday, wednesday, thursday, friday,
+                                  monday_date, friday_date, year_date, month_date)
+VALUES (1, 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', '2024-03-04',
+        '2024-03-08', '2024', '3');
+INSERT INTO attendance_week_date (user_id, monday, tuesday, wednesday, thursday, friday,
+                                  monday_date, friday_date, year_date, month_date)
+VALUES (2, 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', '2024-03-04',
+        '2024-03-08', '2024', '3');
+INSERT INTO attendance_week_date (user_id, monday, tuesday, wednesday, thursday, friday,
+                                  monday_date, friday_date, year_date, month_date)
+VALUES (3, 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', '2024-03-04',
+        '2024-03-08', '2024', '3');
+INSERT INTO attendance_week_date (user_id, monday, tuesday, wednesday, thursday, friday,
+                                  monday_date, friday_date, year_date, month_date)
+VALUES (4, 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', '2024-03-04',
+        '2024-03-08', '2024', '3');
+INSERT INTO attendance_week_date (user_id, monday, tuesday, wednesday, thursday, friday,
+                                  monday_date, friday_date, year_date, month_date)
+VALUES (5, 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', '2024-03-04',
+        '2024-03-08', '2024', '3');
+INSERT INTO attendance_week_date (user_id, monday, tuesday, wednesday, thursday, friday,
+                                  monday_date, friday_date, year_date, month_date)
+VALUES (6, 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', '2024-03-04',
+        '2024-03-08', '2024', '3');
+INSERT INTO attendance_week_date (user_id, monday, tuesday, wednesday, thursday, friday,
+                                  monday_date, friday_date, year_date, month_date)
+VALUES (7, 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', '2024-03-04',
+        '2024-03-08', '2024', '3');
+INSERT INTO attendance_week_date (user_id, monday, tuesday, wednesday, thursday, friday,
+                                  monday_date, friday_date, year_date, month_date)
+VALUES (8, 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', '2024-03-04',
+        '2024-03-08', '2024', '3');
+INSERT INTO attendance_week_date (user_id, monday, tuesday, wednesday, thursday, friday,
+                                  monday_date, friday_date, year_date, month_date)
+VALUES (9, 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', '2024-03-04',
+        '2024-03-08', '2024', '3');
+INSERT INTO attendance_week_date (user_id, monday, tuesday, wednesday, thursday, friday,
+                                  monday_date, friday_date, year_date, month_date)
+VALUES (10, 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', 'ATTENDANCE', '2024-03-04',
+        '2024-03-08', '2024', '3');
+
+-- vacation_token
+INSERT INTO vacation_token (user_id, vacation_token, monday_date, friday_date, year_date,
+                            month_date)
+VALUES (1, 5, '2024-03-01', '2024-03-05', '2024', '3'),
+       (2, 3, '2024-03-01', '2024-03-05', '2024', '3'),
+       (3, 7, '2024-03-01', '2024-03-05', '2024', '3'),
+       (4, 2, '2024-03-01', '2024-03-05', '2024', '3'),
+       (5, 4, '2024-03-01', '2024-03-05', '2024', '3'),
+       (6, 6, '2024-03-01', '2024-03-05', '2024', '3'),
+       (7, 8, '2024-03-01', '2024-03-05', '2024', '3'),
+       (8, 5, '2024-03-01', '2024-03-05', '2024', '3'),
+       (9, 3, '2024-03-01', '2024-03-05', '2024', '3'),
+       (10, 9, '2024-03-01', '2024-03-05', '2024', '3');
