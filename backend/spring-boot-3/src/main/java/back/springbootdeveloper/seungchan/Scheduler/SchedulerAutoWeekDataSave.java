@@ -1,19 +1,16 @@
 package back.springbootdeveloper.seungchan.Scheduler;
 
 import back.springbootdeveloper.seungchan.domain.AttendanceStateList;
-import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
 import back.springbootdeveloper.seungchan.entity.AttendanceWeekDate;
-import back.springbootdeveloper.seungchan.repository.AttendanceWeekDateRepository;
+import back.springbootdeveloper.seungchan.entity.VacationToken;
 import back.springbootdeveloper.seungchan.service.AttendanceService;
 import back.springbootdeveloper.seungchan.service.AttendanceWeekDateService;
 import back.springbootdeveloper.seungchan.service.NumOfTodayAttendenceService;
 import back.springbootdeveloper.seungchan.service.PeriodicDataService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import back.springbootdeveloper.seungchan.service.VacationTokenService;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -78,13 +75,16 @@ https://velog.io/@kekim20/Spring-boot-Scheduler%EC%99%80-cron%ED%91%9C%ED%98%84%
  * */
 
 @Component
-public class SchedulerAutoAttendanceWeekDate {
+public class SchedulerAutoWeekDataSave {
 
   @Autowired
   private AttendanceService attendanceService;
   @Autowired
   private AttendanceWeekDateService attendanceWeekDateService;
-
+  @Autowired
+  private UserUtillService userUtillService;
+  @Autowired
+  private VacationTokenService vacationTokenService;
   @Autowired
   private NumOfTodayAttendenceService numOfTodayAttendenceService;
   @Autowired
@@ -94,8 +94,9 @@ public class SchedulerAutoAttendanceWeekDate {
     System.out.println("실행된 함수 " + runMethodName + " : " + new Date());
   }
 
-  /* 매주 일요일 오후23시 59분 기준으로 periodic_data DB의  weekly_data의 정보를
-      this_month 으로 추가 한후 저장한다.*/
+  /**
+   * 주기적으로 실행되는 작업입니다. 매주 일요일 오후 11시 59분에 실행됩니다. 현재 주간 출석 상태를 반복해서 추가합니다.
+   */
   @Scheduled(cron = "0 59 23 * * SUN") // 매주 일요일 오후23시 57분 run
   public void addAttendnaceWeekDateThisMonthRepeat() {
     List<AttendanceStateList> attendanceStateLists = attendanceService.getAllAttendanceWeekState();
@@ -106,6 +107,17 @@ public class SchedulerAutoAttendanceWeekDate {
       attendanceWeekDateService.save(attendanceWeekDate);
     }
 
-    printDateAtNow("addPeriodicDataThisMonthRepeat");
+    printDateAtNow("addAttendnaceWeekDateThisMonthRepeat");
+  }
+
+  @Scheduled(cron = "0 59 23 * * SUN") // 매주 일요일 오후23시 57분 run
+  public void addVacationTokenDataThisMonthRepeat() {
+    List<VacationToken> vacationTokens = userUtillService.getVacationTokenList();
+
+    for (final VacationToken vacationToken : vacationTokens) {
+      vacationTokenService.save(vacationToken);
+    }
+
+    printDateAtNow("addVacationTokenDataThisMonthRepeat");
   }
 }
