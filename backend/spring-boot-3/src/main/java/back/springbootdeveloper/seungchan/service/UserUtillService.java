@@ -3,7 +3,10 @@ package back.springbootdeveloper.seungchan.service;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
+import back.springbootdeveloper.seungchan.entity.VacationToken;
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.stereotype.Service;
@@ -83,5 +86,19 @@ public class UserUtillService {
 
   public void updateUserGrade(final Long id, final Boolean grade) {
     userUtilRepository.updateIsKingNuri(id, grade);
+  }
+
+
+  /**
+   * 사용자 유틸리티 정보를 기반으로 휴가 토큰 목록을 반환합니다.
+   *
+   * @return 휴가 토큰 목록
+   */
+  public List<VacationToken> getVacationTokenList() {
+    List<UserUtill> userUtils = userUtilRepository.findAll();
+
+    return userUtils.stream()
+        .map(VacationToken::new)
+        .collect(Collectors.toList());
   }
 }
