@@ -29,7 +29,7 @@ class entityMappingTest {
   private final AttendanceStateRepository attendanceSateRepository;
   private final VacationTokenRepository vacationTokenRepository;
   private final ClubMemberInformationRepository clubMemberInformationRepository;
-  
+
   CLUB_ARTICLE_CLASSIFICATION SUGGESTION = CLUB_ARTICLE_CLASSIFICATION.SUGGESTION;
   CLUB_ARTICLE_CLASSIFICATION FREEDOM = CLUB_ARTICLE_CLASSIFICATION.FREEDOM;
   CLUB_ARTICLE_CLASSIFICATION CONFIDENTIAL = CLUB_ARTICLE_CLASSIFICATION.CONFIDENTIAL;
@@ -226,7 +226,7 @@ class entityMappingTest {
     attendanceSate.setAttendanceCheckTime(attendanceCheckTime);
 
     attendanceSate.addAttendanceWeekDates(attendanceWeekDate);
-    attendanceSate.setVacationToken(vacationToken);
+    attendanceSate.addtVacationToken(vacationToken);
 
     return attendanceSateRepository.save(attendanceSate);
   }

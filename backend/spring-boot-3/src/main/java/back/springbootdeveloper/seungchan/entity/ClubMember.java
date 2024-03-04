@@ -41,11 +41,22 @@ public class ClubMember {
     this.clubMemberInformationId = clubMemberInformationId;
   }
 
+  /**
+   * 클럽 등급 ID를 업데이트하는 메서드입니다.
+   *
+   * @param clubGradeId 새로운 클럽 등급 ID
+   */
   public void updateClubGradeId(Long clubGradeId) {
     this.clubGradeId = clubGradeId;
   }
 
+  /**
+   * 클럽 등급 ID를 업데이트하는 메서드입니다. Integer 타입을 Long 타입으로 변환하여 업데이트합니다.
+   *
+   * @param clubGradeId 새로운 클럽 등급 ID (Integer 타입)
+   */
   public void updateClubGradeId(Integer clubGradeId) {
     this.clubGradeId = Long.valueOf(clubGradeId);
   }
+
 }

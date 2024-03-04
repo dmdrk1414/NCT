@@ -108,11 +108,26 @@ public class ClubGradeService {
     }
   }
 
+  /**
+   * 주어진 두 개의 long 타입 숫자가 서로 다른지 확인합니다.
+   *
+   * @param longNumber_1 첫 번째 long 타입 숫자
+   * @param longNumber_2 두 번째 long 타입 숫자
+   * @return 서로 다른 경우 true를, 그렇지 않은 경우 false를 반환합니다.
+   */
   private boolean isNotSame(Long longNumber_1, Long longNumber_2) {
-    return longNumber_1 != longNumber_2;
+    return !longNumber_1.equals(longNumber_2);
   }
 
-  private boolean isSame(Integer clubGradeId, Long updateClubMemberGetClubGradeId) {
-    return Long.valueOf(clubGradeId) == updateClubMemberGetClubGradeId;
+  /**
+   * 주어진 integer와 long 숫자가 동일한지 확인합니다.
+   *
+   * @param integer_number integer 타입 숫자
+   * @param long_number    long 타입 숫자
+   * @return 동일한 경우 true를, 그렇지 않은 경우 false를 반환합니다.
+   */
+  private boolean isSame(Integer integer_number, Long long_number) {
+    return Long.valueOf(integer_number).equals(long_number);
   }
+
 }

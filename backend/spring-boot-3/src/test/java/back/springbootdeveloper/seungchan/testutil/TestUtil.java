@@ -2,6 +2,7 @@ package back.springbootdeveloper.seungchan.testutil;
 
 import back.springbootdeveloper.seungchan.controller.config.jwt.JwtFactory;
 import back.springbootdeveloper.seungchan.entity.Member;
+import back.springbootdeveloper.seungchan.entity.VacationToken;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.IOException;
@@ -99,5 +100,11 @@ public class TestUtil {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public static <T> T getLastObject(final List<T> list) {
+    Integer lastIndex = list.size() - 1;
+
+    return list.get(lastIndex);
   }
 }

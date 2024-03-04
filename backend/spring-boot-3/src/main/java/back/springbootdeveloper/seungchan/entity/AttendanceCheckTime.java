@@ -82,43 +82,89 @@ public class AttendanceCheckTime extends BaseEntity {
     this.longVacation = LONG_VACATION.NOT_APPLIED;
   }
 
+  /**
+   * 월요일 출석 시간을 업데이트하는 메서드입니다.
+   *
+   * @param monday 월요일 출석 시간
+   */
   public void updateMonday(ATTENDANCE_TIME monday) {
     this.monday = monday;
   }
 
+  /**
+   * 화요일 출석 시간을 업데이트하는 메서드입니다.
+   *
+   * @param tuesday 화요일 출석 시간
+   */
   public void updateTuesday(ATTENDANCE_TIME tuesday) {
     this.tuesday = tuesday;
   }
 
+  /**
+   * 수요일 출석 시간을 업데이트하는 메서드입니다.
+   *
+   * @param wednesday 수요일 출석 시간
+   */
   public void updateWednesday(ATTENDANCE_TIME wednesday) {
     this.wednesday = wednesday;
   }
 
+  /**
+   * 목요일 출석 시간을 업데이트하는 메서드입니다.
+   *
+   * @param thursday 목요일 출석 시간
+   */
   public void updateThursday(ATTENDANCE_TIME thursday) {
     this.thursday = thursday;
   }
 
+  /**
+   * 금요일 출석 시간을 업데이트하는 메서드입니다.
+   *
+   * @param friday 금요일 출석 시간
+   */
   public void updateFriday(ATTENDANCE_TIME friday) {
     this.friday = friday;
   }
 
+  /**
+   * 토요일 출석 시간을 업데이트하는 메서드입니다.
+   *
+   * @param saturday 토요일 출석 시간
+   */
   public void updateSaturday(ATTENDANCE_TIME saturday) {
     this.saturday = saturday;
   }
 
+  /**
+   * 일요일 출석 시간을 업데이트하는 메서드입니다.
+   *
+   * @param sunday 일요일 출석 시간
+   */
   public void updateSunday(ATTENDANCE_TIME sunday) {
     this.sunday = sunday;
   }
 
+  /**
+   * 장기 휴가를 업데이트하는 메서드입니다.
+   *
+   * @param longVacation 장기 휴가
+   */
   public void updateLongVacation(LONG_VACATION longVacation) {
     this.longVacation = longVacation;
   }
 
-  public void setAttendanceSate(final AttendanceState attendanceSate) {
-    this.attendanceSate = attendanceSate;
+  /**
+   * 출석 상태를 설정하는 메서드입니다. 동시에 이 출석 시간이 해당 출석 상태의 검사 시간이 아닌 경우에만 설정합니다.
+   *
+   * @param attendanceState 출석 상태
+   */
+  public void setAttendanceSate(final AttendanceState attendanceState) {
+    this.attendanceSate = attendanceState;
 
-    if (attendanceSate.getAttendanceCheckTime() != this) { // null 체크 추가
-      attendanceSate.setAttendanceCheckTime(this);
+    if (attendanceState.getAttendanceCheckTime() != this) { // null 체크 추가
+      attendanceState.setAttendanceCheckTime(this);
     }
   }
+
 }

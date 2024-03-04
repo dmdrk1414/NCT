@@ -113,21 +113,37 @@ public class ClubDetailPageService {
           .orElseThrow(EntityNotFoundException::new);
       AttendanceState attendanceState = attendanceStateRepository.findById(
           clubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-      // 역정렬을 해서 최근정보 가져오기.
-      List<AttendanceWeekDate> attendanceWeekDates = attendanceState.getAttendanceWeekDates();
-      Collections.reverse(attendanceWeekDates);
-      AttendanceStates attendanceStates = new AttendanceStates(attendanceWeekDates.get(0));
+      // 최신 정보 가져오기
+      AttendanceWeekDate lastAttendanceWeekDate = getAttendanceWeekDate(
+          attendanceState);
+      AttendanceStates attendanceStates = new AttendanceStates(lastAttendanceWeekDate);
+      // 출석 휴가 토큰 최근 정보 가져오기
+      VacationToken vacationToken = getLastVacationToken(attendanceState);
 
       clubMemberResponses.add(
           ClubMemberResponse.builder()
               .clubMemberId(clubMember.getClubMemberId())
               .memberName(member.getFullName())
-              .vacationToken(attendanceState.getVacationToken().getVacationToken())
+              .vacationToken(vacationToken.getVacationToken())
               .attendanceStatus(attendanceStates)
               .build()
       );
     }
     return clubMemberResponses;
+  }
+
+  /**
+   * 주어진 출석 상태에서 마지막 휴가 토큰을 반환하는 메서드입니다.
+   *
+   * @param attendanceState 출석 상태 객체
+   * @return 마지막 휴가 토큰. 만약 목록이 비어 있거나 null이면 null을 반환합니다.
+   */
+  private VacationToken getLastVacationToken(final AttendanceState attendanceState) {
+    List<VacationToken> vacationTokens = attendanceState.getVacationTokens();
+    Integer lastIndex = vacationTokens.size() - 1;
+    VacationToken vacationToken = vacationTokens.get(lastIndex);
+
+    return vacationToken;
   }
 
   /**
@@ -140,6 +156,20 @@ public class ClubDetailPageService {
     return members.stream()
         .map(Member::getFullName)
         .toList();
+  }
+
+  /**
+   * 출석 상태에서 마지막 출석 주차 날짜를 반환합니다.
+   *
+   * @param attendanceState 출석 상태
+   * @return 마지막 출석 주차 날짜, 만약 목록이 비어 있거나 null이면 null을 반환합니다.
+   */
+  private AttendanceWeekDate getAttendanceWeekDate(final AttendanceState attendanceState) {
+    List<AttendanceWeekDate> attendanceWeekDates = attendanceState.getAttendanceWeekDates();
+    Integer lastIndex = attendanceWeekDates.size() - 1;
+    AttendanceWeekDate lastAttendanceWeekDate = attendanceWeekDates.get(lastIndex);
+
+    return lastAttendanceWeekDate;
   }
 
   /**

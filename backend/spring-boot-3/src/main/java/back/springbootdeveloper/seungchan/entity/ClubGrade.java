@@ -33,12 +33,23 @@ public class ClubGrade extends BaseEntity {
   @Column(name = "club_grade", length = 15)
   private CLUB_GRADE clubGrade;
 
+  /**
+   * ClubGrade를 생성하는 빌더입니다.
+   *
+   * @param clubGrade 클럽 등급
+   */
   @Builder
   public ClubGrade(CLUB_GRADE clubGrade) {
     this.clubGrade = clubGrade;
   }
 
+  /**
+   * 클럽 등급을 문자열로 반환하는 메서드입니다.
+   *
+   * @return 클럽 등급 문자열
+   */
   public String getClubGradeString() {
     return this.clubGrade.getGrade();
   }
+
 }

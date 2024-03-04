@@ -32,11 +32,22 @@ public class ClubMemberInformation extends BaseEntity {
     this.introduce = introduce;
   }
 
+  /**
+   * 소개를 업데이트하는 메서드입니다.
+   *
+   * @param introduce 새로운 소개
+   */
   public void updateIntroduce(String introduce) {
     this.introduce = introduce;
   }
 
+  /**
+   * 즐겨찾기 확인을 업데이트하는 메서드입니다.
+   *
+   * @param favoriteCheck 새로운 즐겨찾기 확인
+   */
   public void updateFavoriteCheck(FAVORITE_CHECK favoriteCheck) {
     this.favoriteCheck = favoriteCheck;
   }
+
 }

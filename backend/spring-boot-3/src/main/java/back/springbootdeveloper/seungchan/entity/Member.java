@@ -67,33 +67,69 @@ public class Member extends BaseEntity {
     this.registration = String.valueOf(zonedDateTime.toLocalDate().getYear());
   }
 
+  /**
+   * 전체 이름을 반환하는 메서드입니다.
+   *
+   * @return 전체 이름
+   */
   public String getFullName() {
     return this.firstName + this.lastName;
   }
 
+  /**
+   * 이름을 업데이트하는 메서드입니다.
+   *
+   * @param firstName 새로운 이름
+   */
   public void updateFirstName(String firstName) {
     this.firstName = firstName;
   }
 
+  /**
+   * 성을 업데이트하는 메서드입니다.
+   *
+   * @param lastName 새로운 성
+   */
   public void updateLastName(String lastName) {
     this.lastName = lastName;
   }
 
+  /**
+   * 닉네임을 업데이트하는 메서드입니다.
+   *
+   * @param nickName 새로운 닉네임
+   */
   public void updateNickName(String nickName) {
     this.nickName = nickName;
   }
 
+  /**
+   * 이메일을 업데이트하는 메서드입니다.
+   *
+   * @param email 새로운 이메일
+   */
   public void updateEmail(String email) {
     this.email = email;
   }
 
+  /**
+   * 전공을 업데이트하는 메서드입니다.
+   *
+   * @param major 새로운 전공
+   */
   public void updateMajor(String major) {
     this.major = major;
   }
 
+  /**
+   * 학생 ID를 업데이트하는 메서드입니다.
+   *
+   * @param studentId 새로운 학생 ID
+   */
   public void updateStudentId(String studentId) {
     this.studentId = studentId;
   }
+
 
   /**
    * 두 개의 식별자가 동일한지 여부를 확인합니다.
