@@ -78,11 +78,23 @@ public class ClubArticleCommentService {
     return clubArticleComments.get(lastIndex);
   }
 
+  /**
+   * 주어진 댓글 ID에 해당하는 댓글을 삭제합니다.
+   *
+   * @param commentId 댓글 ID
+   */
   @Transactional
   public void deleteByCommentId(Long commentId) {
     clubArticleCommentRepository.deleteById(commentId);
   }
 
+  /**
+   * 주어진 회원 ID와 클럽 게시물 댓글이 동일한지 확인합니다.
+   *
+   * @param memberId           회원 ID
+   * @param clubArticleComment 클럽 게시물 댓글
+   * @return 회원 ID와 클럽 게시물 댓글이 동일한지 여부
+   */
   private boolean isSame(Long memberId, ClubArticleComment clubArticleComment) {
     return clubArticleComment.getMemberId() == memberId;
   }

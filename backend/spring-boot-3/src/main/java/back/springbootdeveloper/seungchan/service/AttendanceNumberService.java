@@ -62,6 +62,13 @@ public class AttendanceNumberService {
     return attendanceNumbers.get(lastIndex);
   }
 
+  /**
+   * 주어진 출석 횟수와 첫 번째 출석 번호가 동일한지 확인합니다.
+   *
+   * @param numOfAttendance       출석 횟수
+   * @param firstAttendanceNumber 첫 번째 출석 번호
+   * @return 출석 횟수와 첫 번째 출석 번호가 동일한지 여부
+   */
   private boolean isSame(String numOfAttendance, AttendanceNumber firstAttendanceNumber) {
     return firstAttendanceNumber.getAttendanceNumber().equals(numOfAttendance);
   }

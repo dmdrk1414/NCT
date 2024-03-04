@@ -29,6 +29,13 @@ public class TokenService {
   private final RefreshTokenRepository refreshTokenRepository;
   private final MemberService memberService;
 
+  /**
+   * 새로운 엑세스 토큰을 생성합니다.
+   *
+   * @param refreshToken 리프레시 토큰
+   * @return 생성된 엑세스 토큰
+   * @throws IllegalArgumentException 토큰 유효성 검사에 실패하거나 예기치 않은 토큰인 경우 예외가 발생합니다.
+   */
   public String createNewAccessToken(String refreshToken) {
     // 토큰 유효성 검사에 실패하면 예외 발생
     if (!tokenProvider.validToken(refreshToken)) {
@@ -102,11 +109,25 @@ public class TokenService {
     return tokenProvider.getUserId(token);
   }
 
+  /**
+   * HttpServletRequest에서 토큰을 추출하여 해당 토큰으로부터 모래시계 왕 여부를 확인합니다.
+   *
+   * @param request HttpServletRequest 객체
+   * @return 모래시계 왕 여부
+   * @throws BadCredentialsException 토큰이 잘못된 경우 예외가 발생합니다.
+   */
   public Boolean getMoariumKingFromToken(HttpServletRequest request) {
     String token = getToken(request);
     return tokenProvider.getIsNuriKing(token);
   }
 
+  /**
+   * HttpServletRequest에서 토큰을 추출합니다.
+   *
+   * @param request HttpServletRequest 객체
+   * @return 추출된 토큰
+   * @throws BadCredentialsException 토큰이 유효하지 않은 경우 예외가 발생합니다.
+   */
   private String getToken(HttpServletRequest request) {
     // HTTP Request에서 "Authorization" 헤더 값 얻기
     String header = request.getHeader(HEADER_AUTHORIZATION);
@@ -117,14 +138,10 @@ public class TokenService {
     }
 
     // "Bearer " 접두사를 제거하여 실제 토큰 얻기
-    String token = header.replace("Bearer ", "");
-
-    return token;
+    return header.replace("Bearer ", "");
   }
 
   public boolean isValidToken(String token) {
     return tokenProvider.validToken(token);
   }
-
-
 }

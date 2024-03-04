@@ -322,24 +322,44 @@ public class ClubArticleService {
     return clubArticleCommentInformations;
   }
 
+  /**
+   * 주어진 회원 ID와 클럽 게시물 댓글 작성자가 동일한지 확인하고, 결과를 반환합니다.
+   *
+   * @param memberId           회원 ID
+   * @param clubArticleComment 클럽 게시물 댓글
+   * @return 동일한 경우 "AUTHOR"를, 그렇지 않은 경우 "NOT_AUTHOR"를 반환합니다.
+   */
   private String getIsClubArticleCommentAuthor(Long memberId,
       ClubArticleComment clubArticleComment) {
     if (memberId == clubArticleComment.getMemberId()) {
-
       return AUTHOR_JUDGMENT.AUTHOR.getJudgment();
     }
     return AUTHOR_JUDGMENT.NOT_AUTHOR.getJudgment();
   }
 
+  /**
+   * 주어진 클럽 게시물과 클럽 멤버가 작성자가 동일한지 확인하고, 결과를 반환합니다.
+   *
+   * @param clubArticle 클럽 게시물
+   * @param clubMember  클럽 멤버
+   * @return 동일한 경우 "AUTHOR"를, 그렇지 않은 경우 "NOT_AUTHOR"를 반환합니다.
+   */
   private String getIsClubArticleAuthor(ClubArticle clubArticle, ClubMember clubMember) {
     if (clubArticle.getClubMemberId() == clubMember.getClubMemberId()) {
-
       return AUTHOR_JUDGMENT.AUTHOR.getJudgment();
     }
     return AUTHOR_JUDGMENT.NOT_AUTHOR.getJudgment();
   }
 
+  /**
+   * 주어진 클럽 멤버와 클럽 게시물이 작성자가 동일한지 확인합니다.
+   *
+   * @param clubMember  클럽 멤버
+   * @param clubArticle 클럽 게시물
+   * @return 작성자가 동일한 경우 true를, 그렇지 않은 경우 false를 반환합니다.
+   */
   private Boolean isSame(ClubMember clubMember, ClubArticle clubArticle) {
     return clubArticle.getClubMemberId() == clubMember.getClubMemberId();
   }
+
 }

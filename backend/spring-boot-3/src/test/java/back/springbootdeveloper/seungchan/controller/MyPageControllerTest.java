@@ -458,7 +458,7 @@ class MyPageControllerTest {
 
     // 검증을 위한 데이터 준비
     // 클럽관련 정보
-    String memberProfile = "향후 디비수정 ";
+    String memberProfile = "향후 디비수정";
     String memberName = member.getFullName();
     String memberStudentId = member.getStudentId();
     String clubName = club.getClubName();

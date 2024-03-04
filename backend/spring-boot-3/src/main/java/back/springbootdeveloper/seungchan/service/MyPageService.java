@@ -80,6 +80,13 @@ public class MyPageService {
     return myAllClubMembersAttendances;
   }
 
+  /**
+   * 주어진 클럽 멤버 ID에 해당하는 내 페이지 클럽 멤버 정보 DTO를 반환합니다.
+   *
+   * @param clubMemberId 클럽 멤버 ID
+   * @return 내 페이지 클럽 멤버 정보 DTO
+   * @throws EntityNotFoundException entity를 찾을 수 없는 경우 예외가 발생합니다.
+   */
   public MyPageClubMemberInformationResDto getMyPageClubMemberInformationResDto(Long clubMemberId) {
     ClubMember clubMember = clubMemberRepository.findById(clubMemberId)
         .orElseThrow(EntityNotFoundException::new);
@@ -90,7 +97,7 @@ public class MyPageService {
 
     return MyPageClubMemberInformationResDto.builder()
         // TODO: 2/26/24 향후 디비수정
-        .memberProfile("향후 디비수정 ")
+        .memberProfile("향후 디비수정")
         .memberName(member.getFullName())
         .memberStudentId(member.getStudentId())
         .ClubName(club.getClubName())
@@ -99,6 +106,13 @@ public class MyPageService {
         .build();
   }
 
+
+  /**
+   * 주어진 출석 상태를 갖는 출석 주차 목록에서 마지막 휴가 토큰을 가져옵니다.
+   *
+   * @param attendanceState 출석 상태
+   * @return 마지막 휴가 토큰
+   */
   private VacationToken getLastVacationToken(final AttendanceState attendanceState) {
     List<VacationToken> vacationTokens = attendanceState.getVacationTokens();
     Integer lastIndex = vacationTokens.size() - 1;
@@ -106,6 +120,13 @@ public class MyPageService {
     return vacationToken;
   }
 
+  /**
+   * 클럽과 출석 주차 목록을 사용하여 내 출석 횟수를 가져옵니다.
+   *
+   * @param club                클럽
+   * @param attendanceWeekDates 출석 주차 목록
+   * @return 내 출석 횟수 정보
+   */
   private MyAttendanceCount getMyAttendanceCount(Club club,
       List<AttendanceWeekDate> attendanceWeekDates) {
     // 각 출석 상태에 따른 출석 횟수를 가져옴
