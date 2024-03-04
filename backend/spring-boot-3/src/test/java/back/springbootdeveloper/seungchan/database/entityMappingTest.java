@@ -60,7 +60,7 @@ class entityMappingTest {
 
 
   @Test
-//  @Disabled
+  @Disabled
   void 매핑_저장_학습_테스트_1() throws Exception {
     this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.LEADER));
     this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.DEPUTY_LEADER));

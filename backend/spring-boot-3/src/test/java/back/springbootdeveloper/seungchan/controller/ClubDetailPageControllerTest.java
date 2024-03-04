@@ -15,6 +15,8 @@ import back.springbootdeveloper.seungchan.repository.*;
 import back.springbootdeveloper.seungchan.service.AttendanceNumberService;
 import back.springbootdeveloper.seungchan.service.AttendanceWeekDateService;
 import back.springbootdeveloper.seungchan.service.AttendanceWeekService;
+import back.springbootdeveloper.seungchan.service.TokenService;
+import back.springbootdeveloper.seungchan.service.VacationTokenService;
 import back.springbootdeveloper.seungchan.testutil.TestCreateUtil;
 import back.springbootdeveloper.seungchan.testutil.TestUtil;
 import back.springbootdeveloper.seungchan.util.DayUtil;
@@ -62,6 +64,8 @@ class ClubDetailPageControllerTest {
   private AttendanceWeekDateRepository attendanceWeekDateRepository;
   @Autowired
   private ClubGradeRepository clubGradeRepository;
+  @Autowired
+  private VacationTokenService vacationTokenService;
   @Autowired
   private AttendanceWeekDateService attendanceWeekDateService;
   @Autowired
@@ -197,8 +201,8 @@ class ClubDetailPageControllerTest {
         targetClubOneId, targetMember.getMemberId()).get();
     final AttendanceState targetAttendanceState = attendanceStateRepository.findById(
         targetClubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-    final VacationToken targetVacationToken = TestUtil.getLastObject(
-        targetAttendanceState.getVacationTokens());
+    final VacationToken targetVacationToken = vacationTokenService.getLatelyVacationToken(
+        targetClubMember.getClubMemberId());
 
     final Integer targetTokenCount = 5;
     final GiveVacationTokenReqDto requestDto = GiveVacationTokenReqDto.builder()
@@ -215,10 +219,8 @@ class ClubDetailPageControllerTest {
             .header("authorization", "Bearer " + token) // token header에 담기
     );
 
-    final AttendanceState updateAttendanceState = attendanceStateRepository.findById(
-        targetClubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-    final VacationToken updateVacationToken = TestUtil.getLastObject(
-        updateAttendanceState.getVacationTokens());
+    final VacationToken updateVacationToken = vacationTokenService.getLatelyVacationToken(
+        targetClubMember.getClubMemberId());
 
     // then
     result
@@ -243,8 +245,6 @@ class ClubDetailPageControllerTest {
         targetClubOneId, targetMember.getMemberId()).get();
     final AttendanceState targetAttendanceState = attendanceStateRepository.findById(
         targetClubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-    final VacationToken targetVacationToken = TestUtil.getLastObject(
-        targetAttendanceState.getVacationTokens());
     final Integer targetTokenCount = 5;
     final GiveVacationTokenReqDto requestDto = GiveVacationTokenReqDto.builder()
         .vacationToken(targetTokenCount)
