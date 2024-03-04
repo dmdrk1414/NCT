@@ -22,10 +22,20 @@ public class VacationTokenControl extends BaseEntity {
   @OneToOne(mappedBy = "vacationTokenControl")
   private ClubControl clubControl;
 
+  /**
+   * 휴가 토큰 컨트롤을 업데이트하는 메서드입니다.
+   *
+   * @param vacationTokenControl 새로운 휴가 토큰 컨트롤
+   */
   public void updateVacationTokenControl(Integer vacationTokenControl) {
     this.vacationTokenControl = vacationTokenControl;
   }
 
+  /**
+   * 클럽 컨트롤을 설정하는 메서드입니다. 동시에 이 클럽 컨트롤이 해당 휴가 토큰 컨트롤과 연결되어 있지 않은 경우에만 연결합니다.
+   *
+   * @param clubControl 설정할 클럽 컨트롤
+   */
   public void setClubControl(final ClubControl clubControl) {
     this.clubControl = clubControl;
 
@@ -33,4 +43,5 @@ public class VacationTokenControl extends BaseEntity {
       clubControl.setVacationTokenControl(this);
     }
   }
+
 }
