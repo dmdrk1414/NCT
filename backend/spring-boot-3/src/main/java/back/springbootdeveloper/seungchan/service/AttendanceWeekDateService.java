@@ -37,10 +37,8 @@ public class AttendanceWeekDateService {
         .orElseThrow(EntityNotFoundException::new);
     AttendanceState attendanceState = attendanceStateRepository.findById(
         clubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-    // 마지막 컬럼 가져오기
-    List<AttendanceWeekDate> attendanceWeekDates = attendanceState.getAttendanceWeekDates();
-    int lastIndex = attendanceWeekDates.size() - 1;
-    AttendanceWeekDate attendanceWeekDate = attendanceWeekDates.get(lastIndex);
+    // 출석 정보의 마지막 컬럼 가져오기
+    AttendanceWeekDate attendanceWeekDate = getLastAttendanceWeekDate(attendanceState);
 
     // 원하는 출석 상태에 의해 변경
     updateAttendanceStateWithAttendanceEnum(attendanceEnum, attendanceWeekDate);
@@ -83,7 +81,6 @@ public class AttendanceWeekDateService {
         clubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
 
     // 리스트의 마지막 요소을 반환
-
     AttendanceWeekDate attendanceWeekDate = getLastAttendanceWeekDate(attendanceState);
 
     return attendanceWeekDate.isPossibleUpdateAttendanceState();
