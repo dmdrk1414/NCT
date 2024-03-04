@@ -196,7 +196,7 @@ class ClubDetailPageControllerTest {
         targetClubOneId, targetMember.getMemberId()).get();
     final AttendanceState targetAttendanceState = attendanceStateRepository.findById(
         targetClubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-    final VacationToken targetVacationToken = targetAttendanceState.getVacationToken();
+    final VacationToken targetVacationToken = targetAttendanceState.getVacationTokens();
     final Integer targetTokenCount = 5;
     final GiveVacationTokenReqDto requestDto = GiveVacationTokenReqDto.builder()
         .vacationToken(targetTokenCount)
@@ -214,7 +214,7 @@ class ClubDetailPageControllerTest {
 
     final AttendanceState updateAttendanceState = attendanceStateRepository.findById(
         targetClubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-    final VacationToken updateVacationToken = updateAttendanceState.getVacationToken();
+    final VacationToken updateVacationToken = updateAttendanceState.getVacationTokens();
 
     // then
     result
@@ -239,7 +239,7 @@ class ClubDetailPageControllerTest {
         targetClubOneId, targetMember.getMemberId()).get();
     final AttendanceState targetAttendanceState = attendanceStateRepository.findById(
         targetClubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-    final VacationToken targetVacationToken = targetAttendanceState.getVacationToken();
+    final VacationToken targetVacationToken = targetAttendanceState.getVacationTokens();
     final Integer targetTokenCount = 5;
     final GiveVacationTokenReqDto requestDto = GiveVacationTokenReqDto.builder()
         .vacationToken(targetTokenCount)

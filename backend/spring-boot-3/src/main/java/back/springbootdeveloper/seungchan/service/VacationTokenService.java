@@ -7,6 +7,8 @@ import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFou
 import back.springbootdeveloper.seungchan.repository.AttendanceStateRepository;
 import back.springbootdeveloper.seungchan.repository.ClubMemberRepository;
 import back.springbootdeveloper.seungchan.repository.VacationTokenRepository;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +35,9 @@ public class VacationTokenService {
         .orElseThrow(EntityNotFoundException::new);
     AttendanceState attendanceState = attendanceStateRepository.findById(
         clubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
-    VacationToken vacationToken = attendanceState.getVacationToken();
+    // vacation token 최근 정보 가져오기
+    VacationToken vacationToken = getLastVacationToken(
+        attendanceState);
     Integer beforeVacationToken = vacationToken.getVacationToken();
 
     if (isNotZero(vacationTokenNumber)) {
@@ -44,6 +48,19 @@ public class VacationTokenService {
       return false;
     }
     return true;
+  }
+
+  /**
+   * 주어진 출석 상태에서 마지막 휴가 토큰을 반환하는 메서드입니다.
+   *
+   * @param attendanceState 출석 상태 객체
+   * @return 마지막 휴가 토큰. 만약 목록이 비어 있거나 null이면 null을 반환합니다.
+   */
+  private VacationToken getLastVacationToken(final AttendanceState attendanceState) {
+    List<VacationToken> vacationTokens = attendanceState.getVacationTokens();
+    Integer lastIndex = vacationTokens.size() - 1;
+    VacationToken vacationToken = vacationTokens.get(lastIndex);
+    return vacationToken;
   }
 
   /**

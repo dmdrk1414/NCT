@@ -18,12 +18,11 @@ public class AttendanceState {
   @Column(name = "attendance_state_id")
   private Long attendanceStateId;
 
-  @OneToMany(mappedBy = "attendanceState", cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "attendanceState", cascade = CascadeType.ALL)
   private List<AttendanceWeekDate> attendanceWeekDates = new ArrayList<>();
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "vacation_token_id")
-  private VacationToken vacationToken;
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "attendanceSate", cascade = CascadeType.ALL)
+  private List<VacationToken> vacationTokens = new ArrayList<>();
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "attendance_check_time_id")
@@ -37,8 +36,8 @@ public class AttendanceState {
     }
   }
 
-  public void setVacationToken(final VacationToken vacationToken) {
-    this.vacationToken = vacationToken;
+  public void addtVacationToken(final VacationToken vacationToken) {
+    this.vacationTokens.add(vacationToken);
 
     if (vacationToken.getAttendanceSate() != this) { // null 체크 추가
       vacationToken.setAttendanceSate(this);

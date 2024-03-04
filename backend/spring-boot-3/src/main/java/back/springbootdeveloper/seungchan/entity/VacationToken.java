@@ -27,7 +27,8 @@ public class VacationToken extends BaseEntity {
   @Column(name = "vacation_token_date", length = 15, nullable = false)
   private String vacationTokenDate;
 
-  @OneToOne(mappedBy = "vacationToken")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "attendance_state_id")
   private AttendanceState attendanceSate;
 
   @Builder
@@ -66,8 +67,8 @@ public class VacationToken extends BaseEntity {
   public void setAttendanceSate(final AttendanceState attendanceSate) {
     this.attendanceSate = attendanceSate;
 
-    if (attendanceSate.getVacationToken() != this) { // null 체크 추가
-      attendanceSate.setVacationToken(this);
+    if (!attendanceSate.getVacationTokens().contains(this)) { // null 체크 추가
+      attendanceSate.addtVacationToken(this);
     }
   }
 }

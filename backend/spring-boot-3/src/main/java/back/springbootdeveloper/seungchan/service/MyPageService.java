@@ -55,7 +55,7 @@ public class MyPageService {
       AttendanceState attendanceState = attendanceStateRepository.findById(
           clubMember.getClubMemberId()).orElseThrow(EntityNotFoundException::new);
       // 출석 정보에 대한 휴가 토큰을 가져옴
-      VacationToken vacationToken = attendanceState.getVacationToken();
+      VacationToken vacationToken = getLastVacationToken(attendanceState);
       // 출석 주차를 역순으로 정렬하여 최근 정보를 가져옴
       List<AttendanceWeekDate> attendanceWeekDates = getLastAttendanceWeekDate(attendanceState);
 
@@ -97,6 +97,13 @@ public class MyPageService {
         // TODO: 2/26/24 향후 디비수정
         .memberStatusMessage("향후 디비수정")
         .build();
+  }
+
+  private VacationToken getLastVacationToken(final AttendanceState attendanceState) {
+    List<VacationToken> vacationTokens = attendanceState.getVacationTokens();
+    Integer lastIndex = vacationTokens.size() - 1;
+    VacationToken vacationToken = vacationTokens.get(lastIndex);
+    return vacationToken;
   }
 
   private MyAttendanceCount getMyAttendanceCount(Club club,

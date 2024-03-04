@@ -6,7 +6,6 @@ import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.*;
-import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -208,7 +207,7 @@ public class EntityApplyService {
     // attendanceSate - attendanceWeekDate
     attendanceSate.addAttendanceWeekDates(attendanceWeekDate);
     // attendanceSate - vacationToken
-    attendanceSate.setVacationToken(vacationToken);
+    attendanceSate.addtVacationToken(vacationToken);
 
     return attendanceSate;
   }
