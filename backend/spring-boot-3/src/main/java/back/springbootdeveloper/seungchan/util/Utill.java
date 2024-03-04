@@ -58,7 +58,7 @@ public class Utill {
 
     while (matcher.find()) { // 일치하는 부분을 찾을 때까지 반복
       Integer number = Integer.parseInt(matcher.group()); // 일치하는 숫자 문자열을 정수로 변환하여 가져옴
-
+      
       // 숫자가 각 출석 상태를 나타내는지 확인하고, 해당 상태를 목록에 추가
       if (ATTENDANCE_STATE.ATTENDANCE.is(number)) {
         attendanceStates.add(ATTENDANCE_STATE.ATTENDANCE);

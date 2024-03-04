@@ -86,12 +86,6 @@ public class AttendanceWeekDate {
 
     this.year_date = String.valueOf(now.getYear());
     this.month_date = String.valueOf(now.getMonthValue());
-
-    this.monday = ATTENDANCE_STATE.UNDECIDED;
-    this.tuesday = ATTENDANCE_STATE.UNDECIDED;
-    this.wednesday = ATTENDANCE_STATE.UNDECIDED;
-    this.thursday = ATTENDANCE_STATE.UNDECIDED;
-    this.friday = ATTENDANCE_STATE.UNDECIDED;
   }
 
 
