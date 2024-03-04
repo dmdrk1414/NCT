@@ -51,6 +51,26 @@ public class VacationTokenService {
   }
 
   /**
+   * 주어진 클럽 회원 ID에 대한 최근 휴가 토큰을 가져오는 메서드입니다.
+   *
+   * @param clubMemberId 클럽 회원 ID
+   * @return 최근 휴가 토큰
+   * @throws EntityNotFoundException 해당 클럽 회원이나 출석 상태를 찾을 수 없을 때 발생하는 예외
+   */
+  public VacationToken getLatelyVacationToken(final Long clubMemberId) {
+    // 클럽 회원을 ID로 찾습니다.
+    ClubMember clubMember = clubMemberRepository.findById(clubMemberId)
+        .orElseThrow(EntityNotFoundException::new);
+
+    // 클럽 회원의 출석 상태를 찾습니다.
+    AttendanceState attendanceState = attendanceStateRepository.findById(
+        clubMember.getAttendanceStateId()).orElseThrow(EntityNotFoundException::new);
+
+    // 출석 상태에서 최근 휴가 토큰을 가져옵니다.
+    return getLastVacationToken(attendanceState);
+  }
+
+  /**
    * 주어진 출석 상태에서 마지막 휴가 토큰을 반환하는 메서드입니다.
    *
    * @param attendanceState 출석 상태 객체
