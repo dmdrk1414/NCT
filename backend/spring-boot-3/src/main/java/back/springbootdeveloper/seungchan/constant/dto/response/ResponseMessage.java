@@ -28,7 +28,9 @@ public enum ResponseMessage {
   BAD_REQUEST_NOT_CLUB_CHECK_STATE("클럽 출석 체크 지정일이 아닙니다."),
   BAD_NOT_SAME_LOGIN_TARGET_MEMBER("타인의 계정에 시도 할 수 없는 기능 입니다."),
   SUCCESS_UPDATE_SUGGESTION_ANSWER("답변 수정이 완료 되었습니다."),
-  BAD_UPDATE_SUGGESTION_ANSWER("답변 수정이 실패 하였습니다. 대표 부대표만 가능합니다.");
+  BAD_UPDATE_SUGGESTION_ANSWER("답변 수정이 실패 하였습니다. 대표 부대표만 가능합니다."),
+  SUCCESS_APPLY_CLUB("팀 등록이 완료 되었습니다."),
+  BAD_APPLY_CLUB("팀 등록을 실패 하였습니다.");
 
   private final String message;
 
