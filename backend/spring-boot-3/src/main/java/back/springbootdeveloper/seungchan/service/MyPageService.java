@@ -127,6 +127,7 @@ public class MyPageService {
     List<AttendanceWeekDate> attendanceWeekDates = attendanceState.getAttendanceWeekDates();
     List<MyClubMembersAttendance> myClubMembersAttendances = new ArrayList<>();
 
+    // TODO: 3/5/24 페이징 관리
     for (final AttendanceWeekDate attendanceWeekDate : attendanceWeekDates) {
       AttendanceStates attendanceStates = AttendanceStates.builder()
           .attendanceWeekDate(attendanceWeekDate)
