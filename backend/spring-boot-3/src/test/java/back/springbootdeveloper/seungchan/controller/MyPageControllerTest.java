@@ -10,6 +10,7 @@ import back.springbootdeveloper.seungchan.dto.response.MyAllClubMembersAttendanc
 import back.springbootdeveloper.seungchan.dto.response.MyAllClubMembersInformationsResDto;
 import back.springbootdeveloper.seungchan.dto.response.MyClubArticle;
 import back.springbootdeveloper.seungchan.dto.response.MyClubArticleComment;
+import back.springbootdeveloper.seungchan.dto.response.MyClubMembersAttendance;
 import back.springbootdeveloper.seungchan.entity.Club;
 import back.springbootdeveloper.seungchan.entity.ClubGrade;
 import back.springbootdeveloper.seungchan.entity.ClubMember;
@@ -478,5 +479,83 @@ class MyPageControllerTest {
         .andExpect(jsonPath("$.result.memberStudentId").value(memberStudentId))
         .andExpect(jsonPath("$.result.clubName").value(clubName))
         .andExpect(jsonPath("$.result.memberStatusMessage").value(memberStatusMessage));
+  }
+
+  @Test
+  void 마이페이지_자정_동아리_출석_현황() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/personal-info/{club_member_id}/clubs/attendances";
+
+    final Member member = memberOneClubLeader;
+    final ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(targetClubOneId,
+        member.getMemberId()).get();
+    final Club club = clubRepository.findById(clubMember.getClubId()).get();
+
+    // 검증을 위한 데이터 준비
+    List<MyClubMembersAttendance> myClubMembersAttendances = myPageService.getMyClubMembersAttendance(
+        clubMember.getClubMemberId());
+
+    // when
+    ResultActions result = mockMvc.perform(get(url, clubMember.getClubMemberId())
+        .accept(MediaType.APPLICATION_JSON)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    result
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result.clubName").value(club.getClubName()));
+
+    for (int i = 0; i < myClubMembersAttendances.size(); i++) {
+      // 출석 정보 테스트
+      result.andExpect(
+              jsonPath("$.result.myClubMembersAttendances[" + i + "].attendanceStates.monday").value(
+                  myClubMembersAttendances.get(i).getAttendanceStates().getMonday())).
+          andExpect(
+              jsonPath(
+                  "$.result.myClubMembersAttendances[" + i + "].attendanceStates.tuesday").value(
+                  myClubMembersAttendances.get(i).getAttendanceStates().getTuesday())).
+          andExpect(
+              jsonPath(
+                  "$.result.myClubMembersAttendances[" + i + "].attendanceStates.wednesday").value(
+                  myClubMembersAttendances.get(i).getAttendanceStates().getWednesday())).
+          andExpect(
+              jsonPath(
+                  "$.result.myClubMembersAttendances[" + i + "].attendanceStates.thursday").value(
+                  myClubMembersAttendances.get(i).getAttendanceStates().getThursday())).
+          andExpect(
+              jsonPath(
+                  "$.result.myClubMembersAttendances[" + i + "].attendanceStates.friday").value(
+                  myClubMembersAttendances.get(i).getAttendanceStates().getFriday())).
+          andExpect(
+              jsonPath(
+                  "$.result.myClubMembersAttendances[" + i + "].attendanceStates.saturday").value(
+                  myClubMembersAttendances.get(i).getAttendanceStates().getSaturday())).
+          andExpect(
+              jsonPath(
+                  "$.result.myClubMembersAttendances[" + i + "].attendanceStates.sunday").value(
+                  myClubMembersAttendances.get(i).getAttendanceStates().getSunday())).
+
+          // 출석 정보 카운터 테스트
+              andExpect(
+              jsonPath(
+                  "$.result.myClubMembersAttendances[" + i
+                      + "].myAttendanceCount.attendance").value(
+                  myClubMembersAttendances.get(i).getMyAttendanceCount().getAttendance())).
+          andExpect(
+              jsonPath(
+                  "$.result.myClubMembersAttendances[" + i + "].myAttendanceCount.vacation").value(
+                  myClubMembersAttendances.get(i).getMyAttendanceCount().getVacation())).
+          andExpect(
+              jsonPath(
+                  "$.result.myClubMembersAttendances[" + i + "].myAttendanceCount.absence").value(
+                  myClubMembersAttendances.get(i).getMyAttendanceCount().getAbsence())).
+          andExpect(
+              jsonPath(
+                  "$.result.myClubMembersAttendances[" + i
+                      + "].myAttendanceCount.totalCount").value(
+                  myClubMembersAttendances.get(i).getMyAttendanceCount().getTotalCount()));
+    }
   }
 }

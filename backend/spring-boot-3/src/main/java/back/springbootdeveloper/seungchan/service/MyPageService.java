@@ -2,9 +2,11 @@ package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.constant.entity.ATTENDANCE_STATE;
 import back.springbootdeveloper.seungchan.constant.entity.POSSIBLE_STATUS;
+import back.springbootdeveloper.seungchan.dto.response.AttendanceStates;
 import back.springbootdeveloper.seungchan.dto.response.MyAllClubMembersAttendance;
 import back.springbootdeveloper.seungchan.dto.response.MyAttendanceCount;
 import back.springbootdeveloper.seungchan.dto.response.MyAttendanceState;
+import back.springbootdeveloper.seungchan.dto.response.MyClubMembersAttendance;
 import back.springbootdeveloper.seungchan.dto.response.MyPageClubMemberInformationResDto;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
@@ -106,6 +108,70 @@ public class MyPageService {
         .build();
   }
 
+  /**
+   * 클럽 멤버의 출석 정보를 가져옵니다.
+   *
+   * @param clubMemberId 클럽 멤버 ID
+   * @return 클럽 멤버의 출석 정보 목록
+   * @throws EntityNotFoundException 클럽 멤버, 클럽 또는 출석 상태를 찾을 수 없는 경우 예외가 발생합니다.
+   */
+  public List<MyClubMembersAttendance> getMyClubMembersAttendance(final Long clubMemberId) {
+    // 필요한 객체 설정
+    ClubMember clubMember = clubMemberRepository.findById(clubMemberId)
+        .orElseThrow(EntityNotFoundException::new);
+    Club club = clubRepository.findById(clubMember.getClubId())
+        .orElseThrow(EntityNotFoundException::new);
+    AttendanceState attendanceState = attendanceStateRepository.findById(
+            clubMember.getAttendanceStateId())
+        .orElseThrow(EntityNotFoundException::new);
+    List<AttendanceWeekDate> attendanceWeekDates = attendanceState.getAttendanceWeekDates();
+    List<MyClubMembersAttendance> myClubMembersAttendances = new ArrayList<>();
+
+    // TODO: 3/5/24 페이징 관리
+    for (final AttendanceWeekDate attendanceWeekDate : attendanceWeekDates) {
+      AttendanceStates attendanceStates = AttendanceStates.builder()
+          .attendanceWeekDate(attendanceWeekDate)
+          .build();
+
+      MyAttendanceCount myAttendanceCount = getMyAttendanceCountOneWeek(
+          club, attendanceWeekDate);
+
+      myClubMembersAttendances.add(
+          MyClubMembersAttendance.builder()
+              .attendanceStates(attendanceStates)
+              .myAttendanceCount(myAttendanceCount)
+              .build()
+      );
+    }
+
+    return myClubMembersAttendances;
+  }
+
+  /**
+   * 한 주 동안의 출석 정보의 관한 Count을 가져온다.
+   *
+   * @param club               클럽
+   * @param attendanceWeekDate 출석 주차 날짜
+   * @return 한 주 동안의 출석 정보
+   */
+  private MyAttendanceCount getMyAttendanceCountOneWeek(final Club club,
+      final AttendanceWeekDate attendanceWeekDate) {
+    String attendanceCount = getCountOfAttendanceWeekDate(attendanceWeekDate,
+        ATTENDANCE_STATE.ATTENDANCE, club);
+    String vacationCount = getCountOfAttendanceWeekDate(attendanceWeekDate,
+        ATTENDANCE_STATE.VACATION, club);
+    String absenceCount = getCountOfAttendanceWeekDate(attendanceWeekDate,
+        ATTENDANCE_STATE.ABSENCE, club);
+    String totalCount = getTotalCount(attendanceCount, vacationCount, absenceCount);
+
+    return MyAttendanceCount.builder()
+        .attendance(attendanceCount)
+        .vacation(vacationCount)
+        .absence(absenceCount)
+        .totalCount(totalCount)
+        .build();
+  }
+
 
   /**
    * 주어진 출석 상태를 갖는 출석 주차 목록에서 마지막 휴가 토큰을 가져옵니다.
@@ -182,10 +248,35 @@ public class MyPageService {
       // 요일에 대한 반복
       for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
         // 주어진 요일에 대한 출석 상태 및 가능한 출석 상태 비교
-        if (attendanceWeekDate.getAttendanceStateForDay(dayOfWeek) == attendanceState &&
+        if (attendanceWeekDate.getAttendanceStateForDay(dayOfWeek).is(attendanceState) &&
             POSSIBLE_STATUS.POSSIBLE.is(attendanceWeek.getStatusForDay(dayOfWeek))) {
           count++;
         }
+      }
+    }
+
+    return String.valueOf(count);
+  }
+
+  /**
+   * 주어진 출석 주차 날짜에 대한 특정 출석 상태의 출석 횟수를 가져옵니다.
+   *
+   * @param attendanceWeekDate 출석 주차 날짜
+   * @param attendanceState    출석 상태
+   * @param club               클럽
+   * @return 출석 횟수
+   */
+  private String getCountOfAttendanceWeekDate(AttendanceWeekDate attendanceWeekDate,
+      ATTENDANCE_STATE attendanceState, Club club) {
+    ClubControl clubControl = club.getClubControl();
+    AttendanceWeek attendanceWeek = clubControl.getAttendanceWeek();
+    Integer count = 0;
+
+    for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
+      // 주어진 요일에 대한 출석 상태 및 가능한 출석 상태 비교
+      if (attendanceWeekDate.getAttendanceStateForDay(dayOfWeek).is(attendanceState) &&
+          POSSIBLE_STATUS.POSSIBLE.is(attendanceWeek.getStatusForDay(dayOfWeek))) {
+        count++;
       }
     }
 

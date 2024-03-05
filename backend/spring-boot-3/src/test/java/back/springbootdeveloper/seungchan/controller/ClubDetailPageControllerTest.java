@@ -72,6 +72,8 @@ class ClubDetailPageControllerTest {
   private AttendanceWeekRepository attendanceWeekRepository;
   @Autowired
   private AttendanceWeekService attendanceWeekService;
+  @Autowired
+  private AttendanceNumberRepository attendanceNumberRepository;
   private String token;
   private Member memberOneClubLeader;
   private Long targetClubOneId;
@@ -113,6 +115,34 @@ class ClubDetailPageControllerTest {
             jsonPath("$.result.dormancyMembers[0]").value(memberDormants.get(0).getFullName()))
         .andExpect(
             jsonPath("$.result.dormancyMembers[1]").value(memberDormants.get(1).getFullName()));
+  }
+
+
+  @Test
+  void 동아리_출석_번호_조회_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_leader_member();
+    final String url = "/clubs/informations/{club_id}/details/attendance/number";
+
+    final Club club = clubRepository.findById(targetClubOneId).get();
+
+    // 검증을 위한 데이터 준비
+    // 클럽관련 정보
+    AttendanceNumber attendanceNumber = attendanceNumberService.findLastOneByClubId(
+        club.getClubId());
+
+    // when
+    ResultActions result = mockMvc.perform(get(url, club.getClubId())
+        .accept(MediaType.APPLICATION_JSON)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    // then
+    result
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.result.attendanceCheckNumber").value(
+            attendanceNumber.getAttendanceNumber()));
   }
 
   @Test
