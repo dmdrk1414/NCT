@@ -8,6 +8,7 @@ import back.springbootdeveloper.seungchan.constant.entity.POSSIBLE_STATUS;
 import back.springbootdeveloper.seungchan.dto.request.AttendanceNumberReqDto;
 import back.springbootdeveloper.seungchan.dto.request.GiveVacationTokenReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
+import back.springbootdeveloper.seungchan.entity.AttendanceNumber;
 import back.springbootdeveloper.seungchan.entity.AttendanceWeek;
 import back.springbootdeveloper.seungchan.entity.ClubGrade;
 import back.springbootdeveloper.seungchan.entity.Member;
@@ -53,6 +54,19 @@ public class ClubDetailPageController {
         .build();
 
     return BaseResultDTO.ofSuccess(dormancysMembersResDto);
+  }
+
+  @Operation(summary = "동아리 출석 번호 조회", description = "해당 클럽의 출석 번호 조회")
+  @GetMapping(value = "/attendance/number")
+  public BaseResultDTO<AttendanceNumberResDto> findAttendanceNumberOfClub(
+      HttpServletRequest request,
+      @PathVariable(value = "club_id") Long clubId) {
+
+    AttendanceNumber attendanceNumber = attendanceNumberService.findLastOneByClubId(clubId);
+
+    return BaseResultDTO.ofSuccess(AttendanceNumberResDto.builder()
+        .attendanceCheckNumber(attendanceNumber.getAttendanceNumber())
+        .build());
   }
 
   @Operation(summary = "동아리 상세 페이지 조회", description = "동아리 휴먼 회원들 제외한 모든 회원들 상세 조회 가능")
