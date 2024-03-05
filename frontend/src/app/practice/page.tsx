@@ -62,12 +62,35 @@ export default function Home() {
       .catch(err => {});
   };
 
+  const pushButton_2 = () => {
+    axBase()({
+      method: 'post',
+      url: '/main/club/apply',
+      data: {
+        clubName: '클럽이름',
+        clubIntroduction: '클럽자기소개',
+      },
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(err => {});
+  };
+
   return (
     <>
       <form encType="multipart/form-data">
         <input type="file" id="profile-upload" accept="image/*" onChange={onChangeOneImg} />
         <input type="file" id="profile-upload" accept="image/*" multiple onChange={onChangeImgs} />
-        <button onClick={pushButton}>sdfs</button>
+        <div>
+          <button onClick={pushButton}>사진이랑 보내기</button>
+        </div>
+        <div>
+          <button onClick={pushButton_2}>사진없이 보내기</button>
+        </div>
       </form>
     </>
   );
