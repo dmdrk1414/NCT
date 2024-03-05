@@ -6,6 +6,7 @@ import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.entity.ATTENDANCE_STATE;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.dto.response.*;
+import back.springbootdeveloper.seungchan.entity.Club;
 import back.springbootdeveloper.seungchan.entity.ClubArticleComment;
 import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.service.*;
@@ -156,5 +157,23 @@ public class MyPageController {
         clubMemberId);
 
     return BaseResultDTO.ofSuccess(myPageClubMemberInformationResDto);
+  }
+
+  @Operation(summary = "마이페이지 - 지정 동아리 출석 현황", description = "현제 회원이 참여한 클럽의 출석 정보 확인 가능")
+  @GetMapping(value = "/clubs/attendances")
+  @ResponseBody
+  public BaseResultDTO<MyClubMembersInformationsResDto> findClubMemberAttendanceInformation(
+      HttpServletRequest request,
+      @PathVariable(value = "club_member_id") Long clubMemberId) {
+    Long myMemberId = tokenService.getMemberIdFromToken(request);
+
+    String myClubName = clubService.getClubName(clubMemberId);
+    List<MyClubMembersAttendance> myClubMembersAttendances = myPageService.getMyClubMembersAttendance(
+        clubMemberId);
+
+    return BaseResultDTO.ofSuccess(MyClubMembersInformationsResDto.builder()
+        .clubName(myClubName)
+        .myClubMembersAttendances(myClubMembersAttendances)
+        .build());
   }
 }
