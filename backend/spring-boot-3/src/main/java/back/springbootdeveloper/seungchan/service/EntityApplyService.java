@@ -6,18 +6,21 @@ import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Club 등록, Club 지원, ClubArticle 생성을 담당하는 클래스입니다.
  */
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class EntityApplyService {
 
   private final ClubRepository clubRepository;
@@ -26,19 +29,7 @@ public class EntityApplyService {
   private final ClubMemberInformationRepository clubMemberInformationRepository;
   private final ClubGradeRepository clubGradeRepository;
   private final ClubArticleRepository clubArticleRepository;
-
-  @Autowired
-  public EntityApplyService(ClubRepository clubRepository,
-      AttendanceStateRepository attendanceSateRepository, ClubMemberRepository clubMemberRepository,
-      ClubMemberInformationRepository clubMemberInformationRepository,
-      ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository) {
-    this.clubRepository = clubRepository;
-    this.attendanceSateRepository = attendanceSateRepository;
-    this.clubMemberRepository = clubMemberRepository;
-    this.clubMemberInformationRepository = clubMemberInformationRepository;
-    this.clubGradeRepository = clubGradeRepository;
-    this.clubArticleRepository = clubArticleRepository;
-  }
+  private final ImageService imageService;
 
 
   /**
@@ -122,26 +113,33 @@ public class EntityApplyService {
     return Optional.of(clubArticleRepository.save(clubArticle));
   }
 
-  /**
-   * Club을 생성하고 저장합니다.
-   *
-   * @param clubName            Club 이름
-   * @param clubIntroduce       Club 자기소개
-   * @param clubProfileImage    Club 프로필 사진 URL
-   * @param clubIntroduceImages Club 자기소개 사진 리스트
-   * @return 저장된 Club
-   */
   @Transactional
-  public Optional<Club> saveClub(String clubName, String clubIntroduce, String clubProfileImage,
-      List<ClubIntroduceImage> clubIntroduceImages) {
-    final Club club = createClub(clubName, clubIntroduce, clubProfileImage);
+  public Optional<Club> makeClub(
+      final String clubName,
+      final String clubIntroduce,
+      final MultipartFile clubProfileImageFile,
+      final List<MultipartFile> clubIntroduceImageFiles) {
+
+    String clubProfileImageUrl = imageService.getBaseImageUrl();
+    if (clubProfileImageFile != null) {
+      clubProfileImageUrl = imageService.uploadClubProfileImage(clubName,
+          clubProfileImageFile);
+    }
+    List<String> clubIntroduceImageUrls = new ArrayList<>(List.of(imageService.getBaseImageUrl()));
+    if (clubIntroduceImageFiles != null) {
+      clubIntroduceImageUrls = imageService.uploadClubIntroduceImageUrls(
+          clubName, clubIntroduceImageFiles);
+    }
+    final Club club = createClub(clubName, clubIntroduce, clubProfileImageUrl);
     final ClubControl clubControl = createClubControl();
 
+    // TODO: 3/5/24 팀장 등록 
     // Club - AttendanceNumber
     club.addAttendanceNumber(new AttendanceNumber());
     // Club - ClubIntroduceImages
-    clubIntroduceImages.forEach(
-        clubIntroduceImage -> club.addClubIntroduceImage(clubIntroduceImage));
+    clubIntroduceImageUrls.forEach(
+        clubIntroduceImageUrl -> club.addClubIntroduceImage(
+            new ClubIntroduceImage(clubIntroduceImageUrl)));
     // Club - ClubControl
     club.setClubControl(clubControl);
 
@@ -149,7 +147,7 @@ public class EntityApplyService {
   }
 
   /**
-   * ClubMember 생성하고 저장합니다.
+   * 팀에 지원을 합니다.
    *
    * @param member                ClubMember의 회원 정보
    * @param club                  ClubMember

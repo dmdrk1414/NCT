@@ -15,8 +15,8 @@ import java.util.Locale;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-  @Value("${image-dir}")
-  String imageDir;
+  @Value("${dev-base-url}")
+  private String imageBaseUrl;
 
   @Bean
   public MessageSource validationMessageSource() {
@@ -47,7 +47,7 @@ public class WebConfig implements WebMvcConfigurer {
     // URL 형식으로 제공해야 합니다. file:// 접두사는 이를 나타냅니다.
     // 그러나 주어진 코드에서 imageDir은 이미 파일 시스템 경로를 나타내므로 file://을 명시할 필요가 없습니다.
     // 대신에 이미지 디렉토리의 절대 경로를 그대로 사용하면 됩니다.
-    registry.addResourceHandler("/images/**")
-        .addResourceLocations(imageDir);
+    registry.addResourceHandler("/static/images/**")
+        .addResourceLocations(imageBaseUrl);
   }
 }
