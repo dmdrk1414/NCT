@@ -15,13 +15,21 @@ public class ImageService {
 
   // TODO: 3/5/24 배포시 변경
   @Value("${dev-base-url}")
-  private String imageBaseUrl;
+  private String imageBaseDirUrl;
   @Value("${club-base-url}")
-  private String clubImageBaseUrl;
+  private String clubImageBaseDirUrl;
   @Value("${club-profile}")
-  private String clubProfileUrl;
+  private String clubProfileDirUrl;
   @Value("${club-information}")
-  private String clubInformation;
+  private String clubInformationDirUrl;
+  @Value("${base-image-url}")
+  private String baseImageDirUrl;
+  @Value("${base-image-name}")
+  private String baseImageName;
+
+  public String getBaseImageUrl() {
+    return imageBaseDirUrl + baseImageDirUrl + baseImageName;
+  }
 
   public ImageResDto uploadImage(MultipartFile image) {
     // 다음으로, 이미지의 이름을 지정해주어야 한다. 이미지 이름을 저장하는 방식은 {UUID}.{extension} 으로 정했는데,
@@ -34,7 +42,7 @@ public class ImageService {
     final String imageName = UUID.randomUUID() + "." + extension;
 
     try {
-      final File file = new File(imageBaseUrl + imageName);
+      final File file = new File(imageBaseDirUrl + imageName);
       // 저장 디렉토리와 이미지 네임을 합친 경로로 File 객체를 생성해준다.
       // 다음으로 요청으로 받은 이미지 데이터를 경로에 저장하면 되는데,
       // 스프링에서는 아주 편리하게도 MultipartFile 객체에서 transferTo 메서드로 이를 해결해준다.
@@ -57,7 +65,8 @@ public class ImageService {
    */
   public String uploadClubProfileImage(final String clubName,
       final MultipartFile clubProfileImageFile) {
-    return uploadImageAndGetUrl(clubImageBaseUrl, clubProfileUrl, clubProfileImageFile, clubName);
+    return uploadImageAndGetUrl(clubImageBaseDirUrl, clubProfileDirUrl, clubProfileImageFile,
+        clubName);
   }
 
   /**
@@ -73,7 +82,7 @@ public class ImageService {
 
     for (final MultipartFile clubIntroduceImageFile : clubIntroduceImageFiles) {
       imageUrls.add(
-          uploadImageAndGetUrl(clubImageBaseUrl, clubInformation, clubIntroduceImageFile,
+          uploadImageAndGetUrl(clubImageBaseDirUrl, clubInformationDirUrl, clubIntroduceImageFile,
               clubName));
     }
 
@@ -100,7 +109,7 @@ public class ImageService {
     final String extension = image.getContentType().split("/")[1];
     final String imageName = UUID.randomUUID() + "." + extension;
     final String imageUrl =
-        imageBaseUrl + imageFirstType + imageSecondType + addImageName + "_" + imageName;
+        imageBaseDirUrl + imageFirstType + imageSecondType + addImageName + "_" + imageName;
     try {
       final File file = new File(imageUrl);
       // 저장 디렉토리와 이미지 네임을 합친 경로로 File 객체를 생성해준다.

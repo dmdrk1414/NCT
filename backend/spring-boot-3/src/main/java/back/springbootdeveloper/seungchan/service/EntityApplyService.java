@@ -6,6 +6,7 @@ import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.*;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,10 +120,16 @@ public class EntityApplyService {
       final MultipartFile clubProfileImageFile,
       final List<MultipartFile> clubIntroduceImageFiles) {
 
-    final String clubProfileImageUrl = imageService.uploadClubProfileImage(clubName,
-        clubProfileImageFile);
-    final List<String> clubIntroduceImageUrls = imageService.uploadClubIntroduceImageUrls(
-        clubName, clubIntroduceImageFiles);
+    String clubProfileImageUrl = imageService.getBaseImageUrl();
+    if (clubProfileImageFile != null) {
+      clubProfileImageUrl = imageService.uploadClubProfileImage(clubName,
+          clubProfileImageFile);
+    }
+    List<String> clubIntroduceImageUrls = new ArrayList<>(List.of(imageService.getBaseImageUrl()));
+    if (clubIntroduceImageFiles != null) {
+      clubIntroduceImageUrls = imageService.uploadClubIntroduceImageUrls(
+          clubName, clubIntroduceImageFiles);
+    }
     final Club club = createClub(clubName, clubIntroduce, clubProfileImageUrl);
     final ClubControl clubControl = createClubControl();
 

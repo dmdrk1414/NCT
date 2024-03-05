@@ -45,3 +45,5 @@ image-base-url: classpath:static/images/
 club-base-url: club/
 club-profile: profile/
 club-information: information/
+base-image-url: base/
+base-image-name: base_image.png
