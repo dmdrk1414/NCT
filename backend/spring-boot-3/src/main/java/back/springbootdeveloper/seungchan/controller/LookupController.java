@@ -1,15 +1,11 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
-import back.springbootdeveloper.seungchan.dto.request.FindEmailReqDto;
 import back.springbootdeveloper.seungchan.dto.request.FindPasswordReqDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
-import back.springbootdeveloper.seungchan.filter.exception.EmailSameMatchException;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
-import back.springbootdeveloper.seungchan.util.Utill;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

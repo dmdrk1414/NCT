@@ -5,6 +5,7 @@ import back.springbootdeveloper.seungchan.entity.ClubMember;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.ClubMemberRepository;
 import back.springbootdeveloper.seungchan.repository.ClubRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,5 +32,17 @@ public class ClubService {
         .orElseThrow(EntityNotFoundException::new);
 
     return club.getClubName();
+  }
+
+  /**
+   * 주어진 클럽 이름이 이미 존재하는지 여부를 확인합니다.
+   *
+   * @param targetClubName 확인할 클럽 이름
+   * @return 클럽 이름이 이미 존재하면 true, 그렇지 않으면 false
+   */
+  public Boolean isDuplicationClubName(final String targetClubName) {
+    List<Club> clubs = clubRepository.findAll();
+
+    return clubs.stream().anyMatch(club -> club.isSameName(targetClubName));
   }
 }
