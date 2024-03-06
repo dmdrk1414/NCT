@@ -25,7 +25,7 @@ public class LoginService {
       String email = profile.getEmail();
 
       // Email 정보를 얻은 후 확인
-      Member member = memberService.findByEmailForJwtToken(email);
+      Member member = memberService.findByEmail(email);
       if (member == null) {
         // Create new Member
         memberService.createMemberByEmail(email);
