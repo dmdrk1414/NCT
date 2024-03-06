@@ -42,6 +42,9 @@ public class CustomClubApplyInformation extends BaseEntity {
   @JoinColumn(name = "club_control_id")
   private ClubControl clubControl;
 
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "customClubApplyInformation")
+  private List<ClubMemberCustomInformation> clubMemberCustomInformations = new ArrayList<>();
+
   @Builder
   public CustomClubApplyInformation(final String customContent, final CUSTOM_TYPE customType) {
     this.customContent = customContent;
@@ -63,6 +66,15 @@ public class CustomClubApplyInformation extends BaseEntity {
     // 무한루프에 빠지지 않도록 체크
     if (!clubControl.getCustomClubApplyInformations().contains(this)) {
       clubControl.getCustomClubApplyInformations().add(this);
+    }
+  }
+
+  public void addClubMemberCustomInformations(
+      final ClubMemberCustomInformation clubMemberCustomInformation) {
+    this.clubMemberCustomInformations.add(clubMemberCustomInformation);
+
+    if (clubMemberCustomInformation.getCustomClubApplyInformation() != this) { // 무한루프에 빠지지 않도록 체크
+      clubMemberCustomInformation.setCustomClubApplyInformation(this);
     }
   }
 }
