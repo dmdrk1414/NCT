@@ -46,7 +46,7 @@ public class ClubRegistrationController {
       @RequestParam(value = "clubName") String clubName,
       @RequestParam(value = "clubIntroduction") String clubIntroduction,
       @RequestParam(value = "clubProfileImages", required = false) MultipartFile clubProfileImage,
-      @RequestPart(name = "clubInformationImages", required = false) List<MultipartFile> clubInformationImages) {
+      @RequestParam(name = "clubInformationImages", required = false) List<MultipartFile> clubInformationImages) {
     Long memberId = tokenService.getMemberIdFromToken(request);
     Member myMember = memberService.findByMemberId(memberId);
 
