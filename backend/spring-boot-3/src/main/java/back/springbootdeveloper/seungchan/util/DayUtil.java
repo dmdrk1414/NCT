@@ -18,9 +18,4 @@ public class DayUtil {
     // 현재 날짜에 해당하는 요일을 가져옵니다.
     return today.getDayOfWeek();
   }
-
-  public static String getYear() {
-    Year currentYear = Year.now();
-    return String.valueOf(currentYear.getValue());
-  }
 }

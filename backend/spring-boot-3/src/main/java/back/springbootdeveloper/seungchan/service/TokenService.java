@@ -43,7 +43,7 @@ public class TokenService {
     }
     // TODO: 불필요한 Member Query 해결하기
     Long memberId = refreshTokenService.findByRefreshToken(refreshToken).getMemberId();
-    Member member = memberService.findMemberById(memberId);
+    Member member = memberService.findByMemberId(memberId);
 
     return tokenProvider.generateToken(member, ACCESS_TOKEN_DURATION);
   }
