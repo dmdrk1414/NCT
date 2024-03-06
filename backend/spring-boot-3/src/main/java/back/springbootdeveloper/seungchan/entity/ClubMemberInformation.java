@@ -56,7 +56,7 @@ public class ClubMemberInformation extends BaseEntity {
   }
 
   /**
-   * 클럽 멤버에 사용자 정의 정보를 추가합니다.
+   * 클럽 멤버에 커스텀 클럽 신청 정보를 추가합니다.
    *
    * @param clubMemberCustomInformation 추가할 클럽 멤버의 사용자 정의 정보
    */
