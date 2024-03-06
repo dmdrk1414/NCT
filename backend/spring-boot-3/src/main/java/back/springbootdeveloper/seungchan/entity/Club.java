@@ -108,4 +108,13 @@ public class Club extends BaseEntity {
     }
   }
 
+  /**
+   * 현재 클럽 이름과 주어진 클럽 이름이 동일한지 여부를 확인합니다.
+   *
+   * @param targetClubName 비교 대상이 되는 클럽 이름
+   * @return 클럽 이름이 동일하면 true, 그렇지 않으면 false
+   */
+  public boolean isSameName(final String targetClubName) {
+    return this.clubName.equals(targetClubName);
+  }
 }

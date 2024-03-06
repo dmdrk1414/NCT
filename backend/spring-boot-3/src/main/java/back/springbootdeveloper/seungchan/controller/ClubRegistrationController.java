@@ -1,7 +1,9 @@
 package back.springbootdeveloper.seungchan.controller;
 
+import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE_VALUE;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
+import back.springbootdeveloper.seungchan.dto.request.CheckDuplicationClubNameReqDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.entity.Club;
 import back.springbootdeveloper.seungchan.entity.ClubMember;
@@ -9,6 +11,7 @@ import back.springbootdeveloper.seungchan.entity.ClubMemberInformation;
 import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.service.ClubMemberInformationService;
+import back.springbootdeveloper.seungchan.service.ClubService;
 import back.springbootdeveloper.seungchan.service.EntityApplyService;
 import back.springbootdeveloper.seungchan.service.MemberService;
 import back.springbootdeveloper.seungchan.service.TokenService;
@@ -16,13 +19,14 @@ import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "스터디 팀을 등록하는 컨트롤러", description = "팀이름, 팀소개, 팀프로필 사진, 팀 소개사진을 입력받는다.")
+@Tag(name = "스터디 팀을 등록하는 컨트롤러", description = "팀 등록 관련 관리 클래스")
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -33,6 +37,7 @@ public class ClubRegistrationController {
   private final TokenService tokenService;
   private final MemberService memberService;
   private final ClubMemberInformationService clubMemberInformationService;
+  private final ClubService clubService;
 
   @Operation(summary = "개인 회원 - 팀 등록 api ")
   @PostMapping("")
@@ -46,7 +51,7 @@ public class ClubRegistrationController {
     Member myMember = memberService.findByMemberId(memberId);
 
     Club saveClub = entityApplyService.makeClub(
-        clubName, clubIntroduction, clubProfileImage, clubInformationImages
+        clubName.trim(), clubIntroduction, clubProfileImage, clubInformationImages
     ).orElseThrow(EntityNotFoundException::new);
 
     ClubMemberInformation clubMemberInformation = clubMemberInformationService.makeLeaderClubMemberInformation(
@@ -62,5 +67,22 @@ public class ClubRegistrationController {
 
     return BaseResponseBodyUtiil.BaseResponseBodyFailure(
         ResponseMessage.BAD_APPLY_CLUB.get());
+  }
+
+  @Operation(summary = "개인 회원 - 팀 등록 팀 이름 중복 확인 ")
+  @PostMapping("/overlap")
+  public ResponseEntity<BaseResponseBody> checkDuplicationClubName(
+      @RequestBody @Valid CheckDuplicationClubNameReqDto checkDuplicationClubNameReqDto,
+      HttpServletRequest request) {
+    String targetClubName = checkDuplicationClubNameReqDto.getClubName().trim();
+    Boolean isDuplicationClubName = clubService.isDuplicationClubName(targetClubName);
+
+    if (isDuplicationClubName) {
+      return BaseResponseBodyUtiil.BaseResponseBodyFailure(
+          ResponseMessage.BAD_DUPLICATION_CLUBNAME.get());
+    }
+
+    return BaseResponseBodyUtiil.BaseResponseBodySuccess(
+        RESPONSE_MESSAGE_VALUE.SUCCESS_NOT_DUPLICATION_CLUBNAME(targetClubName));
   }
 }
