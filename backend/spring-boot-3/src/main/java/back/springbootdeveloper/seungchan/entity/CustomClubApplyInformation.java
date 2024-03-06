@@ -51,15 +51,30 @@ public class CustomClubApplyInformation extends BaseEntity {
     this.customType = customType;
   }
 
+  /**
+   * 사용자 정의 컨텐츠를 업데이트합니다.
+   *
+   * @param customContent 새로운 사용자 정의 컨텐츠
+   */
   public void updateCustomContent(final String customContent) {
     this.customContent = customContent;
   }
 
+  /**
+   * 사용자 정의 타입을 업데이트합니다.
+   *
+   * @param customType 새로운 사용자 정의 타입
+   */
   public void updateCustomType(final CUSTOM_TYPE customType) {
     this.customType = customType;
   }
 
 
+  /**
+   * 클럽 컨트롤을 설정합니다.
+   *
+   * @param clubControl 설정할 클럽 컨트롤
+   */
   public void setClubControl(final ClubControl clubControl) {
     this.clubControl = clubControl;
 
@@ -69,6 +84,11 @@ public class CustomClubApplyInformation extends BaseEntity {
     }
   }
 
+  /**
+   * 클럽 멤버에 커스텀 클럽 신청의 관한 답변 정보를 추가합니다.
+   *
+   * @param clubMemberCustomInformation 추가할 클럽 멤버의 사용자 정의 정보
+   */
   public void addClubMemberCustomInformations(
       final ClubMemberCustomInformation clubMemberCustomInformation) {
     this.clubMemberCustomInformations.add(clubMemberCustomInformation);
