@@ -1,6 +1,8 @@
 package back.springbootdeveloper.seungchan.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +27,9 @@ public class ClubControl {
 
   @OneToOne(mappedBy = "clubControl")
   private Club club;
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "clubControl")
+  private List<ClubMemberCustomInformation> clubMemberCustomInformations = new ArrayList<>();
 
   /**
    * 휴가 토큰 컨트롤을 설정하는 메서드입니다. 동시에 이 휴가 토큰 컨트롤이 해당 클럽 컨트롤과 연결되어 있지 않은 경우에만 연결합니다.
@@ -65,4 +70,17 @@ public class ClubControl {
     }
   }
 
+  /**
+   * 클럽 멤버에 클럽 정보의 커스텀 정보를 추가합니다.
+   *
+   * @param clubMemberCustomInformation 추가할 클럽 멤버의 사용자 정의 정보
+   */
+  public void addClubMemberCustomInformations(
+      final ClubMemberCustomInformation clubMemberCustomInformation) {
+    this.clubMemberCustomInformations.add(clubMemberCustomInformation);
+
+    if (clubMemberCustomInformation.getClubControl() != this) { // 무한루프에 빠지지 않도록 체크
+      clubMemberCustomInformation.setClubControl(this);
+    }
+  }
 }

@@ -35,6 +35,13 @@ public class ClubMemberCustomInformation extends BaseEntity {
   @Column(name = "custom_type", length = 30, nullable = false)
   private CUSTOM_TYPE customType;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "club_member_information_id")
+  private ClubMemberInformation clubMemberInformation;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "club_control_id")
+  private ClubControl clubControl;
 
   @Builder
   public ClubMemberCustomInformation(final String customContent, final CUSTOM_TYPE customType) {
@@ -50,5 +57,31 @@ public class ClubMemberCustomInformation extends BaseEntity {
     this.customType = customType;
   }
 
+  /**
+   * 클럽 멤버의 정보를 설정합니다.
+   *
+   * @param clubMemberInformation 설정할 클럽 멤버의 정보
+   */
+  public void setClubMemberInformation(final ClubMemberInformation clubMemberInformation) {
+    this.clubMemberInformation = clubMemberInformation;
 
+    // 무한루프에 빠지지 않도록 체크
+    if (!clubMemberInformation.getClubMemberCustomInformations().contains(this)) {
+      clubMemberInformation.getClubMemberCustomInformations().add(this);
+    }
+  }
+
+  /**
+   * 클럽 컨트롤을 설정합니다.
+   *
+   * @param clubControl 설정할 클럽 컨트롤
+   */
+  public void setClubControl(final ClubControl clubControl) {
+    this.clubControl = clubControl;
+
+    // 무한루프에 빠지지 않도록 체크
+    if (!clubControl.getClubMemberCustomInformations().contains(this)) {
+      clubControl.getClubMemberCustomInformations().add(this);
+    }
+  }
 }

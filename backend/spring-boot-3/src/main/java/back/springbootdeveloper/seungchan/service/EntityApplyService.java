@@ -164,6 +164,7 @@ public class EntityApplyService {
     ClubMemberInformation entityClubMemberInformation = clubMemberInformationRepository.save(
         clubMemberInformation);
 
+    // TODO: 3/7/24 지원 회원들 임시 회원으로 등록
     // ClubMember
     //   - Member, Club, ClubMemberInformation, AttendanceSate, ClubGrade
     ClubMember clubMember = creatClubMember(member, club, entityClubMemberInformation,
