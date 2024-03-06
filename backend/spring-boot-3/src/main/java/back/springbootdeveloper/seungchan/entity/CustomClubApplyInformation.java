@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.entity;
 
 import back.springbootdeveloper.seungchan.constant.entity.CUSTOM_TYPE;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,7 +12,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +38,9 @@ public class CustomClubApplyInformation extends BaseEntity {
   @Column(name = "custom_type", length = 30, nullable = false)
   private CUSTOM_TYPE customType;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "club_control_id")
+  private ClubControl clubControl;
 
   @Builder
   public CustomClubApplyInformation(final String customContent, final CUSTOM_TYPE customType) {
@@ -50,4 +57,12 @@ public class CustomClubApplyInformation extends BaseEntity {
   }
 
 
+  public void setClubControl(final ClubControl clubControl) {
+    this.clubControl = clubControl;
+
+    // 무한루프에 빠지지 않도록 체크
+    if (!clubControl.getCustomClubApplyInformations().contains(this)) {
+      clubControl.getCustomClubApplyInformations().add(this);
+    }
+  }
 }
