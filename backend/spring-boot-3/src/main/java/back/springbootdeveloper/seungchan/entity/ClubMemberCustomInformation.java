@@ -28,47 +28,36 @@ public class ClubMemberCustomInformation extends BaseEntity {
   @Column(name = "club_member_custom_information_id")
   private Long clubMemberCustomInformationId;
 
-  @Column(name = "custom_content", length = 255, nullable = false)
+  @Column(name = "custom_content", length = 1000, nullable = false)
   private String customContent;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "custom_type", length = 30, nullable = false)
-  private CUSTOM_TYPE customType;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "custom_club_apply_information_id")
-  private CustomClubApplyInformation customClubApplyInformation;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "club_member_information_id")
   private ClubMemberInformation clubMemberInformation;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "custom_club_apply_information_id")
+  private CustomClubApplyInformation customClubApplyInformation;
 
   @Builder
-  public ClubMemberCustomInformation(final String customContent, final CUSTOM_TYPE customType) {
+  public ClubMemberCustomInformation(final String customContent) {
     this.customContent = customContent;
-    this.customType = customType;
   }
 
+  /**
+   * 사용자의 클럽 커스텀 지원서 컨텐츠를 업데이트합니다.
+   *
+   * @param customContent 새로운 내용 컨텐츠
+   */
   public void updateCustomContent(final String customContent) {
     this.customContent = customContent;
   }
 
-  public void updateCustomType(final CUSTOM_TYPE customType) {
-    this.customType = customType;
-  }
-
-
-  public void setCustomClubApplyInformation(
-      final CustomClubApplyInformation customClubApplyInformation) {
-    this.customClubApplyInformation = customClubApplyInformation;
-
-    // 무한루프에 빠지지 않도록 체크
-    if (!customClubApplyInformation.getClubMemberCustomInformations().contains(this)) {
-      customClubApplyInformation.getClubMemberCustomInformations().add(this);
-    }
-  }
-
+  /**
+   * 클럽 멤버 정보를 설정합니다.
+   *
+   * @param clubMemberInformation 설정할 클럽 멤버 정보
+   */
   public void setClubMemberInformation(
       final ClubMemberInformation clubMemberInformation) {
     this.clubMemberInformation = clubMemberInformation;
@@ -76,6 +65,21 @@ public class ClubMemberCustomInformation extends BaseEntity {
     // 무한루프에 빠지지 않도록 체크
     if (!clubMemberInformation.getClubMemberCustomInformations().contains(this)) {
       clubMemberInformation.getClubMemberCustomInformations().add(this);
+    }
+  }
+
+  /**
+   * 커스텀 클럽 신청 정보를 설정합니다.
+   *
+   * @param customClubApplyInformation 설정할 커스텀 클럽 신청 정보
+   */
+  public void setCustomClubApplyInformation(
+      final CustomClubApplyInformation customClubApplyInformation) {
+    this.customClubApplyInformation = customClubApplyInformation;
+
+    // 무한루프에 빠지지 않도록 체크
+    if (!customClubApplyInformation.getClubMemberCustomInformations().contains(this)) {
+      customClubApplyInformation.getClubMemberCustomInformations().add(this);
     }
   }
 }
