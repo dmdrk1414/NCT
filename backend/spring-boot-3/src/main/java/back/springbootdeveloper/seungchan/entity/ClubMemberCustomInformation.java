@@ -39,6 +39,10 @@ public class ClubMemberCustomInformation extends BaseEntity {
   @JoinColumn(name = "custom_club_apply_information_id")
   private CustomClubApplyInformation customClubApplyInformation;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "club_member_information_id")
+  private ClubMemberInformation clubMemberInformation;
+
 
   @Builder
   public ClubMemberCustomInformation(final String customContent, final CUSTOM_TYPE customType) {
@@ -62,6 +66,16 @@ public class ClubMemberCustomInformation extends BaseEntity {
     // 무한루프에 빠지지 않도록 체크
     if (!customClubApplyInformation.getClubMemberCustomInformations().contains(this)) {
       customClubApplyInformation.getClubMemberCustomInformations().add(this);
+    }
+  }
+
+  public void setClubMemberInformation(
+      final ClubMemberInformation clubMemberInformation) {
+    this.clubMemberInformation = clubMemberInformation;
+
+    // 무한루프에 빠지지 않도록 체크
+    if (!clubMemberInformation.getClubMemberCustomInformations().contains(this)) {
+      clubMemberInformation.getClubMemberCustomInformations().add(this);
     }
   }
 }
