@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest()
 class entityMappingTest {
@@ -31,21 +30,24 @@ class entityMappingTest {
   private final AttendanceStateRepository attendanceSateRepository;
   private final VacationTokenRepository vacationTokenRepository;
   private final ClubMemberInformationRepository clubMemberInformationRepository;
-
+  private final ClubMemberCustomInformationRepository clubMemberCustomInformationRepository;
   CLUB_ARTICLE_CLASSIFICATION SUGGESTION = CLUB_ARTICLE_CLASSIFICATION.SUGGESTION;
   CLUB_ARTICLE_CLASSIFICATION FREEDOM = CLUB_ARTICLE_CLASSIFICATION.FREEDOM;
   CLUB_ARTICLE_CLASSIFICATION CONFIDENTIAL = CLUB_ARTICLE_CLASSIFICATION.CONFIDENTIAL;
 
   @Autowired
-  entityMappingTest(MemberRepository memberRepository, ClubMemberRepository clubMemberRepository,
-      ClubRepository clubRepository, ClubIntroduceImageRepository clubIntroduceImageRepository,
-      ClubGradeRepository clubGradeRepository, ClubArticleRepository clubArticleRepository,
-      AttendanceNumberRepository attendanceNumberRepository,
-      ClubControlRepository clubControlRepository,
-      AttendanceWeekDateRepository attendanceWeekDateRepository,
-      AttendanceStateRepository attendanceSateRepository,
-      VacationTokenRepository vacationTokenRepository,
-      ClubMemberInformationRepository clubMemberInformationRepository) {
+  public entityMappingTest(final MemberRepository memberRepository,
+      final ClubMemberRepository clubMemberRepository, final ClubRepository clubRepository,
+      final ClubIntroduceImageRepository clubIntroduceImageRepository,
+      final ClubGradeRepository clubGradeRepository,
+      final ClubArticleRepository clubArticleRepository,
+      final AttendanceNumberRepository attendanceNumberRepository,
+      final ClubControlRepository clubControlRepository,
+      final AttendanceWeekDateRepository attendanceWeekDateRepository,
+      final AttendanceStateRepository attendanceSateRepository,
+      final VacationTokenRepository vacationTokenRepository,
+      final ClubMemberInformationRepository clubMemberInformationRepository,
+      final ClubMemberCustomInformationRepository clubMemberCustomInformationRepository) {
     this.memberRepository = memberRepository;
     this.clubMemberRepository = clubMemberRepository;
     this.clubRepository = clubRepository;
@@ -58,11 +60,11 @@ class entityMappingTest {
     this.attendanceSateRepository = attendanceSateRepository;
     this.vacationTokenRepository = vacationTokenRepository;
     this.clubMemberInformationRepository = clubMemberInformationRepository;
+    this.clubMemberCustomInformationRepository = clubMemberCustomInformationRepository;
   }
 
-
   @Test
-//  @Disabled
+  @Disabled
   void 매핑_저장_학습_테스트_1() throws Exception {
     this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.LEADER));
     this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.DEPUTY_LEADER));
@@ -164,23 +166,23 @@ class entityMappingTest {
 
     // ================================= custom_club_apply_information - club_member_custom_information 31. 커스텀 자기소개 등록 시작 ============================
     // ================================= club_member_information  ====================================================================================
-    club = addClubMemberCustomInformation_To_CustomClubApplyInformation(leaderNumber, club,
+    addClubMemberCustomInformation_To_CustomClubApplyInformation(leaderNumber + 1, club,
         clubMember_1);
-    club = addClubMemberCustomInformation_To_CustomClubApplyInformation(deputyLeaderNumber, club,
+    addClubMemberCustomInformation_To_CustomClubApplyInformation(deputyLeaderNumber + 1, club,
         clubMember_2);
 
     // 일반 유저 등록
     for (int i = 0; i < members.size() - dormantNumber; i++) {
-      club = addClubMemberCustomInformation_To_CustomClubApplyInformation(i, club,
+      addClubMemberCustomInformation_To_CustomClubApplyInformation(i + 2 + 1, club,
           clubMembers.get(i));
     }
 
     // 휴면 계정 등록
     for (int i = members.size() - dormantNumber; i < members.size(); i++) {
-      club = addClubMemberCustomInformation_To_CustomClubApplyInformation(i, club,
+      addClubMemberCustomInformation_To_CustomClubApplyInformation(i + members.size() + 2 + 1, club,
           clubMembers.get(i));
     }
-
+    club = clubRepository.save(club);
     // ========================================= 40.ClubArticle - ClubArticleComment 3개 등록 시작 ========================
     // ================================= Club - Member -- ClubArticle 41.ClubArticle 매핑 시작 ============================
     applyClubArticleCommentToClubArticle(SUGGESTION, leaderNumber, clubMember_1);
@@ -218,24 +220,21 @@ class entityMappingTest {
     }
   }
 
-  private Club addClubMemberCustomInformation_To_CustomClubApplyInformation(final Integer number,
+  private void addClubMemberCustomInformation_To_CustomClubApplyInformation(final Integer number,
       Club club, ClubMember clubMember) {
     ClubControl clubControl = club.getClubControl();
-    club = clubRepository.save(club);
     List<CustomClubApplyInformation> customClubApplyInformations = clubControl.getCustomClubApplyInformations();
     ClubMemberInformation clubMemberInformation = clubMemberInformationRepository.findById(
         clubMember.getClubMemberInformationId()).get();
 
     for (final CustomClubApplyInformation customClubApplyInformation : customClubApplyInformations) {
-      ClubMemberCustomInformation clubMemberCustomInformation = ClubMemberCustomInformation.builder()
-          .customContent("클럽에 지원하는 커스텀 지원폼에 대한 답변 " + number)
-          .build();
-
+      ClubMemberCustomInformation clubMemberCustomInformation = clubMemberCustomInformationRepository.save(
+          ClubMemberCustomInformation.builder()
+              .customContent("클럽에 지원하는 커스텀 지원폼에 대한 답변 " + number)
+              .build()
+      );
       customClubApplyInformation.addClubMemberCustomInformations(clubMemberCustomInformation);
-      clubMemberCustomInformation.setClubMemberInformation(clubMemberInformation);
     }
-
-    return clubRepository.save(club);
   }
 
   private Club addCustomClubApplyInformation(final Club club) {
@@ -243,22 +242,18 @@ class entityMappingTest {
 
     List<CustomClubApplyInformation> customClubApplyInformations = new ArrayList<>();
 
-    for (int i = 0; i < 2; i++) {
-      customClubApplyInformations.add(
-          CustomClubApplyInformation.builder()
-              .customContent("테스트 커스텀 지원서 글자 양식 " + i)
-              .customType(CUSTOM_TYPE.TEXT)
-              .build()
-      );
-    }
-    for (int i = 0; i < 2; i++) {
-      customClubApplyInformations.add(
-          CustomClubApplyInformation.builder()
-              .customContent("테스트 커스텀 지원서 체크 양식 " + i)
-              .customType(CUSTOM_TYPE.CHECK)
-              .build()
-      );
-    }
+    customClubApplyInformations.add(
+        CustomClubApplyInformation.builder()
+            .customContent("테스트 커스텀 지원서 글자 양식")
+            .customType(CUSTOM_TYPE.TEXT)
+            .build()
+    );
+    customClubApplyInformations.add(
+        CustomClubApplyInformation.builder()
+            .customContent("테스트 커스텀 지원서 체크 양식")
+            .customType(CUSTOM_TYPE.CHECK)
+            .build()
+    );
 
     for (final CustomClubApplyInformation customClubApplyInformation : customClubApplyInformations) {
       clubControl.addClubMemberCustomInformations(customClubApplyInformation);
@@ -379,5 +374,4 @@ class entityMappingTest {
 
     return clubArticleRepository.save(clubArticle);
   }
-
 }
