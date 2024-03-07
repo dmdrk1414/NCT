@@ -47,7 +47,7 @@ public class CustomClubApplyInformation extends BaseEntity {
 
   @Builder
   public CustomClubApplyInformation(final String customContent, final CUSTOM_TYPE customType) {
-    this.customContent = customContent;
+    this.customContent = customContent.trim();
     this.customType = customType;
   }
 
