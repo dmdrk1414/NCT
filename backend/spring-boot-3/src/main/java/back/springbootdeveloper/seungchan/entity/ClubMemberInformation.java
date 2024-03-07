@@ -29,7 +29,7 @@ public class ClubMemberInformation extends BaseEntity {
   @Column(name = "favorite_check", length = 15, nullable = false)
   private FAVORITE_CHECK favoriteCheck = FAVORITE_CHECK.UNCHECK;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "clubMemberInformation")
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "clubMemberInformation")
   private List<ClubMemberCustomInformation> clubMemberCustomInformations = new ArrayList<>();
 
   @Builder
