@@ -41,7 +41,7 @@ public class Club extends BaseEntity {
 
   @Builder
   public Club(String clubName, String clubIntroduce, String clubProfileImage) {
-    this.clubName = clubName;
+    this.clubName = clubName.trim();
     this.clubIntroduce = clubIntroduce;
     this.clubProfileImage = clubProfileImage;
   }

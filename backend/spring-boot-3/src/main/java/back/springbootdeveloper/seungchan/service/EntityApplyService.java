@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.service;
 import back.springbootdeveloper.seungchan.constant.entity.ANONYMITY;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
+import back.springbootdeveloper.seungchan.constant.entity.CUSTOM_TYPE;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.*;
@@ -30,7 +31,53 @@ public class EntityApplyService {
   private final ClubGradeRepository clubGradeRepository;
   private final ClubArticleRepository clubArticleRepository;
   private final ImageService imageService;
+  private final ClubMemberCustomInformationRepository clubMemberCustomInformationRepository;
 
+  @Transactional
+  public void testRegistraionInfo(final Long clubId, final Long memberId) {
+    Club club = clubRepository.findById(clubId).get();
+    ClubControl clubControl = club.getClubControl();
+    clubControl.addClubMemberCustomInformations(CustomClubApplyInformation.builder()
+        .customContent("테스트 지원").customType(CUSTOM_TYPE.TEXT)
+        .build());
+
+    clubRepository.save(club);
+  }
+
+  @Transactional
+  public void testApplyMember(final Long clubId, final Long memberId) {
+    // clubMemberInformation
+    ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, memberId).get();
+    ClubMemberInformation clubMemberInformation = clubMemberInformationRepository.findById(
+        clubMember.getClubMemberInformationId()).get();
+
+    // club
+    Club club = clubRepository.findById(clubId).get();
+    ClubControl clubControl = club.getClubControl();
+    List<CustomClubApplyInformation> customClubApplyInformations = clubControl.getCustomClubApplyInformations();
+
+    List<ClubMemberCustomInformation> clubMemberCustomInformations = new ArrayList<>();
+    clubMemberCustomInformations.add(ClubMemberCustomInformation.builder()
+        .customContent("커스텀에 대한 답변")
+        .build());
+    clubMemberCustomInformations.add(ClubMemberCustomInformation.builder()
+        .customContent("커스텀에 대한 답변")
+        .build());
+
+    for (int i = 0; i < customClubApplyInformations.size(); i++) {
+      clubMemberCustomInformations.get(i).setClubMemberInformation(clubMemberInformation);
+      customClubApplyInformations.get(i)
+          .addClubMemberCustomInformations(clubMemberCustomInformations.get(i));
+    }
+    clubRepository.save(club);
+
+    for (int i = 0; i < customClubApplyInformations.size(); i++) {
+      clubMemberInformation
+          .addClubMemberCustomInformations(clubMemberCustomInformations.get(i));
+    }
+
+    clubMemberInformationRepository.save(clubMemberInformation);
+  }
 
   /**
    * 기밀 클럽 게시글을 적용합니다.
@@ -133,7 +180,7 @@ public class EntityApplyService {
     final Club club = createClub(clubName, clubIntroduce, clubProfileImageUrl);
     final ClubControl clubControl = createClubControl();
 
-    // TODO: 3/5/24 팀장 등록 
+    // TODO: 3/5/24 팀장 등록
     // Club - AttendanceNumber
     club.addAttendanceNumber(new AttendanceNumber());
     // Club - ClubIntroduceImages
@@ -164,6 +211,7 @@ public class EntityApplyService {
     ClubMemberInformation entityClubMemberInformation = clubMemberInformationRepository.save(
         clubMemberInformation);
 
+    // TODO: 3/7/24 지원 회원들 임시 회원으로 등록
     // ClubMember
     //   - Member, Club, ClubMemberInformation, AttendanceSate, ClubGrade
     ClubMember clubMember = creatClubMember(member, club, entityClubMemberInformation,

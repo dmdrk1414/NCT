@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.testutil;
 import back.springbootdeveloper.seungchan.constant.entity.ANONYMITY;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_ARTICLE_CLASSIFICATION;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
+import back.springbootdeveloper.seungchan.constant.entity.CUSTOM_TYPE;
 import back.springbootdeveloper.seungchan.entity.*;
 import back.springbootdeveloper.seungchan.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,8 +79,8 @@ public class TestSaveEntity {
     ClubGrade clubGradeMember = clubGradeRepository.findByClubGrade(CLUB_GRADE.MEMBER).get();
     ClubGrade clubGradeDormant = clubGradeRepository.findByClubGrade(CLUB_GRADE.DORMANT).get();
 
-    List<Member> members = new ArrayList<>();
     // ================================= Member 20.Member 등록 시작 ============================
+    List<Member> members = new ArrayList<>();
     Member leaderMember_1 = applyMember(startMemberNumber); // 대표
     Member deputyLeaderMember_2 = applyMember(startMemberNumber + 1); // 부 대표
     for (int i = roofStart; i <= roofEnd; i++) {

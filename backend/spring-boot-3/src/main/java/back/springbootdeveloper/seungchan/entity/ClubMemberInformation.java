@@ -1,6 +1,8 @@
 package back.springbootdeveloper.seungchan.entity;
 
 import back.springbootdeveloper.seungchan.constant.entity.FAVORITE_CHECK;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -27,6 +29,9 @@ public class ClubMemberInformation extends BaseEntity {
   @Column(name = "favorite_check", length = 15, nullable = false)
   private FAVORITE_CHECK favoriteCheck = FAVORITE_CHECK.UNCHECK;
 
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "clubMemberInformation")
+  private List<ClubMemberCustomInformation> clubMemberCustomInformations = new ArrayList<>();
+
   @Builder
   public ClubMemberInformation(String introduce) {
     this.introduce = introduce;
@@ -50,4 +55,17 @@ public class ClubMemberInformation extends BaseEntity {
     this.favoriteCheck = favoriteCheck;
   }
 
+  /**
+   * 클럽 멤버에 커스텀 클럽 신청 정보를 추가합니다.
+   *
+   * @param clubMemberCustomInformation 추가할 클럽 멤버의 사용자 정의 정보
+   */
+  public void addClubMemberCustomInformations(
+      final ClubMemberCustomInformation clubMemberCustomInformation) {
+    this.clubMemberCustomInformations.add(clubMemberCustomInformation);
+
+    if (clubMemberCustomInformation.getClubMemberInformation() != this) { // 무한루프에 빠지지 않도록 체크
+      clubMemberCustomInformation.setClubMemberInformation(this);
+    }
+  }
 }
