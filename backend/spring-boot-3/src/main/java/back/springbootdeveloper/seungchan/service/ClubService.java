@@ -45,4 +45,18 @@ public class ClubService {
 
     return clubs.stream().anyMatch(club -> club.isSameName(targetClubName));
   }
+
+  /**
+   * 주어진 clubId에 해당하는 Club의 이름을 조회합니다.
+   *
+   * @param clubId Club의 ID
+   * @return Club의 이름
+   * @throws EntityNotFoundException 주어진 clubId에 해당하는 Club을 찾을 수 없는 경우
+   */
+  public String getClubNameByClubId(final Long clubId) {
+    Club club = clubRepository.findById(clubId)
+        .orElseThrow(EntityNotFoundException::new);
+
+    return club.getClubName();
+  }
 }
