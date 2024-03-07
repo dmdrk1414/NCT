@@ -8,6 +8,7 @@ import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.entity.Club;
 import back.springbootdeveloper.seungchan.entity.ClubMember;
 import back.springbootdeveloper.seungchan.entity.ClubMemberInformation;
+import back.springbootdeveloper.seungchan.entity.CustomClubApplyInformation;
 import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.service.ClubMemberInformationService;
@@ -67,6 +68,22 @@ public class ClubRegistrationController {
 
     return BaseResponseBodyUtiil.BaseResponseBodyFailure(
         ResponseMessage.BAD_APPLY_CLUB.get());
+  }
+
+  @Operation(summary = "개인 회원 - 팀 등록 api ")
+  @PostMapping("test")
+  public ResponseEntity<BaseResponseBody> testRegistraionInfo(
+      HttpServletRequest request) {
+    Long clubId = 1L;
+    Long memberId = 1L;
+
+    for (int i = 0; i < 2; i++) {
+      entityApplyService.testRegistraionInfo(clubId, memberId);
+    }
+
+    entityApplyService.testApplyMember(clubId, memberId);
+
+    return BaseResponseBodyUtiil.BaseResponseBodySuccess();
   }
 
   @Operation(summary = "개인 회원 - 팀 등록 팀 이름 중복 확인 ")
