@@ -1979,6 +1979,108 @@ VALUES (5, '2024-02-17 17:06:46.340313', '2024-02-17 17:06:46.352779', '테스�
         '테스트_프로필_사진_URL_4',
         5);
 
+-- custom_club_apply_information
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (1, '2024-03-07 21:55:29.499706', '2024-03-07 21:55:29.498588', '테스트 커스텀 지원서 글자 양식', 'TEXT',
+        1);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (2, '2024-03-07 21:55:29.500920', '2024-03-07 21:55:29.500845', '테스트 커스텀 지원서 체크 양식', 'CHECK',
+        1);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (3, '2024-03-07 21:55:30.271840', '2024-03-07 21:55:30.271792', '테스트 커스텀 지원서 글자 양식', 'TEXT',
+        2);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (4, '2024-03-07 21:55:30.272108', '2024-03-07 21:55:30.272085', '테스트 커스텀 지원서 체크 양식', 'CHECK',
+        2);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (5, '2024-03-07 21:55:30.601463', '2024-03-07 21:55:30.601426', '테스트 커스텀 지원서 글자 양식', 'TEXT',
+        3);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (6, '2024-03-07 21:55:30.601684', '2024-03-07 21:55:30.601669', '테스트 커스텀 지원서 체크 양식', 'CHECK',
+        3);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (7, '2024-03-07 21:55:31.022044', '2024-03-07 21:55:31.022014', '테스트 커스텀 지원서 글자 양식', 'TEXT',
+        4);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (8, '2024-03-07 21:55:31.022276', '2024-03-07 21:55:31.022258', '테스트 커스텀 지원서 체크 양식', 'CHECK',
+        4);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (9, '2024-03-07 21:55:31.160232', '2024-03-07 21:55:31.160195', '테스트 커스텀 지원서 글자 양식', 'TEXT',
+        5);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (10, '2024-03-07 21:55:31.160464', '2024-03-07 21:55:31.160446', '테스트 커스텀 지원서 체크 양식',
+        'CHECK', 5);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (11, '2024-03-07 21:56:30.184882', '2024-03-07 21:56:30.183638', '테스트 커스텀 지원서 글자 양식', 'TEXT',
+        1);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (12, '2024-03-07 21:56:30.185913', '2024-03-07 21:56:30.185833', '테스트 커스텀 지원서 체크 양식',
+        'CHECK', 1);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (13, '2024-03-07 21:56:31.009188', '2024-03-07 21:56:31.009137', '테스트 커스텀 지원서 글자 양식', 'TEXT',
+        2);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (14, '2024-03-07 21:56:31.009412', '2024-03-07 21:56:31.009393', '테스트 커스텀 지원서 체크 양식',
+        'CHECK', 2);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (15, '2024-03-07 21:56:31.326349', '2024-03-07 21:56:31.326298', '테스트 커스텀 지원서 글자 양식', 'TEXT',
+        3);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (16, '2024-03-07 21:56:31.326597', '2024-03-07 21:56:31.326570', '테스트 커스텀 지원서 체크 양식',
+        'CHECK', 3);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (17, '2024-03-07 21:56:31.729195', '2024-03-07 21:56:31.729136', '테스트 커스텀 지원서 글자 양식', 'TEXT',
+        4);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (18, '2024-03-07 21:56:31.729432', '2024-03-07 21:56:31.729407', '테스트 커스텀 지원서 체크 양식',
+        'CHECK', 4);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (19, '2024-03-07 21:56:31.858897', '2024-03-07 21:56:31.858873', '테스트 커스텀 지원서 글자 양식', 'TEXT',
+        5);
+INSERT INTO custom_club_apply_information (custom_club_apply_information_id, create_date,
+                                           update_date, custom_content, custom_type,
+                                           club_control_id)
+VALUES (20, '2024-03-07 21:56:31.859048', '2024-03-07 21:56:31.859036', '테스트 커스텀 지원서 체크 양식',
+        'CHECK', 5);
+
 -- attendance_number
 INSERT INTO attendance_number (attendance_number_id, create_date, update_date, attendance_date,
                                attendance_number,
