@@ -31,7 +31,9 @@ public enum ResponseMessage {
   BAD_UPDATE_SUGGESTION_ANSWER("답변 수정이 실패 하였습니다. 대표 부대표만 가능합니다."),
   SUCCESS_APPLY_CLUB("팀 등록이 완료 되었습니다."),
   BAD_APPLY_CLUB("팀 등록을 실패 하였습니다."),
-  BAD_DUPLICATION_CLUBNAME("같은 이름의 팀 이름이 있습니다.");
+  BAD_DUPLICATION_CLUBNAME("같은 이름의 팀 이름이 있습니다."),
+  BAD_NOT_BLANK_CLUB_NAME("클럽 이름을 입력해주세요."),
+  BAD_NOT_BLANK_CLUB_INTRODUCTION("클럽 자기소개를 입력해주세요");
 
   private final String message;
 

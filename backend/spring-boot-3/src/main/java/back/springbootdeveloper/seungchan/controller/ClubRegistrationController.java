@@ -40,7 +40,7 @@ public class ClubRegistrationController {
   private final ClubMemberInformationService clubMemberInformationService;
   private final ClubService clubService;
 
-  @Operation(summary = "개인 회원 - 팀 등록 api ")
+  @Operation(summary = "개인 회원 - 팀 등록 api")
   @PostMapping("")
   public ResponseEntity<BaseResponseBody> getClubRegistraionInfo(
       HttpServletRequest request,
@@ -50,6 +50,18 @@ public class ClubRegistrationController {
       @RequestParam(name = "clubInformationImages", required = false) List<MultipartFile> clubInformationImages) {
     Long memberId = tokenService.getMemberIdFromToken(request);
     Member myMember = memberService.findByMemberId(memberId);
+
+    // clubName이 빈 문자열인 경우에 대한 예외 처리
+    if (clubName.isBlank()) {
+      return BaseResponseBodyUtiil.BaseResponseBodyFailure(
+          ResponseMessage.BAD_NOT_BLANK_CLUB_NAME.get());
+    }
+
+    // clubIntroduction이 빈 문자열인 경우에 대한 예외 처리
+    if (clubIntroduction.isBlank()) {
+      return BaseResponseBodyUtiil.BaseResponseBodyFailure(
+          ResponseMessage.BAD_NOT_BLANK_CLUB_INTRODUCTION.get());
+    }
 
     Club saveClub = entityApplyService.makeClub(
         clubName.trim(), clubIntroduction, clubProfileImage, clubInformationImages
@@ -68,22 +80,6 @@ public class ClubRegistrationController {
 
     return BaseResponseBodyUtiil.BaseResponseBodyFailure(
         ResponseMessage.BAD_APPLY_CLUB.get());
-  }
-
-  @Operation(summary = "개인 회원 - 팀 등록 api ")
-  @PostMapping("test")
-  public ResponseEntity<BaseResponseBody> testRegistraionInfo(
-      HttpServletRequest request) {
-    Long clubId = 1L;
-    Long memberId = 1L;
-
-    for (int i = 0; i < 2; i++) {
-      entityApplyService.testRegistraionInfo(clubId, memberId);
-    }
-
-    entityApplyService.testApplyMember(clubId, memberId);
-
-    return BaseResponseBodyUtiil.BaseResponseBodySuccess();
   }
 
   @Operation(summary = "개인 회원 - 팀 등록 팀 이름 중복 확인 ")
