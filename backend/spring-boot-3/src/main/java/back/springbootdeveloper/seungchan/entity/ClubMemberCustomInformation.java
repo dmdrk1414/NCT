@@ -28,7 +28,7 @@ public class ClubMemberCustomInformation extends BaseEntity {
   @Column(name = "club_member_custom_information_id")
   private Long clubMemberCustomInformationId;
 
-  @Column(name = "custom_content", length = 1000, nullable = false)
+  @Column(name = "custom_content", length = 1000)
   private String customContent;
 
   @ManyToOne(fetch = FetchType.LAZY)
