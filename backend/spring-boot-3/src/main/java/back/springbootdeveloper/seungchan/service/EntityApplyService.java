@@ -31,6 +31,7 @@ public class EntityApplyService {
   private final ClubGradeRepository clubGradeRepository;
   private final ClubArticleRepository clubArticleRepository;
   private final ImageService imageService;
+  private final ClubMemberCustomInformationRepository clubMemberCustomInformationRepository;
 
   @Transactional
   public void testRegistraionInfo(final Long clubId, final Long memberId) {
@@ -70,12 +71,12 @@ public class EntityApplyService {
     }
     clubRepository.save(club);
 
-//    for (int i = 0; i < customClubApplyInformations.size(); i++) {
-//      clubMemberInformation
-//          .addClubMemberCustomInformations(clubMemberCustomInformations.get(i));
-//    }
-//
-//    clubMemberInformationRepository.save(clubMemberInformation);
+    for (int i = 0; i < customClubApplyInformations.size(); i++) {
+      clubMemberInformation
+          .addClubMemberCustomInformations(clubMemberCustomInformations.get(i));
+    }
+
+    clubMemberInformationRepository.save(clubMemberInformation);
   }
 
   /**
@@ -179,7 +180,7 @@ public class EntityApplyService {
     final Club club = createClub(clubName, clubIntroduce, clubProfileImageUrl);
     final ClubControl clubControl = createClubControl();
 
-    // TODO: 3/5/24 팀장 등록 
+    // TODO: 3/5/24 팀장 등록
     // Club - AttendanceNumber
     club.addAttendanceNumber(new AttendanceNumber());
     // Club - ClubIntroduceImages
