@@ -69,7 +69,8 @@ public class ClubRegistrationController {
     ClubMemberInformation clubMemberInformation = clubMemberInformationService.makeLeaderClubMemberInformation(
         saveClub, myMember);
 
-    ClubMember applyClubMember = entityApplyService.applyClub(myMember, saveClub, CLUB_GRADE.LEADER,
+    ClubMember applyClubMember = entityApplyService.applyLeaderClub(myMember, saveClub,
+        CLUB_GRADE.LEADER,
         clubMemberInformation).orElseThrow(EntityNotFoundException::new);
 
     if (saveClub != null) {
