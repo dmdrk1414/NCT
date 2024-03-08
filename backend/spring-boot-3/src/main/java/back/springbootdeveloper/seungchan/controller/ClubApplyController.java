@@ -1,19 +1,14 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE_VALUE;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
-import back.springbootdeveloper.seungchan.dto.request.CheckDuplicationClubNameReqDto;
+import back.springbootdeveloper.seungchan.dto.request.ApplyMemberToClubReqDto;
+import back.springbootdeveloper.seungchan.dto.request.CustomInformationReqForm;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.dto.response.CustomInformation;
 import back.springbootdeveloper.seungchan.dto.response.MemberApplyClubResDto;
 import back.springbootdeveloper.seungchan.entity.Club;
-import back.springbootdeveloper.seungchan.entity.ClubMember;
-import back.springbootdeveloper.seungchan.entity.ClubMemberInformation;
-import back.springbootdeveloper.seungchan.entity.CustomClubApplyInformation;
 import back.springbootdeveloper.seungchan.entity.Member;
-import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
-import back.springbootdeveloper.seungchan.service.ClubMemberInformationService;
 import back.springbootdeveloper.seungchan.service.ClubService;
 import back.springbootdeveloper.seungchan.service.CustomClubApplyInformationService;
 import back.springbootdeveloper.seungchan.service.EntityApplyService;
@@ -34,9 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "회원이 스터디 팀에 등록하는 컨트롤러", description = "회원의 팀 등록 관련 관리 클래스")
 @RestController
@@ -48,6 +41,25 @@ public class ClubApplyController {
   private final EntityApplyService entityApplyService;
   private final CustomClubApplyInformationService customClubApplyInformationService;
   private final ClubService clubService;
+  private final TokenService tokenService;
+  private final MemberService memberService;
+
+  @Operation(summary = "동아리 지원서 작성 API")
+  @PostMapping("")
+  public ResponseEntity<BaseResponseBody> applyMemberToClub(
+      @RequestBody @Valid ApplyMemberToClubReqDto applyMemberToClubReqDto,
+      HttpServletRequest request,
+      @PathVariable(value = "club_id") Long clubId) {
+    Long loginMemberId = tokenService.getMemberIdFromToken(request);
+    Member loginMember = memberService.findByMemberId(loginMemberId);
+    Club targetClub = clubService.findByClubId(clubId);
+    // TODO: 3/8/24 이미 클럽에 가입되어 있는 경우
+    // TODO: 3/8/24 신청 두번 한 경우
+    entityApplyService.applyTempMemberClub(loginMember, targetClub, CLUB_GRADE.TEMP_MEMBER,
+        applyMemberToClubReqDto);
+
+    return BaseResponseBodyUtiil.BaseResponseBodySuccess(ResponseMessage.SUCCESS_APPLY_CLUB.get());
+  }
 
   @Operation(summary = "동아리 지원서 작성 API - 커스텀 조회")
   @GetMapping("/find")
