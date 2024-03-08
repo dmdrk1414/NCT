@@ -59,4 +59,15 @@ public class ClubService {
 
     return club.getClubName();
   }
+
+  /**
+   * 주어진 clubId에 해당하는 Club을 조회합니다.
+   *
+   * @param clubId Club의 ID
+   * @return 주어진 clubId에 해당하는 Club 객체
+   * @throws EntityNotFoundException 주어진 clubId에 해당하는 Club을 찾을 수 없는 경우
+   */
+  public Club findByClubId(final Long clubId) {
+    return clubRepository.findById(clubId).orElseThrow(EntityNotFoundException::new);
+  }
 }
