@@ -2138,6 +2138,8 @@ INSERT INTO club_grade (club_grade_id, create_date, update_date, club_grade)
 VALUES (3, '2024-02-17 02:17:30.562760', '2024-02-17 02:17:30.562597', 'MEMBER');
 INSERT INTO club_grade (club_grade_id, create_date, update_date, club_grade)
 VALUES (4, '2024-02-17 02:17:30.564334', '2024-02-17 02:17:30.564236', 'DORMANT');
+INSERT INTO club_grade (club_grade_id, create_date, update_date, club_grade)
+VALUES (5, '2024-02-17 02:17:30.564334', '2024-02-17 02:17:30.564236', 'TEMP_MEMBER');
 
 -- club_member_information
 INSERT INTO club_member_information (club_member_information_id, create_date, update_date,
