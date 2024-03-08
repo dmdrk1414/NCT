@@ -8,7 +8,6 @@ import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.entity.Club;
 import back.springbootdeveloper.seungchan.entity.ClubMember;
 import back.springbootdeveloper.seungchan.entity.ClubMemberInformation;
-import back.springbootdeveloper.seungchan.entity.CustomClubApplyInformation;
 import back.springbootdeveloper.seungchan.entity.Member;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.service.ClubMemberInformationService;
@@ -40,7 +39,7 @@ public class ClubRegistrationController {
   private final ClubMemberInformationService clubMemberInformationService;
   private final ClubService clubService;
 
-  @Operation(summary = "개인 회원 - 팀 등록 api ")
+  @Operation(summary = "개인 회원 - 팀 등록 api")
   @PostMapping("")
   public ResponseEntity<BaseResponseBody> getClubRegistraionInfo(
       HttpServletRequest request,
@@ -51,6 +50,18 @@ public class ClubRegistrationController {
     Long memberId = tokenService.getMemberIdFromToken(request);
     Member myMember = memberService.findByMemberId(memberId);
 
+    // clubName이 빈 문자열인 경우에 대한 예외 처리
+    if (clubName.isBlank()) {
+      return BaseResponseBodyUtiil.BaseResponseBodyFailure(
+          ResponseMessage.BAD_NOT_BLANK_CLUB_NAME.get());
+    }
+
+    // clubIntroduction이 빈 문자열인 경우에 대한 예외 처리
+    if (clubIntroduction.isBlank()) {
+      return BaseResponseBodyUtiil.BaseResponseBodyFailure(
+          ResponseMessage.BAD_NOT_BLANK_CLUB_INTRODUCTION.get());
+    }
+
     Club saveClub = entityApplyService.makeClub(
         clubName.trim(), clubIntroduction, clubProfileImage, clubInformationImages
     ).orElseThrow(EntityNotFoundException::new);
@@ -58,32 +69,17 @@ public class ClubRegistrationController {
     ClubMemberInformation clubMemberInformation = clubMemberInformationService.makeLeaderClubMemberInformation(
         saveClub, myMember);
 
-    ClubMember applyClubMember = entityApplyService.applyClub(myMember, saveClub, CLUB_GRADE.LEADER,
+    ClubMember applyClubMember = entityApplyService.applyLeaderClub(myMember, saveClub,
+        CLUB_GRADE.LEADER,
         clubMemberInformation).orElseThrow(EntityNotFoundException::new);
 
     if (saveClub != null) {
       return BaseResponseBodyUtiil.BaseResponseBodySuccess(
-          ResponseMessage.SUCCESS_APPLY_CLUB.get());
+          ResponseMessage.SUCCESS_REGISTRATION_CLUB.get());
     }
 
     return BaseResponseBodyUtiil.BaseResponseBodyFailure(
-        ResponseMessage.BAD_APPLY_CLUB.get());
-  }
-
-  @Operation(summary = "개인 회원 - 팀 등록 api ")
-  @PostMapping("test")
-  public ResponseEntity<BaseResponseBody> testRegistraionInfo(
-      HttpServletRequest request) {
-    Long clubId = 1L;
-    Long memberId = 1L;
-
-    for (int i = 0; i < 2; i++) {
-      entityApplyService.testRegistraionInfo(clubId, memberId);
-    }
-
-    entityApplyService.testApplyMember(clubId, memberId);
-
-    return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+        ResponseMessage.BAD_REGISTRATION_CLUB.get());
   }
 
   @Operation(summary = "개인 회원 - 팀 등록 팀 이름 중복 확인 ")

@@ -46,7 +46,6 @@ class ClubRegistrationControllerTest {
     targetClubOneId = testCreateUtil.getONE_CLUB_ID();
   }
 
-  // TODO: 3/6/24 팀등록 나중에 확인 
   @Test
   void 팀이름_중복_검사_테스트() throws Exception {
     // given
