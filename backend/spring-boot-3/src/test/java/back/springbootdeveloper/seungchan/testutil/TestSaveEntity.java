@@ -43,6 +43,7 @@ public class TestSaveEntity {
     this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.DEPUTY_LEADER));
     this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.MEMBER));
     this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.DORMANT));
+    this.clubGradeRepository.save(new ClubGrade(CLUB_GRADE.TEMP_MEMBER));
 
     데베_저장_팀이름_시작멤버수_끝멤버수_휴면멤버수_테스트(
         1, 0, 4, 2);
