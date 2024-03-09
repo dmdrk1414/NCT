@@ -238,7 +238,7 @@ public class EntityApplyService {
         }
       }
     }
-    
+
     clubRepository.save(club);
     clubMemberInformationRepository.save(clubMemberInformation);
 
