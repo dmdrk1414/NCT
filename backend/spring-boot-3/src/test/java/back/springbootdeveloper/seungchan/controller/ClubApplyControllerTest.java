@@ -1,24 +1,31 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import back.springbootdeveloper.seungchan.annotation.MoariumSpringBootTest;
+import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
+import back.springbootdeveloper.seungchan.constant.entity.CLUB_GRADE;
+import back.springbootdeveloper.seungchan.dto.request.ApplyMemberToClubReqDto;
+import back.springbootdeveloper.seungchan.dto.request.CustomInformationReqForm;
 import back.springbootdeveloper.seungchan.dto.response.CustomInformation;
-import back.springbootdeveloper.seungchan.entity.AttendanceNumber;
 import back.springbootdeveloper.seungchan.entity.Club;
-import back.springbootdeveloper.seungchan.entity.ClubControl;
-import back.springbootdeveloper.seungchan.entity.CustomClubApplyInformation;
+import back.springbootdeveloper.seungchan.entity.ClubMember;
+import back.springbootdeveloper.seungchan.entity.ClubMemberCustomInformation;
+import back.springbootdeveloper.seungchan.entity.ClubMemberInformation;
 import back.springbootdeveloper.seungchan.entity.Member;
+import back.springbootdeveloper.seungchan.repository.ClubMemberInformationRepository;
+import back.springbootdeveloper.seungchan.repository.ClubMemberRepository;
 import back.springbootdeveloper.seungchan.repository.ClubRepository;
+import back.springbootdeveloper.seungchan.service.ClubMemberCustomService;
 import back.springbootdeveloper.seungchan.service.CustomClubApplyInformationService;
 import back.springbootdeveloper.seungchan.testutil.TestCreateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +46,12 @@ class ClubApplyControllerTest {
   private ClubRepository clubRepository;
   @Autowired
   private CustomClubApplyInformationService customClubApplyInformationService;
+  @Autowired
+  private ClubMemberRepository clubMemberRepository;
+  @Autowired
+  private ClubMemberInformationRepository clubMemberInformationRepository;
+  @Autowired
+  private ClubMemberCustomService clubMemberCustomService;
 
   private Member memberOneClubLeader;
   private Long targetClubOneId;
@@ -48,6 +61,68 @@ class ClubApplyControllerTest {
   void setUp() {
     memberOneClubLeader = testCreateUtil.get_entity_one_club_leader_member();
     targetClubOneId = testCreateUtil.getONE_CLUB_ID();
+  }
+
+  @Test
+  void 동아리_지원서_작성_API_테스트() throws Exception {
+    // given
+    // 유저 로그인
+    final String token = testCreateUtil.create_token_one_club_deputy_leader_member();
+    final String url = "/clubs/{club_id}/apply";
+    //
+    final Club targetClub = clubRepository.findById(testCreateUtil.getTWO_CLUB_ID()).get();
+    final Member loginMember = testCreateUtil.get_entity_one_club_deputy_leader_member();
+
+    // 검증을 위한 데이터 준비
+    String selfIntroduction = "테스트 자기 소개";
+    String customContent = "테스트 커스텀 대답";
+    List<CustomInformation> customClubApplyInformations = customClubApplyInformationService.findAllCustomInformationByClubId(
+        targetClub.getClubId());
+    List<CustomInformationReqForm> customInformations = new ArrayList<>();
+
+    for (final CustomInformation customClubApplyInformation : customClubApplyInformations) {
+      customInformations.add(
+          CustomInformationReqForm.builder()
+              .customInformationId(customClubApplyInformation.getCustomInformationId())
+              .customContent(customContent)
+              .build()
+      );
+    }
+    ApplyMemberToClubReqDto requestDto = ApplyMemberToClubReqDto.builder()
+        .selfIntroduction(selfIntroduction)
+        .customInformations(customInformations)
+        .build();
+    // when
+    final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+    ResultActions result = mockMvc.perform(post(url, targetClub.getClubId())
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(requestBody)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    ClubMember resultClubMember = clubMemberRepository.findByClubIdAndMemberId(
+        targetClub.getClubId(), loginMember.getMemberId()).get();
+    ClubMemberInformation resultClubMemberInformation = clubMemberInformationRepository.findById(
+        resultClubMember.getClubMemberInformationId()).get();
+    List<String> clubMemberCustomContents = clubMemberCustomService.findAllCustomContentByClubMemberInformation(
+        resultClubMemberInformation.getClubMemberInformationId());
+
+    // then
+    result
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value(
+            ResponseMessage.SUCCESS_APPLY_CLUB.get()));
+
+    assertThat(resultClubMember.getClubGradeId()).isEqualTo(
+        Long.valueOf(CLUB_GRADE.TEMP_MEMBER.getId()));
+    assertThat(resultClubMemberInformation.getIntroduce()).isEqualTo(selfIntroduction);
+
+    for (int i = 0; i < clubMemberCustomContents.size(); i++) {
+      assertThat(clubMemberCustomContents.get(i)).isEqualTo(
+          customInformations.get(i).getCustomContent());
+    }
   }
 
   @Test
