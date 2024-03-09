@@ -31,7 +31,7 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
    * @return 휴면 상태가 아닌 모든 클럽 멤버의 목록
    */
   @Query("SELECT cm FROM ClubMember cm WHERE cm.clubId = :clubId AND cm.clubGradeId <> :dormantId AND cm.clubGradeId <> :tempMemberId")
-  List<ClubMember> findAllByClubIdExcludeDormantTempMember(@Param("clubId") Long clubId,
+  List<ClubMember> findAllByClubIdExcludeDormantAndTempMember(@Param("clubId") Long clubId,
       @Param("dormantId") Integer dormantId, @Param("tempMemberId") Integer tempMemberId);
 
   /**
@@ -67,4 +67,18 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
    */
   List<ClubMember> findAllByClubId(Long clubId);
 
+  Optional<ClubMember> findByClubIdAndMemberIdAndClubGradeId(Long clubId, Long memberId,
+      Integer id);
+
+  /**
+   * 특정 Club에 속한 특정 Member를 제외하고, clubGradeId가 임시 멤버 상태가 아닌 ClubMember를 조회합니다.
+   *
+   * @param clubId       Club의 ID
+   * @param memberId     Member의 ID
+   * @param tempMemberId 임시 멤버 상태를 나타내는 clubGradeId
+   * @return ClubMember 중 휴면 상태나 임시 멤버 상태가 아닌 ClubMember (Optional)
+   */
+  @Query("SELECT cm FROM ClubMember cm WHERE cm.clubId = :clubId AND cm.memberId = :memberId  AND cm.clubGradeId <> :tempMemberId")
+  Optional<ClubMember> findByClubIdExcludeTempMember(@Param("clubId") Long clubId,
+      @Param("memberId") Long memberId, @Param("tempMemberId") Integer tempMemberId);
 }
