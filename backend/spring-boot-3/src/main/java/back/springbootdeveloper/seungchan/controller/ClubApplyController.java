@@ -9,6 +9,7 @@ import back.springbootdeveloper.seungchan.dto.response.CustomInformation;
 import back.springbootdeveloper.seungchan.dto.response.MemberApplyClubResDto;
 import back.springbootdeveloper.seungchan.entity.Club;
 import back.springbootdeveloper.seungchan.entity.Member;
+import back.springbootdeveloper.seungchan.service.ClubMemberService;
 import back.springbootdeveloper.seungchan.service.ClubService;
 import back.springbootdeveloper.seungchan.service.CustomClubApplyInformationService;
 import back.springbootdeveloper.seungchan.service.EntityApplyService;
@@ -43,6 +44,7 @@ public class ClubApplyController {
   private final ClubService clubService;
   private final TokenService tokenService;
   private final MemberService memberService;
+  private final ClubMemberService clubMemberService;
 
   @Operation(summary = "동아리 지원서 작성 API")
   @PostMapping("")
@@ -53,8 +55,23 @@ public class ClubApplyController {
     Long loginMemberId = tokenService.getMemberIdFromToken(request);
     Member loginMember = memberService.findByMemberId(loginMemberId);
     Club targetClub = clubService.findByClubId(clubId);
-    // TODO: 3/8/24 이미 클럽에 가입되어 있는 경우
-    // TODO: 3/8/24 신청 두번 한 경우
+
+    // 이미 클럽에 가입되어 있는 경우
+    Boolean isAlreadyRegistration2Club = clubMemberService.isAlreadyRegistration2Club(targetClub,
+        loginMember);
+    if (isAlreadyRegistration2Club) {
+      return BaseResponseBodyUtiil.BaseResponseBodyFailure(
+          ResponseMessage.BAD_ALREADY_REGISTRATION_CLUB.get());
+    }
+
+    // 신청 두번 한 경우
+    Boolean isAlreadyApply2Club = clubMemberService.isAlreadyApply2Club(targetClub, loginMember,
+        CLUB_GRADE.TEMP_MEMBER);
+    if (isAlreadyApply2Club) {
+      return BaseResponseBodyUtiil.BaseResponseBodyFailure(
+          ResponseMessage.BAD_ALREADY_APPLY_CLUB.get());
+    }
+
     entityApplyService.applyTempMemberClub(loginMember, targetClub, CLUB_GRADE.TEMP_MEMBER,
         applyMemberToClubReqDto);
 
