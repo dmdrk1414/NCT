@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -52,8 +51,9 @@ public class ClubDetailPageService {
    */
   public ClubMemberDetailResDto getClubMemberResponse(Long clubId, Long memberId,
       CLUB_GRADE myClubGrade) {
-    List<ClubMember> clubMembers = clubMemberRepository.findAllByClubIdExcludeDormant(clubId,
-        CLUB_GRADE.DORMANT.getId());
+    List<ClubMember> clubMembers = clubMemberRepository.findAllByClubIdExcludeDormantTempMember(
+        clubId,
+        CLUB_GRADE.DORMANT.getId(), CLUB_GRADE.TEMP_MEMBER.getId());
     // ClubMemberResponse 리스트 생성
     List<ClubMemberResponse> clubMemberResponses = getClubMemberResponsesFromClubMembers(
         clubMembers);
