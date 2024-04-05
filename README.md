@@ -31,11 +31,11 @@
 
 ## 1.2 메인 페이지
 
-<img src="https://github.com/dmdrk1414/NCT/assets/76943741/669e553b-313f-498f-9cac-b6137174c3e5" alt="메인페이지" style="zoom:50%;" />
+<img src="https://github.com/dmdrk1414/NCT/assets/76943741/ee910ab5-966f-48ec-812c-2b8a2878cc92" alt="메인페이지" style="zoom:50%;" />
 
 ## 1.3 실장 페이지
 
-<img src="https://github.com/dmdrk1414/NCT/assets/76943741/18f3d9aa-c57b-49a9-8df4-f0000d7087b9" alt="실장_페이지" style="zoom:50%;" />
+<img src="https://github.com/dmdrk1414/NCT/assets/76943741/debf3fa6-2d18-4851-9e11-391ecaaadfa3" alt="실장_페이지" style="zoom:50%;" />
 
 ## 2. 🔎 서비스 개요
 
