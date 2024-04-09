@@ -37,7 +37,7 @@ export default function NoticeModal(props: NoticeModalType) {
   };
 
   return (
-    <ul className="notice overflow-y-auto h-[1.8rem] mb-[0.1rem]">
+    <ul className="notice overflow-y-auto h-[1.8rem] font-medium mb-[0.1rem]">
       <Slider {...settings} className="h-[1.5rem] bg-[#4b89cc4b]">
         {notice.map((item, idx) => (
           <li className="notice_content" key={idx}>
