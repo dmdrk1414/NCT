@@ -38,30 +38,25 @@ export default function Header(Data: Data) {
   ];
 
   const useVacation = () => {
-    axAuth(token)({
-      method: 'post',
-      url: '/vacations/request/each',
-    })
-      .then(res => {
-        const availableApplyVacation = res.data.availableApplyVacation;
-
-        // 0이 닫기, 1이 성공, 2가 실패
-        if (availableApplyVacation) {
-          setAllertModalStatus(1);
-          console.log('휴가 사용 완료');
-        } else {
-          setAllertModalStatus(2);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  const useVacationButtonHandler = () => {
     if (confirm('휴가를 사용하시겠습니까?')) {
-      // 사용자가 '확인'을 클릭한 경우 실행할 코드
-      useVacation();
+      axAuth(token)({
+        method: 'post',
+        url: '/vacations/request/each',
+      })
+        .then(res => {
+          const availableApplyVacation = res.data.availableApplyVacation;
+
+          // 0이 닫기, 1이 성공, 2가 실패
+          if (availableApplyVacation) {
+            setAllertModalStatus(1);
+            console.log('휴가 사용 완료');
+          } else {
+            setAllertModalStatus(2);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   };
 
@@ -84,7 +79,7 @@ export default function Header(Data: Data) {
         ) : null}
         {isLogin ? (
           <div className="absolute right-[0.5rem]">
-            <div onClick={useVacationButtonHandler}>
+            <div onClick={useVacation}>
               <MiddleButton addClass="text-xl" text="휴가 사용하기" />
             </div>
           </div>
