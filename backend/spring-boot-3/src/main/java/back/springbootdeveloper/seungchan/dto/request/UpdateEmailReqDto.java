@@ -12,11 +12,12 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class UpdateEmailReqDto {
-    @NotBlank(message = "{validation.email.notblank}")
-    @Email(message = "{validation.email.invalid}")
-    private String email;
 
-    @NotBlank(message = "{validation.email.notblank}")
-    @Email(message = "{validation.email.invalid}")
-    private String updateEmail;
+  @NotBlank(message = "{validation.email.notblank}")
+  @Email(message = "{validation.email.invalid}")
+  private String email;
+
+  @NotBlank(message = "{validation.email.notblank}")
+  @Email(message = "{validation.email.invalid}")
+  private String updateEmail;
 }

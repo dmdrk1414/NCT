@@ -12,7 +12,7 @@ public enum ATTENDANCE_STATE {
 
   private String state;
   private Integer num;
-
+ 
   ATTENDANCE_STATE(final String state, final Integer num) {
     this.state = state;
     this.num = num;

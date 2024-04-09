@@ -11,11 +11,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class SuggestionsResultResponse {
-    private List<Suggestion> suggestionLists;
-    private boolean isNuriKing;
 
-    public SuggestionsResultResponse(List<Suggestion> suggestionLists, boolean isNuriKing) {
-        this.suggestionLists = suggestionLists;
-        this.isNuriKing = isNuriKing;
-    }
+  private List<Suggestion> suggestionLists;
+  private boolean isNuriKing;
+
+  public SuggestionsResultResponse(List<Suggestion> suggestionLists, boolean isNuriKing) {
+    this.suggestionLists = suggestionLists;
+    this.isNuriKing = isNuriKing;
+  }
 }

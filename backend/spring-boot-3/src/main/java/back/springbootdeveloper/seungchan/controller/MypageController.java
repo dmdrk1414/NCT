@@ -22,33 +22,35 @@ import org.springframework.web.bind.annotation.*;
 @ResponseBody
 @RequestMapping("/mypage")
 public class MypageController {
-    private final UserService userServiceImp;
-    private final TokenService tokenService;
 
-    @Operation(summary = "현제 본인 회원 자신의 정보 조회", description = "현제 본인 회원 자신의 상제 정보 조회")
-    @GetMapping("")
-    public ResponseEntity<MyPageResDto> findMypage(HttpServletRequest request) {
-        Long id = tokenService.getUserIdFromToken(request);
-        UserInfo user = userServiceImp.findUserById(id);
+  private final UserService userServiceImp;
+  private final TokenService tokenService;
 
-        return ResponseEntity.ok().body(new MyPageResDto(user));
-    }
+  @Operation(summary = "현제 본인 회원 자신의 정보 조회", description = "현제 본인 회원 자신의 상제 정보 조회")
+  @GetMapping("")
+  public ResponseEntity<MyPageResDto> findMypage(HttpServletRequest request) {
+    Long id = tokenService.getUserIdFromToken(request);
+    UserInfo user = userServiceImp.findUserById(id);
 
-    @Operation(summary = "현제 회원 본인 정보 업데이트", description = "현제 본인 회원 상세 정보 업데이트")
-    @PutMapping("/update")
-    public ResponseEntity<BaseResponseBody> updateMyInformation(@Valid @RequestBody UpdateUserFormReqDto updateUserFormRequest, HttpServletRequest request) {
-        Long userId = tokenService.getUserIdFromToken(request);
-        userServiceImp.updateUser(updateUserFormRequest.toEntity(), userId);
+    return ResponseEntity.ok().body(new MyPageResDto(user));
+  }
 
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
-    }
+  @Operation(summary = "현제 회원 본인 정보 업데이트", description = "현제 본인 회원 상세 정보 업데이트")
+  @PutMapping("/update")
+  public ResponseEntity<BaseResponseBody> updateMyInformation(
+      @Valid @RequestBody UpdateUserFormReqDto updateUserFormRequest, HttpServletRequest request) {
+    Long userId = tokenService.getUserIdFromToken(request);
+    userServiceImp.updateUser(updateUserFormRequest.toEntity(), userId);
 
-    @Operation(summary = "업데이트 페이지 현제 회원 본인 정보 조회.", description = "업데이트 페이지 현제 본인 회원 상세 정보 업데이트")
-    @GetMapping("/update")
-    public ResponseEntity<MyPageResDto> findMyUpdatePage(HttpServletRequest request) {
-        Long userId = tokenService.getUserIdFromToken(request);
-        UserInfo userInfo = userServiceImp.findUserById(userId);
+    return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+  }
 
-        return ResponseEntity.ok().body(new MyPageResDto(userInfo));
-    }
+  @Operation(summary = "업데이트 페이지 현제 회원 본인 정보 조회.", description = "업데이트 페이지 현제 본인 회원 상세 정보 업데이트")
+  @GetMapping("/update")
+  public ResponseEntity<MyPageResDto> findMyUpdatePage(HttpServletRequest request) {
+    Long userId = tokenService.getUserIdFromToken(request);
+    UserInfo userInfo = userServiceImp.findUserById(userId);
+
+    return ResponseEntity.ok().body(new MyPageResDto(userInfo));
+  }
 }

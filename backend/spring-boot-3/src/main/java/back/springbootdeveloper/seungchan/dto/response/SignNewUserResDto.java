@@ -8,5 +8,6 @@ import lombok.*;
 @Setter
 @Builder
 public class SignNewUserResDto {
-    private Boolean isApply;
+
+  private Boolean isApply;
 }

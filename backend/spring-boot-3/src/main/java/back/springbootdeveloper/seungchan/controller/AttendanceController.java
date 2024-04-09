@@ -21,29 +21,32 @@ import org.springframework.web.bind.annotation.*;
 @ResponseBody
 @RequestMapping("/attendance")
 public class AttendanceController {
-    private final NumOfTodayAttendenceService numOfTodayAttendenceService;
-    private final TokenService tokenService;
 
-    @Operation(summary = "main page 5. 출석 번호 입력 API ", description = "출석 번호를 입력을 하면 출석하였다는 결과를 얻는다.")
-    @PostMapping("/number")
-    public ResponseEntity<AttendancePassResDto> AttendanceIsPassController(@RequestBody @Valid AttendanceNumberReqDto attendanceNumberRequest, HttpServletRequest request) {
-        String numOfAttendance = attendanceNumberRequest.getNumOfAttendance();
-        Long id = tokenService.getUserIdFromToken(request);
-        boolean passAttendance = numOfTodayAttendenceService.checkAttendanceNumber(numOfAttendance, id);
+  private final NumOfTodayAttendenceService numOfTodayAttendenceService;
+  private final TokenService tokenService;
 
-        return ResponseEntity.ok().body(new AttendancePassResDto(passAttendance));
-    }
+  @Operation(summary = "main page 5. 출석 번호 입력 API ", description = "출석 번호를 입력을 하면 출석하였다는 결과를 얻는다.")
+  @PostMapping("/number")
+  public ResponseEntity<AttendancePassResDto> AttendanceIsPassController(
+      @RequestBody @Valid AttendanceNumberReqDto attendanceNumberRequest,
+      HttpServletRequest request) {
+    String numOfAttendance = attendanceNumberRequest.getNumOfAttendance();
+    Long id = tokenService.getUserIdFromToken(request);
+    boolean passAttendance = numOfTodayAttendenceService.checkAttendanceNumber(numOfAttendance, id);
 
-    @Operation(summary = "출석 번호 조회", description = "출석 번호: 랜덤의 4자리 번호 조회")
-    @GetMapping("/find/number")
-    public ResponseEntity<AttendanceNumberResDto> findAttendanceNumber() {
-        NumOfTodayAttendence numOfTodayAttendence = numOfTodayAttendenceService.findNumOfTodayAttendenceAtNow();
-        String attendanceNum = numOfTodayAttendence.getCheckNum();
-        String dayAtNow = numOfTodayAttendence.getDay();
-        
-        return ResponseEntity.ok().body(AttendanceNumberResDto.builder()
-                .attendanceNum(attendanceNum)
-                .dayAtNow(dayAtNow)
-                .build());
-    }
+    return ResponseEntity.ok().body(new AttendancePassResDto(passAttendance));
+  }
+
+  @Operation(summary = "출석 번호 조회", description = "출석 번호: 랜덤의 4자리 번호 조회")
+  @GetMapping("/find/number")
+  public ResponseEntity<AttendanceNumberResDto> findAttendanceNumber() {
+    NumOfTodayAttendence numOfTodayAttendence = numOfTodayAttendenceService.findNumOfTodayAttendenceAtNow();
+    String attendanceNum = numOfTodayAttendence.getCheckNum();
+    String dayAtNow = numOfTodayAttendence.getDay();
+
+    return ResponseEntity.ok().body(AttendanceNumberResDto.builder()
+        .attendanceNum(attendanceNum)
+        .dayAtNow(dayAtNow)
+        .build());
+  }
 }

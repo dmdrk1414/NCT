@@ -18,7 +18,7 @@ public class UserUtill {
 
   @Column(name = "user_id", nullable = false, updatable = false, unique = true)
   private Long userId;
-
+ 
   @Column(name = "name", length = 10, nullable = false, updatable = false)
   private String name;
 

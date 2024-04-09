@@ -8,5 +8,6 @@ import lombok.*;
 @Setter
 @Builder
 public class AvailableApplyVacationResponse {
-    private Boolean availableApplyVacation;
+
+  private Boolean availableApplyVacation;
 }
