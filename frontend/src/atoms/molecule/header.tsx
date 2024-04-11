@@ -58,11 +58,19 @@ export default function Header(Data: Data) {
       });
   };
 
+  const useVacationButtonHandler = () => {
+    if (confirm('휴가를 사용하시겠습니까?')) {
+      // 사용자가 '확인'을 클릭한 경우 실행할 코드
+      useVacation();
+    }
+  };
+
   return (
     <>
       {AllertModalstatus !== 0 ? (
         <AllertModal title={textOfAllert[AllertModalstatus - 1].title} context={textOfAllert[AllertModalstatus - 1].context} type={textOfAllert[AllertModalstatus - 1].type} />
       ) : null}
+
       <div className="flex items-center py-[1.3rem]">
         <div className="w-[8rem] h-[3rem] ms-[0.5rem]">
           <Link href={'/'}>
@@ -76,7 +84,7 @@ export default function Header(Data: Data) {
         ) : null}
         {isLogin ? (
           <div className="absolute right-[0.5rem]">
-            <div onClick={useVacation}>
+            <div onClick={useVacationButtonHandler}>
               <MiddleButton addClass="text-xl" text="휴가 사용하기" />
             </div>
           </div>
