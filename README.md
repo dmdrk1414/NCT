@@ -23,9 +23,19 @@
 9. 실행방법
 10. 느낀점
 
-## 1. 📺 서비스 소개 (화면)
+## 1. 📺 서비스 소개
 
-<img src='https://user-images.githubusercontent.com/76943741/273447171-cbaad8fb-9c1d-49c2-b06b-a0840f7d00ff.gif' width="30%" height="30%">
+## 1.1 초기 화면
+
+<img src="https://github.com/dmdrk1414/NCT/assets/76943741/6bdc538c-d42b-4303-8634-32bf9d2cb5a4" alt="초기화면" style="zoom:50%;" />
+
+## 1.2 메인 페이지
+
+<img src="https://github.com/dmdrk1414/NCT/assets/76943741/ee910ab5-966f-48ec-812c-2b8a2878cc92" alt="메인페이지" style="zoom:50%;" />
+
+## 1.3 실장 페이지
+
+<img src="https://github.com/dmdrk1414/NCT/assets/76943741/debf3fa6-2d18-4851-9e11-391ecaaadfa3" alt="실장_페이지" style="zoom:50%;" />
 
 ## 2. 🔎 서비스 개요
 
