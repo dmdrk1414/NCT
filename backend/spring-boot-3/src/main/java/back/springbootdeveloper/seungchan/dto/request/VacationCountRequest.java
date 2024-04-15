@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class VacationCountRequest {
-    private int vacationCount;
-    private Long userId;
+
+  private int vacationCount;
+  private Long userId;
 }

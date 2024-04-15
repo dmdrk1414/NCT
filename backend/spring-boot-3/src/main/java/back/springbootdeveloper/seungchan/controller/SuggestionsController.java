@@ -27,50 +27,56 @@ import java.util.List;
 @ResponseBody
 @RequestMapping("/suggestion")
 public class SuggestionsController {
-    private final SuggestionService suggestionService;
-    private final TokenService tokenService;
-    private final UserUtillService userUtillService;
 
-    @Operation(summary = "건의 게시판 작성", description = "개인 회원이 건의 게시판을 작성을 한다.")
-    @PostMapping("/write")
-    public ResponseEntity<BaseResponseBody> writeSuggestion(@Valid @RequestBody SuggestionWriteReqDto suggestionWriteRequest) {
-        Boolean isValidClassification = SuggestionConstantGroup.classification.contain(suggestionWriteRequest.getClassification());
-        if (isValidClassification == false) {
-            throw new InvalidSelectionClassificationException();
-        }
-        suggestionService.save(suggestionWriteRequest);
+  private final SuggestionService suggestionService;
+  private final TokenService tokenService;
+  private final UserUtillService userUtillService;
 
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+  @Operation(summary = "건의 게시판 작성", description = "개인 회원이 건의 게시판을 작성을 한다.")
+  @PostMapping("/write")
+  public ResponseEntity<BaseResponseBody> writeSuggestion(
+      @Valid @RequestBody SuggestionWriteReqDto suggestionWriteRequest) {
+    Boolean isValidClassification = SuggestionConstantGroup.classification.contain(
+        suggestionWriteRequest.getClassification());
+    if (isValidClassification == false) {
+      throw new InvalidSelectionClassificationException();
     }
+    suggestionService.save(suggestionWriteRequest);
 
-    @Operation(summary = "건의 게시판 조회", description = "건의 게시판 조회. 비밀 게시판 실장만 조회 가능")
-    @GetMapping("")
-    public ResponseEntity<SuggestionsResultResponse> fetchSuggestions(HttpServletRequest request) {
-        boolean isNuriKing = tokenService.getNuriKingFromToken(request);
-        List<Suggestion> suggestions = suggestionService.findAll()
-                .stream()
-                .map(Suggestion::new)
-                .toList();
-        SuggestionsResultResponse suggestionsResultResponse = new SuggestionsResultResponse(suggestions, isNuriKing);
+    return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+  }
 
-        return ResponseEntity.ok().body(suggestionsResultResponse);
-    }
+  @Operation(summary = "건의 게시판 조회", description = "건의 게시판 조회. 비밀 게시판 실장만 조회 가능")
+  @GetMapping("")
+  public ResponseEntity<SuggestionsResultResponse> fetchSuggestions(HttpServletRequest request) {
+    boolean isNuriKing = tokenService.getNuriKingFromToken(request);
+    List<Suggestion> suggestions = suggestionService.findAll()
+        .stream()
+        .map(Suggestion::new)
+        .toList();
+    SuggestionsResultResponse suggestionsResultResponse = new SuggestionsResultResponse(suggestions,
+        isNuriKing);
 
-    @Operation(summary = "하나의 건의 게시물 조회", description = "하나의 건의 게시물 조회")
-    @GetMapping("{id}")
-    public ResponseEntity<EachSuggestionsResDto> findEachSuggestion(HttpServletRequest request, @PathVariable("id") Long id) {
-        Suggestion suggestions = suggestionService.findById(id);
-        EachSuggestionsResDto eachSuggestionsResDto = new EachSuggestionsResDto(suggestions);
+    return ResponseEntity.ok().body(suggestionsResultResponse);
+  }
 
-        return ResponseEntity.ok().body(eachSuggestionsResDto);
-    }
+  @Operation(summary = "하나의 건의 게시물 조회", description = "하나의 건의 게시물 조회")
+  @GetMapping("{id}")
+  public ResponseEntity<EachSuggestionsResDto> findEachSuggestion(HttpServletRequest request,
+      @PathVariable("id") Long id) {
+    Suggestion suggestions = suggestionService.findById(id);
+    EachSuggestionsResDto eachSuggestionsResDto = new EachSuggestionsResDto(suggestions);
 
-    @Operation(summary = "건의 게시판 확인", description = "건의 게시판 확인 토글")
-    @PostMapping("/check")
-    public ResponseEntity<BaseResponseBody> checkSuggestions(@RequestBody SuggestionReqDto suggestionReqDto, HttpServletRequest request) {
-        Long suggestionId = suggestionReqDto.getSuggestionId();
-        suggestionService.checkToggle(suggestionId);
+    return ResponseEntity.ok().body(eachSuggestionsResDto);
+  }
 
-        return BaseResponseBodyUtiil.BaseResponseBodySuccess();
-    }
+  @Operation(summary = "건의 게시판 확인", description = "건의 게시판 확인 토글")
+  @PostMapping("/check")
+  public ResponseEntity<BaseResponseBody> checkSuggestions(
+      @RequestBody SuggestionReqDto suggestionReqDto, HttpServletRequest request) {
+    Long suggestionId = suggestionReqDto.getSuggestionId();
+    suggestionService.checkToggle(suggestionId);
+
+    return BaseResponseBodyUtiil.BaseResponseBodySuccess();
+  }
 }

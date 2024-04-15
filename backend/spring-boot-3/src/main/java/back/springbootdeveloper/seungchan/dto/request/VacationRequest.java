@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class VacationRequest {
-    private String[] preVacationDate;
-    private int cntUseOfVacation;
+
+  private String[] preVacationDate;
+  private int cntUseOfVacation;
 }

@@ -30,7 +30,7 @@ public class AttendanceService {
 
   @Autowired
   private AttendanceStatusRepository attendanceStatusRepository;
-
+ 
   private static boolean isContains(String vacationDates, String dateRequest) {
     return vacationDates.contains(dateRequest);
   }

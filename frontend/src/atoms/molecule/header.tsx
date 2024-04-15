@@ -38,24 +38,26 @@ export default function Header(Data: Data) {
   ];
 
   const useVacation = () => {
-    axAuth(token)({
-      method: 'post',
-      url: '/vacations/request/each',
-    })
-      .then(res => {
-        const availableApplyVacation = res.data.availableApplyVacation;
-
-        // 0이 닫기, 1이 성공, 2가 실패
-        if (availableApplyVacation) {
-          setAllertModalStatus(1);
-          console.log('휴가 사용 완료');
-        } else {
-          setAllertModalStatus(2);
-        }
+    if (confirm('휴가를 사용하시겠습니까?')) {
+      axAuth(token)({
+        method: 'post',
+        url: '/vacations/request/each',
       })
-      .catch(err => {
-        console.log(err);
-      });
+        .then(res => {
+          const availableApplyVacation = res.data.availableApplyVacation;
+
+          // 0이 닫기, 1이 성공, 2가 실패
+          if (availableApplyVacation) {
+            setAllertModalStatus(1);
+            console.log('휴가 사용 완료');
+          } else {
+            setAllertModalStatus(2);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -63,6 +65,7 @@ export default function Header(Data: Data) {
       {AllertModalstatus !== 0 ? (
         <AllertModal title={textOfAllert[AllertModalstatus - 1].title} context={textOfAllert[AllertModalstatus - 1].context} type={textOfAllert[AllertModalstatus - 1].type} />
       ) : null}
+
       <div className="flex items-center py-[1.3rem]">
         <div className="w-[8rem] h-[3rem] ms-[0.5rem]">
           <Link href={'/'}>

@@ -8,16 +8,17 @@ import lombok.*;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ObUser {
-    private String name;
-    private String yearOfRegistration;
-    private String phoneNum;
-    private Long userId;
 
-    @Builder
-    public ObUser(UserInfo user) {
-        this.name = user.getName();
-        this.yearOfRegistration = user.getYearOfRegistration();
-        this.phoneNum = user.getPhoneNum();
-        this.userId = user.getId();
-    }
+  private String name;
+  private String yearOfRegistration;
+  private String phoneNum;
+  private Long userId;
+
+  @Builder
+  public ObUser(UserInfo user) {
+    this.name = user.getName();
+    this.yearOfRegistration = user.getYearOfRegistration();
+    this.phoneNum = user.getPhoneNum();
+    this.userId = user.getId();
+  }
 }

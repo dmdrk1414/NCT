@@ -198,3 +198,9 @@ INSERT INTO user_info VALUES    (4.2, 'ENTP', 'dong',
         TRUE);
 ```
 
+# 업데이트
+
+#### 2024-04-14
+
+1. 공지사항 추가.
+2. 휴가 사용 경고 문 추가.

@@ -8,6 +8,7 @@ import lombok.*;
 @Data
 @Builder
 public class NewUserEachResDto {
-    private TempUser tempUser;
-    private boolean isNuriKing;
+
+  private TempUser tempUser;
+  private boolean isNuriKing;
 }
