@@ -23,31 +23,35 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @ResponseBody
 public class LoginPageController {
-    private final UserService userService;
-    private final TempUserService tempUserService;
-    private final LoginService loginService;
-    private final TokenService tokenService;
+
+  private final UserService userService;
+  private final TempUserService tempUserService;
+  private final LoginService loginService;
+  private final TokenService tokenService;
 
 
-    @Operation(summary = "신입 가입 신청", description = "신입 가입 신청을 하지만 회원 가입이 아님을 인지하자. TempUser에 저장")
-    @PostMapping("/sign")
-    public ResponseEntity<SignNewUserResDto> userSignFrom(@RequestBody @Valid TempUserFormReqDto requestUserForm) {
-        String email = requestUserForm.getEmail();
+  @Operation(summary = "신입 가입 신청", description = "신입 가입 신청을 하지만 회원 가입이 아님을 인지하자. TempUser에 저장")
+  @PostMapping("/sign")
+  public ResponseEntity<SignNewUserResDto> userSignFrom(
+      @RequestBody @Valid TempUserFormReqDto requestUserForm) {
+    String email = requestUserForm.getEmail();
 
-        tempUserService.save(requestUserForm);
-        Boolean existNewUser = tempUserService.exist(email);
+    tempUserService.save(requestUserForm);
+    Boolean existNewUser = tempUserService.exist(email);
 
-        // 등록 완료 되었다는 boolean 리턴
-        return ResponseEntity.ok().body(SignNewUserResDto.builder()
-                .isApply(existNewUser)
-                .build());
-    }
+    // 등록 완료 되었다는 boolean 리턴
+    return ResponseEntity.ok().body(SignNewUserResDto.builder()
+        .isApply(existNewUser)
+        .build());
+  }
 
-    @Operation(summary = "로그인", description = "기존 회원들의 로그인이다")
-    @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> userLogin(@RequestBody @Valid UserLoginRequest userLoginRequest, HttpServletRequest request, HttpServletResponse response) {
-        UserLoginResponse userLoginResponse = loginService.login(userLoginRequest, request, response);
+  @Operation(summary = "로그인", description = "기존 회원들의 로그인이다")
+  @PostMapping("/login")
+  public ResponseEntity<UserLoginResponse> userLogin(
+      @RequestBody @Valid UserLoginRequest userLoginRequest, HttpServletRequest request,
+      HttpServletResponse response) {
+    UserLoginResponse userLoginResponse = loginService.login(userLoginRequest, request, response);
 
-        return ResponseEntity.ok().body(userLoginResponse);
-    }
+    return ResponseEntity.ok().body(userLoginResponse);
+  }
 }

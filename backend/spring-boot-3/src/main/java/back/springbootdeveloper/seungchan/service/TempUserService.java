@@ -15,68 +15,69 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class TempUserService {
-    private final TempUserRepository tempUserRepository;
 
-    public void save(TempUserFormReqDto requestUserForm) {
-        TempUser newTempUser = requestUserForm.toEntity();
-        TempUser tempUser = tempUserRepository.save(newTempUser);
+  private final TempUserRepository tempUserRepository;
 
-        if (tempUser == null) {
-            throw new NewUserRegistrationException();
-        }
+  public void save(TempUserFormReqDto requestUserForm) {
+    TempUser newTempUser = requestUserForm.toEntity();
+    TempUser tempUser = tempUserRepository.save(newTempUser);
+
+    if (tempUser == null) {
+      throw new NewUserRegistrationException();
     }
+  }
 
-    /**
-     * 임시 유저를 찾아서 response으로 변환하여 반환
-     *
-     * @return
-     */
-    public List<NewUsersResDto> findAllNewUsers() {
-        List<TempUser> newUsersResponses = tempUserRepository.findAll();
+  /**
+   * 임시 유저를 찾아서 response으로 변환하여 반환
+   *
+   * @return
+   */
+  public List<NewUsersResDto> findAllNewUsers() {
+    List<TempUser> newUsersResponses = tempUserRepository.findAll();
 
-        return newUsersResponses.stream()
-                .map(tempUser -> NewUsersResDto.builder()
-                        .id(tempUser.getId())
-                        .email(tempUser.getEmail())
-                        .name(tempUser.getName())
-                        .applicationDate(tempUser.getApplicationDate())
-                        .build())
-                .collect(Collectors.toList());
-    }
+    return newUsersResponses.stream()
+        .map(tempUser -> NewUsersResDto.builder()
+            .id(tempUser.getId())
+            .email(tempUser.getEmail())
+            .name(tempUser.getName())
+            .applicationDate(tempUser.getApplicationDate())
+            .build())
+        .collect(Collectors.toList());
+  }
 
-    public TempUser findNewUsers(long id) {
-        return tempUserRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Unexpected new user"));
-    }
+  public TempUser findNewUsers(long id) {
+    return tempUserRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Unexpected new user"));
+  }
 
-    public List<TempUser> findAll() {
-        return tempUserRepository.findAll();
-    }
+  public List<TempUser> findAll() {
+    return tempUserRepository.findAll();
+  }
 
-    public TempUser removeTempUserByEmail(String emailOfNewUser) {
-        TempUser tempUser = tempUserRepository.findByEmail(emailOfNewUser)
-                .orElseThrow(() -> new IllegalArgumentException("Unexpected new user"));
-        tempUserRepository.deleteByEmail(emailOfNewUser);
+  public TempUser removeTempUserByEmail(String emailOfNewUser) {
+    TempUser tempUser = tempUserRepository.findByEmail(emailOfNewUser)
+        .orElseThrow(() -> new IllegalArgumentException("Unexpected new user"));
+    tempUserRepository.deleteByEmail(emailOfNewUser);
 
-        return tempUser;
-    }
+    return tempUser;
+  }
 
-    public TempUser removeTempUserById(Long idOfNewUser) {
-        TempUser tempUser = tempUserRepository.findById(idOfNewUser)
-                .orElseThrow(() -> new IllegalArgumentException("Unexpected new user"));
-        tempUserRepository.deleteById(idOfNewUser);
+  public TempUser removeTempUserById(Long idOfNewUser) {
+    TempUser tempUser = tempUserRepository.findById(idOfNewUser)
+        .orElseThrow(() -> new IllegalArgumentException("Unexpected new user"));
+    tempUserRepository.deleteById(idOfNewUser);
 
-        return tempUser;
-    }
+    return tempUser;
+  }
 
-    public Boolean exist(String email) {
-        return tempUserRepository.existsByEmail(email);
-    }
+  public Boolean exist(String email) {
+    return tempUserRepository.existsByEmail(email);
+  }
 
-    /**
-     * 새로운 임시 회원의 정보를 저장한다.가
-     */
-    public TempUser save(TempUser tempUser) {
-        return tempUserRepository.save(tempUser);
-    }
+  /**
+   * 새로운 임시 회원의 정보를 저장한다.가
+   */
+  public TempUser save(TempUser tempUser) {
+    return tempUserRepository.save(tempUser);
+  }
 }

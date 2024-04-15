@@ -7,8 +7,9 @@ import lombok.*;
 @Data
 @Builder
 public class NewUsersResDto {
-    private Long id;
-    private String email;
-    private String name;
-    private String applicationDate;
+
+  private Long id;
+  private String email;
+  private String name;
+  private String applicationDate;
 }

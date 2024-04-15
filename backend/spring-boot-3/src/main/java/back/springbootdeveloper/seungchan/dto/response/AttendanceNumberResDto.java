@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class AttendanceNumberResDto {
-    private String attendanceNum;
-    private String dayAtNow;
+
+  private String attendanceNum;
+  private String dayAtNow;
 }
