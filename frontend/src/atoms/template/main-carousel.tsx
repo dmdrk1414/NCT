@@ -23,7 +23,6 @@ export default function MainCarousel() {
         <div className="bg-[url('/Images/main_three.jpg')] bg-cover w-[100vw] aspect-[3/4]"></div>
         <div className="bg-[url('/Images/main_four.jpg')] bg-cover w-[100vw] aspect-[3/4]"></div>
         <div className="bg-[url('/Images/main_five.jpg')] bg-cover w-[100vw] aspect-[3/4]"></div>
-        <div className="bg-[url('/Images/main_six.jpg')] bg-cover w-[100vw] aspect-[3/4]"></div>
       </Slider>
     </div>
   );
