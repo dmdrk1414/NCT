@@ -75,97 +75,98 @@ https://velog.io/@kekim20/Spring-boot-Scheduler%EC%99%80-cron%ED%91%9C%ED%98%84%
 
 @Component
 public class Scheduler {
-    @Autowired
-    UserUtillService userUtillService;
-    @Autowired
-    AttendanceService attendanceService;
-    @Autowired
-    private NumOfTodayAttendenceService numOfTodayAttendenceService;
-    @Autowired
-    private PeriodicDataService periodicDataService;
 
-    private int getRandomNum() {
-        Random random = new Random();
-        int randomNumber = 1000 + random.nextInt(9000);
-        return randomNumber;
-    }
+  @Autowired
+  UserUtillService userUtillService;
+  @Autowired
+  AttendanceService attendanceService;
+  @Autowired
+  private NumOfTodayAttendenceService numOfTodayAttendenceService;
+  @Autowired
+  private PeriodicDataService periodicDataService;
 
-    private void printDateAtNow(String runMethodName) {
-        System.out.println("실행된 함수 " + runMethodName + " : " + new Date());
-    }
+  private int getRandomNum() {
+    Random random = new Random();
+    int randomNumber = 1000 + random.nextInt(9000);
+    return randomNumber;
+  }
 
-    /* 매일 자정 기준으로 num_of_today_attendence DB의  추가.*/
-    @Scheduled(cron = "1 0 0 * * *") //매일 자정 1초에 추가.
-    public void addNumOfTodayAttendenceCheckNumRepeat() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String day = LocalDateTime.now().format(dtf);
+  private void printDateAtNow(String runMethodName) {
+    System.out.println("실행된 함수 " + runMethodName + " : " + new Date());
+  }
 
-        numOfTodayAttendenceService.save(day, getRandomNum());
-        printDateAtNow("addNumOfTodayAttendenceCheckNumRepeat");
-    }
+  /* 매일 자정 기준으로 num_of_today_attendence DB의  추가.*/
+  @Scheduled(cron = "1 0 0 * * *") //매일 자정 1초에 추가.
+  public void addNumOfTodayAttendenceCheckNumRepeat() {
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    String day = LocalDateTime.now().format(dtf);
 
-    /* 매달 1일 자정 기준으로 num_of_today_attendence DB의  reset.*/
-    @Scheduled(cron = "0 0 0 1 * *") // 매달 1일 자정에 작업을 실행
-    public void resetNumOfTodayAttendenceCheckNumRepeat() {
-        numOfTodayAttendenceService.deleteAll();
-        printDateAtNow("resetNumOfTodayAttendenceCheckNumRepeat");
-    }
+    numOfTodayAttendenceService.save(day, getRandomNum());
+    printDateAtNow("addNumOfTodayAttendenceCheckNumRepeat");
+  }
 
-    /* 매달 1일 자정 기준으로 user_utill DB의  cnt_vacationr 5로 리셋을 한다..*/
-    @Scheduled(cron = "0 0 0 1 * *") // 매달 1일 자정에 작업을 실행
-    public void resetUserUtillCntVacationRepeat() {
-        userUtillService.resetCntVacation();
-        printDateAtNow("resetUserUtillCntVacationRepeat");
-    }
+  /* 매달 1일 자정 기준으로 num_of_today_attendence DB의  reset.*/
+  @Scheduled(cron = "0 0 0 1 * *") // 매달 1일 자정에 작업을 실행
+  public void resetNumOfTodayAttendenceCheckNumRepeat() {
+    numOfTodayAttendenceService.deleteAll();
+    printDateAtNow("resetNumOfTodayAttendenceCheckNumRepeat");
+  }
 
-    /* 매주 월요일 자정 기준으로 attendance_status DB의  weekly_data [0,0,0,0,0] 로 리셋을 한다. */
-    @Scheduled(cron = "0 3 0 * * MON") // 매주 월요일 자정 3분에 run
-    public void resetAttendanceWeeklyDataRepeat() {
-        attendanceService.resetWeeklyData();
-        printDateAtNow("resetAttendanceWeeklyDataRepeat");
-    }
+  /* 매달 1일 자정 기준으로 user_utill DB의  cnt_vacationr 5로 리셋을 한다..*/
+  @Scheduled(cron = "0 0 0 1 * *") // 매달 1일 자정에 작업을 실행
+  public void resetUserUtillCntVacationRepeat() {
+    userUtillService.resetCntVacation();
+    printDateAtNow("resetUserUtillCntVacationRepeat");
+  }
 
-    /* 매주 월요일 자정 기준으로 attendance_status DB의  absence_dates "" 로 리셋을 한다. */
-    @Scheduled(cron = "0 0 0 1 * *") // 매월 1일 자정
-    public void resetAttendanceAbsenceDatesRepeat() {
-        attendanceService.resetAbsenceDates();
-        printDateAtNow("resetAttendanceAbsenceDatesRepeat");
-    }
+  /* 매주 월요일 자정 기준으로 attendance_status DB의  weekly_data [0,0,0,0,0] 로 리셋을 한다. */
+  @Scheduled(cron = "0 3 0 * * MON") // 매주 월요일 자정 3분에 run
+  public void resetAttendanceWeeklyDataRepeat() {
+    attendanceService.resetWeeklyData();
+    printDateAtNow("resetAttendanceWeeklyDataRepeat");
+  }
 
-    /* 매주 월요일 자정 기준으로 attendance_status DB의  vacation_dates "" 로 리셋을 한다. */
-    @Scheduled(cron = "0 0 0 1 * *") // 매월 1일 자정
-    public void resetAttendanceVacationDatesRepeat() {
-        attendanceService.resetVacationDates();
-        printDateAtNow("resetAttendanceAbsenceDatesRepeat");
-    }
+  /* 매주 월요일 자정 기준으로 attendance_status DB의  absence_dates "" 로 리셋을 한다. */
+  @Scheduled(cron = "0 0 0 1 * *") // 매월 1일 자정
+  public void resetAttendanceAbsenceDatesRepeat() {
+    attendanceService.resetAbsenceDates();
+    printDateAtNow("resetAttendanceAbsenceDatesRepeat");
+  }
 
-    /* 매주 월요일 자정 기준으로 periodic_data DB의  weekly_data의 정보를
-    attendance_status DB의 weekly_data으로 저장한다.*/
-    @Scheduled(cron = "0 57 23 * * SUN") // 매주 일요일 오후23시 57분 run
-    public void savePeriodicDataWeeklyDataRepeat() {
-        List<AttendanceStatus> attendanceStatusList = attendanceService.findAll();
-        periodicDataService.updateWeeklyDataScheduled(attendanceStatusList);
+  /* 매주 월요일 자정 기준으로 attendance_status DB의  vacation_dates "" 로 리셋을 한다. */
+  @Scheduled(cron = "0 0 0 1 * *") // 매월 1일 자정
+  public void resetAttendanceVacationDatesRepeat() {
+    attendanceService.resetVacationDates();
+    printDateAtNow("resetAttendanceAbsenceDatesRepeat");
+  }
 
-        printDateAtNow("savePeriodicDataWeeklyDataRepeat");
-    }
+  /* 매주 월요일 자정 기준으로 periodic_data DB의  weekly_data의 정보를
+  attendance_status DB의 weekly_data으로 저장한다.*/
+  @Scheduled(cron = "0 57 23 * * SUN") // 매주 일요일 오후23시 57분 run
+  public void savePeriodicDataWeeklyDataRepeat() {
+    List<AttendanceStatus> attendanceStatusList = attendanceService.findAll();
+    periodicDataService.updateWeeklyDataScheduled(attendanceStatusList);
 
-    /* 매주 일요일 오후23시 59분 기준으로 periodic_data DB의  weekly_data의 정보를
-        this_month 으로 추가 한후 저장한다.*/
-    @Scheduled(cron = "0 59 23 * * SUN") // 매주 일요일 오후23시 57분 run
-    public void addPeriodicDataThisMonthRepeat() {
-        periodicDataService.updateThisMonthScheduled();
+    printDateAtNow("savePeriodicDataWeeklyDataRepeat");
+  }
 
-        printDateAtNow("addPeriodicDataThisMonthRepeat");
-    }
+  /* 매주 일요일 오후23시 59분 기준으로 periodic_data DB의  weekly_data의 정보를
+      this_month 으로 추가 한후 저장한다.*/
+  @Scheduled(cron = "0 59 23 * * SUN") // 매주 일요일 오후23시 57분 run
+  public void addPeriodicDataThisMonthRepeat() {
+    periodicDataService.updateThisMonthScheduled();
 
-    /* 매달 1일 자정 5초에 this_month의 정보를  previous_month으로 이동
-     this_month의 정보를 리셋*/
-    @Scheduled(cron = "5 0 0 1 * *") // 매달 1일 자정 5초에 run
-    public void addPeriodicDataPreviousMonthRepeat() {
-        periodicDataService.resetPreviousMonth();
-        periodicDataService.updatePreviousMonthScheduled();
-        periodicDataService.resetThisMonth();
+    printDateAtNow("addPeriodicDataThisMonthRepeat");
+  }
 
-        printDateAtNow("addPeriodicDataPreviousMonthRepeat");
-    }
+  /* 매달 1일 자정 5초에 this_month의 정보를  previous_month으로 이동
+   this_month의 정보를 리셋*/
+  @Scheduled(cron = "5 0 0 1 * *") // 매달 1일 자정 5초에 run
+  public void addPeriodicDataPreviousMonthRepeat() {
+    periodicDataService.resetPreviousMonth();
+    periodicDataService.updatePreviousMonthScheduled();
+    periodicDataService.resetThisMonth();
+
+    printDateAtNow("addPeriodicDataPreviousMonthRepeat");
+  }
 }

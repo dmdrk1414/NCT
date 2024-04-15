@@ -7,5 +7,6 @@ import lombok.*;
 @Data
 @Builder
 public class SuggestionReqDto {
-    private Long suggestionId;
+
+  private Long suggestionId;
 }

@@ -9,10 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AttendancePassResDto {
-    private boolean isPassAtNow;
 
-    @Builder
-    public AttendancePassResDto(boolean isPassAtNow) {
-        this.isPassAtNow = isPassAtNow;
-    }
+  private boolean isPassAtNow;
+
+  @Builder
+  public AttendancePassResDto(boolean isPassAtNow) {
+    this.isPassAtNow = isPassAtNow;
+  }
 }

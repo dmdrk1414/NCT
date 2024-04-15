@@ -36,7 +36,7 @@ public class VacationToken {
 
   @Column(name = "user_id")
   private Long userId;
-
+ 
   @Column(name = "vacation_token")
   private Integer vacation_token;
 

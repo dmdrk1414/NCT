@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 public class AttendanceTimeExceptionAttendanceResponse {
-    private boolean isExceptionAttendance;
+
+  private boolean isExceptionAttendance;
 }

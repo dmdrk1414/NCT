@@ -11,13 +11,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class VacationsResponce {
-    private List<String> absences;
-    private List<String> beforeVacationDate;
-    private List<String> preVacationDate;
 
-    public VacationsResponce(List<String> absences, List<String> beforeVacationDate, List<String> preVacationDate) {
-        this.absences = absences;
-        this.beforeVacationDate = beforeVacationDate;
-        this.preVacationDate = preVacationDate;
-    }
+  private List<String> absences;
+  private List<String> beforeVacationDate;
+  private List<String> preVacationDate;
+
+  public VacationsResponce(List<String> absences, List<String> beforeVacationDate,
+      List<String> preVacationDate) {
+    this.absences = absences;
+    this.beforeVacationDate = beforeVacationDate;
+    this.preVacationDate = preVacationDate;
+  }
 }

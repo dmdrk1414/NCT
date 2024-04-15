@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @Builder
 public class YbUserListResponse {
-    private List<YbUserInfomation> ybUserInfomationList;
-    private boolean isPassAttendanceOfSearchUse;
+
+  private List<YbUserInfomation> ybUserInfomationList;
+  private boolean isPassAttendanceOfSearchUse;
 }

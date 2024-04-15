@@ -11,20 +11,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "num_of_today_attendance")
 public class NumOfTodayAttendence {
-    @Id // id 필드를 기본키로 지정
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 자동으로 1씩 증가
-    @Column(name = "id", updatable = false)
-    private Long id;
 
-    @Column(name = "check_num", length = 10, nullable = false, updatable = false)
-    private String checkNum;
+  @Id // id 필드를 기본키로 지정
+  @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 자동으로 1씩 증가
+  @Column(name = "id", updatable = false)
+  private Long id;
 
-    @Column(name = "today", length = 20, nullable = false, updatable = false)
-    private String day;
+  @Column(name = "check_num", length = 10, nullable = false, updatable = false)
+  private String checkNum;
 
-    @Builder
-    public NumOfTodayAttendence(String checkNum, String day) {
-        this.checkNum = checkNum;
-        this.day = day;
-    }
+  @Column(name = "today", length = 20, nullable = false, updatable = false)
+  private String day;
+
+  @Builder
+  public NumOfTodayAttendence(String checkNum, String day) {
+    this.checkNum = checkNum;
+    this.day = day;
+  }
 }

@@ -12,12 +12,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class ObUserOfMainResponse {
-    private List<ObUser> obUserList;
-    private boolean isNuriKing;
 
-    @Builder
-    public ObUserOfMainResponse(List<ObUser> obUserList, boolean isNuriKing) {
-        this.obUserList = obUserList;
-        this.isNuriKing = isNuriKing;
-    }
+  private List<ObUser> obUserList;
+  private boolean isNuriKing;
+
+  @Builder
+  public ObUserOfMainResponse(List<ObUser> obUserList, boolean isNuriKing) {
+    this.obUserList = obUserList;
+    this.isNuriKing = isNuriKing;
+  }
 }

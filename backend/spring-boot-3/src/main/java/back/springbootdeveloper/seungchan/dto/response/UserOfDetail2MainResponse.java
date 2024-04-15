@@ -12,7 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserOfDetail2MainResponse {
-    //    "name": "박승찬",
+
+  //    "name": "박승찬",
 //    "major": "컴퓨터공학과",
 //    "studentId": "20161822",
 //    "phoneNum": "010-2383-6578",
@@ -20,29 +21,29 @@ public class UserOfDetail2MainResponse {
 //    "specialtySkill": "잠자기",
 //    "MBTI": "ENTP",
 //    "isNuriKing": true
-    private String name;
-    private String major;
-    private String studentId;
-    private String phoneNum;
-    private String hobby;
-    private String specialtySkill;
-    private String mbti;
-    private boolean isNuriKing;
-    private boolean isOb;
-    private String email;
-    private Long userId;
+  private String name;
+  private String major;
+  private String studentId;
+  private String phoneNum;
+  private String hobby;
+  private String specialtySkill;
+  private String mbti;
+  private boolean isNuriKing;
+  private boolean isOb;
+  private String email;
+  private Long userId;
 
-    public UserOfDetail2MainResponse(UserUtill userUtill, UserInfo user) {
-        this.name = user.getName();
-        this.major = user.getMajor();
-        this.studentId = user.getStudentId();
-        this.phoneNum = user.getPhoneNum();
-        this.hobby = user.getHobby();
-        this.specialtySkill = user.getSpecialtySkill();
-        this.mbti = user.getMbti();
-        this.isNuriKing = userUtill.isNuriKing();
-        this.isOb = user.isOb();
-        this.email = user.getEmail();
-        this.userId = user.getId();
-    }
+  public UserOfDetail2MainResponse(UserUtill userUtill, UserInfo user) {
+    this.name = user.getName();
+    this.major = user.getMajor();
+    this.studentId = user.getStudentId();
+    this.phoneNum = user.getPhoneNum();
+    this.hobby = user.getHobby();
+    this.specialtySkill = user.getSpecialtySkill();
+    this.mbti = user.getMbti();
+    this.isNuriKing = userUtill.isNuriKing();
+    this.isOb = user.isOb();
+    this.email = user.getEmail();
+    this.userId = user.getId();
+  }
 }

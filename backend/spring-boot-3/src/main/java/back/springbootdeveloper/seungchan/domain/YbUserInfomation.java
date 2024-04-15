@@ -15,16 +15,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class YbUserInfomation {
-    private String name;
-    private int cntVacation;
-    private List<Integer> weeklyData;
-    private Long userId;
 
-    @Builder
-    public YbUserInfomation(UserInfo userInfo, AttendanceStatus attendanceStatus, UserUtill userUtill) {
-        this.name = userInfo.getName();
-        this.cntVacation = userUtill.getCntVacation();
-        this.weeklyData = Utill.extractNumbers(attendanceStatus.getWeeklyData());
-        this.userId = userInfo.getId();
-    }
+  private String name;
+  private int cntVacation;
+  private List<Integer> weeklyData;
+  private Long userId;
+
+  @Builder
+  public YbUserInfomation(UserInfo userInfo, AttendanceStatus attendanceStatus,
+      UserUtill userUtill) {
+    this.name = userInfo.getName();
+    this.cntVacation = userUtill.getCntVacation();
+    this.weeklyData = Utill.extractNumbers(attendanceStatus.getWeeklyData());
+    this.userId = userInfo.getId();
+  }
 }

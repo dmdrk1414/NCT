@@ -27,7 +27,7 @@ public class AttendanceWeekDate {
 
   @Column(name = "user_id")
   private Long userId;
-
+ 
   @Enumerated(EnumType.STRING)
   @Column(name = "monday", length = 15, nullable = false)
   private ATTENDANCE_STATE monday;
