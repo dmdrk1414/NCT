@@ -12,6 +12,7 @@ import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFou
 import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
+import back.springbootdeveloper.seungchan.util.BaseResultDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,6 +40,7 @@ public class MainController {
   private final AttendanceService attendanceService;
   private final AttendanceTimeService attendanceTimeService;
   private final DatabaseService databaseService;
+  private final NoticeService noticeService;
 
   @Operation(summary = "main page 현재 회원 인원들의 정보들을 찾는다.", description = "현재 회원 인원들의 정보들을 위한 api 찾는다.")
   @GetMapping("/ybs")
@@ -213,5 +215,17 @@ public class MainController {
 
     return BaseResponseBodyUtiil.BaseResponseBodySuccess(
         RESPONSE_MESSAGE.SUCCESE_GIVE_KING(targetUserName, myUser.getName()));
+  }
+
+
+  @Operation(summary = "공지사항 - 조회", description = "main페이지의 공지사항 조회")
+  @GetMapping(value = "/notices")
+  public BaseResultDTO<NoticesResDto> findClubArticleDetail(
+      HttpServletRequest request) {
+    List<NoticeInformation> noticeInformations = noticeService.getNoticeInformations();
+
+    return BaseResultDTO.ofSuccess(NoticesResDto.builder()
+        .noticeInformations(noticeInformations)
+        .build());
   }
 }
