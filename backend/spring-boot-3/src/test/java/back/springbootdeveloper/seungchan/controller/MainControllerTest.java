@@ -4,17 +4,21 @@ import back.springbootdeveloper.seungchan.constant.dto.response.RESPONSE_MESSAGE
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.constant.filter.CustomHttpStatus;
 import back.springbootdeveloper.seungchan.dto.request.UserEachAttendanceControlReqDto;
+import back.springbootdeveloper.seungchan.dto.response.NoticeInformation;
 import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
+import back.springbootdeveloper.seungchan.entity.Notice;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
+import back.springbootdeveloper.seungchan.repository.NoticeRepository;
 import back.springbootdeveloper.seungchan.repository.UserRepository;
 import back.springbootdeveloper.seungchan.service.*;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import back.springbootdeveloper.seungchan.testutills.TestUtills;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -57,6 +61,8 @@ class MainControllerTest {
   private AttendanceService attendanceStateService;
   @Autowired
   private AttendanceTimeService attendanceTimeService;
+  @Autowired
+  private NoticeRepository noticeRepository;
   private String token;
   private Long kingUserId;
   private UserInfo kingUser;
@@ -823,6 +829,36 @@ class MainControllerTest {
     resultActions
         .andExpect(jsonPath("$.message").value(
             ResponseMessage.BAD_NOT_GIVE_KING_GRADUATION_USER.get()));
+  }
+
+  @Test
+  void 공지_사항_확인_테스트() throws Exception {
+    final String url = "/main/notices";
+
+    // 검증을 위한 테스트
+    List<Notice> notices = noticeRepository.findAll();
+    List<NoticeInformation> noticeInformations = notices.stream().map(NoticeInformation::new)
+        .toList();
+    // when
+
+    ResultActions result = mockMvc.perform(get(url, kingUser.getId())
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    // than
+    for (int i = 0; i < noticeInformations.size(); i++) {
+      result
+          .andExpect(jsonPath("$.result.noticeInformations[" + i + "].noticeId").value(
+              noticeInformations.get(i).getNoticeId()))
+          .andExpect(jsonPath("$.result.noticeInformations[" + i + "].title").value(
+              noticeInformations.get(i).getTitle()))
+          .andExpect(jsonPath("$.result.noticeInformations[" + i + "].content").value(
+              noticeInformations.get(i).getContent()))
+          .andExpect(jsonPath("$.result.noticeInformations[" + i + "].date").value(
+              noticeInformations.get(i).getDate()));
+    }
   }
 }
 
