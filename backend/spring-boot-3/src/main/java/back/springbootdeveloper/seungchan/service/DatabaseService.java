@@ -1,11 +1,13 @@
 package back.springbootdeveloper.seungchan.service;
 
 import back.springbootdeveloper.seungchan.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class DatabaseService {
 
   private final AttendanceStatusRepository attendanceStatusRepository;
@@ -17,24 +19,7 @@ public class DatabaseService {
   private final TempUserRepository tempUserRepository;
   private final UserRepository userRepository;
   private final UserUtilRepository userUtilRepository;
-
-  @Autowired
-  public DatabaseService(AttendanceStatusRepository attendanceStatusRepository,
-      AttendanceTimeRepository attendanceTimeRepository,
-      NumOfTodayAttendenceRepository numOfTodayAttendenceRepository,
-      PeriodicDataRepository periodicDataRepository, RefreshTokenRepository refreshTokenRepository,
-      SuggestionRepository suggestionRepository, TempUserRepository tempUserRepository,
-      UserRepository userRepository, UserUtilRepository userUtilRepository) {
-    this.attendanceStatusRepository = attendanceStatusRepository;
-    this.attendanceTimeRepository = attendanceTimeRepository;
-    this.numOfTodayAttendenceRepository = numOfTodayAttendenceRepository;
-    this.periodicDataRepository = periodicDataRepository;
-    this.refreshTokenRepository = refreshTokenRepository;
-    this.suggestionRepository = suggestionRepository;
-    this.tempUserRepository = tempUserRepository;
-    this.userRepository = userRepository;
-    this.userUtilRepository = userUtilRepository;
-  }
+  private final NoticeRepository noticeRepository;
 
   public void deleteAllDatabase() {
     attendanceStatusRepository.deleteAll();
@@ -46,6 +31,7 @@ public class DatabaseService {
     tempUserRepository.deleteAll();
     userRepository.deleteAll();
     userUtilRepository.deleteAll();
+    noticeRepository.deleteAll();
   }
 
   @Transactional
