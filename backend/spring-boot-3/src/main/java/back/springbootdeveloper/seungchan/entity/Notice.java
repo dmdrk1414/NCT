@@ -50,4 +50,8 @@ public class Notice extends BaseEntity {
     ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("Asia/Seoul"));
     this.noticeDate = zonedDateTime.toLocalDate();
   }
+
+  public String getNoticeDate() {
+    return String.valueOf(noticeDate);
+  }
 }

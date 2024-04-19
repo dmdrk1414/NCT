@@ -5,6 +5,7 @@ import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.domain.ObUser;
 import back.springbootdeveloper.seungchan.dto.request.UserEachAttendanceControlReqDto;
 import back.springbootdeveloper.seungchan.dto.response.*;
+import back.springbootdeveloper.seungchan.entity.NumOfTodayAttendence;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
 import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.domain.YbUserInfomation;
