@@ -12,7 +12,8 @@ public enum ResponseMessage {
   SUCCESS_DELETE_USER("성공적으로 추방 하였습니다."),
   BAD_IS_GRADUATION_USER("졸업 인원은 추방 할 수 없습니다."),
   BAD_NOT_GIVE_KING_GRADUATION_USER("졸업 인원은 실장 권한을 줄수 없습니다."),
-  BAD_NOT_USER_NOMAL("일반 회원은 사용할 수 없습니다.");
+  BAD_NOT_USER_NOMAL("일반 회원은 사용할 수 없습니다."),
+  SUCCESS_WRITE_NOTICE("공지 사항 등록 완료했습니다.");
 
   private final String message;
 
