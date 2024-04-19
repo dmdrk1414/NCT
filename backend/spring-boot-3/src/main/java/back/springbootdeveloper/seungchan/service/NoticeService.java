@@ -1,5 +1,6 @@
 package back.springbootdeveloper.seungchan.service;
 
+import back.springbootdeveloper.seungchan.dto.request.NoticesWriteReqDto;
 import back.springbootdeveloper.seungchan.dto.response.NoticeInformation;
 import back.springbootdeveloper.seungchan.entity.Notice;
 import back.springbootdeveloper.seungchan.repository.NoticeRepository;
@@ -27,5 +28,18 @@ public class NoticeService {
     return notices.stream()
         .map(NoticeInformation::new)
         .toList();
+  }
+
+  /**
+   * 주어진 DTO를 사용하여 새로운 공지사항을 저장합니다.
+   *
+   * @param noticesWriteReqDto 저장할 공지사항 정보를 담은 DTO
+   * @return 저장된 공지사항
+   */
+  @Transactional
+  public Notice save(final NoticesWriteReqDto noticesWriteReqDto) {
+    Notice notice = noticesWriteReqDto.ofEntity();
+
+    return noticeRepository.save(notice);
   }
 }
