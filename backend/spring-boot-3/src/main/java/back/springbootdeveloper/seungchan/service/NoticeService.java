@@ -7,6 +7,8 @@ import back.springbootdeveloper.seungchan.repository.NoticeRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,5 +43,23 @@ public class NoticeService {
     Notice notice = noticesWriteReqDto.ofEntity();
 
     return noticeRepository.save(notice);
+  }
+
+  /**
+   * 주어진 공지사항 ID에 해당하는 공지를 삭제합니다.
+   *
+   * @param noticeId 삭제할 공지사항의 ID
+   * @return 삭제 작업이 성공했는지 여부를 나타내는 Boolean 값입니다. 삭제 작업이 성공했으면 true를 반환하고, 그렇지 않으면 false를 반환합니다.
+   */
+  @Transactional
+  public Boolean delete(final Long noticeId) {
+
+    try {
+      noticeRepository.findById(noticeId).orElseThrow(NotFoundException::new);
+      noticeRepository.deleteById(noticeId);
+    } catch (NotFoundException e) {
+      return false;
+    }
+    return true;
   }
 }

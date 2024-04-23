@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,5 +51,22 @@ public class NoticeController {
 
     return BaseResponseBodyUtiil.BaseResponseBodySuccess(
         ResponseMessage.SUCCESS_WRITE_NOTICE.get());
+  }
+
+  @Operation(summary = "공지 사항 삭제 API", description = "실장 공지 사항 삭제 API")
+  @DeleteMapping("/{notice_id}")
+  public ResponseEntity<BaseResponseBody> deleteNotice(
+      @PathVariable(value = "notice_id") Long noticeId,
+      HttpServletRequest request) {
+    // 실장검증
+    MyValidation.isLeaderMember(tokenService, request);
+
+    // 공지 사항 삭제
+    if (noticeService.delete(noticeId)) {
+      return BaseResponseBodyUtiil.BaseResponseBodySuccess(
+          ResponseMessage.SUCCESS_DELETE_NOTICE.get());
+    }
+
+    return BaseResponseBodyUtiil.BaseResponseBodyBad(ResponseMessage.BAD_DELETE_NOTICE.get());
   }
 }
