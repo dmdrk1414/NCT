@@ -45,6 +45,18 @@ public class BaseResponseBodyUtiil {
     );
   }
 
+  public static ResponseEntity<BaseResponseBody> BaseResponseBodyBad() {
+    return new ResponseEntity<>(
+        BaseResponseBody.builder()
+            .message("BAD")
+            .httpStatus(HttpStatus.BAD_REQUEST)
+            .statusCode(HttpStatus.BAD_REQUEST.value())
+            .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
+            .build(),
+        HttpStatus.OK
+    );
+  }
+
   public static ResponseEntity<BaseResponseBody> BaseResponseBodyBad(String message) {
     return new ResponseEntity<>(
         BaseResponseBody.builder()
