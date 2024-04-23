@@ -131,4 +131,25 @@ class NoticeControllerTest {
         .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
     assertThat(resultDelete).isTrue();
   }
+
+  @Test
+  void 공지_사항_삭제_예외_존제하지_않는_공지_삭제_테스트() throws Exception {
+    System.out.println(this.noticeRepository.count());
+    final String url = "/control/notices/{notice_id}";
+
+    // 검증을 위한 데이터 준비
+    int notExistNoticeId = noticeRepository.findAll().size() + 1;
+
+    ResultActions result = mockMvc.perform(delete(url, notExistNoticeId)
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    // than
+    result
+        .andExpect(jsonPath("$.message").value(ResponseMessage.BAD_DELETE_NOTICE.get()))
+        .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"))
+        .andExpect(jsonPath("$.statusCode").value(HttpStatus.BAD_REQUEST.value()));
+  }
 }
