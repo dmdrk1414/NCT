@@ -13,6 +13,7 @@ import back.springbootdeveloper.seungchan.service.NoticeService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
 import back.springbootdeveloper.seungchan.util.BaseResponseBodyUtiil;
+import back.springbootdeveloper.seungchan.util.MyValidation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,12 +43,7 @@ public class NoticeController {
       @Valid @RequestBody NoticesWriteReqDto noticesWriteReqDto,
       HttpServletRequest request) {
     // 실장검증
-    Long userId = tokenService.getUserIdFromToken(request);
-    boolean isNuriKing = userUtillService.isNuriKing(userId);
-    if (!isNuriKing) {
-      return BaseResponseBodyUtiil.BaseResponseBodyBad(
-          ResponseMessage.BAD_NOT_USER_NOMAL.get());
-    }
+    MyValidation.isLeaderMember(tokenService, request);
 
     // 공지 사항 등록
     Notice notice = noticeService.save(noticesWriteReqDto);
