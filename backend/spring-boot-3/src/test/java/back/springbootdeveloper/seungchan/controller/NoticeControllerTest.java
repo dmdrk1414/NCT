@@ -184,4 +184,34 @@ class NoticeControllerTest {
     assertThat(target.getTitle()).isEqualTo(testUpdateTitle);
     assertThat(target.getContent()).isEqualTo(testUpdateContent);
   }
+
+  @Test
+  void 공지_사항_업데이트_예외_존제하지_않는_공지_업데이트_테스트() throws Exception {
+    final String url = "/control/notices/{notice_id}";
+
+    // 검증을 위한 데이터 준비
+    int notExistNoticeId = noticeRepository.findAll().size() + 1;
+
+    final String testUpdateTitle = "테스트 업데이트 공지 사항 제목";
+    final String testUpdateContent = "테스트 업데이트 공지 사항 내용";
+    NoticesReqDto requestDto = NoticesReqDto.builder()
+        .noticeTitle(testUpdateTitle)
+        .noticeContent(testUpdateContent)
+        .build();
+
+    final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+    ResultActions result = mockMvc.perform(put(url, notExistNoticeId)
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .header("authorization", "Bearer " + token) // token header에 담기
+        .content(requestBody)
+    );
+
+    // than
+    result
+        .andExpect(jsonPath("$.message").value(ResponseMessage.BAD_UPDATE_NOTICE.get()))
+        .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"))
+        .andExpect(jsonPath("$.statusCode").value(HttpStatus.BAD_REQUEST.value()));
+  }
 }
