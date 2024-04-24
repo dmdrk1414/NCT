@@ -1,29 +1,20 @@
 package back.springbootdeveloper.seungchan.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
-import back.springbootdeveloper.seungchan.dto.request.NoticesWriteReqDto;
-import back.springbootdeveloper.seungchan.dto.response.NoticeInformation;
-import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
+import back.springbootdeveloper.seungchan.dto.request.NoticesReqDto;
 import back.springbootdeveloper.seungchan.entity.Notice;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
-import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.repository.NoticeRepository;
-import back.springbootdeveloper.seungchan.repository.UserRepository;
-import back.springbootdeveloper.seungchan.service.AttendanceService;
-import back.springbootdeveloper.seungchan.service.AttendanceTimeService;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.service.UserService;
-import back.springbootdeveloper.seungchan.service.UserUtillService;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +25,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest()
 @AutoConfigureMockMvc
@@ -71,7 +61,7 @@ class NoticeControllerTest {
     // 검증을 위한 데이터 준비
     final String testNoticeTitle = "테스트 공지 사항 제목";
     final String testNoticeContent = "테스트 공지 사항 내용";
-    NoticesWriteReqDto requestDto = NoticesWriteReqDto.builder()
+    NoticesReqDto requestDto = NoticesReqDto.builder()
         .noticeTitle(testNoticeTitle)
         .noticeContent(testNoticeContent)
         .build();

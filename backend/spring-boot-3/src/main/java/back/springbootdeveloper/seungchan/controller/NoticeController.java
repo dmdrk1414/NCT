@@ -1,14 +1,9 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.constant.SuggestionConstantGroup;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
-import back.springbootdeveloper.seungchan.dto.request.NoticesWriteReqDto;
-import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
-import back.springbootdeveloper.seungchan.dto.response.AttendanceNumberResDto;
+import back.springbootdeveloper.seungchan.dto.request.NoticesReqDto;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.entity.Notice;
-import back.springbootdeveloper.seungchan.entity.NumOfTodayAttendence;
-import back.springbootdeveloper.seungchan.filter.exception.judgment.InvalidSelectionClassificationException;
 import back.springbootdeveloper.seungchan.service.NoticeService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
@@ -21,9 +16,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,7 +36,7 @@ public class NoticeController {
   @Operation(summary = "공지 사항 등록 API", description = "실장 공지 사항 등록 API")
   @PostMapping("/write")
   public ResponseEntity<BaseResponseBody> writeSuggestion(
-      @Valid @RequestBody NoticesWriteReqDto noticesWriteReqDto,
+      @Valid @RequestBody NoticesReqDto noticesWriteReqDto,
       HttpServletRequest request) {
     // 실장검증
     MyValidation.isLeaderMember(tokenService, request);

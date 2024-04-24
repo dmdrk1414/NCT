@@ -1,13 +1,12 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.dto.request.NoticesWriteReqDto;
+import back.springbootdeveloper.seungchan.dto.request.NoticesReqDto;
 import back.springbootdeveloper.seungchan.dto.response.NoticeInformation;
 import back.springbootdeveloper.seungchan.entity.Notice;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.NoticeRepository;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +38,7 @@ public class NoticeService {
    * @return 저장된 공지사항
    */
   @Transactional
-  public Notice save(final NoticesWriteReqDto noticesWriteReqDto) {
+  public Notice save(final NoticesReqDto noticesWriteReqDto) {
     Notice notice = noticesWriteReqDto.ofEntity();
 
     return noticeRepository.save(notice);
@@ -61,5 +60,10 @@ public class NoticeService {
       return false;
     }
     return true;
+  }
+
+  public boolean update(final Long noticeId) {
+    Notice target = noticeRepository.findById(noticeId).orElseThrow(EntityNotFoundException::new);
+
   }
 }

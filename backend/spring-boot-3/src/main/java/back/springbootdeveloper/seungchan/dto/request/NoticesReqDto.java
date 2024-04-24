@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class NoticesWriteReqDto {
+public class NoticesReqDto {
 
   @NotBlank(message = "{validation.notice.title.notblank}")
   private String noticeTitle;
