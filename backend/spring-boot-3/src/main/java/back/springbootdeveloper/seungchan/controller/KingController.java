@@ -2,6 +2,8 @@ package back.springbootdeveloper.seungchan.controller;
 
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.dto.request.NoticesReqDto;
+import back.springbootdeveloper.seungchan.dto.request.VacationNumberReqDto;
+import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.entity.Notice;
 import back.springbootdeveloper.seungchan.service.NoticeService;
@@ -81,5 +83,22 @@ public class KingController {
     }
 
     return BaseResponseBodyUtiil.BaseResponseBodyBad(ResponseMessage.BAD_UPDATE_NOTICE.get());
+  }
+
+  @Operation(summary = "팀원 전체 휴가 부여 API", description = "실장의 팀원 전체 휴가 부여 API")
+  @PostMapping("/give/vacations")
+  public ResponseEntity<BaseResponseBody> giveVacation2AllMember(
+      @RequestBody @Valid VacationNumberReqDto vacationNumberReqDto,
+      HttpServletRequest request) {
+    // 실장검증
+    MyValidation.isLeaderMember(tokenService, request);
+
+    // 공지 사항 삭제
+    if (userUtillService.giveVacatoin2AllMember(vacationNumberReqDto.getVacationToken())) {
+      return BaseResponseBodyUtiil.BaseResponseBodySuccess(
+          ResponseMessage.SUCCESS_GIVE_VACATION_TOKEN.get());
+    }
+
+    return BaseResponseBodyUtiil.BaseResponseBodyBad(ResponseMessage.BAD_GIVE_VACATION_TOKEN.get());
   }
 }
