@@ -73,8 +73,15 @@ public class NoticeService {
 
   @Transactional
   public boolean update(final Long noticeId, final NoticesReqDto noticesUpdateReqDto) {
-    Notice targetNotice = noticeRepository.findById(noticeId)
-        .orElseThrow(EntityNotFoundException::new);
+    Notice targetNotice = null;
+    try {
+      // 공지 사항을 못찾을시
+      targetNotice = noticeRepository.findById(noticeId)
+          .orElseThrow(EntityNotFoundException::new);
+    } catch (EntityNotFoundException e) {
+      e.printStackTrace();
+      return false;
+    }
     String beforeTitle = targetNotice.getTitle();
     String beforeContent = targetNotice.getContent();
 
