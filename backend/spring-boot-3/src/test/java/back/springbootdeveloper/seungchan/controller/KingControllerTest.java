@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @SpringBootTest()
 @AutoConfigureMockMvc
-class NoticeControllerTest {
+class KingControllerTest {
 
   @Autowired
   protected MockMvc mockMvc;

@@ -25,16 +25,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "공지 사항 관련 컨트롤러", description = "실장 페이지의 공지 사항 관련 컨트롤러")
 @RestController
-@RequestMapping("/control/notices")
+@RequestMapping("/control")
 @RequiredArgsConstructor
-public class NoticeController {
+public class KingController {
 
   private final NoticeService noticeService;
   private final UserUtillService userUtillService;
   private final TokenService tokenService;
 
   @Operation(summary = "공지 사항 등록 API", description = "실장 공지 사항 등록 API")
-  @PostMapping("/write")
+  @PostMapping("/notices/write")
   public ResponseEntity<BaseResponseBody> writeSuggestion(
       @Valid @RequestBody NoticesReqDto noticesWriteReqDto,
       HttpServletRequest request) {
@@ -49,7 +49,7 @@ public class NoticeController {
   }
 
   @Operation(summary = "공지 사항 삭제 API", description = "실장 공지 사항 삭제 API")
-  @DeleteMapping("/{notice_id}")
+  @DeleteMapping("/notices/{notice_id}")
   public ResponseEntity<BaseResponseBody> deleteNotice(
       @PathVariable(value = "notice_id") Long noticeId,
       HttpServletRequest request) {
@@ -66,7 +66,7 @@ public class NoticeController {
   }
 
   @Operation(summary = "공지 사항 수정 API", description = "실장 공지 사항 수정 API")
-  @PutMapping("/{notice_id}")
+  @PutMapping("/notices/{notice_id}")
   public ResponseEntity<BaseResponseBody> updateNotice(
       @PathVariable(value = "notice_id") Long noticeId,
       @RequestBody @Valid NoticesReqDto noticesUpdateReqDto,
