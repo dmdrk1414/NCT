@@ -9,13 +9,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
 import back.springbootdeveloper.seungchan.dto.request.NoticesReqDto;
+import back.springbootdeveloper.seungchan.dto.request.VacationNumberReqDto;
 import back.springbootdeveloper.seungchan.entity.Notice;
 import back.springbootdeveloper.seungchan.entity.UserInfo;
+import back.springbootdeveloper.seungchan.entity.UserUtill;
 import back.springbootdeveloper.seungchan.repository.NoticeRepository;
+import back.springbootdeveloper.seungchan.repository.UserRepository;
+import back.springbootdeveloper.seungchan.repository.UserUtilRepository;
 import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.service.UserService;
 import back.springbootdeveloper.seungchan.testutills.TestSetUp;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +52,10 @@ class KingControllerTest {
   private String token;
   private Long kingUserId;
   private UserInfo kingUser;
+  @Autowired
+  private UserUtilRepository userUtilRepository;
+  @Autowired
+  private UserRepository userRepository;
 
   @BeforeEach
   void setUp() {
@@ -213,5 +223,53 @@ class KingControllerTest {
         .andExpect(jsonPath("$.message").value(ResponseMessage.BAD_UPDATE_NOTICE.get()))
         .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"))
         .andExpect(jsonPath("$.statusCode").value(HttpStatus.BAD_REQUEST.value()));
+  }
+
+  @Test
+  void 팀원_전체_휴가_부여_테스트() throws Exception {
+    final String url = "/control/give/vacations";
+
+    // 업데이트 검증 데이터 준비
+    Integer testVacationToken = 1000;
+    VacationNumberReqDto requestDto = VacationNumberReqDto.builder()
+        .vacationToken(testVacationToken)
+        .build();
+    List<UserUtill> userUtills = userUtilRepository.findAll();
+    List<UserUtill> targetUserUtills = new ArrayList<>();
+    for (final UserUtill userUtill : userUtills) {
+      UserInfo userInfo = userRepository.findById(userUtill.getUserId()).get();
+      if (!userInfo.isOb()) {
+        targetUserUtills.add(userUtill);
+      }
+    }
+
+    final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+    ResultActions result = mockMvc.perform(post(url)
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(requestBody)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    List<UserUtill> afterUserUtills = userUtilRepository.findAll();
+    List<UserUtill> resultUserUtills = new ArrayList<>();
+    for (final UserUtill userUtill : afterUserUtills) {
+      UserInfo userInfo = userRepository.findById(userUtill.getUserId()).get();
+      if (!userInfo.isOb()) {
+        resultUserUtills.add(userUtill);
+      }
+    }
+
+    // than
+    result
+        .andExpect(jsonPath("$.message").value(ResponseMessage.SUCCESS_GIVE_VACATION_TOKEN.get()))
+        .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+        .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+
+    for (int i = 0; i < resultUserUtills.size(); i++) {
+      assertThat(resultUserUtills.get(i).getCntVacation()).isEqualTo(
+          targetUserUtills.get(i).getCntVacation() + testVacationToken);
+    }
   }
 }
