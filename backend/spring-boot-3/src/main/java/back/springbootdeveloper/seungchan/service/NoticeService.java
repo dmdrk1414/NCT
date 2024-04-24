@@ -1,13 +1,12 @@
 package back.springbootdeveloper.seungchan.service;
 
-import back.springbootdeveloper.seungchan.dto.request.NoticesWriteReqDto;
+import back.springbootdeveloper.seungchan.dto.request.NoticesReqDto;
 import back.springbootdeveloper.seungchan.dto.response.NoticeInformation;
 import back.springbootdeveloper.seungchan.entity.Notice;
+import back.springbootdeveloper.seungchan.filter.exception.judgment.EntityNotFoundException;
 import back.springbootdeveloper.seungchan.repository.NoticeRepository;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +38,7 @@ public class NoticeService {
    * @return 저장된 공지사항
    */
   @Transactional
-  public Notice save(final NoticesWriteReqDto noticesWriteReqDto) {
+  public Notice save(final NoticesReqDto noticesWriteReqDto) {
     Notice notice = noticesWriteReqDto.ofEntity();
 
     return noticeRepository.save(notice);
@@ -58,6 +57,42 @@ public class NoticeService {
       noticeRepository.findById(noticeId).orElseThrow(NotFoundException::new);
       noticeRepository.deleteById(noticeId);
     } catch (NotFoundException e) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * 주어진 공지 ID에 해당하는 공지를 업데이트합니다.
+   *
+   * @param noticeId            업데이트할 공지의 ID
+   * @param noticesUpdateReqDto 업데이트할 공지의 정보를 담은 DTO
+   * @return 업데이트가 성공했는지 여부를 나타내는 boolean 값입니다. 업데이트가 성공했으면 false를 반환하고, 그렇지 않으면 true를 반환합니다.
+   * @throws EntityNotFoundException 주어진 공지 ID에 해당하는 공지가 없는 경우 발생합니다.
+   */
+
+  @Transactional
+  public boolean update(final Long noticeId, final NoticesReqDto noticesUpdateReqDto) {
+    Notice targetNotice = null;
+    try {
+      // 공지 사항을 못찾을시
+      targetNotice = noticeRepository.findById(noticeId)
+          .orElseThrow(EntityNotFoundException::new);
+    } catch (EntityNotFoundException e) {
+      e.printStackTrace();
+      return false;
+    }
+    String beforeTitle = targetNotice.getTitle();
+    String beforeContent = targetNotice.getContent();
+
+    // notice entity update
+    targetNotice.updateTitle(noticesUpdateReqDto.getNoticeTitle());
+    targetNotice.updateContent(noticesUpdateReqDto.getNoticeContent());
+    // notice entity save
+    Notice updateNotice = noticeRepository.save(targetNotice);
+
+    // 검증
+    if (updateNotice.is(beforeTitle, beforeContent)) {
       return false;
     }
     return true;

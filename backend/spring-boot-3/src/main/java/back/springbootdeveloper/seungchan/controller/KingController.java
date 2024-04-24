@@ -1,14 +1,11 @@
 package back.springbootdeveloper.seungchan.controller;
 
-import back.springbootdeveloper.seungchan.constant.SuggestionConstantGroup;
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
-import back.springbootdeveloper.seungchan.dto.request.NoticesWriteReqDto;
-import back.springbootdeveloper.seungchan.dto.request.SuggestionWriteReqDto;
-import back.springbootdeveloper.seungchan.dto.response.AttendanceNumberResDto;
+import back.springbootdeveloper.seungchan.dto.request.NoticesReqDto;
+import back.springbootdeveloper.seungchan.dto.request.VacationNumberReqDto;
+import back.springbootdeveloper.seungchan.dto.request.VacationRequest;
 import back.springbootdeveloper.seungchan.dto.response.BaseResponseBody;
 import back.springbootdeveloper.seungchan.entity.Notice;
-import back.springbootdeveloper.seungchan.entity.NumOfTodayAttendence;
-import back.springbootdeveloper.seungchan.filter.exception.judgment.InvalidSelectionClassificationException;
 import back.springbootdeveloper.seungchan.service.NoticeService;
 import back.springbootdeveloper.seungchan.service.TokenService;
 import back.springbootdeveloper.seungchan.service.UserUtillService;
@@ -21,27 +18,27 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "공지 사항 관련 컨트롤러", description = "실장 페이지의 공지 사항 관련 컨트롤러")
 @RestController
-@RequestMapping("/control/notices")
+@RequestMapping("/control")
 @RequiredArgsConstructor
-public class NoticeController {
+public class KingController {
 
   private final NoticeService noticeService;
   private final UserUtillService userUtillService;
   private final TokenService tokenService;
 
   @Operation(summary = "공지 사항 등록 API", description = "실장 공지 사항 등록 API")
-  @PostMapping("/write")
+  @PostMapping("/notices/write")
   public ResponseEntity<BaseResponseBody> writeSuggestion(
-      @Valid @RequestBody NoticesWriteReqDto noticesWriteReqDto,
+      @Valid @RequestBody NoticesReqDto noticesWriteReqDto,
       HttpServletRequest request) {
     // 실장검증
     MyValidation.isLeaderMember(tokenService, request);
@@ -54,7 +51,7 @@ public class NoticeController {
   }
 
   @Operation(summary = "공지 사항 삭제 API", description = "실장 공지 사항 삭제 API")
-  @DeleteMapping("/{notice_id}")
+  @DeleteMapping("/notices/{notice_id}")
   public ResponseEntity<BaseResponseBody> deleteNotice(
       @PathVariable(value = "notice_id") Long noticeId,
       HttpServletRequest request) {
@@ -68,5 +65,40 @@ public class NoticeController {
     }
 
     return BaseResponseBodyUtiil.BaseResponseBodyBad(ResponseMessage.BAD_DELETE_NOTICE.get());
+  }
+
+  @Operation(summary = "공지 사항 수정 API", description = "실장 공지 사항 수정 API")
+  @PutMapping("/notices/{notice_id}")
+  public ResponseEntity<BaseResponseBody> updateNotice(
+      @PathVariable(value = "notice_id") Long noticeId,
+      @RequestBody @Valid NoticesReqDto noticesUpdateReqDto,
+      HttpServletRequest request) {
+    // 실장검증
+    MyValidation.isLeaderMember(tokenService, request);
+
+    // 공지 사항 삭제
+    if (noticeService.update(noticeId, noticesUpdateReqDto)) {
+      return BaseResponseBodyUtiil.BaseResponseBodySuccess(
+          ResponseMessage.SUCCESS_UPDATE_NOTICE.get());
+    }
+
+    return BaseResponseBodyUtiil.BaseResponseBodyBad(ResponseMessage.BAD_UPDATE_NOTICE.get());
+  }
+
+  @Operation(summary = "팀원 전체 휴가 부여 API", description = "실장의 팀원 전체 휴가 부여 API")
+  @PostMapping("/give/vacations")
+  public ResponseEntity<BaseResponseBody> giveVacation2AllMember(
+      @RequestBody @Valid VacationNumberReqDto vacationNumberReqDto,
+      HttpServletRequest request) {
+    // 실장검증
+    MyValidation.isLeaderMember(tokenService, request);
+
+    // 공지 사항 삭제
+    if (userUtillService.giveVacatoin2AllMember(vacationNumberReqDto.getVacationToken())) {
+      return BaseResponseBodyUtiil.BaseResponseBodySuccess(
+          ResponseMessage.SUCCESS_GIVE_VACATION_TOKEN.get());
+    }
+
+    return BaseResponseBodyUtiil.BaseResponseBodyBad(ResponseMessage.BAD_GIVE_VACATION_TOKEN.get());
   }
 }

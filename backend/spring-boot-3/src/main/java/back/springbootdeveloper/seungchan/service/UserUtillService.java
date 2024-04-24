@@ -19,6 +19,7 @@ public class UserUtillService {
 
   private final UserUtilRepository userUtilRepository;
   private final Integer BASE_VACATION_TOKEN = 6;
+  private final UserService userService;
 
   public UserUtill findUserByUserId(Long userId) {
     return userUtilRepository.findByUserId(userId);
@@ -100,5 +101,29 @@ public class UserUtillService {
     return userUtils.stream()
         .map(VacationToken::new)
         .collect(Collectors.toList());
+  }
+
+
+  /**
+   * 모든 회원에게 휴가를 부여합니다.
+   *
+   * @param vacationToken 부여할 휴가의 양
+   * @return 휴가 부여 작업이 성공했는지 여부를 나타내는 boolean 값입니다. 작업이 성공했으면 true를 반환합니다.
+   */
+  @Transactional
+  public boolean giveVacatoin2AllMember(final Integer vacationToken) {
+    List<UserUtill> userUtils = userUtilRepository.findAll();
+    for (final UserUtill userUtil : userUtils) {
+      UserInfo userInfo = userService.findUserById(userUtil.getUserId());
+
+      if (!userInfo.isOb()) {
+        int vacationNumAtNow = userUtil.getCntVacation();
+        int resultVacationNum = vacationToken + vacationNumAtNow;
+
+        userUtilRepository.updateCntVacationUserUtilData(userUtil.getUserId(), resultVacationNum);
+      }
+    }
+
+    return true;
   }
 }

@@ -15,7 +15,11 @@ public enum ResponseMessage {
   BAD_NOT_USER_NOMAL("일반 회원은 사용할 수 없습니다."),
   SUCCESS_WRITE_NOTICE("공지 사항 등록 완료했습니다."),
   SUCCESS_DELETE_NOTICE("공지 사항 삭제 완료 했습니다."),
-  BAD_DELETE_NOTICE("해당 공지 사항을 삭제 할 수 없습니다.");
+  BAD_DELETE_NOTICE("해당 공지 사항을 삭제 할 수 없습니다."),
+  SUCCESS_UPDATE_NOTICE("해당 공지를 수정 하였습니다."),
+  BAD_UPDATE_NOTICE("해당 공지를 수정 하지 못하였습니다."),
+  SUCCESS_GIVE_VACATION_TOKEN("성공적으로 휴가을 부여하였습니다."),
+  BAD_GIVE_VACATION_TOKEN("휴가 부여을 실패하였습니다.");
 
   private final String message;
 
