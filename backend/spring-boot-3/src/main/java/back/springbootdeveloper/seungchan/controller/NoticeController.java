@@ -64,4 +64,22 @@ public class NoticeController {
 
     return BaseResponseBodyUtiil.BaseResponseBodyBad(ResponseMessage.BAD_DELETE_NOTICE.get());
   }
+
+  @Operation(summary = "공지 사항 수정 API", description = "실장 공지 사항 수정 API")
+  @PutMapping("/{notice_id}")
+  public ResponseEntity<BaseResponseBody> updateNotice(
+      @PathVariable(value = "notice_id") Long noticeId,
+      @RequestBody @Valid NoticesReqDto noticesUpdateReqDto,
+      HttpServletRequest request) {
+    // 실장검증
+    MyValidation.isLeaderMember(tokenService, request);
+
+    // 공지 사항 삭제
+    if (noticeService.update(noticeId, noticesUpdateReqDto)) {
+      return BaseResponseBodyUtiil.BaseResponseBodySuccess(
+          ResponseMessage.SUCCESS_UPDATE_NOTICE.get());
+    }
+
+    return BaseResponseBodyUtiil.BaseResponseBodyBad(ResponseMessage.BAD_UPDATE_NOTICE.get());
+  }
 }

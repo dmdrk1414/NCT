@@ -62,8 +62,32 @@ public class NoticeService {
     return true;
   }
 
-  public boolean update(final Long noticeId) {
-    Notice target = noticeRepository.findById(noticeId).orElseThrow(EntityNotFoundException::new);
+  /**
+   * 주어진 공지 ID에 해당하는 공지를 업데이트합니다.
+   *
+   * @param noticeId            업데이트할 공지의 ID
+   * @param noticesUpdateReqDto 업데이트할 공지의 정보를 담은 DTO
+   * @return 업데이트가 성공했는지 여부를 나타내는 boolean 값입니다. 업데이트가 성공했으면 false를 반환하고, 그렇지 않으면 true를 반환합니다.
+   * @throws EntityNotFoundException 주어진 공지 ID에 해당하는 공지가 없는 경우 발생합니다.
+   */
 
+  @Transactional
+  public boolean update(final Long noticeId, final NoticesReqDto noticesUpdateReqDto) {
+    Notice targetNotice = noticeRepository.findById(noticeId)
+        .orElseThrow(EntityNotFoundException::new);
+    String beforeTitle = targetNotice.getTitle();
+    String beforeContent = targetNotice.getContent();
+
+    // notice entity update
+    targetNotice.updateTitle(noticesUpdateReqDto.getNoticeTitle());
+    targetNotice.updateContent(noticesUpdateReqDto.getNoticeContent());
+    // notice entity save
+    Notice updateNotice = noticeRepository.save(targetNotice);
+
+    // 검증
+    if (updateNotice.is(beforeTitle, beforeContent)) {
+      return false;
+    }
+    return true;
   }
 }

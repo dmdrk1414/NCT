@@ -44,6 +44,14 @@ public class Notice extends BaseEntity {
     this.content = content;
   }
 
+  public void updateTitle(final String title) {
+    this.title = title;
+  }
+
+  public void updateContent(final String content) {
+    this.content = content;
+  }
+
   @PrePersist
   protected void onCreate() {
     LocalDateTime dateTime = LocalDateTime.now();
@@ -53,5 +61,21 @@ public class Notice extends BaseEntity {
 
   public String getNoticeDate() {
     return String.valueOf(noticeDate);
+  }
+
+
+  /**
+   * 주어진 공지와 현재 공지의 제목과 내용이 일치하는지 확인합니다.
+   *
+   * @param targetTitle   비교할 공지 제목
+   * @param targetContent 비교할 공지 내용
+   * @return 제목과 내용이 일치하면 true를 반환하고, 그렇지 않으면 false를 반환합니다. 비교할 공지가 null인 경우에는 false를 반환합니다.
+   */
+
+  public boolean is(final String targetTitle, final String targetContent) {
+    if (this.title.equals(targetTitle) && this.content.equals(targetContent)) {
+      return true;
+    }
+    return false;
   }
 }
