@@ -151,7 +151,7 @@ public class ApiExceptionHandler {
   }
 
   @ExceptionHandler(value = {EntityNotFoundException.class})
-  public ResponseEntity<Object> handleEntityNotFoundException(MissMatchesPasswordException e) {
+  public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException e) {
     HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
     CustomHttpStatus customHttpStatus = CustomHttpStatus.ENTITY_NOT_FOUND; // add
 
