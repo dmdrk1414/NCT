@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import back.springbootdeveloper.seungchan.constant.dto.response.ResponseMessage;
@@ -89,7 +90,6 @@ class NoticeControllerTest {
 
   @Test
   void 공지_사항_삭제_테스트() throws Exception {
-    System.out.println(this.noticeRepository.count());
     final String url = "/control/notices/{notice_id}";
     boolean resultDelete = false;
 
@@ -124,7 +124,6 @@ class NoticeControllerTest {
 
   @Test
   void 공지_사항_삭제_예외_존제하지_않는_공지_삭제_테스트() throws Exception {
-    System.out.println(this.noticeRepository.count());
     final String url = "/control/notices/{notice_id}";
 
     // 검증을 위한 데이터 준비
@@ -141,5 +140,48 @@ class NoticeControllerTest {
         .andExpect(jsonPath("$.message").value(ResponseMessage.BAD_DELETE_NOTICE.get()))
         .andExpect(jsonPath("$.httpStatus").value("BAD_REQUEST"))
         .andExpect(jsonPath("$.statusCode").value(HttpStatus.BAD_REQUEST.value()));
+  }
+
+
+  @Test
+  void 공지_사항_업데이트_테스트() throws Exception {
+    final String url = "/control/notices/{notice_id}";
+    boolean resultDelete = false;
+
+    // 검증을 위한 데이터 준비
+    final String testNoticeTitle = "테스트 공지 사항 제목";
+    final String testNoticeContent = "테스트 공지 사항 내용";
+    Notice testNotice = Notice.builder()
+        .title(testNoticeTitle)
+        .content(testNoticeContent)
+        .build();
+    Notice targetNotice = noticeRepository.save(testNotice);
+    // 업데이트 검증 데이터 준비
+    final String testUpdateTitle = "테스트 업데이트 공지 사항 제목";
+    final String testUpdateContent = "테스트 업데이트 공지 사항 내용";
+    NoticesReqDto requestDto = NoticesReqDto.builder()
+        .noticeTitle(testUpdateTitle)
+        .noticeContent(testUpdateContent)
+        .build();
+
+    final String requestBody = objectMapper.writeValueAsString(requestDto);
+
+    ResultActions result = mockMvc.perform(put(url, targetNotice.getNoticeId())
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(requestBody)
+        .header("authorization", "Bearer " + token) // token header에 담기
+    );
+
+    Notice target = noticeRepository.findById(targetNotice.getNoticeId())
+        .orElseThrow(NotFoundException::new);
+
+    // than
+    result
+        .andExpect(jsonPath("$.message").value(ResponseMessage.SUCCESS_UPDATE_NOTICE.get()))
+        .andExpect(jsonPath("$.httpStatus").value(HttpStatus.OK.getReasonPhrase()))
+        .andExpect(jsonPath("$.statusCode").value(HttpStatus.OK.value()));
+    assertThat(target.getTitle()).isEqualTo(testUpdateTitle);
+    assertThat(target.getContent()).isEqualTo(testUpdateContent);
   }
 }
