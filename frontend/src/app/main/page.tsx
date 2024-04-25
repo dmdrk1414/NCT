@@ -104,7 +104,7 @@ export default function Main() {
       <header>
         <Header isVisible={false} />
       </header>
-      <NoticeModal text={'휴가 사용 경고창 추가 - 박승찬'}></NoticeModal>
+      <NoticeModal></NoticeModal>
       <section>
         <div className="mx-[7.5%] grid grid-cols-2 mb-[2rem]">
           <div className={`text-center font-bold text-xl' ${type === 0 ? 'text-black' : 'text-grey'}`} onClick={() => setType(0)}>
