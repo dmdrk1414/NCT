@@ -57,7 +57,29 @@ export default function Main() {
       .catch(err => {
         console.log(err);
       });
-  }, []);
+  }, [noticeInformations]);
+
+  const addNoticeHandler = () => {
+    const noticeTitle = prompt('새로운 제목을 입력하세요');
+    const noticeContent = prompt('새로운 내용을 입력하세요');
+
+    axAuth(token)({
+      method: 'post',
+      url: '/control/notices/write',
+      data: {
+        noticeTitle: noticeTitle,
+        noticeContent: noticeContent,
+      },
+    })
+      .then(res => {
+        const data = res.data;
+        alert(data.message);
+      })
+      .catch(err => {
+        const message = err.response.data.message;
+        alert(message);
+      });
+  };
 
   return (
     <main>
@@ -68,10 +90,15 @@ export default function Main() {
         <div>
           <h1 className="flex justify-center font-bold text-xl">공지 사항</h1>
         </div>
-        <div className="flex flex-col items-center ">
+        <div className="flex flex-col items-center h-[27rem] overflow-y-auto">
           {noticeInformations.map((item, idx) => (
-            <KingControlNoticeModal noticeId={item.noticeId} title={item.title} content={item.content} date={item.date}></KingControlNoticeModal>
+            <KingControlNoticeModal key={idx} noticeId={item.noticeId} title={item.title} content={item.content} date={item.date}></KingControlNoticeModal>
           ))}
+        </div>
+        <div className="flex justify-center">
+          <div className=" w-[10rem]" onClick={addNoticeHandler}>
+            <SmallButton text={'공지 사항 추가'} />
+          </div>
         </div>
       </section>
 
