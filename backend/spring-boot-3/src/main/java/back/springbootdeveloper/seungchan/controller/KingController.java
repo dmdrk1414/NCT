@@ -17,18 +17,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "공지 사항 관련 컨트롤러", description = "실장 페이지의 공지 사항 관련 컨트롤러")
 @RestController
 @RequestMapping("/control")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
+@ResponseBody
 public class KingController {
 
   private final NoticeService noticeService;
