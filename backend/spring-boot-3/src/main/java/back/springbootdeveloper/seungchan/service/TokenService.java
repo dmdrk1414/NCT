@@ -28,6 +28,7 @@ public class TokenService {
   private final RefreshTokenService refreshTokenService;
   private final RefreshTokenRepository refreshTokenRepository;
   private final UserService userService;
+  private final UserUtillService userUtillService;
 
   public String createNewAccessToken(String refreshToken) {
     // 토큰 유효성 검사에 실패하면 예외 발생
@@ -103,5 +104,17 @@ public class TokenService {
     String token = header.replace("Bearer ", "");
 
     return token;
+  }
+
+  /**
+   * 요청에 해당하는 사용자가 NuriKing인지 확인합니다.
+   *
+   * @param request 사용자 토큰을 포함하는 HTTPServletRequest
+   * @return 사용자가 NuriKing이면 true, 그렇지 않으면 false를 반환합니다.
+   */
+  public boolean isNuriKing(final HttpServletRequest request) {
+    Long userId = this.getUserIdFromToken(request);
+
+    return userUtillService.isNuriKing(userId);
   }
 }

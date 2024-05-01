@@ -151,7 +151,7 @@ public class ApiExceptionHandler {
   }
 
   @ExceptionHandler(value = {EntityNotFoundException.class})
-  public ResponseEntity<Object> handleEntityNotFoundException(MissMatchesPasswordException e) {
+  public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException e) {
     HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
     CustomHttpStatus customHttpStatus = CustomHttpStatus.ENTITY_NOT_FOUND; // add
 
@@ -172,6 +172,21 @@ public class ApiExceptionHandler {
     CustomHttpStatus customHttpStatus = CustomHttpStatus.INVALID_SELECTION_CLASSIFICATION; // add
     ApiException apiException = new ApiException(
         ExceptionMessage.INVALID_SELECTION_CLASSIFICATION.get(), // add
+        httpStatus,
+        customHttpStatus.value(),
+        ZonedDateTime.now(ZoneId.of("Z"))
+    );
+
+    return new ResponseEntity<>(apiException, httpStatus);
+  }
+
+  @ExceptionHandler(value = {NotLeaderException.class}) // add
+  public ResponseEntity<Object> NotLeaderException(
+      NotLeaderException e) { // add
+    HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+    CustomHttpStatus customHttpStatus = CustomHttpStatus.INVALID_NOT_LEADER_MEMBER; // add
+    ApiException apiException = new ApiException(
+        ExceptionMessage.NOT_LEADER_OF_CLUB.get(), // add
         httpStatus,
         customHttpStatus.value(),
         ZonedDateTime.now(ZoneId.of("Z"))
