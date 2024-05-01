@@ -2,28 +2,34 @@ import { axAuth } from '@/apis/axiosinstance';
 import Button from '../atom/small-button';
 import { useRecoilState } from 'recoil';
 import { userToken } from '../../states/index';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 
-interface NoticeModalType {
-  text: string;
+interface NoticeInformationType {
+  noticeId: number;
+  title: string;
+  content: string;
+  date: string;
 }
 
-export default function NoticeModal(props: NoticeModalType) {
-  const notice = [
-    {
-      no: 1,
-      title: '휴가 기능 경고창 추가.',
-      content: '휴가 사용할시 경고 창 추가.',
-      date: '2024-04-14',
-    },
-    {
-      no: 2,
-      title: '웹-프로그래머 모집',
-      content: '웹-프로그래머 모집 Back-End, Front-End',
-      date: '2024-04-14',
-    },
-  ];
+export default function NoticeModal() {
+  const [token, setToken] = useRecoilState(userToken);
+  const [noticeInformations, setNoticeInformations] = useState<NoticeInformationType[]>([]);
+
+  useEffect(() => {
+    axAuth(token)({
+      method: 'get',
+      url: `/main/notices`,
+    })
+      .then(res => {
+        const data = res.data.result;
+        const noticeInformations = data.noticeInformations;
+        setNoticeInformations(noticeInformations);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
 
   const settings = {
     infinite: true,
@@ -36,14 +42,23 @@ export default function NoticeModal(props: NoticeModalType) {
     vertical: true,
   };
 
+  const handleItemClick = () => {
+    let noticeInformationString = '';
+    for (let i = 0; i < noticeInformations.length; i++) {
+      const notice = noticeInformations[i];
+      noticeInformationString += `날짜: ${notice.date}\n제목: ${notice.title}\n내용: ${notice.content} \n\n`;
+    }
+    alert(noticeInformationString);
+  };
+
   return (
-    <ul className="notice overflow-y-auto h-[1.5rem] bg-[#4b89cc4b] font-medium mb-[0.5rem]">
+    <ul className="notice overflow-y-auto h-[3.2rem] rounded-md bg-[#4b89cc4b] font-medium mb-[0.5rem]" onClick={() => handleItemClick()}>
       <Slider {...settings} className="h-[1.5rem]">
-        {notice.map((item, idx) => (
+        {noticeInformations.map((item, idx) => (
           <li className="notice_content" key={idx}>
-            <div>
-              <span className="notice_header">공지 : </span>
-              <span className="notice_title">{item['title']}</span>
+            <div className="truncate">
+              <span className="notice_header">* </span>
+              <span className="notice_title">{item.title}</span>
             </div>
           </li>
         ))}

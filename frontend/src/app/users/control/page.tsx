@@ -11,6 +11,7 @@ import { hasNotToken, isNotNuriKing } from '@/utils/validate/ExistenceChecker';
 import { replaceRouterInitialize, replaceRouterMain } from '@/utils/RouteHandling';
 import NavigationFooter from '@/atoms/molecule/navigation-footer';
 import { RouteUrl } from '@/utils/constans/routeEnum';
+import KingControllerNavigationModal from '@/atoms/molecule/king-controller-navigation';
 
 interface userDataPropsTypeOne {
   name: string;
@@ -75,14 +76,7 @@ export default function Main() {
         </article>
       </section>
 
-      <div className="w-[100vw] flex justify-around items-center bg-[#F3F3F3] h-[3rem]  bottom-[3rem] fixed">
-        <div className={kingManagePageCss} onClick={() => router.push(RouteUrl.ROUTE_JOIN_APPLICATION_LIST)}>
-          신입 신청 확인
-        </div>
-        <div className={kingManagePageCss} onClick={() => router.push(RouteUrl.ROUTE_ATTENDANCE_NUMBER)}>
-          출석 번호
-        </div>
-      </div>
+      <KingControllerNavigationModal></KingControllerNavigationModal>
       <NavigationFooter isKing={isKing}></NavigationFooter>
     </main>
   );
