@@ -83,7 +83,6 @@ export default function Main() {
       })
         .then(res => {
           setUserList(res.data[0].obUserList);
-          console.log(res.data[0]);
         })
         .catch(err => {
           console.log(err);
@@ -104,26 +103,32 @@ export default function Main() {
       <header>
         <Header isVisible={false} />
       </header>
-      <NoticeModal text={'휴가 사용 경고창 추가 - 박승찬'}></NoticeModal>
       <section>
-        <div className="mx-[7.5%] grid grid-cols-2 mb-[2rem]">
+        <div className="mx-[7.5%] grid grid-cols-2 mb-[1.2rem]">
           <div className={`text-center font-bold text-xl' ${type === 0 ? 'text-black' : 'text-grey'}`} onClick={() => setType(0)}>
             현재 인원
           </div>
           <div className={`text-center font-bold text-xl' ${type === 1 ? 'text-black' : 'text-grey'}`} onClick={() => setType(1)}>
             누리 졸업자
           </div>
-          <div className={`border-t-2 mt-[1rem] ${type === 0 ? 'border-black' : 'border-grey'}`}></div>
-          <div className={`border-t-2 mt-[1rem] ${type === 1 ? 'border-black' : 'border-light-grey'}`}></div>
+          <div className={`border-t-2 mt-[0.5rem] ${type === 0 ? 'border-black' : 'border-grey'}`}></div>
+          <div className={`border-t-2 mt-[0.5rem] ${type === 1 ? 'border-black' : 'border-light-grey'}`}></div>
         </div>
 
-        {isTodayAttendance ? (
-          <Button text={'출석완료'} addClass="text-2xl bg-grey" />
-        ) : (
-          <div onClick={() => setIsAttendanceModalOpen(true)}>
-            <Button text={'출석하기'} addClass="text-2xl mb-3" />
+        <div className="flex justify-around w-[21.5rem] ">
+          <div className="w-[43%]">
+            <NoticeModal></NoticeModal>
           </div>
-        )}
+          <div className="w-[43%]">
+            {isTodayAttendance ? (
+              <Button text={'출석완료'} addClass="text-2xl bg-grey" />
+            ) : (
+              <div onClick={() => setIsAttendanceModalOpen(true)}>
+                <Button text={'출석하기'} addClass="text-2xl mb-3" />
+              </div>
+            )}
+          </div>
+        </div>
 
         {type === 0 ? (
           <article className="mx-[7.5%]">
