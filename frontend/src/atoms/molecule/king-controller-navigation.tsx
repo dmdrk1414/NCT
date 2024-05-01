@@ -41,8 +41,6 @@ export default function KingControllerNavigationModal() {
     }
   };
 
-  const noticeHandler = () => {};
-
   const kingManagePageCss = 'flex justify-around items-center w-[25vw] bg-[#ffffff] rounded-lg h-[2.5rem] font-bold';
   return (
     <div>
