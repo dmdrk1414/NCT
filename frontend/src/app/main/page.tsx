@@ -115,7 +115,6 @@ export default function Main() {
           <div className={`border-t-2 mt-[0.5rem] ${type === 1 ? 'border-black' : 'border-light-grey'}`}></div>
         </div>
 
-        {/* <div className="flex justify-around w-[21.5rem] "> */}
         <div className="flex justify-around w-[100%]">
           <div className="w-[43%]">
             <NoticeModal></NoticeModal>

@@ -52,7 +52,7 @@ export default function NoticeModal() {
   };
 
   return (
-    <ul className="notice overflow-y-auto h-[3.2rem] rounded-md bg-[#4b89cc4b] font-medium mb-[0.5rem]" onClick={() => handleItemClick()}>
+    <ul className="notice overflow-y-auto h-[3.5rem] rounded-md bg-[#4b89cc4b] font-medium mb-[0.5rem]" onClick={() => handleItemClick()}>
       <Slider {...settings} className="h-[1.5rem]">
         {noticeInformations.map((item, idx) => (
           <li className="notice_content" key={idx}>
