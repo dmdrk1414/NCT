@@ -28,7 +28,6 @@ import java.util.List;
 @Tag(name = "main page API", description = "로그인을 한후의 main page이다. yb, ob의 정보을 얻을 수 있다.")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @ResponseBody
 @RequestMapping("/main")
 public class MainController {

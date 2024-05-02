@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "출석 체크 API", description = "결석, 방학, 주간 출석관련 API을 관리하는 controller")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @ResponseBody
 @RequestMapping("/attendance")
 public class AttendanceController {

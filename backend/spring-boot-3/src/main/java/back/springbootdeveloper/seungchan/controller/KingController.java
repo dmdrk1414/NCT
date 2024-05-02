@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "공지 사항 관련 컨트롤러", description = "실장 페이지의 공지 사항 관련 컨트롤러")
 @RestController
 @RequestMapping("/control")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @ResponseBody
 public class KingController {

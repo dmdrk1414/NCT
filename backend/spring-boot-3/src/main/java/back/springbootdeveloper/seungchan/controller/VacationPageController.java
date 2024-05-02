@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "유저들의 출석 API", description = "회원들의 출석, 요청, 조회, 휴가 부여 등 출석에 관한 API들의 모음")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @ResponseBody
 @RequestMapping("/vacations")
 public class VacationPageController {
