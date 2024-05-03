@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "내 정보 (mypage) API ", description = "mypage의 정보에 관한 CRUD을 담당한다.")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @ResponseBody
 @RequestMapping("/mypage")
 public class MypageController {

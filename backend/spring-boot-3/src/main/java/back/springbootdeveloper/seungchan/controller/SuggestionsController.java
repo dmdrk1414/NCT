@@ -23,7 +23,6 @@ import java.util.List;
 @Tag(name = "건의 사항 게시판 API", description = "건의 사항 에 관한 CRUD을 담당한다.")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @ResponseBody
 @RequestMapping("/suggestion")
 public class SuggestionsController {

@@ -19,7 +19,6 @@ import java.util.List;
 @Tag(name = "신청 유저들의 정보 관련 API", description = "신청 유저들의 정보를 당담한다.")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @ResponseBody
 @RequestMapping("/new-users")
 public class NewUserController {
