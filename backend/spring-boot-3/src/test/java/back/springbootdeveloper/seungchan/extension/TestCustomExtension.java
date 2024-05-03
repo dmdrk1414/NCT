@@ -1,6 +1,7 @@
 package back.springbootdeveloper.seungchan.extension;
 
 import back.springbootdeveloper.seungchan.service.DatabaseCleanup;
+import back.springbootdeveloper.seungchan.service.DatabaseService;
 import back.springbootdeveloper.seungchan.testutills.TestSaveEntity;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -18,8 +19,8 @@ public class TestCustomExtension implements BeforeEachCallback {
      * DatabaseCleanup 빈을 가져온 다음 execute() 메서드를 호출하는 것입니다.
      */
     SpringExtension.getApplicationContext(context)
-        .getBean("databaseCleanup", DatabaseCleanup.class)
-        .execute();
+        .getBean("databaseService", DatabaseService.class)
+        .deleteAllDatabase();
 
     SpringExtension.getApplicationContext(context)
         .getBean("testSaveEntity", TestSaveEntity.class)
