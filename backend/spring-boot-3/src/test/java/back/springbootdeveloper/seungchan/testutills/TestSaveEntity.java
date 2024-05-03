@@ -3,13 +3,17 @@ package back.springbootdeveloper.seungchan.testutills;
 import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
 import back.springbootdeveloper.seungchan.entity.AttendanceTime;
 import back.springbootdeveloper.seungchan.entity.Notice;
+import back.springbootdeveloper.seungchan.entity.NumOfTodayAttendence;
 import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
 import back.springbootdeveloper.seungchan.repository.AttendanceTimeRepository;
 import back.springbootdeveloper.seungchan.repository.NoticeRepository;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import back.springbootdeveloper.seungchan.repository.NumOfTodayAttendenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +23,11 @@ public class TestSaveEntity {
   @Autowired
   private AttendanceStatusRepository attendanceStatusRepository;
   @Autowired
+  private AttendanceTimeRepository attendanceTimeRepository;
+  @Autowired
   private NoticeRepository noticeRepository;
   @Autowired
-  private AttendanceTimeRepository attendanceTimeRepository;
+  private NumOfTodayAttendenceRepository numOfTodayAttendenceRepository;
 
   public void creatEntityTest() throws Exception {
     // user 100명 기준 - 1번 실장 - 2번 총무
@@ -32,6 +38,26 @@ public class TestSaveEntity {
     createAttendanceTime(100);
     // Notice Entity
     createNoticeEntity();
+    // NumOfTodayAttendance
+    createNumOfTodayAttendance();
+  }
+
+  /**
+   * NumOfTodayAttendance
+   */
+  private void createNumOfTodayAttendance() {
+    // 현재 날짜 가져오기
+    LocalDate today = LocalDate.now();
+    // 날짜 포맷 지정
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    // 날짜를 문자열로 변환
+    String formattedDate = today.format(formatter);
+    numOfTodayAttendenceRepository.save(
+        NumOfTodayAttendence.builder()
+            .checkNum("1234")
+            .day(formattedDate)
+            .build()
+    );
   }
 
   /**
