@@ -3,6 +3,7 @@ package back.springbootdeveloper.seungchan.domain;
 import back.springbootdeveloper.seungchan.annotation.NctSpringBootTest;
 import back.springbootdeveloper.seungchan.constant.regexp.RegexpConstant;
 import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
+import back.springbootdeveloper.seungchan.repository.AttendanceTimeRepository;
 import back.springbootdeveloper.seungchan.repository.NoticeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,8 @@ class TemporaryPasswordTest {
   @Autowired
   private AttendanceStatusRepository attendanceStatusRepository;
   @Autowired
+  private AttendanceTimeRepository attendanceTimeRepository;
+  @Autowired
   private NoticeRepository noticeRepository;
 
   @BeforeEach
@@ -26,6 +29,7 @@ class TemporaryPasswordTest {
   @Test
   void 커스텀() {
     System.out.println("attendanceStatusRepository.count() = " + attendanceStatusRepository.count());
+    System.out.println("attendanceTimeRepository.count() = " + attendanceTimeRepository.count());
     System.out.println("noticeRepository.count() = " + noticeRepository.count());
   }
 
