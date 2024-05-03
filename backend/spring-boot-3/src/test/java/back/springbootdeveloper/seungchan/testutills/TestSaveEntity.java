@@ -1,19 +1,14 @@
 package back.springbootdeveloper.seungchan.testutills;
 
-import back.springbootdeveloper.seungchan.entity.AttendanceStatus;
-import back.springbootdeveloper.seungchan.entity.AttendanceTime;
-import back.springbootdeveloper.seungchan.entity.Notice;
-import back.springbootdeveloper.seungchan.entity.NumOfTodayAttendence;
-import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
-import back.springbootdeveloper.seungchan.repository.AttendanceTimeRepository;
-import back.springbootdeveloper.seungchan.repository.NoticeRepository;
+import back.springbootdeveloper.seungchan.constant.SuggestionConstant;
+import back.springbootdeveloper.seungchan.entity.*;
+import back.springbootdeveloper.seungchan.repository.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import back.springbootdeveloper.seungchan.repository.NumOfTodayAttendenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +23,8 @@ public class TestSaveEntity {
   private NoticeRepository noticeRepository;
   @Autowired
   private NumOfTodayAttendenceRepository numOfTodayAttendenceRepository;
+  @Autowired
+  private SuggestionRepository suggestionRepository;
 
   public void creatEntityTest() throws Exception {
     // user 100명 기준 - 1번 실장 - 2번 총무
@@ -40,6 +37,36 @@ public class TestSaveEntity {
     createNoticeEntity();
     // NumOfTodayAttendance
     createNumOfTodayAttendance();
+    // Suggestion
+    createSuggestion();
+  }
+
+  /**
+   * Suggestion
+   */
+  private void createSuggestion() {
+    List<Suggestion> suggestions = new ArrayList<>();
+
+    for (int i = 1; i <= 20; i++) {
+      suggestions.add(
+          Suggestion.builder()
+              .classification(SuggestionConstant.SUGGESTION.getClassification())
+              .title("테스트 건의 사항_" + i)
+              .holidayPeriod("")
+              .build()
+      );
+    }
+    for (int i = 21; i <= 40; i++) {
+      suggestions.add(
+          Suggestion.builder()
+              .classification(SuggestionConstant.FREEDOM.getClassification())
+              .title("테스트 자유 제목_" + i)
+              .holidayPeriod("")
+              .build()
+      );
+    }
+
+    suggestionRepository.saveAll(suggestions);
   }
 
   /**

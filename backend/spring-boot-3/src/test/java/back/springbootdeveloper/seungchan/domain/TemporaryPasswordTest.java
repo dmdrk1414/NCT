@@ -2,10 +2,8 @@ package back.springbootdeveloper.seungchan.domain;
 
 import back.springbootdeveloper.seungchan.annotation.NctSpringBootTest;
 import back.springbootdeveloper.seungchan.constant.regexp.RegexpConstant;
-import back.springbootdeveloper.seungchan.repository.AttendanceStatusRepository;
-import back.springbootdeveloper.seungchan.repository.AttendanceTimeRepository;
-import back.springbootdeveloper.seungchan.repository.NoticeRepository;
-import back.springbootdeveloper.seungchan.repository.NumOfTodayAttendenceRepository;
+import back.springbootdeveloper.seungchan.entity.Suggestion;
+import back.springbootdeveloper.seungchan.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,8 @@ class TemporaryPasswordTest {
   private NoticeRepository noticeRepository;
   @Autowired
   private NumOfTodayAttendenceRepository numOfTodayAttendenceRepository;
+  @Autowired
+  private SuggestionRepository suggestionRepository;
 
   @BeforeEach
   void setUp() {
@@ -35,6 +35,7 @@ class TemporaryPasswordTest {
     System.out.println("attendanceTimeRepository.count() = " + attendanceTimeRepository.count());
     System.out.println("noticeRepository.count() = " + noticeRepository.count());
     System.out.println("numOfTodayAttendenceRepository.count() = " + numOfTodayAttendenceRepository.count());
+    System.out.println("suggestionRepository.count() = " + suggestionRepository.count());
   }
 
 
