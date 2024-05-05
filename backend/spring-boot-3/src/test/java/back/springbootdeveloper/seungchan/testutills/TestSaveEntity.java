@@ -28,6 +28,8 @@ public class TestSaveEntity {
   private SuggestionRepository suggestionRepository;
   @Autowired
   private UserRepository userRepository;
+  @Autowired
+  private UserUtilRepository userUtilRepository;
 
   public void creatEntityTest() throws Exception {
     // user 100명 기준 - 1번 실장 - 2번 총무
@@ -44,6 +46,34 @@ public class TestSaveEntity {
     createSuggestion();
     // UserInfo
     createUserInfo(userNum);
+    // UserUtil
+    createUserUtil(userNum);
+  }
+
+  private void createUserUtil(final int userNum) {
+    List<UserUtill> userUtills = new ArrayList<>();
+    // 실장 생성
+    userUtills.add(makeUserUtill(1, true, false));
+
+    // 총무 생성
+    userUtills.add(makeUserUtill(2, false, true));
+
+    // 일반 회원 생성
+    for (int i = 3; i <= 100; i++) {
+      userUtills.add(makeUserUtill(i, false, false));
+    }
+
+    userUtilRepository.saveAll(userUtills);
+  }
+
+  private UserUtill makeUserUtill(int num, boolean isNuriking, boolean isGeneral) {
+    return UserUtill.builder()
+        .userId(Long.valueOf(num))
+        .name("유저_" + num)
+        .cntVacation(5)
+        .isNuriKing(isNuriking)
+        .isGeneralAffairs(isGeneral)
+        .build();
   }
 
   /**
