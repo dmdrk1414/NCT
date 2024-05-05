@@ -27,6 +27,8 @@ class TemporaryPasswordTest {
   private SuggestionRepository suggestionRepository;
   @Autowired
   private UserRepository userRepository;
+  @Autowired
+  private UserUtilRepository userUtilRepository;
 
   @BeforeEach
   void setUp() {
@@ -40,6 +42,7 @@ class TemporaryPasswordTest {
     System.out.println("numOfTodayAttendenceRepository.count() = " + numOfTodayAttendenceRepository.count());
     System.out.println("suggestionRepository.count() = " + suggestionRepository.count());
     System.out.println("userRepository.count() = " + userRepository.count());
+    System.out.println("userUtilRepository.count() = " + userUtilRepository.count());
   }
 
 
